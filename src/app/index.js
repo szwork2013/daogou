@@ -29,19 +29,29 @@ angular.module('daogou',['ionic'])
 }])
 .config(['$stateProvider','$urlRouterProvider','$ionicConfigProvider',function($stateProvider,$urlRouterProvider,$ionicConfigProvider) {
 	// $ionicConfigProvider.backButton.text("返回");
-	$ionicConfigProvider.views.maxCache(0);
-	$ionicConfigProvider.views.forwardCache(false);
-	$ionicConfigProvider.templates.maxPrefetch(0);
+	// $ionicConfigProvider.views.maxCache(0);
+	// $ionicConfigProvider.views.forwardCache(false);
+	// $ionicConfigProvider.templates.maxPrefetch(0);
 
 	$stateProvider
-	.state('home', {
-		url: '/',
-		templateUrl: 'app/main/main.html',
-		controller: 'MainCtrl'
-	});
+	.state('productDetail', {
+		url: '/productDetail',
+		templateUrl: 'app/product/product-detail/product-detail.html',
+		controller: 'productDetailCtrl'
+	})
+	.state('productList', {
+		url: '/productList',
+		templateUrl: 'app/product/product-list/product-list.html',
+		controller: 'productListCtrl'
+	})
+	.state('creatorder', {
+		url: '/creatorder',
+		templateUrl: 'app/creatorder/creatorder.html',
+		controller: 'creatorderCtrl'
+	})
 	;
 
-	$urlRouterProvider.otherwise('/');
+	$urlRouterProvider.otherwise('productDetail');
 	// $urlRouterProvider.otherwise('/login');
 //http://codepen.io/ahsx/pen/mDcEd
 }]);
