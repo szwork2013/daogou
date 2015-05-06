@@ -1,9 +1,18 @@
 <ion-view view-title="宝贝详情" class="product-detail">
 	<ion-content>
 
-		
-		<div class="sliderbox" id="sliders">
-		</div>
+		<ion-slide-box on-slide-changed="slideHasChanged($index)" class="sliderbox">
+			<ion-slide>
+		    	<img class="sliderpic" src="assets/images/pic1.png">
+			</ion-slide>
+			<ion-slide>
+		    	<img class="sliderpic" src="assets/images/pic1.png">
+			</ion-slide>
+			<ion-slide>
+		    	<img class="sliderpic" src="assets/images/pic1.png">
+			</ion-slide>
+		</ion-slide-box>
+
 		<!-- <p ng-repeat="params in productparam">参数:{{params.param}}</p>
 		<p class="des">简介</p> -->
 		<div class="productInfo">
@@ -26,16 +35,32 @@
 			</div>
 		</div>
 	    <div class="productPicWrap">
-	    	<img class="productPic" src="app/images/pic1.png">
-	    	<img class="productPic" src="app/images/pic1.png">
-	    	<img class="productPic" src="app/images/pic1.png">
+	    	<img class="productPic" src="assets/images/pic1.png">
+	    	<img class="productPic" src="assets/images/pic1.png">
+	    	<img class="productPic" src="assets/images/pic1.png">
 	    	<div class="clearBoth"></div>
 	    </div>
 	</ion-content>
-	<div class="daogou">
+	<div class="daogou" ui-sref="cart">
+		此处有交互，点击小圆出 购物车按钮，导购橱窗(商品列表)，个人中心(订单列表)
 	</div>
 	<div class="bottombar">
+
+<!-- ============阅完可删除,若不删,留作纪念,我也不反对线=========== -->
+<!-- 此处有交互，点击购物车出现选择弹框 -->
+<!-- 选择 数量，款式颜色 -->
+<!-- 每个选项都有库存，这边显示的库存要 根据 选择项 实时计算的 -->
+<!-- ============阅完可删除,若不删,留作纪念,我也不反对线=========== -->
+		
 		<div class="button button-light" ui-sref="creatorder">加入购物车</div>
 		<div class="button button-assertive" ui-sref="creatorder">立即购买</div>
 	</div>
 </ion-view>
+
+
+
+
+
+
+
+
