@@ -44,12 +44,16 @@ angular.module('daogou',['ionic'])
 		templateUrl: 'app/product/product-list/product-list.html',
 		controller: 'productListCtrl'
 	})
+	.state('cart', {
+		url: '/cart',
+		templateUrl: 'app/cart/cart.html',
+		controller: 'cartCtrl'
+	})
 	.state('creatorder', {
 		url: '/creatorder',
 		templateUrl: 'app/creatorder/creatorder.html',
 		controller: 'creatorderCtrl'
-	})
-	;
+	});
 
 	$urlRouterProvider.otherwise('productDetail');
 	// $urlRouterProvider.otherwise('/login');

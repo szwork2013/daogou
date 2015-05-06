@@ -2,7 +2,6 @@
 
 angular.module('daogou')
 .controller('productDetailCtrl',function($scope,$log){
-
 	$scope.productparam=[
 		{param:'A'},
 		{param:'B'},
@@ -17,5 +16,17 @@ angular.module('daogou')
 
 
 	$log.debug('productDetailCtrl');
+
+	// setTimeout(function(){
+	// 			$("#sliders").touchSlider({
+	// 				animatetime:300,
+	// 				automatic:!0,
+	// 				timeinterval:4e3,
+	// 				sliderpoint:!0,
+	// 				sliderpointwidth:8,
+	// 				sliderpointcolor:"#fa9d00"
+	// 			});
+	// },200);
+
 })
 ;
