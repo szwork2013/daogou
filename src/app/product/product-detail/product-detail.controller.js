@@ -54,6 +54,21 @@ angular.module('daogou')
 	// 				sliderpointcolor:"#fa9d00"
 	// 			});
 	// },200);
+	$scope.showmenu = function(){
+		if(parseInt($(".daogou").css("height"))<100){
+			$(".daogou").animate({"height":"180"},100)
+		}else{
+			$(".daogou").animate({"height":"46"},100)
+		}
+	}
+
+	$scope.close = function(){
+
+		$(".mengban").hide();
+		$(".chooseProductInfoWarp").hide();
+
+	}
+
 
 })
 ;

@@ -41,8 +41,17 @@
 	    	<div class="clearBoth"></div>
 	    </div>
 	</ion-content>
-	<div class="daogou" ui-sref="cart">
-		此处有交互，点击小圆出 购物车按钮，导购橱窗(商品列表)，个人中心(订单列表)
+	<div class="daogou">
+		<img class="daogouImg1" src="assets/images/daogou1.png" ng-click="showmenu()">
+		<div class="daogouImgWarp">
+			<img class="daogouImg2" src="assets/images/daogou2.png">
+			<span class="daogouImgTxt">个人中心</span>
+			<img class="daogouImg2" src="assets/images/daogou3.png">
+			<span class="daogouImgTxt">导购橱窗</span>
+			<img class="daogouImg2" src="assets/images/daogou4.png" ui-sref="cart">
+			<span class="daogouImgTxt" ui-sref="cart">购物车</span>
+		</div>
+		<!-- 此处有交互，点击小圆出 购物车按钮，导购橱窗(商品列表)，个人中心(订单列表) -->
 	</div>
 	<div class="bottombar">
 
@@ -55,7 +64,55 @@
 		<div class="button button-light" ui-sref="creatorder">加入购物车</div>
 		<div class="button button-assertive" ui-sref="creatorder">立即购买</div>
 	</div>
+	<div class="mengban"></div>
+
+	<div class="chooseProductInfoWarp">
+		<div class="list">
+		    <div class="item item-avatar">
+			      <img class="productImg" src="assets/images/pic1.png">
+			      <h2>新款撞色连衣裙</h2>
+			      <p>¥ 241.00</p>
+			      <img class="close" src="assets/images/close.png" ng-click="close()">
+		    </div>
+		</div>
+
+		<div class="chooses">
+				<span class="chsTitle">尺码</span>
+				<span class="chsBtn">S 预定5-7天</span>
+				<span class="chsBtn ichoosed">M 预定5-7天</span>
+				<span class="chsBtn">L 预定5-7天</span>
+				<span class="chsBtn">XL 预定5-7天</span>
+				<span class="chsBtn">S 预定5-7天</span>
+				<span class="chsBtn ichoosed">M 预定5-7天</span>
+				<span class="chsBtn">L 预定5-7天</span>
+				<span class="chsBtn">XL 预定5-7天</span><span class="chsBtn">S 预定5-7天</span>
+				<span class="chsBtn ichoosed">M 预定5-7天</span>
+				<span class="chsBtn">L 预定5-7天</span>
+				<span class="chsBtn">XL 预定5-7天</span>
+		</div>
+
+		<div class="chooses">
+				<span class="chsTitle">颜色分类</span>
+				<span class="chsBtn">红色</span>
+				<span class="chsBtn ichoosed">黑色</span>
+		</div>
+
+		<div class="chooses">
+				<span class="chsTitle fl">数量</span>
+				<div class="addDelWrap">
+					<span class="font12">剩余：</span><span class="font12">1822&nbsp;&nbsp;</span>
+					<span class="suanBtn del">-</span>
+					<span class="suanBtn num">23</span>
+					<span class="suanBtn add">+</span>
+				</div>
+				<div class="clearBoth"></div>
+		</div>
+		<div class="nextStep">下一步</div>
+	</div>
+
+
 </ion-view>
+
 
 
 
