@@ -16,8 +16,8 @@
 		<!-- <p ng-repeat="params in productparam">参数:{{params.param}}</p>
 		<p class="des">简介</p> -->
 		<div class="productInfo">
-			<div class="title">新款撞色连衣裙</div>
-			<div class="price">￥555.00</div>
+			<div class="title">{{productDetailData.title}}</div>
+			<div class="price">￥{{productDetailData.price}}</div>
 			<div>
 				<sapn class="graya3">尺码：</sapn><span>XS S M L XL</span>
 			</div>
@@ -61,8 +61,8 @@
 <!-- 每个选项都有库存，这边显示的库存要 根据 选择项 实时计算的 -->
 <!-- ============阅完可删除,若不删,留作纪念,我也不反对线=========== -->
 		
-		<div class="button button-light" ui-sref="creatorder">加入购物车</div>
-		<div class="button button-assertive" ui-sref="creatorder">立即购买</div>
+		<div class="button button-light" ng-click="propertyShow()">加入购物车</div>
+		<div class="button button-assertive" ng-click="propertyShow()">立即购买</div>
 	</div>
 	<div class="mengban"></div>
 
@@ -72,7 +72,7 @@
 			      <img class="productImg" src="assets/images/pic1.png">
 			      <h2>新款撞色连衣裙</h2>
 			      <p>¥ 241.00</p>
-			      <img class="close" src="assets/images/close.png" ng-click="close()">
+			      <img class="close" src="assets/images/close.png" ng-click="propertyClose()">
 		    </div>
 		</div>
 
@@ -112,8 +112,8 @@
 				<span class="chsTitle fl">数量</span>
 				<div class="addDelWrap">
 					<span class="font12">剩余：</span><span class="font12">1822&nbsp;&nbsp;</span>
-					<span class="suanBtn del">-</span>
-					<span class="suanBtn num">23</span>
+					<span class="suanBtn del" ng-click="addNum()">-</span>
+					<input class="suanBtn num" value="{{productDetailData.quantity}}"/>
 					<span class="suanBtn add">+</span>
 				</div>
 				<div class="clearBoth"></div>

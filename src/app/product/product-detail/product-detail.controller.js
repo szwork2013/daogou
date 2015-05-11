@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-.controller('productDetailCtrl',function($scope,$log){
+.controller('productDetailCtrl',['$scope','$log','$http',function($scope,$log,$http){
 	$scope.productparam=[
 		{param:'A'},
 		{param:'B'},
@@ -54,6 +54,8 @@ angular.module('daogou')
 	// 				sliderpointcolor:"#fa9d00"
 	// 			});
 	// },200);
+
+//点击导购头像出现个人中心，导购橱窗，购物车，以及关闭
 	$scope.showmenu = function(){
 		if(parseInt($(".daogou").css("height"))<100){
 			$(".daogou").animate({"height":"180"},100)
@@ -61,14 +63,32 @@ angular.module('daogou')
 			$(".daogou").animate({"height":"46"},100)
 		}
 	}
-
-	$scope.close = function(){
-
+//打开选取商品尺寸 颜色
+	$scope.propertyShow =function(){
+		$(".mengban").show();
+		$(".chooseProductInfoWarp").show();
+	}
+//关闭选取商品尺寸 颜色
+	$scope.propertyClose = function(){
 		$(".mengban").hide();
 		$(".chooseProductInfoWarp").hide();
-
 	}
+//点击+ - 增减商品数
+	// $scope.addNum = function(num){
+	// 	$scope.productDetailData.quantity = num--;
+	// }
 
 
-})
+	$http.get('assets/testdata/product-detail.json')
+	.success(function(data){
+		console.log(['success',data]);
+
+		$scope.productDetailData = data;
+	})
+	.error(function(){
+		console.log(['error',data]);
+	})
+
+
+}])
 ;

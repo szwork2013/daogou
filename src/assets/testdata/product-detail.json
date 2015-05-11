@@ -1,0 +1,41 @@
+ {
+    "brand_id": 1,
+    "num_iid": 100010,
+    "c_id": 1002,
+    "group_id": 3,
+    "outer_id": "100212",
+    "skus": 
+      [
+         {
+              "skuid": 1,
+              "properties": "p1:v1:尺码:XS;p2:v2:颜色:红色",
+              "price": 10.8,
+              "quantity": 10,
+              "retain_quantity": 2,
+              "outer_id": "11021",
+              "created": "2015-04-09T11:00:50+0800",
+              "modified": "2015-04-09T11:00:50+0800"
+          },
+          {
+              "skuid": 2,
+              "properties": "p1:v1:尺码:XS;p4:v4:颜色:黑色",
+              "price": 10.8,
+              "quantity": 16,
+              "retain_quantity": 2,
+              "outer_id": "11022",
+              "created": "2015-04-09T11:00:50+0800",
+              "modified": "2015-04-09T11:00:50+0800"
+          }
+      ],
+    "quantity_display": 0,
+    "title": "新款游动男装",
+    "price": 10.3,
+    "num": 300,
+    "pic_url": "http://XXXX.jpg",
+    "is_listing": 1,
+    "freight_terms": "seller",
+    "freight": 8.00,
+    "auto_listing_time": "",
+    "quantity": 10,
+    "content": "<body>XXXXXXXXXX</body>"
+}
