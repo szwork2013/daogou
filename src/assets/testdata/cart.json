@@ -1,0 +1,30 @@
+ [
+    {
+        "id":  1,
+        "user_id":  12,
+        "sku_id":  "445531231",
+        "num_iid": "EN12345667",
+        "title":  "夏季男装夏季男装夏季男装",
+        "sku_properties_name":  "颜色:桔色;尺码:M",
+        "pic_path": "http://brand-guide.b0.upaiyun.com/avatar.jpg,http://brand-guide.b0.upaiyun.com/file-upload/1429856439364_109778.png",
+        "price":  "12.2",
+        "total_fee":  "20",
+        "discount_fee":  "0",
+        "num": 2,
+        "bring_guider_id": 12
+    },
+    {
+        "id":  1,
+        "user_id":  12,
+        "sku_id":  "445531231",
+        "num_iid": "EN12345667",
+        "title":  "夏季男装",
+        "sku_properties_name":  "颜色:桔色;尺码:M",
+        "pic_path": "http://brand-guide.b0.upaiyun.com/avatar.jpg",
+        "price":  "12.2",
+        "total_fee":  "20",
+        "discount_fee":  "0",
+        "num": 2,
+        "bring_guider_id": 12
+    }
+]   

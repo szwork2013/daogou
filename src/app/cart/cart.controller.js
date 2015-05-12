@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-.controller('cartCtrl',function($scope,$log){
+.controller('cartCtrl',['$scope', '$log', '$http', function($scope,$log,$http){
 
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
@@ -21,6 +21,17 @@ angular.module('daogou')
 		$scope.cart = 0;
 		$scope.list = 1;
 	}
+	$http.get('assets/testdata/cart.json')
+	.success(function(data){
+		$log.debug(["success data",data]);
+		$scope.productData = data;
+	})
+	.error(function(data){
+		$log.debug(["error data",data]);
+	})
+//点击+ - 增减商品数
 
 
-});
+
+
+}]);

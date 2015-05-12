@@ -112,9 +112,9 @@
 				<span class="chsTitle fl">数量</span>
 				<div class="addDelWrap">
 					<span class="font12">剩余：</span><span class="font12">1822&nbsp;&nbsp;</span>
-					<span class="suanBtn del" ng-click="addNum()">-</span>
+					<span class="suanBtn del" ng-click="delNum(productDetailData.quantity)">-</span>
 					<input class="suanBtn num" value="{{productDetailData.quantity}}"/>
-					<span class="suanBtn add">+</span>
+					<span class="suanBtn add" ng-click="addNum(productDetailData.quantity)">+</span>
 				</div>
 				<div class="clearBoth"></div>
 		</div>

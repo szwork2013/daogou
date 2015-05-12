@@ -74,9 +74,20 @@ angular.module('daogou')
 		$(".chooseProductInfoWarp").hide();
 	}
 //点击+ - 增减商品数
-	// $scope.addNum = function(num){
-	// 	$scope.productDetailData.quantity = num--;
-	// }
+	$scope.delNum = function(num){
+		var n = parseInt(num);
+		$log.debug(n)
+		n--;
+		n>0?n:0;
+		$scope.productDetailData.quantity = n;
+	}
+	$scope.addNum = function(num){
+		var n = parseInt(num);
+		$log.debug(n)
+		n++;
+		$scope.productDetailData.quantity = n;
+	}
+
 
 
 	$http.get('assets/testdata/product-detail.json')
