@@ -78,7 +78,7 @@ angular.module('daogou')
 		var n = parseInt(num);
 		$log.debug(n)
 		n--;
-		n>0?n:0;
+		n=n>0?n:0;
 		$scope.productDetailData.quantity = n;
 	}
 	$scope.addNum = function(num){

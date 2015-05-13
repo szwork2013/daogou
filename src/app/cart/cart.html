@@ -1,7 +1,7 @@
 
 <ion-view view-title="购物车" class="cart-wrap">
 
-   <ion-side-menus enable-menu-with-back-views-"true">
+   <ion-side-menus enable-menu-with-back-views="true">
       <!-- Center content -->
       <ion-side-menu-content>
         <div class="bar bar-subheader top0 coloref">
@@ -26,32 +26,33 @@
         pulling-text="下拉更新..."
         on-refresh="pageFunc.refreshproductList()">
         </ion-refresher> -->
-          <div class="shop">
-              <div class="shop-name">Lily商务时装</div>
-              <div class="edit">编辑</div>
-              <div class="clearBoth"></div>
-          </div>
-          
-          <ul class="list">
-              <li class="item item-checkbox product-item" ng-repeat="item in productData">
-                 <label class="checkbox disnone">
-                   <input type="checkbox">
-                 </label>
-                <img src="assets/images/selected.png" class="selected-img">
-                <img src="assets/images/pic1.png" class="product-img">
-                <div class="paramenters">
-                    <div class="name">{{item.title}}</div>
-                    <div class="paras">{{item.sku_properties_name}}</div>
-                </div>
-                <span class="price">￥{{item.price}}</span>
-                <div class="countNum">
-                  <img src="assets/images/del.png" class="countImg" ng-click="delNum(item.num)">
-                      <input class="num" value="{{item.num}}" />
-                  <img src="assets/images/add.png" class="countImg" ng-click="addNum(item.num)">
-                </div>
-              </li>
-          </ul>
-
+        <div class="statusWrap">
+              <div class="shop">
+                  <div class="shop-name countDel">Lily商务时装</div>
+                  <div class="edit">编辑</div>
+                  <div class="clearBoth"></div>
+              </div>
+              
+              <ul class="list">
+                  <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                     <label class="checkbox disnone">
+                       <input type="checkbox" ng-model="choose">
+                     </label>
+                    <img src="assets/images/selected.png" class="selected-img">
+                    <img src="assets/images/pic1.png" class="product-img">
+                    <div class="paramenters">
+                        <div class="name">{{item.title}}</div>
+                        <div class="paras">{{item.sku_properties_name}}</div>
+                    </div>
+                    <span class="price">￥{{item.price}}</span>
+                    <div class="countNum">
+                      <img src="assets/images/del.png" class="countImg" ng-click="delNum(item.id)">
+                          <input class="num {{item.id}}" value="{{item.num}}" />
+                      <img src="assets/images/add.png" class="countImg" ng-click="addNum(item.id)">
+                    </div>
+                  </li>
+              </ul>
+        </div>
 <!-- 
       <ion-infinite-scroll
         ng-if="pageData.isHaveMoreData"

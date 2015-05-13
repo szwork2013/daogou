@@ -30,8 +30,22 @@ angular.module('daogou')
 		$log.debug(["error data",data]);
 	})
 //点击+ - 增减商品数
+	$scope.delNum = function(cls){
+		var n = parseInt($("."+cls+"").val());
+		$log.debug(n)
+		n--;
+		n=n<0?0:n;
+		$("."+cls+"").val(n);
+	}
+	$scope.addNum = function(cls){
+		var n = parseInt($("."+cls+"").val());
+		$log.debug(n)
+		n++;
+		$("."+cls+"").val(n);
+	}
 
-
+    $scope.choose = false;
+    $log.debug(['choooose',$scope.choose])
 
 
 }]);

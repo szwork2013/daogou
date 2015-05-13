@@ -1,0 +1,100 @@
+
+<ion-view view-title="我的订单">
+    <div class="bar bar-subheader top0 coloref">
+      <div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
+        <div class="tabsm">
+            <div class="tab-item-wrap" >
+                <a class="tab-itemm" ng-class="{'iactive':cart}" ng-click="chooseCart()">
+                  购物车
+                </a>
+            </div>
+            <div class="tab-item-wrap" >
+                <a class="tab-itemm" ng-class="{'iactive':list}"  ng-click="chooseList()">
+                 我的订单
+                </a>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <ion-content class="orderlist-content">
+    <!--   <ion-refresher
+      pulling-text="下拉更新..."
+      on-refresh="pageFunc.refreshproductList()">
+      </ion-refresher> -->
+      <div class="statusWrap">
+          <div class="status">
+              <div class="status-name countDel">待发货</div>
+              <div class="edit">剩余32小时23分24秒 </div>
+              <div class="clearBoth"></div>
+          </div>
+          
+          <ul class="list marginbt0">
+              <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                 <label class="checkbox disnone">
+                   <input type="checkbox" ng-model="choose">
+                 </label>
+                <img src="assets/images/pic1.png" class="product-img">
+                <div class="paramenters">
+                    <div class="name">{{item.title}}</div>
+                    <div class="paras">{{item.sku_properties_name}}</div>
+                </div>
+                <span class="price">￥{{item.price}}</span>
+                <div class="countNum">X1
+                </div>
+              </li>
+          </ul>
+          <div class="perAccount">
+            <div class="account"><span class="heji">合计：</span>￥1234.00</div>
+            <div class="time">2015-11-26 15:33:33</div>
+            <div class="clearBoth"></div>
+          </div>
+      </div>
+
+      <div class="statusWrap">
+          <div class="status">
+              <div class="status-name countDel">待发货</div>
+              <div class="edit">剩余32小时23分24秒 </div>
+              <div class="clearBoth"></div>
+          </div>
+          
+          <ul class="list marginbt0">
+              <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                 <label class="checkbox disnone">
+                   <input type="checkbox" ng-model="choose">
+                 </label>
+                <img src="assets/images/pic1.png" class="product-img">
+                <div class="paramenters">
+                    <div class="name">{{item.title}}</div>
+                    <div class="paras">{{item.sku_properties_name}}</div>
+                </div>
+                <span class="price">￥{{item.price}}</span>
+                <div class="countNum">X1
+                </div>
+              </li>
+          </ul>
+          <div class="perAccount">
+            <div class="account"><span class="heji">合计：</span>￥1234.00</div>
+            <div class="time">2015-11-26 15:33:33</div>
+            <div class="clearBoth"></div>
+          </div>
+      </div>
+
+
+
+
+
+    <!-- 
+    <ion-infinite-scroll
+      ng-if="pageData.isHaveMoreData"
+      icon="ion-loading-c"
+      on-infinite="pageFunc.loadMoreData()"
+      distance="20%"
+      spinner="ios"
+      >
+    </ion-infinite-scroll> -->
+    </ion-content>
+  <!--   这个切换其实是2个页面 不是页面内切换的
+    一个是购物车页cart   应该是订单列表 order → order-list -->
+
+</ion-view>
