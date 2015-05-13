@@ -13,7 +13,7 @@
 //   })
 // ;
 
-angular.module('daogou',['ionic','order'])
+angular.module('daogou',['ionic','order','orderList'])
 .run(['$ionicPlatform', function($ionicPlatform){
   	$ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -53,6 +53,11 @@ angular.module('daogou',['ionic','order'])
 		url: '/orderList',
 		templateUrl: 'app/order/order-list/order-list.html',
 		controller: 'orderListCtrl'
+	})
+	.state('orderDetail', {
+		url: '/orderDetail',
+		templateUrl: 'app/order/order-detail/order-detail.html',
+		controller: 'orderDetailCtrl'
 	})
 	.state('creatorder', {
 		url: '/creatorder',

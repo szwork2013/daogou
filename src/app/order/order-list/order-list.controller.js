@@ -1,6 +1,6 @@
 'use strict';
 
-var order = angular.module('order',['ionic']);
+var order = angular.module('orderList',['ionic']);
 order.controller('orderListCtrl',['$scope', '$log', '$http', function($scope,$log,$http){
 
 

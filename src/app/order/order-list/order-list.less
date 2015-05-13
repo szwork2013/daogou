@@ -1,39 +1,5 @@
-.coloref{
-	background:#efefef;//中间的灰色
-}
-.top0{
-	top:0px !important;
-}
-.tabsm{
-	position:fixed;
-	top:0px;
-	left: 0px;
-	width: 100%;
-	height: 38px;
-	background: @grayf8;
-	border:0px;
-	.tab-item-wrap{
-		width:49%;
-		height: 36px;
-		line-height: 36px;
-		display: inline-block;
-		text-align: center;
-			.tab-itemm{
-			display: inline-block;
-			background: @grayf8;
-			color:#8f8f8f;
-			}
-			.iactive{
-				border-bottom:2px solid @commonRed;
-				color:@commonRed;
-			}
-	}
-}
-.clearBoth{
-	clear: both;
-}
 .marginbt0{
-			margin-bottom: 0px !important;
+	margin-bottom: 0px !important;
 }
 
 .orderlist-content{
@@ -41,7 +7,9 @@
 	background:#efefef;
 	.statusWrap{
 		border-top: 1px solid @grayddd;
+		border-bottom: 1px solid @grayddd;
 		background: @grayf8;
+		margin-bottom: 10px;
 		.status{
 			height: 35px;
 			margin-left:10px;
@@ -74,7 +42,6 @@
 			}
 			&:last-child{
 				padding-bottom: 15px;
-				border-bottom:1px solid @grayddd;
 			}
 			.product-img{
 				width:62px;
@@ -119,9 +86,8 @@
 		}
 		.perAccount{
 				height: 45px;
-				border-bottom: 1px solid @grayddd;
+				border-top: 1px solid @grayddd;
 				padding:0 15px 0 15px;
-				margin-bottom: 10px;
 				background: @grayf8;
 				.account{
 					float:left;

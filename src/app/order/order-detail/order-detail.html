@@ -1,0 +1,42 @@
+
+<ion-view view-title="订单详情">
+      <ion-content class="order-detail">
+          <div class="statusWrap">
+                <ul class="list marginbt0">
+                    <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                      <img src="assets/images/pic1.png" class="product-img">
+                      <div class="paramenters">
+                          <div class="name">{{item.title}}</div>
+                          <div class="paras">{{item.sku_properties_name}}</div>
+                      </div>
+                      <span class="price">￥{{item.price}}</span>
+                    </li>
+                </ul>
+                <div class="summary">
+                        品牌：Lily商务时装 <br/>
+                        订单号：2323212232324344354546 <br/>
+                        付款方式：微信支付 <br/>
+                        交易号：2323212232
+                </div>
+          </div>
+      </ion-content>
+
+      <ion-footer-bar align-title="left" class="footer">
+        <ul class="list footerul">
+              <li class="item item-checkbox footerli">
+                 <label class="checkbox disnone">
+                   <input type="checkbox">
+                 </label>
+                 <img src="assets/images/selected.png" class="selected-img">
+                 <button class="goAccount">结算(1)</button>
+                 <span class="totalPrice">1234.00</span>
+                 <span class="total">合计：￥</span>
+              </li>
+          </ul>
+         
+      </ion-footer-bar>
+
+  <!--   这个切换其实是2个页面 不是页面内切换的
+    一个是购物车页cart   应该是订单列表 order → order-list -->
+
+</ion-view>
