@@ -22,15 +22,15 @@
         pulling-text="下拉更新..."
         on-refresh="pageFunc.refreshproductList()">
         </ion-refresher> -->
-          <div class="statusWrap">
-                <div class="shop">
+          <div class="statusWrap backf8">
+                <div class="shop backf8">
                     <div class="shop-name countDel">Lily商务时装</div>
                     <div class="edit">编辑</div>
                     <div class="clearBoth"></div>
                 </div>
                 
                 <ul class="list">
-                    <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                    <li class="item item-checkbox product-item backf8" ng-repeat="item in productData">
                        <label class="checkbox disnone">
                          <input type="checkbox" ng-model="choose">
                        </label>
@@ -43,7 +43,7 @@
                       <span class="price">￥{{item.price}}</span>
                       <div class="countNumCount">
                         <img src="assets/images/del.png" class="countImg" ng-click="delNum(item.id)">
-                            <input class="num {{item.id}}" value="{{item.num}}" />
+                            <input class="num backf8 {{item.id}}" value="{{item.num}}" />
                         <img src="assets/images/add.png" class="countImg" ng-click="addNum(item.id)">
                       </div>
                     </li>
