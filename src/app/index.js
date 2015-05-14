@@ -68,7 +68,18 @@ angular.module('daogou',['ionic','order','orderList','createOrder','goodsReturn'
 		url: '/creatorder',
 		templateUrl: 'app/creatorder/creatorder.html',
 		controller: 'creatorderCtrl'
-	});
+	})
+	.state('goodsShop', {
+		url: '/goodsShop',
+		templateUrl: 'app/creatorder/goods-shop.html',
+		controller: 'goodsShopCtrl'
+	})
+	.state('changeReceiveInfo', {
+		url: '/changeReceiveInfo',
+		templateUrl: 'app/creatorder/change-receive-info.html',
+		controller: 'changeReceiveInfoCtrl'
+	})
+	;
 
 	$urlRouterProvider.otherwise('productDetail');
 	// $urlRouterProvider.otherwise('/login');
