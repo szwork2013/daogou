@@ -1,6 +1,34 @@
 
 <ion-view view-title="订单详情">
       <ion-content class="order-detail">
+          <div class="statusWrap border-tp0">
+              <div class="order-status">
+                   <img src="assets/images/order.png" class="order-img">
+                   <span class="order-infos">
+                         <span>已发货</span><br/>
+                         <span>订单金额（含运费）: ¥ 1482.00</span><br/>
+                         <span>运费: ¥ 0.00</span>
+                   </span>
+                   <div class="clearBoth"></div>
+              </div>
+              <div class="receiver-infos">
+                   <img src="assets/images/address.png" class="receiver-img">
+                   <span class="receiver-infos">
+                         <span>收货人：李志伟        18094705373 </span><br/>
+                         <span>收货地址：长宁区 杨宅路255号新发现财富园5幢 4楼   </span>
+                   </span>
+                   <div class="clearBoth"></div>
+              </div>
+               <div class="wuliu-infos">
+                   <img src="assets/images/wuliu.png" class="wuliu-img">
+                   <span class="wuliu-infos">
+                         <span>物流信息</span><br/>
+                         <span>已签收 签收人是XXX</span><br/>
+                         <span>2015-04-13 11:40:23</span>
+                   </span>
+                   <div class="clearBoth"></div>
+              </div>
+          </div>
           <div class="statusWrap">
                 <ul class="list marginbt0">
                     <li class="item item-checkbox product-item" ng-repeat="item in productData">
@@ -10,6 +38,7 @@
                           <div class="paras">{{item.sku_properties_name}}</div>
                       </div>
                       <span class="price">￥{{item.price}}</span>
+                      <div class="countNum">X1
                     </li>
                 </ul>
                 <div class="summary">
@@ -24,13 +53,7 @@
       <ion-footer-bar align-title="left" class="footer">
         <ul class="list footerul">
               <li class="item item-checkbox footerli">
-                 <label class="checkbox disnone">
-                   <input type="checkbox">
-                 </label>
-                 <img src="assets/images/selected.png" class="selected-img">
-                 <button class="goAccount">结算(1)</button>
-                 <span class="totalPrice">1234.00</span>
-                 <span class="total">合计：￥</span>
+                 <button class="delcount">删除订单</button>
               </li>
           </ul>
          
