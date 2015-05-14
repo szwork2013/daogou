@@ -36,12 +36,12 @@
                        </label>
                       <img src="assets/images/selected.png" class="selected-img">
                       <img src="assets/images/pic1.png" class="product-img">
-                      <div class="paramenters">
+                      <div class="paramenters-select">
                           <div class="name">{{item.title}}</div>
                           <div class="paras">{{item.sku_properties_name}}</div>
                       </div>
                       <span class="price">￥{{item.price}}</span>
-                      <div class="countNum">
+                      <div class="countNumCount">
                         <img src="assets/images/del.png" class="countImg" ng-click="delNum(item.id)">
                             <input class="num {{item.id}}" value="{{item.num}}" />
                         <img src="assets/images/add.png" class="countImg" ng-click="addNum(item.id)">

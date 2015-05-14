@@ -1,8 +1,7 @@
 'use strict';
 
-angular.module('createOrder',['ionic'])
-.controller('creatorderCtrl',['$scope','$log','$http',function($scope,$log,$http){
-	$log.debug('creatorderCtrl');
+angular.module('goodsReturn',['ionic'])
+.controller('returnApplyCtrl',['$scope','$log','$http',function($scope,$log,$http){
 	$http.get('assets/testdata/cart.json')
 	.success(function(data){
 		$log.debug(["success data",data]);

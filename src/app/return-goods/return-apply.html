@@ -1,0 +1,46 @@
+
+<ion-view view-title="购物车">
+      <ion-content class="apply-content">
+          <div class="statusWrap border-bt0 backfff padding-bt20">
+                <div class="shop">
+                    <div class="shop-name countDel">退货商品</div>
+                    <div class="clearBoth"></div>
+                </div>
+                
+                <ul class="list marginbt0">
+                    <li class="item item-checkbox product-item backfff" ng-repeat="item in productData">
+                       <label class="checkbox disnone">
+                         <input type="checkbox" ng-model="choose">
+                       </label>
+                      <img src="assets/images/selected.png" class="selected-img">
+                      <img src="assets/images/pic1.png" class="product-img">
+                      <div class="paramenters-select">
+                          <div class="name">{{item.title}}</div>
+                          <div class="paras">{{item.sku_properties_name}}</div>
+                      </div>
+                      <span class="price">￥{{item.price}}</span>
+                      <div class="countNum">X1
+                      </div>
+                    </li>
+                </ul>
+                <div class="prompt-text">
+                    <div class="prompt">退货原因（必选）</div>
+                    <input class="text"/>
+                </div>
+                <div class="prompt-text">
+                    <div class="prompt">退货渠道（必选）</div>
+                    <input class="text"/>
+                </div>
+                <div class="prompt-text">
+                    <div class="prompt">图片</div>
+                    <div class="img">+</div>
+                </div>
+                <div class="prompt-text">
+                    <div class="prompt">补充描述</div>
+                    <input class="text"/>
+                </div>
+                <div class="commonBtn backred">提交</div>
+          </div>
+
+      </ion-content>
+</ion-view>

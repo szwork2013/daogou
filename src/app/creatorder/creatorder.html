@@ -1,37 +1,55 @@
-<ion-view view-title="填写订单" class="creatorder">
-	<ion-content>
 
-		<p class="product" 
-		ng-repeat="product in products">商品名称:{{product.name}}</p>
+<ion-view view-title="我的订单">
+    <ion-content class="createorder-content">
+      <div class="statusWrap">
+          <ul class="list marginbt0">
+              <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                 <label class="checkbox disnone">
+                   <input type="checkbox" ng-model="choose">
+                 </label>
+                <img src="assets/images/pic1.png" class="product-img">
+                <div class="paramenters">
+                    <div class="name">{{item.title}}</div>
+                    <div class="paras">{{item.sku_properties_name}}</div>
+                </div>
+                <span class="price">￥{{item.price}}</span>
+                <div class="countNum">X1
+                </div>
+              </li>
+          </ul>
+          <div class="perAccount">
+            <div class="account"><span class="heji">商品总价：</span></div>
+            <div class="time">￥23333.00</div>
+            <div class="clearBoth"></div>
+          </div>
+      </div>
 
-		<div class="notebox">
-			<textarea name="" id="" cols="30" rows="4" placeholder="用户备注" ></textarea>
-		</div>
-		
-		<div class="list">
-			<label class="item item-input item-select">
-				<div class="input-label">
-				城市
-				</div>
-				<select>
-				<option>上海</option>
-				<option selected>北京</option>
-				<option>深圳</option>
-				</select>
-			</label>
-				<label class="item item-input item-stacked-label">
-				<span class="input-label">姓名</span>
-				<input type="text" placeholder="张大帅">
-			</label>
-				<label class="item item-input item-stacked-label">
-				<span class="input-label">手机</span>
-				<input type="text" placeholder="手机号">
-			</label>
-		</div>
+      <div class="statusWrap remarkpadding">
+          <div class="costwrap">
+              <span class="costname">运费</span>
+              <span class="costvalue">￥123.00</span>
+              <div class="clearBoth"></div>
+          </div>
+           <div class="costwrap">
+              <span class="costname">实付</span>
+              <span class="costvalue commonRed">￥123.00</span>
+              <div class="clearBoth"></div>
+          </div>
+          <textarea class="remark" placeholder="订单备注"></textarea>
+      </div>
 
-		<div class="buttonbox">
-			
-			<div class="button button-balanced" ui-sref="creatorder">微信支付</div>
-		</div>
-	</ion-content>
+       <div class="statusWrap">
+          <span class="pickupway">取货方式</span>
+          <div>
+              <div class="pickupways pickwayselect">快递到家</div>
+              <div class="pickupways">门店自取</div>
+              <div class="clearBoth"></div>
+          </div>
+          <div class="addressInfo remarkpadding">
+              <span>李志伟，18094705373 </span><br/>
+              <span>[默认]上海市长宁区 杨宅路255号新发现财富园5幢 4楼 </span>
+          </div>
+      </div>
+      <div class="commonBtn">微信支付</div>
+    </ion-content>
 </ion-view>
