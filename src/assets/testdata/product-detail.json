@@ -35,7 +35,7 @@
     "is_listing": 1,
     "freight_terms": "seller",
     "freight": 8.00,
+    "quantity":2,
     "auto_listing_time": "",
-    "quantity": 10,
     "content": "<body>XXXXXXXXXX</body>"
 }

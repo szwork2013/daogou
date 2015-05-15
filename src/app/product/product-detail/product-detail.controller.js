@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('daogou')
-.controller('productDetailCtrl',['$scope','$log','$http',function($scope,$log,$http){
+var product = angular.module('product',['ionic']);
+product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,$log,$http){
 	$scope.productparam=[
 		{param:'A'},
 		{param:'B'},
@@ -58,9 +58,10 @@ angular.module('daogou')
 //点击导购头像出现个人中心，导购橱窗，购物车，以及关闭
 	$scope.showmenu = function(){
 		if(parseInt($(".daogou").css("height"))<100){
-			$(".daogou").animate({"height":"180"},100)
+			$(".daogou").animate({"height":"180"},100);
+			$(".redPoint").hide();
 		}else{
-			$(".daogou").animate({"height":"46"},100)
+			$(".daogou").animate({"height":"46"},100);
 		}
 	}
 //打开选取商品尺寸 颜色
@@ -93,8 +94,24 @@ angular.module('daogou')
 	$http.get('assets/testdata/product-detail.json')
 	.success(function(data){
 		console.log(['success',data]);
-
 		$scope.productDetailData = data;
+		$log.debug(['$scope.productDetailData',$scope.productDetailData.skus]);
+		var propertyArr = $scope.productDetailData.skus[0].properties.split(';');//propertyArr.length参数种类
+			$scope.productDetailData.specification = [];
+			for(var idx in propertyArr){
+				$scope.productDetailData.specification[idx] = {};
+				$scope.productDetailData.specification[idx].key = "";
+				$scope.productDetailData.specification[idx].val = "";
+		}
+		
+		for(var id in $scope.productDetailData.skus){//sku个数
+			var propertyArr = $scope.productDetailData.skus[id].properties.split(';');//propertyArr.length参数种类
+			for(var tz in propertyArr){
+				var paraArr = propertyArr[tz].split(':');
+				$scope.productDetailData.specification[tz].key = paraArr[paraArr.length-2];
+				$scope.productDetailData.specification[tz].val += paraArr[paraArr.length-1]+" ";
+			}
+		}
 	})
 	.error(function(){
 		console.log(['error',data]);

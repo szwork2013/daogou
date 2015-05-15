@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('daogou')
-.controller('cartCtrl',['$scope', '$log', '$http', function($scope,$log,$http){
+var cart = angular.module('cart',['ionic']);
+cart.controller('cartCtrl',['$scope', '$log', '$http','$state', function($scope,$log,$http,$state){
 
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
@@ -13,14 +13,18 @@ angular.module('daogou')
 
 	$scope.cart = 1;
 	$scope.list = 0;
-	$scope.chooseCart=function(){
-		$scope.cart = 1;
-		$scope.list = 0;
-	}
-	$scope.chooseList=function(){
-		$scope.cart = 0;
-		$scope.list = 1;
-	}
+	// $scope.chooseCart=function(){
+	// 	$scope.cart = 1;
+	// 	$scope.list = 0;
+
+	// }
+	// $scope.chooseList=function(){
+	// 	$scope.cart = 0;
+	// 	$scope.list = 1;
+	// 	$state.go("orderList");
+	// }
+
+
 	$http.get('assets/testdata/cart.json')
 	.success(function(data){
 		$log.debug(["success data",data]);
@@ -30,22 +34,16 @@ angular.module('daogou')
 		$log.debug(["error data",data]);
 	})
 //点击+ - 增减商品数
-	$scope.delNum = function(cls){
-		var n = parseInt($("."+cls+"").val());
-		$log.debug(n)
-		n--;
-		n=n<0?0:n;
-		$("."+cls+"").val(n);
+	$scope.delNum = function(index){
+		$scope.productData[index].num--;
+		$scope.productData[index].num = $scope.productData[index].num>0?$scope.productData[index].num:0;
 	}
-	$scope.addNum = function(cls){
-		var n = parseInt($("."+cls+"").val());
-		$log.debug(n)
-		n++;
-		$("."+cls+"").val(n);
+	$scope.addNum = function(index){
+		$scope.productData[index].num++;
 	}
 
     $scope.choose = false;
-    $log.debug(['choooose',$scope.choose])
+    $log.debug(['choooose',$scope.choose]);
 
 
 }]);

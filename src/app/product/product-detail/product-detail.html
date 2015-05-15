@@ -17,18 +17,15 @@
 		<p class="des">简介</p> -->
 		<div class="productInfo">
 			<div class="title">{{productDetailData.title}}</div>
-			<div class="price">￥{{productDetailData.price}}</div>
-			<div>
-				<sapn class="graya3">尺码：</sapn><span>XS S M L XL</span>
+			<div class="price">{{productDetailData.price|currency:"￥":2}}</div>
+			<div ng-repeat = "item in productDetailData.specification">
+				<sapn class="graya3">{{item.key}}：</sapn><span>{{item.val}}</span>
 			</div>
 			<div>
-				<sapn class="graya3">颜色：</sapn><span>花色</span>
+				<sapn class="graya3">剩余：</sapn><span>{{productDetailData.num}}</span>
 			</div>
 			<div>
-				<sapn class="graya3">剩余：</sapn><span>67</span>
-			</div>
-			<div>
-				<sapn class="graya3">运费：</sapn><span>免运费</span>
+				<sapn class="graya3">运费：</sapn><span>{{productDetailData.freight|currency:"￥":2}}</span>
 			</div>
 			<div>
 				<sapn class="graya3">服务：</sapn><span>支持专卖店取货 </span>
@@ -41,6 +38,7 @@
 	    	<div class="clearBoth"></div>
 	    </div>
 	</ion-content>
+	<div class="redPoint"></div>
 	<div class="daogou">
 		<img class="daogouImg1" src="assets/images/daogou1.png" ng-click="showmenu()">
 		<div class="daogouImgWarp">
@@ -50,6 +48,7 @@
 			<span class="daogouImgTxt">导购橱窗</span>
 			<img class="daogouImg2" src="assets/images/daogou4.png" ui-sref="cart">
 			<span class="daogouImgTxt" ui-sref="cart">购物车</span>
+			<div class="redPointCart"></div>
 		</div>
 		<!-- 此处有交互，点击小圆出 购物车按钮，导购橱窗(商品列表)，个人中心(订单列表) -->
 	</div>
@@ -118,7 +117,7 @@
 				</div>
 				<div class="clearBoth"></div>
 		</div>
-		<div class="nextStep">下一步</div>
+		<div class="nextStep" ui-sref="creatorder">下一步</div>
 	</div>
 
 
