@@ -13,18 +13,69 @@
               </div>
               <div class="receiver-infos">
                    <img src="assets/images/address.png" class="receiver-img">
-                   <span class="receiver-infos">
-                         <span>收货人：李志伟        18094705373 </span><br/>
+                   <span class="receiver-info">
+                         <div class="font15">
+                              <span class="floatL">收货人：李志伟</span>        
+                              <span class="floatR">18094705373</span> 
+                              <div class="clearBoth"></div>
+                         </div>
                          <span>收货地址：长宁区 杨宅路255号新发现财富园5幢 4楼   </span>
                    </span>
                    <div class="clearBoth"></div>
               </div>
-               <div class="wuliu-infos">
+              <div class="receiver-infos">
+                   <img src="assets/images/address.png" class="receiver-img">
+                   <span class="receiver-info">
+                         <div class="font15">
+                              <span class="floatL">取货人：李志伟</span>        
+                              <span class="floatR">18094705373</span> 
+                              <div class="clearBoth"></div>
+                         </div>
+                         <span>取货门店：上海市淮海中路店 </span>
+                         <div>
+                              <span class="floatL width78">取货地址：淮海中路255号淮海中路255号淮海中路255号</span>        
+                              <span class="floatR colorBlue2">获取路线</span> 
+                              <div class="clearBoth"></div>
+                         </div>
+                         <div>
+                              <span class="floatL width85">联系电话：18094705373</span>        
+                              <span class="floatR colorBlue2">拨号</span> 
+                              <div class="clearBoth"></div>
+                         </div>
+                         <span>预约时间：2015-04-18 12:00-14:00 </span>
+                   </span>
+                   <div class="clearBoth"></div>
+              </div>
+              <div class="receiver-infos">
+                   <img src="assets/images/address.png" class="receiver-img novisible">
+                   <span class="receiver-info">
+                         <div class="font15">
+                              <span>取货门店：上海市淮海中路店</span>        
+                         </div>
+                         <span>接待导购：曾丽 34343344555</span><br/>
+                         <span>预约时间：2015-04-18 12:00-14:00 </span>
+                   </span>
+                   <div class="clearBoth"></div>
+              </div>
+
+              <div class="receiver-infos">
+                   <div class="erweima-wrap">
+                      <img class="erweima floatL margin-r15" src="assets/images/erweima.png"/>
+                      <div class="floatL">
+                          <span>请在取货时向店员出示此码</span><br/>
+                          <span class="font18">2323 2454 454123</span><br/>
+                          <span class="colorRed">切勿透露他人以防冒取</span>
+                      </div>
+                      <div class="clearBoth"></div>
+                   </div>
+              </div>
+
+              <div class="wuliu-infos">
                    <img src="assets/images/wuliu.png" class="wuliu-img">
                    <span class="wuliu-infos">
-                         <span>物流信息</span><br/>
-                         <span>已签收 签收人是XXX</span><br/>
-                         <span>2015-04-13 11:40:23</span>
+                         <span class="font15">物流信息</span><br/>
+                         <span class="colorGreen">已签收 签收人是XXX</span><br/>
+                         <span class="colorGreen">2015-04-13 11:40:23</span>
                    </span>
                    <div class="clearBoth"></div>
               </div>
@@ -38,7 +89,9 @@
                           <div class="paras">{{item.sku_properties_name}}</div>
                       </div>
                       <span class="price">￥{{item.price}}</span>
-                      <div class="countNum">X1
+                      <div class="countNum">X1</div>
+                      <div class="sale-return"  ng-show="1">退货</div>
+                      <div class="on-sale-return" ng-show="0">退货中</div>
                     </li>
                 </ul>
                 <div class="summary">
@@ -49,6 +102,20 @@
                 </div>
           </div>
       </ion-content>
+      <div class="redPoint"></div>
+      <div class="daogou">
+        <img class="daogouImg1" src="assets/images/daogou1.png" ng-click="showmenu()">
+        <div class="daogouImgWarp">
+          <img class="daogouImg2" src="assets/images/daogou2.png">
+          <span class="daogouImgTxt">个人中心</span>
+          <img class="daogouImg2" src="assets/images/daogou3.png">
+          <span class="daogouImgTxt">导购橱窗</span>
+          <img class="daogouImg2" src="assets/images/daogou4.png" ui-sref="cart">
+          <span class="daogouImgTxt" ui-sref="cart">购物车</span>
+          <div class="redPointCart"></div>
+        </div>
+      </div>
+
 
       <ion-footer-bar align-title="left" class="footer">
         <ul class="list footerul">

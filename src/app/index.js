@@ -64,6 +64,15 @@ angular.module('daogou',['ionic','product','cart','order','orderList','createOrd
 		templateUrl: 'app/return-goods/return-apply.html',
 		controller: 'returnApplyCtrl'
 	})
+	.state('returnOrderDetail', {
+		url: '/returnOrderDetail',
+		templateUrl: 'app/return-goods/return-order-detail.html',
+		controller: 'orderListCtrl'
+	})
+	.state('logisticsInfo', {
+		url: '/logisticsInfo',
+		templateUrl: 'app/return-goods/logisticsInfo.html'
+	})
 	.state('creatorder', {
 		url: '/creatorder',
 		templateUrl: 'app/creatorder/creatorder.html',

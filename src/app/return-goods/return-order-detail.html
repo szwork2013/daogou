@@ -1,0 +1,88 @@
+
+<ion-view view-title="退货详情">
+      <ion-content class="apply-content">
+          <div class="statusWrap backfff padding-bt20">
+                <div class="shop">
+                    <div class="shop-name countDel">退货商品</div>
+                    <div class="return-saler">等待卖家同意</div>
+                    <div class="clearBoth"></div>
+                </div>
+                
+                <ul class="list marginbt0" ng-class="{'border-bt':1}">
+                    <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                       <label class="checkbox disnone">
+                         <input type="checkbox" ng-model="choose">
+                       </label>
+                      <img src="assets/images/pic1.png" class="product-img">
+                      <div class="paramenters">
+                          <div class="name">{{item.title}}</div>
+                          <div class="paras">{{item.sku_properties_name}}</div>
+                      </div>
+                      <span class="price">￥{{item.price}}</span>
+                      <div class="countNum">X1
+                      </div>
+                    </li>
+                </ul>
+                <div class="return-item">
+                     <div class="addressInfo">
+                     <span class="font14">请前往以下门店退货</span>
+                        <div>
+                            <span class="floatL width80">中山公园龙之梦店，021-54347586  </span>
+                            <span class="colorBlue2 floatR font13" ui-sref="goodsShop">其它门店</span>
+                            <div class="clearBoth"></div>
+                        </div>
+                        <div>
+                            <span class="font13 floatL width85">上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</span>
+                            <span class="font13 colorRed floatR">3.0km</span>
+                            <div class="clearBoth"></div>
+                        </div>
+                      
+                    </div>
+                </div>
+    
+                 <div class="return-item">
+                    <div class="erweima-wrap">
+                       <img class="erweima floatL margin-r15" src="assets/images/erweima.png"/>
+                       <div class="floatL">
+                           <span>请在取货时向店员出示此码</span><br/>
+                           <span class="font18">2323 2454 454123</span><br/>
+                           <span class="colorRed">切勿透露他人以防冒取</span>
+                       </div>
+                       <div class="clearBoth"></div>
+                    </div>
+                </div>
+                
+                <div class="return-item">
+                  请将要退的商品寄至以下地址并填写物流信息<br/>
+                  退货地址：长宁区杨宅路255号新发现才富园<br/>  
+                  收件人：李志伟<br/> 
+                  联系电话：13034343545 
+                </div>
+                <div class="return-item">
+                  物流信息提交时间：2015-02-15 12：34：56<br/>
+                  快递公司：顺丰快递<br/> 
+                  快递单号：2343435454645656232
+                </div>
+                <div class="returnReason" ng-class="{'margin-tp10':1}">
+                  <span>提交时间：2015-02-15 12：34：56</span><br/>
+                  <span>退款原因：不想要了 </span><br/>
+                  <span>证明图片：</span><br/>
+                  <img src="assets/images/pic1.png" class="return-imgs">
+                  <img src="assets/images/pic1.png" class="return-imgs">
+                  <img src="assets/images/pic1.png" class="return-imgs">
+                  <span>补充描述：就是不想要了</span><br/>
+                </div>
+          </div>
+
+      </ion-content>
+
+      <ion-footer-bar align-title="left" class="footer">
+        <ul class="list footerul">
+              <li class="item item-checkbox footerli">
+                 <button class="delcount">取消退货</button>
+                 <button class="delcount backred colorfff" ui-sref="logisticsInfo">修改退货物流信息</button>
+              </li>
+          </ul>
+         
+      </ion-footer-bar>
+</ion-view>

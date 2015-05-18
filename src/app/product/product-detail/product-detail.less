@@ -1,288 +1,289 @@
 .product-detail{
 	background: #f8f8f8;
-	.sliderbox{
-		width: 100vw;
-		height: 100vw;
-		line-height: 100vw;
+}
+.sliderbox{
+	width: 100vw;
+	height: 100vw;
+	line-height: 100vw;
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
 
-	//不要在images文件夹塞到 app 文件夹里面  图片可以放在在 assets → images里面
+//不要在images文件夹塞到 app 文件夹里面  图片可以放在在 assets → images里面
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
 
-		background: #ccc;//less文件直接在app下
-		background-size: 100% 100%;
-		text-align: center;
-		border-bottom:1px solid #dbdbdb; 
-		.sliderpic{
-			width: 100%;
-		}
-	}
-	.productInfo {
-		.graya3{
-			color:#a3a3a3;
-		}
-		.gray3a{
-			color:#3a3a3a;
-		}
-		padding: 10px;
-		font-size: 16px;
-		color:#3a3a3a;
-		div {
-			margin-bottom: 5px;
-		}
-		.title {
-			font-size: 18px;
-		}
-		.price {
-			margin-top: 12px;
-			margin-bottom: 10px;
-			padding-bottom: 10px;
-			border-bottom: 1px solid #ddd;
-			color:#f35253;
-		}
-	}
-	.productPicWrap{
+	background: #ccc;//less文件直接在app下
+	background-size: 100% 100%;
+	text-align: center;
+	border-bottom:1px solid #dbdbdb; 
+	.sliderpic{
 		width: 100%;
-		border-top:1px solid #dbdbdb;
-		padding-bottom: 50px;
-		.productPic{
-			width:100%;
-			height: auto;
+	}
+}
+.productInfo {
+	.graya3{
+		color:#a3a3a3;
+	}
+	.gray3a{
+		color:#3a3a3a;
+	}
+	padding: 10px;
+	font-size: 16px;
+	color:#3a3a3a;
+	div {
+		margin-bottom: 5px;
+	}
+	.title {
+		font-size: 18px;
+	}
+	.price {
+		margin-top: 12px;
+		margin-bottom: 10px;
+		padding-bottom: 10px;
+		border-bottom: 1px solid #ddd;
+		color:#f35253;
+	}
+}
+.productPicWrap{
+	width: 100%;
+	border-top:1px solid #dbdbdb;
+	padding-bottom: 50px;
+	.productPic{
+		width:100%;
+		height: auto;
+		float: left;
+	}
+	.clearBoth{
+		clear: both;
+	}
+}
+.redPoint{
+		position: fixed;
+		right: 10px;
+		bottom: 95px;
+		width: 6px;
+		height: 6px;
+		border-radius:6px;
+		background: @commonRed;
+		z-index: 99;
+		}
+.daogou{
+	position: fixed;
+	bottom: 60px;
+	right: 10px;
+	width: 46px;
+	height: 46px;
+	// height: 180px;
+	overflow: hidden;
+	background: #fefefe;
+	border-radius: 46px;
+	border:1px solid #efeeef;
+	.daogouImg1{
+		position: absolute;
+		left:2px;
+		bottom: 2px;
+		width: 40px;
+		height: 40px;
+		border-radius:40px;
+	}
+	.daogouImgWarp{
+		position: absolute;
+		left:2px;
+		bottom: 44px;
+		width: 40px;
+		height: 130px;
+		.daogouImg2{
+			width: 22px;
+			height: 20px;
+			margin: 0 0 0 8px;
 			float: left;
 		}
-		.clearBoth{
-			clear: both;
+		.daogouImgTxt{
+			display: inline-block;
+			width: 130%;
+			font-size: 12px;
+			margin:0 0 3px -18%;
+			text-align: center;
+			float: left;
+			color:#a3a3a3;
+			-webkit-transform:scale(0.85);
 		}
-	}
-	.redPoint{
-			position: fixed;
-			right: 10px;
-			bottom: 95px;
+		.redPointCart{
+			position: absolute;
+			right: 5px;
+			bottom: 41px;
 			width: 6px;
 			height: 6px;
 			border-radius:6px;
 			background: @commonRed;
 			z-index: 99;
-			}
-	.daogou{
-		position: fixed;
-		bottom: 60px;
-		right: 10px;
-		width: 46px;
-		height: 46px;
-		// height: 180px;
-		overflow: hidden;
-		background: #fefefe;
-		border-radius: 46px;
-		border:1px solid #efeeef;
-		.daogouImg1{
-			position: absolute;
-			left:2px;
-			bottom: 2px;
-			width: 40px;
-			height: 40px;
-			border-radius:40px;
 		}
-		.daogouImgWarp{
-			position: absolute;
-			left:2px;
-			bottom: 44px;
-			width: 40px;
-			height: 130px;
-			.daogouImg2{
-				width: 22px;
-				height: 20px;
-				margin: 0 0 0 8px;
-				float: left;
-			}
-			.daogouImgTxt{
-				display: inline-block;
-				width: 130%;
-				font-size: 12px;
-				margin:0 0 3px -18%;
-				text-align: center;
-				float: left;
-				color:#a3a3a3;
-				-webkit-transform:scale(0.85);
-			}
-			.redPointCart{
-				position: absolute;
-				right: 5px;
-				bottom: 41px;
-				width: 6px;
-				height: 6px;
-				border-radius:6px;
-				background: @commonRed;
-				z-index: 99;
-			}
-		}
-		
 	}
+	
+}
 
-	.des{
-		padding-bottom: 44px;
+.des{
+	padding-bottom: 44px;
 
-	}
-	.bottombar{
-		bottom: 0px;
-		left: 0px;
-		position: fixed;
-		width: 100%;
-		height: 50px;
-		padding:5px 0; 
-		background-color: #fff;
-		// box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.5);
-		border-top:1px solid #dbdbdb;
-		text-align: center;
-		.button{
-			width: 40%;
-			height:40px !important;
-			line-height: 40px !important;
-			margin:0 5px;
-			min-height: 40px !important;
-		}
-	}
-	.mengban{
-		display: none;
-		position:absolute;
-		z-index:9;
-		width:100%;
-		height: 100%;
-		background: #000;
-		opacity: 0.7;
-	}
-	.chooseProductInfoWarp{
-		display: none;
-		position: absolute;
-		bottom: 0px;
-		z-index: 99;
-		width: 100%;
-		// height: 500px;
-		padding-bottom: 50px;
-		background: #fcfcfc;
-		.list{
-			margin-bottom: 0;
-			.item-avatar{
-			height: 75px;
-				.productImg{
-					width: 45px;
-					height: 45px;
-					border: 1px solid #ddd;
-					border-radius:0;
-					padding:1px;
-				}
-				h2{
-					font-size: 14px;
-					color:#3a3a3a;
-				}
-				p{
-					color:#f35253;
-				}
-				.close{
-					position: absolute;
-					top:16px;
-					right: 15px;
-					width: 25px;
-					height: 25px;
-				}
-			}
-		}
-		
-		.chooses{
-			margin-left:10px;
-			padding:10px 10px 10px 0px;
-			width: 100%;
-			border-bottom: 1px solid #ddd;
-			.chsTitle{
-				display: block;
-				margin:5px 0px;
-				color:#3a3a3a;
-				font-size: 13px;
-			}
-			.chsBtn{
-				display: inline-block;
-				padding:5px 10px 7px;
-				border:1px solid #ddd;
-				border-radius: 4px;
-				margin:5px 5px 5px 0;
-				font-size: 12px;
-				color:#a3a3a3;
-			}
-			.ichoosed{
-				color:#fff;
-				background: #f35253;
-				border:1px solid #f35253;
-			}
-			.hideradio{
-				visibility: hidden;
-				width:0px;
-				height: 0px;
-				float: left;
-				//把上面注释取消掉
-				//就input.hideradio隐藏掉,
-				//但在页面中占了一格空位,
-				//想办法把空位也处理掉
-			}
-			.hideradio:checked+.chsBtn{
-				.ichoosed();
-			}
-			.fl{
-				float: left;
-			}
-			.addDelWrap{
-				float: right;
-				font-size: 0;
-				padding-right: 20px;
-				.suanBtn{
-					display: inline-block;
-					padding:5px 10px 7px;
-					margin:5px 0px 5px 0;
-					font-size: 14px;
-				}
-				.del{
-					border:1px solid #ddd;
-					border-right: 0px;
-					border-top-left-radius: 4px;
-					border-bottom-left-radius: 4px;
-					color:#a3a3a3;
-				}
-				.num{
-					border:1px solid #ddd;
-					color:#3a3a3a;
-					width: 34px;
-  					text-align: center;
-					padding:5px 0 8px 0;
-					margin:5px 0px 5px 0;
-				}
-				.add{
-					border:1px solid #ddd;
-					border-left: 0px;
-					border-top-right-radius: 4px;
-					border-bottom-right-radius: 4px;
-					color: #f35253;
-				}
-
-			}
-			.clearBoth{
-				clear: both;
-			}
-		}
-		.nextStep{
-			position: absolute;
-			bottom: 0;
-			width: 100%;
-			height: 50px;
-			line-height: 50px;
-			text-align: center;
-			color:#fff;
-			font-size: 20px;
-			background: #f35253;
-		}
-		
+}
+.bottombar{
+	bottom: 0px;
+	left: 0px;
+	position: fixed;
+	width: 100%;
+	height: 50px;
+	padding:5px 0; 
+	background-color: #fff;
+	// box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.5);
+	border-top:1px solid #dbdbdb;
+	text-align: center;
+	.button{
+		width: 40%;
+		height:40px !important;
+		line-height: 40px !important;
+		margin:0 5px;
+		min-height: 40px !important;
 	}
 }
+.mengban{
+	display: none;
+	position:absolute;
+	z-index:9;
+	width:100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.7;
+}
+.chooseProductInfoWarp{
+	display: none;
+	position: absolute;
+	bottom: 0px;
+	z-index: 99;
+	width: 100%;
+	// height: 500px;
+	padding-bottom: 50px;
+	background: #fcfcfc;
+	.list{
+		margin-bottom: 0;
+		.item-avatar{
+		height: 75px;
+			.productImg{
+				width: 45px;
+				height: 45px;
+				border: 1px solid #ddd;
+				border-radius:0;
+				padding:1px;
+			}
+			h2{
+				font-size: 14px;
+				color:#3a3a3a;
+			}
+			p{
+				color:#f35253;
+			}
+			.close{
+				position: absolute;
+				top:16px;
+				right: 15px;
+				width: 25px;
+				height: 25px;
+			}
+		}
+	}
+	
+	.chooses{
+		margin-left:10px;
+		padding:10px 10px 10px 0px;
+		width: 100%;
+		border-bottom: 1px solid #ddd;
+		.chsTitle{
+			display: block;
+			margin:5px 0px;
+			color:#3a3a3a;
+			font-size: 13px;
+		}
+		.chsBtn{
+			display: inline-block;
+			padding:5px 10px 7px;
+			border:1px solid #ddd;
+			border-radius: 4px;
+			margin:5px 5px 5px 0;
+			font-size: 12px;
+			color:#a3a3a3;
+		}
+		.ichoosed{
+			color:#fff;
+			background: #f35253;
+			border:1px solid #f35253;
+		}
+		.hideradio{
+			visibility: hidden;
+			width:0px;
+			height: 0px;
+			float: left;
+			//把上面注释取消掉
+			//就input.hideradio隐藏掉,
+			//但在页面中占了一格空位,
+			//想办法把空位也处理掉
+		}
+		.hideradio:checked+.chsBtn{
+			.ichoosed();
+		}
+		.fl{
+			float: left;
+		}
+		.addDelWrap{
+			float: right;
+			font-size: 0;
+			padding-right: 20px;
+			.suanBtn{
+				display: inline-block;
+				padding:5px 10px 7px;
+				margin:5px 0px 5px 0;
+				font-size: 14px;
+			}
+			.del{
+				border:1px solid #ddd;
+				border-right: 0px;
+				border-top-left-radius: 4px;
+				border-bottom-left-radius: 4px;
+				color:#a3a3a3;
+			}
+			.num{
+				border:1px solid #ddd;
+				color:#3a3a3a;
+				width: 34px;
+					text-align: center;
+				padding:5px 0 8px 0;
+				margin:5px 0px 5px 0;
+			}
+			.add{
+				border:1px solid #ddd;
+				border-left: 0px;
+				border-top-right-radius: 4px;
+				border-bottom-right-radius: 4px;
+				color: #f35253;
+			}
+
+		}
+		.clearBoth{
+			clear: both;
+		}
+	}
+	.nextStep{
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		color:#fff;
+		font-size: 20px;
+		background: #f35253;
+	}
+	
+}
+
 .font12{
 	font-size: 12px;
 }
