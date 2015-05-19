@@ -42,8 +42,14 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state', function($scope,
 		$scope.productData[index].num++;
 	}
 
-    $scope.choose = false;
-    $log.debug(['choooose',$scope.choose]);
-
+   
+    $scope.changeCheck = function(index){
+ 		if($(".selected-img").hasClass("bg")){
+ 			$(".selected-img").eq(index).removeClass("bg");
+ 		}else{
+ 			$(".selected-img").eq(index).addClass("bg");
+ 		}
+ 		
+    }
 
 }]);
