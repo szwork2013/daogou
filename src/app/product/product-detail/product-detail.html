@@ -42,11 +42,11 @@
 	<div class="daogou">
 		<img class="daogouImg1" src="assets/images/daogou1.png" ng-click="showmenu()">
 		<div class="daogouImgWarp">
-			<img class="daogouImg2" src="assets/images/daogou2.png">
+			<div class="iconfont icon-wo daogouImg2"></div>
 			<span class="daogouImgTxt">个人中心</span>
-			<img class="daogouImg2" src="assets/images/daogou3.png">
+			<div class="iconfont icon-dianpu daogouImg2"></div>
 			<span class="daogouImgTxt">导购橱窗</span>
-			<img class="daogouImg2" src="assets/images/daogou4.png" ui-sref="cart">
+			<div class="iconfont icon-gouwuche daogouImg2" ui-sref="cart"></div>
 			<span class="daogouImgTxt" ui-sref="cart">购物车</span>
 			<div class="redPointCart"></div>
 		</div>
@@ -71,7 +71,7 @@
 			      <img class="productImg" src="assets/images/pic1.png">
 			      <h2>新款撞色连衣裙</h2>
 			      <p>¥ 241.00</p>
-			      <img class="close" src="assets/images/close.png" ng-click="propertyClose()">
+			      <div class="iconfont icon-guanbi close" ng-click="propertyClose()"></div>
 		    </div>
 		</div>
 
@@ -111,9 +111,13 @@
 				<span class="chsTitle fl">数量</span>
 				<div class="addDelWrap">
 					<span class="font12">剩余：</span><span class="font12">1822&nbsp;&nbsp;</span>
-					<span class="suanBtn del" ng-click="delNum(productDetailData.quantity)">-</span>
+					<span class="suanBtn del" ng-click="delNum(productDetailData.quantity)">
+						<i class="iconfont icon-jian"></i>
+					</span>
 					<input class="suanBtn num" value="{{productDetailData.quantity}}"/>
-					<span class="suanBtn add" ng-click="addNum(productDetailData.quantity)">+</span>
+					<span class="suanBtn add" ng-click="addNum(productDetailData.quantity)">
+						<i class="iconfont icon-jia"></i>
+					</span>
 				</div>
 				<div class="clearBoth"></div>
 		</div>

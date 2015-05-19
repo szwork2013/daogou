@@ -44,10 +44,15 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state', function($scope,
 
    
     $scope.changeCheck = function(index){
- 		if($(".selected-img").hasClass("bg")){
- 			$(".selected-img").eq(index).removeClass("bg");
+    	console.log(["indexindexindex",index])
+ 		if($(".selected-img").eq(index).hasClass("graygou")){
+ 			console.log("biangreen")
+ 			$(".selected-img").eq(index).removeClass("graygou");
+ 			$(".selected-img").eq(index).addClass("greengou");
  		}else{
- 			$(".selected-img").eq(index).addClass("bg");
+ 			console.log("biangray")
+ 			$(".selected-img").eq(index).removeClass("greengou");
+ 			$(".selected-img").eq(index).addClass("graygou");
  		}
  		
     }
