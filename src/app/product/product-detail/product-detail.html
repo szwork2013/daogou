@@ -1,15 +1,9 @@
 <ion-view view-title="宝贝详情" class="product-detail">
 	<ion-content>
 
-		<ion-slide-box on-slide-changed="slideHasChanged($index)" class="sliderbox">
-			<ion-slide>
-		    	<img class="sliderpic" src="assets/images/pic1.png">
-			</ion-slide>
-			<ion-slide>
-		    	<img class="sliderpic" src="assets/images/pic1.png">
-			</ion-slide>
-			<ion-slide>
-		    	<img class="sliderpic" src="assets/images/pic1.png">
+		<ion-slide-box on-slide-changed="slideHasChanged($index)" class="sliderbox" >
+			<ion-slide ng-repeat="picurl in productDetailData.picUrlArr">
+		    	<img class="sliderpic" ng-src="{{picurl}}">
 			</ion-slide>
 		</ion-slide-box>
 
@@ -32,10 +26,11 @@
 			</div>
 		</div>
 	    <div class="productPicWrap">
+	    	<!-- <img class="productPic" src="assets/images/pic1.png">
 	    	<img class="productPic" src="assets/images/pic1.png">
 	    	<img class="productPic" src="assets/images/pic1.png">
-	    	<img class="productPic" src="assets/images/pic1.png">
-	    	<div class="clearBoth"></div>
+	    	<div class="clearBoth"></div> -->
+	    	{{productDetailData.content}}
 	    </div>
 	</ion-content>
 	<div class="redPoint"></div>

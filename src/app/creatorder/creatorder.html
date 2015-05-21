@@ -38,6 +38,25 @@
           <textarea class="remark" placeholder="订单备注"></textarea>
       </div>
 
+      <div class="pay-way disnone">
+          <div class="total-cost backfff border-tp">
+            请验证您的手机
+          </div>
+          <div class="statusWrap">
+              <div class="way-item">
+                   <input class="inputclass" placeholder="请输入手机号码"/>
+              </div>
+              <div class="way-item posRelative">
+                   <input class="inputclass" placeholder="验证码"/>
+                   <div class="yanzhengma">获取验证码</div>
+              </div>
+          </div>
+          <div class="commonBtn backred">确认</div>
+      </div>
+
+
+
+
        <div class="statusWrap">
           <span class="pickupway">取货方式</span>
           <div>
@@ -45,7 +64,13 @@
               <div class="pickupways" ng-class="{pickwayselect:shop}" ng-click="shopway()">门店自取</div>
               <div class="clearBoth"></div>
           </div>
-          <div class="addressInfo remarkpadding" ng-class="{disnone:shop}">
+          <div ng-class="{disnone:shop}">
+              <input class="input-address-info" placeholder="收货人姓名"/>
+              <input class="input-address-info" placeholder="手机号码"/>
+              <div class="input-address-info">省、市、区</div>
+              <input class="input-address-info border-bt0" placeholder="详细地址"/>
+          </div>
+          <div class="addressInfo remarkpadding disnone" ng-class="{disnone:shop}">
               <div>
                   <span class="floatL">李志伟，18094705373 </span>
                   <span class="colorBlue floatR font13" ui-sref="changeReceiveInfo">修改</span>
@@ -85,6 +110,7 @@
                 </div>
           </div>
       </div>
-      <div class="commonBtn" ui-sref="payWay">微信支付</div>
+      <div class="commonBtn disnone" ui-sref="payWay">微信支付</div>
+      <div class="commonBtn backred">确认</div>
     </ion-content>
 </ion-view>

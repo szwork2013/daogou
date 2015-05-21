@@ -1,0 +1,30 @@
+
+<ion-view view-title="我的订单">
+    <ion-content class="createorder-content">
+      <div class="statusWrap">
+          <ul class="list marginbt0">
+              <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                 <label class="checkbox disnone">
+                   <input type="checkbox" ng-model="choose">
+                 </label>
+                <img src="assets/images/pic1.png" class="product-img">
+                <div class="paramenters">
+                    <div class="name">{{item.title}}</div>
+                    <div class="paras">{{item.sku_properties_name}}</div>
+                </div>
+                <span class="price">￥{{item.price}}</span>
+                <div class="countNum">X1
+                </div>
+              </li>
+          </ul>
+          <div class="perAccount">
+            <div class="account"><span class="heji">商品总价：</span></div>
+            <div class="time">￥23333.00</div>
+            <div class="clearBoth"></div>
+          </div>
+      </div>
+
+
+
+    </ion-content>
+</ion-view>
