@@ -1,28 +1,29 @@
 
-<ion-view view-title="我的订单">
-    <ion-content class="createorder-content">
-      <div class="statusWrap">
-          <ul class="list marginbt0">
-              <li class="item item-checkbox product-item" ng-repeat="item in productData">
-                 <label class="checkbox disnone">
-                   <input type="checkbox" ng-model="choose">
-                 </label>
-                <img src="assets/images/pic1.png" class="product-img">
-                <div class="paramenters">
-                    <div class="name">{{item.title}}</div>
-                    <div class="paras">{{item.sku_properties_name}}</div>
-                </div>
-                <span class="price">￥{{item.price}}</span>
-                <div class="countNum">X1
-                </div>
-              </li>
-          </ul>
-          <div class="perAccount">
-            <div class="account"><span class="heji">商品总价：</span></div>
-            <div class="time">￥23333.00</div>
-            <div class="clearBoth"></div>
-          </div>
-      </div>
+<ion-view view-title="小蕙格子铺">
+    <ion-content>
+    <div class="guidebg">
+      <img src="assets/images/daogou1.png" class="guidelogo">
+      <span class="guidename">牛蕙</span>
+      <span class="chatname">微信号：牛小蕙</span>
+      <span class="myorders">我的订单</span>
+      <span class="shopname">Lily商务时装 | 中山公园龙之梦店</span>
+    </div>
+        <div class="statusWrap">
+            <ul class="list marginbt0">
+                <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                   <label class="checkbox disnone">
+                     <input type="checkbox" ng-model="choose">
+                   </label>
+                  <img src="assets/images/pic1.png" class="product-img">
+                  <div class="paramenters-daogou">
+                      <div class="name">{{item.title}}</div>
+                      <div class="paras">￥1234.00    <s class="paras2">￥5555.0</s></div>
+                  </div>
+                  
+                 <i class="iconfont icon-jiantouleft daogou-arrow rotate180"></i>
+                </li>
+            </ul>
+        </div>
 
 
 

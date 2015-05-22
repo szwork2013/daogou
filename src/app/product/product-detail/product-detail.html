@@ -70,36 +70,12 @@
 		    </div>
 		</div>
 
-		<div class="chooses">
-
-				<span class="chsTitle">尺码</span>
-
-
-				<input class="hideradio" type="radio" id="radio1_1" name="size" value="S 预定5-7天">
-				<label class="chsBtn" for="radio1_1">S 预定5-7天</label>
-
-				<input class="hideradio" type="radio" id="radio1_2"  name="size" value="M 预定5-7天">
-				<label class="chsBtn" for="radio1_2">M 预定5-7天</label>
-			
-				<input class="hideradio" type="radio" id="radio1_3"  name="size" value="L 预定5-7天">
-				<label class="chsBtn" for="radio1_3">L 预定5-7天</label>
-
-				<input class="hideradio" type="radio" id="radio1_4"  name="size" value="XL 预定5-7天">
-				<label class="chsBtn" for="radio1_4">XL 预定5-7天</label>
-
-				<input class="hideradio" type="radio" id="radio1_5"  name="size" value="XXL 预定5-7天">
-				<label class="chsBtn" for="radio1_5">XXL 预定5-7天</label>
-
-				<input class="hideradio" type="radio" id="radio1_6"  name="size" value="XXXL 预定5-7天">
-				<label class="chsBtn" for="radio1_6">XXXL 预定5-7天</label>
-		</div>
-
-		<div class="chooses">
-				<span class="chsTitle">颜色分类</span>
-				<input class="hideradio" type="radio" id="radio1_7" name="color" value="红色">
-				<label class="chsBtn" for="radio1_7">红色</label>
-				<input class="hideradio" type="radio" id="radio1_8" name="color" value="黑色">
-				<label class="chsBtn" for="radio1_8">黑色</label>
+		<div class="chooses choosesnum" ng-repeat="item in productDetailData.specification">
+				<span class="chsTitle">{{item.key}}</span>
+				<span ng-repeat="para in item.array">
+					<input class="hideradio" type="radio" id="{{item.key}}{{$index}}" name="{{item.key}}" value="{{para}}">
+					<label class="chsBtn" for="{{item.key}}{{$index}}">{{para}}</label>
+				</span>
 		</div>
 
 		<div class="chooses">

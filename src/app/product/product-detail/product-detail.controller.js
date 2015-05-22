@@ -49,12 +49,30 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 		$log.debug(n)
 		n++;
 		$scope.productDetailData.quantity = n;
+		
 	}
 
+	// function apiproductDetail(id){
+
+	// 	api("items",id);
+
+	// 	this.success=function function_name (callback) {
+	// 		callback(data);
+	// 	}
+
+	// }
 
 
-	$http.get("http://yunwan2.3322.org:57093/items/100030")
-	// $http.get("assets/testdata/pd.json?callback=JSON_CALLBACK")
+	// apiproductDetail(id)
+	// .success(function(){
+
+	// })
+	// error(function(){
+
+	// })
+
+	// $http.get("http://yunwan2.3322.org:57093/items/100030")
+	$http.get("assets/testdata/product-detail.json")
 
 	.success(function(data){
 		console.log(['success',data]);
@@ -71,21 +89,46 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 			$scope.productDetailData.specification = [];
 			for(var idx in propertyArr){
 				$scope.productDetailData.specification[idx] = {};
-				$scope.productDetailData.specification[idx].key = "";
+				$scope.productDetailData.specification[idx].key = "";//idx参数个数，//.key每个参数名//.val每个参数值
 				$scope.productDetailData.specification[idx].val = "";
 		}
 		
 		for(var id in $scope.productDetailData.skus){//sku个数
+			var flag = true;
 			var propertyArr = $scope.productDetailData.skus[id].properties.split(';');//propertyArr.length参数种类
 			for(var tz in propertyArr){
-				var paraArr = propertyArr[tz].split(':');
-				$scope.productDetailData.specification[tz].key = paraArr[paraArr.length-2];
-				$scope.productDetailData.specification[tz].val += paraArr[paraArr.length-1]+" ";
+				var paraArr = propertyArr[tz].split(':');//取参数名和参数值
+				var iarray = $scope.productDetailData.specification[tz].val.split(" ");
+				var ilength=iarray.length-1;
+				for(var i=0; i<ilength;i++){
+					console.log(["1111111111111111111",iarray[i]]);
+					console.log(["2222222222222222222",paraArr[paraArr.length-1]]);
+					if(iarray[i] === paraArr[paraArr.length-1]){
+                         flag = false;
+					}
+					console.log(["3333333333333333333", flag]);
+				}
+				if(flag){
+					$scope.productDetailData.specification[tz].val += paraArr[paraArr.length-1]+" ";//规格值
+					$log.debug(['$scope.productDetailData.specification',$scope.productDetailData.specification]);
+				}else{
+					flag = true;
+				}
+			
+				$scope.productDetailData.specification[tz].array = $scope.productDetailData.specification[tz].val.split(" ");
+				$scope.productDetailData.specification[tz].array.splice($scope.productDetailData.specification[tz].array.length-1,1);
+				console.log(["44444444444444444",$scope.productDetailData.specification[tz].val]);
+				console.log(["55555555555555555",$scope.productDetailData.specification[tz].array]);
+				$scope.productDetailData.specification[tz].key = paraArr[paraArr.length-2];//规格名
+				
 			}
 		}
 	})
 	.error(function(data){
 		console.log(['error',data]);
-	})
+	});
+
+
+
 }])
 ;

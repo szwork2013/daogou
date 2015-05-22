@@ -1,41 +1,82 @@
- {
+{
+    "num_iid": 100030,
     "brand_id": 1,
-    "num_iid": 100010,
     "c_id": 1002,
     "group_id": 3,
     "outer_id": "100212",
-    "skus": 
-      [
-         {
-              "skuid": 1,
-              "properties": "p1:v1:尺码:XS;p2:v2:颜色:红色",
-              "price": 10.8,
-              "quantity": 10,
-              "retain_quantity": 2,
-              "outer_id": "11021",
-              "created": "2015-04-09T11:00:50+0800",
-              "modified": "2015-04-09T11:00:50+0800"
-          },
-          {
-              "skuid": 2,
-              "properties": "p1:v1:尺码:XS;p4:v4:颜色:黑色",
-              "price": 10.8,
-              "quantity": 16,
-              "retain_quantity": 2,
-              "outer_id": "11022",
-              "created": "2015-04-09T11:00:50+0800",
-              "modified": "2015-04-09T11:00:50+0800"
-          }
-      ],
     "quantity_display": 0,
     "title": "新款游动男装",
     "price": 10.3,
+    "quote_price": 10.3,
     "num": 300,
-    "pic_url": "http://XXXX.jpg",
+    "sold_num": 0,
+    "pic_url": "http://brand-guide.b0.upaiyun.com/file-upload/1431672921337_502001.jpg,http://brand-guide.b0.upaiyun.com/file-upload/1431672864593_436020.jpg,http://brand-guide.b0.upaiyun.com/file-upload/1431672397675_151541.jpg",
     "is_listing": 1,
     "freight_terms": "seller",
-    "freight": 8.00,
-    "quantity":2,
-    "auto_listing_time": "",
-    "content": "<body>XXXXXXXXXX</body>"
+    "freight": 8,
+    "content": "<body>XXXXXXXXXX</body>",
+    "is_delete": 0,
+    "create_at": "2015-05-19T10:11:12+0800",
+    "skus": [
+        {
+        "sku_id": 100002,
+        "item_id": 100030,
+        "properties": "p1:v1:尺码:XS;p2:v2:颜色:红色",
+        "price": 10.8,
+        "real_quantity": 8,
+        "quantity": 10,
+        "retain_quantity": 2,
+        "outer_id": "11021",
+        "is_delete": 0,
+        "created_at": "2015-05-19T10:11:12+0800"
+        },
+        {
+        "sku_id": 100003,
+        "item_id": 100030,
+        "properties": "p1:v1:尺码:XS;p4:v4:颜色:黑色",
+        "price": 20.8,
+        "real_quantity": 14,
+        "quantity": 16,
+        "retain_quantity": 2,
+        "outer_id": "11022",
+        "is_delete": 0,
+        "created_at": "2015-05-19T10:11:12+0800"
+        },
+        {
+        "sku_id": 100004,
+        "item_id": 100030,
+        "properties": "p2:v2:尺码:M;p5:v5:颜色:白色",
+        "price": 30.8,
+        "real_quantity": 14,
+        "quantity": 16,
+        "retain_quantity": 2,
+        "outer_id": "11022",
+        "is_delete": 0,
+        "created_at": "2015-05-19T10:11:12+0800"
+        },
+        {
+        "sku_id": 100004,
+        "item_id": 100030,
+        "properties": "p2:v2:尺码:M;p2:v2:颜色:红色",
+        "price": 30.8,
+        "real_quantity": 14,
+        "quantity": 16,
+        "retain_quantity": 2,
+        "outer_id": "11022",
+        "is_delete": 0,
+        "created_at": "2015-05-19T10:11:12+0800"
+        },
+        {
+        "sku_id": 100004,
+        "item_id": 100030,
+        "properties": "p3:v3:尺码:L;p2:v2:颜色:红色",
+        "price": 30.8,
+        "real_quantity": 14,
+        "quantity": 16,
+        "retain_quantity": 2,
+        "outer_id": "11022",
+        "is_delete": 0,
+        "created_at": "2015-05-19T10:11:12+0800"
+        }
+    ]
 }
