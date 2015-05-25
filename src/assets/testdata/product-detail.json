@@ -47,7 +47,7 @@
         "item_id": 100030,
         "properties": "p2:v2:尺码:M;p5:v5:颜色:白色",
         "price": 30.8,
-        "real_quantity": 14,
+        "real_quantity": 0,
         "quantity": 16,
         "retain_quantity": 2,
         "outer_id": "11022",

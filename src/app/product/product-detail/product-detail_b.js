@@ -1,4 +1,4 @@
-'use strict';
+/*'use strict';
 
 var product = angular.module('product',['ionic']);
 product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,$log,$http){
@@ -15,31 +15,26 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 
 		$scope.productDetailData.content = $scope.productDetailData.content.substring(6,$scope.productDetailData.content.length-7);//content中间内容获取
 
-		$log.debug(['$scope.productDetailData',$scope.productDetailData.skus]);
-		
 		var propertyArr = $scope.productDetailData.skus[0].properties.split(';');//propertyArr.length规格种类
-			$scope.productDetailData.specification = [];//$scope上添加的存放规格种类以及内容的数组。
-			for(var idx in propertyArr){
-				$scope.productDetailData.specification[idx] = {};
-				$scope.productDetailData.specification[idx].key = "";//idx规格种类个数，//.key每个规格名//.val每个规格的值
-				$scope.productDetailData.specification[idx].val = "";
+		$scope.productDetailData.specification = [];//$scope上添加的存放规格种类以及内容的数组。
+		for(var idx in propertyArr){
+			$scope.productDetailData.specification[idx] = {};
+			$scope.productDetailData.specification[idx].key = "";//idx规格种类个数，//.key每个规格名//.val每个规格的值
+			$scope.productDetailData.specification[idx].val = "";
 		}
 		
 		for(var id in $scope.productDetailData.skus){//sku个数
 			var flag = true;
-			var propertyArr = $scope.productDetailData.skus[id].properties.split(';');//propertyArr.length参数种类
+			// var propertyArr = $scope.productDetailData.skus[id].properties.split(';');//propertyArr.length参数种类
 			$scope.productDetailData.realquantity += $scope.productDetailData.skus[id].real_quantity;//累加所有商品数量
 			for(var tz in propertyArr){//一个规格种类一个规格种类来
 				var paraArr = propertyArr[tz].split(':');//取每个规格的规格名和规格值
 				var iarray = $scope.productDetailData.specification[tz].val.split(" ");
 				var ilength=iarray.length-1;
 				for(var i=0; i<ilength;i++){//检测新加入的规格值是否已经存在，如果存在则不加入，避免重复
-					console.log(["1111111111111111111",iarray[i]]);
-					console.log(["2222222222222222222",paraArr[paraArr.length-1]]);
 					if(iarray[i] === paraArr[paraArr.length-1]){//paraArr[paraArr.length-1]要加入的参数，
                          flag = false;
 					}
-					console.log(["3333333333333333333", flag]);
 				}
 				if(flag){
 					$scope.productDetailData.specification[tz].val += paraArr[paraArr.length-1]+" ";//规格值
@@ -50,8 +45,7 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 			
 				$scope.productDetailData.specification[tz].array = $scope.productDetailData.specification[tz].val.split(" ");
 				$scope.productDetailData.specification[tz].array.splice($scope.productDetailData.specification[tz].array.length-1,1);
-				console.log(["44444444444444444",$scope.productDetailData.specification[tz].val]);
-				console.log(["55555555555555555",$scope.productDetailData.specification[tz].array]);
+				
 				$scope.productDetailData.specification[tz].key = paraArr[paraArr.length-2];//规格名
 				
 			}
@@ -77,32 +71,29 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 	$scope.propertyShow =function(){
 		$(".mengban").show();
 		$(".chooseProductInfoWarp").show();
-		for(var ii in $scope.productDetailData.specification){
-			console.log($scope.productDetailData.specification[ii].array);
-			for(var cc in $scope.productDetailData.specification[ii].array){
-				var total = 0;
-				console.log($scope.productDetailData.specification[ii].array[cc]);
+		for(var aa in $scope.productDetailData.specification){
+			console.log($scope.productDetailData.specification[aa].array);
+			for(var cc in $scope.productDetailData.specification[aa].array){
+					var total = 0;
+					console.log($scope.productDetailData.specification[aa].array[cc]);
 
-				for(var dd in $scope.productDetailData.skus){
-					if($scope.productDetailData.skus[dd].properties.indexOf($scope.productDetailData.specification[ii].array[cc])>0){
-						//检测商品每个skus 是否包含 规格值，如果包含查其库存，库存总量为0 则不可选
-						console.log("real_quantity:"+$scope.productDetailData.skus[dd].real_quantity);
-						total += parseInt($scope.productDetailData.skus[dd].real_quantity);
-						console.log("total:"+total);
+					for(var dd in $scope.productDetailData.skus){
+						if($scope.productDetailData.skus[dd].properties.indexOf($scope.productDetailData.specification[aa].array[cc])>0){
+							//检测商品每个skus 是否包含 规格值，如果包含查其库存，库存总量为0 则不可选
+							console.log("real_quantity:"+$scope.productDetailData.skus[dd].real_quantity);
+							total += parseInt($scope.productDetailData.skus[dd].real_quantity);
+							console.log("total:"+total);
+						}
 					}
-				}
 
-				if(total === 0){
+					if(total === 0){
 						$("input").each(function(){
-							if($(this).val()===$scope.productDetailData.specification[ii].array[cc]){
-								console.log("youyouyou");
-								console.log("$(this).val():"+$(this).val());
-								console.log($scope.productDetailData.specification[ii].array[cc]);
+							if($(this).val()===$scope.productDetailData.specification[aa].array[cc]){
 								$(this).attr({"disabled":"disabled"});
 								$(this).next().addClass("invalid");
 							}
 						})
-				}
+					}
 
 			}   
 		}
@@ -134,7 +125,6 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 	}
 //选择产品规格，显示是否有剩余
     $scope.checkSku = function(name,index){//name传递过来input的规格如 M L, index传递过来的规格项目名称 如尺码 颜色
-    	// console.log($("input[name="+name+"]:checked").val());
     	console.log("name:"+name);
     	console.log("index:"+index);
     	for(var bb in $scope.productDetailData.specification){
@@ -149,7 +139,7 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 		    						$("input[name="+key+"]").next().removeClass("invalid");
 		    					for(var dd in $scope.productDetailData.specification[cc].array){
 		    						var total = 0;
-		    						for(var ee in $scope.productDetailData.skus){//如果该sku里含有传递过来的name且含有其他参数值，查询器剩余数量？？？这儿好像有问题
+		    						for(var ee in $scope.productDetailData.skus){
 		    							if(($scope.productDetailData.skus[ee].properties.indexOf(name)>0)&&$scope.productDetailData.skus[ee].properties.indexOf($scope.productDetailData.specification[cc].array[dd])>0){
 		    								total +=parseInt($scope.productDetailData.skus[ee].real_quantity);
 		    							}
@@ -236,4 +226,4 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 
 
 }])
-;
+;*/

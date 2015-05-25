@@ -73,7 +73,7 @@
 		<div class="chooses choosesnum" ng-repeat="item in productDetailData.specification">
 				<span class="chsTitle">{{item.key}}</span>
 				<span ng-repeat="para in item.array">
-					<input class="hideradio" type="radio" id="{{item.key}}{{$index}}" name="{{item.key}}" value="{{para}}">
+					<input class="hideradio" type="radio" id="{{item.key}}{{$index}}" name="{{item.key}}" value="{{para}}" ng-click="checkSku(para,item.key)">
 					<label class="chsBtn" for="{{item.key}}{{$index}}">{{para}}</label>
 				</span>
 		</div>
@@ -81,12 +81,12 @@
 		<div class="chooses">
 				<span class="chsTitle fl">数量</span>
 				<div class="addDelWrap">
-					<span class="font12">剩余：</span><span class="font12">1822&nbsp;&nbsp;</span>
-					<span class="suanBtn del" ng-click="delNum(productDetailData.quantity)">
+					<span class="font12">剩余：</span><span class="font12">{{productDetailData.realquantity}}&nbsp;&nbsp;</span>
+					<span class="suanBtn del" ng-click="delNum(productDetailData.buynum)">
 						<i class="iconfont icon-jian"></i>
 					</span>
-					<input class="suanBtn num" value="{{productDetailData.quantity}}"/>
-					<span class="suanBtn add" ng-click="addNum(productDetailData.quantity)">
+					<input class="suanBtn num" value="{{productDetailData.buynum}}"/>
+					<span class="suanBtn add" ng-click="addNum(productDetailData.buynum)">
 						<i class="iconfont icon-jia"></i>
 					</span>
 				</div>
