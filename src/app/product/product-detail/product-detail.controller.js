@@ -2,8 +2,8 @@
 
 var product = angular.module('product',['ionic']);
 product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,$log,$http){
-	// $http.get("http://yunwan2.3322.org:57093/items/100030")
-	$http.get("assets/testdata/product-detail.json")
+	$http.get("http://yunwan2.3322.org:57093/items/100030")
+	// $http.get("assets/testdata/product-detail.json")
 
 	.success(function(data){
 		console.log(['success',data]);
@@ -34,12 +34,9 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 				var iarray = $scope.productDetailData.specification[tz].val.split(" ");
 				var ilength=iarray.length-1;
 				for(var i=0; i<ilength;i++){//检测新加入的规格值是否已经存在，如果存在则不加入，避免重复
-					console.log(["1111111111111111111",iarray[i]]);
-					console.log(["2222222222222222222",paraArr[paraArr.length-1]]);
 					if(iarray[i] === paraArr[paraArr.length-1]){//paraArr[paraArr.length-1]要加入的参数，
                          flag = false;
 					}
-					console.log(["3333333333333333333", flag]);
 				}
 				if(flag){
 					$scope.productDetailData.specification[tz].val += paraArr[paraArr.length-1]+" ";//规格值
@@ -50,8 +47,6 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 			
 				$scope.productDetailData.specification[tz].array = $scope.productDetailData.specification[tz].val.split(" ");
 				$scope.productDetailData.specification[tz].array.splice($scope.productDetailData.specification[tz].array.length-1,1);
-				console.log(["44444444444444444",$scope.productDetailData.specification[tz].val]);
-				console.log(["55555555555555555",$scope.productDetailData.specification[tz].array]);
 				$scope.productDetailData.specification[tz].key = paraArr[paraArr.length-2];//规格名
 				
 			}
@@ -149,9 +144,9 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 		    						$("input[name="+key+"]").next().removeClass("invalid");
 		    					for(var dd in $scope.productDetailData.specification[cc].array){
 		    						var total = 0;
-		    						for(var ee in $scope.productDetailData.skus){//如果该sku里含有传递过来的name且含有其他参数值，查询器剩余数量？？？这儿好像有问题
-		    							if(($scope.productDetailData.skus[ee].properties.indexOf(name)>0)&&$scope.productDetailData.skus[ee].properties.indexOf($scope.productDetailData.specification[cc].array[dd])>0){
-		    								total +=parseInt($scope.productDetailData.skus[ee].real_quantity);
+		    						for(var ee in $scope.productDetailData.skus){//如果该sku里含有传递过来的name且含有其他参数值，查询器剩余数量？？？这儿好像有问题,暂时不支持3种规格，前面有选中的呢
+		    							if(($scope.productDetailData.skus[ee].properties.indexOf(name)>0)&&($scope.productDetailData.skus[ee].properties.indexOf($scope.productDetailData.specification[cc].array[dd])>0)){
+		    								total += parseInt($scope.productDetailData.skus[ee].real_quantity);
 		    							}
 		    						}
 
@@ -162,7 +157,7 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
 		    										console.log("$(this).val():"+$(this).val());
 		    										console.log($scope.productDetailData.specification[cc].array[dd]);
 		    										$(this).attr({"disabled":"disabled"});
-		    										$(this).next().addClass("invalid");
+		    										$(this).next().removeClass("ichoosed").addClass("invalid");
 		    									}
 		    								})
 		    						}
@@ -173,7 +168,7 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
     			
     		}
 
-            var remain = true;
+            var remain = true;//所有的都选中，在sku.properties中找到和所选中条件相同的,特出现存量
             var strInput = "";
     		for(var nn in $scope.productDetailData.specification){
     			console.log("numnum"+$("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val());
@@ -203,34 +198,9 @@ product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,
     		}
     	}
 
-    	// for(var ii in $scope.productDetailData.skus){
-    	// 	if($scope.productDetailData.skus[ii].properties.indexOf(name)>0){
-    	// 		// if()
-    	// 		;
-    	// 	}
-    	// }
-
 
     }
-	// function apiproductDetail(id){
-
-	// 	api("items",id);
-
-	// 	this.success=function function_name (callback) {
-	// 		callback(data);
-	// 	}
-
-	// }
-
-
-	// apiproductDetail(id)
-	// .success(function(){
-
-	// })
-	// error(function(){
-
-	// })
-
+	
 	
 
 

@@ -38,26 +38,26 @@
           <textarea class="remark" placeholder="订单备注"></textarea>
       </div>
 
-      <div class="pay-way disnone">
+      <div class="pay-way">
           <div class="total-cost backfff border-tp">
             请验证您的手机
           </div>
           <div class="statusWrap">
               <div class="way-item">
-                   <input class="inputclass" placeholder="请输入手机号码"/>
+                   <input class="inputclass" placeholder="请输入手机号码" ng-model="productData.telenum"/>
               </div>
               <div class="way-item posRelative">
                    <input class="inputclass" placeholder="验证码"/>
-                   <div class="yanzhengma">获取验证码</div>
+                   <div class="yanzhengma" ng-click="verify()">获取验证码</div>
               </div>
           </div>
-          <div class="commonBtn backred">确认</div>
+          <div class="commonBtn backred" ng-click="submit1()">确认1</div>
       </div>
 
 
 
 
-       <div class="statusWrap">
+       <div class="statusWrap disnone">
           <span class="pickupway">取货方式</span>
           <div>
               <div class="pickupways" ng-class="{pickwayselect:post}" ng-click="postway()">快递到家</div>
