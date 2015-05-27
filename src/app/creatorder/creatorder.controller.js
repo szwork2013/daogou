@@ -30,24 +30,36 @@ angular.module('createOrder',['ionic'])
 		console.log("hihihi");
 		console.log("$scope.productData.telenum:"+$scope.productData.telenum);
 		$(".yanzhengma").addClass("clickdown");
-		var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
-		$http.post("http://yunwan2.3322.org:57093/accounts/verification-code?codeType=MOBILE&account="+$scope.productData.telenum+"&template="+templatetext)
+		$http.get("http://yunwan2.3322.org:57093/users/mobiles/15026590036")
 		.success(function(data){
-			console.log(["success",data]);
+			console.log(["用户存在",data]);
 		})
-		.error(function(){
-			console.log(["error",data]);
+		.error(function(data){
+			console.log(JSON.stringify(data));//把json对象转为字符串
+			if((JSON.stringify(data).indexOf("用户不存在"))>0){
+				console.log("用户不存在");
+			}else{
+				console.log("其它问题......");
+			}
 		})
+		// var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
+		// $http.post("http://yunwan2.3322.org:57093/accounts/verification-code?codeType=MOBILE&account="+$scope.productData.telenum+"&template="+templatetext)
+		// .success(function(data){
+		// 	console.log(["success",data]);
+		// })
+		// .error(function(){
+		// 	console.log(["error",data]);
+		// })
 	}
 
 
 
 	$scope.submit1=function(){
-		$http.jsonp("http://yunwan2.3322.org:57093/login?username=15026590036&password=706425")
+		$http.post("http://yunwan2.3322.org:57093/login?username=15026590036&password=744758")
 		.success(function(data){
 			console.log(["aaa",data]);
 		})
-		.error(function(){
+		.error(function(data){
 			console.log(["aaa",data]);
 		})
 	}
