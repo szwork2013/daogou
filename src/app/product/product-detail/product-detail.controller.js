@@ -1,8 +1,10 @@
 'use strict';
 
 var product = angular.module('product',['ionic']);
-product.controller('productDetailCtrl',['$scope','$log','$http',function($scope,$log,$http){
-	$http.get("http://yunwan2.3322.org:57093/items/100030")
+product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','URLPort',function($rootScope,$scope,$log,$http,URLPort){
+	// $rootScope.URLPort = "http://yunwan2.3322.org:57095";
+	var URLPort = URLPort();
+	$http.get(URLPort+"/items/100030")
 	// $http.get("assets/testdata/product-detail.json")
 
 	.success(function(data){

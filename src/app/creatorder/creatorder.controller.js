@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('createOrder',['ionic'])
-.controller('creatorderCtrl',['$scope','$log','$http',function($scope,$log,$http){
+.controller('creatorderCtrl',['$scope','$log','$http','URLPort',function($scope,$log,$http,URLPort){
 	$log.debug('creatorderCtrl');
 	$http.get('assets/testdata/cart.json')
 	.success(function(data){
@@ -9,6 +9,7 @@ angular.module('createOrder',['ionic'])
 		$scope.productData = data;
 		//发送验证码
 	    $scope.productData.telenum= "";
+	    $scope.productData.verificationCode= "";
 	})
 	.error(function(data){
 		$log.debug(["error data",data]);
@@ -24,44 +25,160 @@ angular.module('createOrder',['ionic'])
 		$scope.shop = true;
 	}
 
+var URLPort = URLPort();
+//验证当前输入用户名是否存在
+    function verifyUserNameExist(telenum,callBack,errorCallBack){
+    	$http.get(URLPort+"/accounts/exists?username="+telenum)
+    	.success(function(data){
+    		console.log(["查询用户名存在",data]);
+    		callBack(telenum);
+    	})
+    	.error(function(data){
+    		console.log(["查询用户名不存在",data]);
+    		errorCallBack(telenum);
+    	})
+    }
+//注册
+    function register(telenum){
+    	$http.post(URLPort+"/accounts/register",{"username": telenum,"password": "admin","enabled": true})
+    	.success(function(data){
+    		console.log(["注册成功",data]);
+    	})
+    	.error(function(data){
+    		console.log(["注册失败",data]);
+    	})
+    }
+ //注册以后第一次保存用户信息
+	function saveUserInfo(telenum){
+			$http.post(URLPort+"/accounts/register/info",{"id": 1,"username": telenum, //required
+            "name": "管理员",
+            "nick": "管理员",
+            "weixin": "weixin",
+            "weixinName": "weixin nick",
+            "mobile": "12345678901",
+            "email": "fjdk@dkfj.com",
+            "accountId": 1,
+            "birthday": null,
+            "gender": "FEMALE"})
+            .success(function(data){
+            	console.log(["保存个人信息成功",data]);
+            })
+            .error(function(data){
+            	console.log(["保存个人信息失败",data]);
+            })
+		}
+   //获取用户信息
+    function getUserInfo(telenum,callBack,errorCallBack){
+    	$http.get(URLPort+"/users/mobiles/"+telenum)//根据手机号码来获取用户信息，检测用户是否存在，如果不存在要先注册
+    	.success(function(data){
+    		console.log(["用户存在",data]);
+    		var currentUserId =data.id;
+    		callBack(currentUserId);
+    	})
+    	.error(function(data){
+    		console.log("用户不存在");
+    		errorCallBack();
+    	})
+    }
+    //获取验证码
+    function getverificationcode(telenum){
+    	var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
+    	$http.post(URLPort+"/accounts/verification-code?codeType=MOBILE&account="+telenum+"&template="+templatetext)
+    	.success(function(data){
+    		console.log(["success",data]);
+    	})
+    	.error(function(data){
+    		console.log(["error",data]);
+    	})
+    }
 
-	
 	$scope.verify=function(){
 		console.log("hihihi");
 		console.log("$scope.productData.telenum:"+$scope.productData.telenum);
+		console.log("$scope.productData.verificationCode:"+$scope.productData.verificationCode);
 		$(".yanzhengma").addClass("clickdown");
-		$http.get("http://yunwan2.3322.org:57093/users/mobiles/15026590036")
-		.success(function(data){
-			console.log(["用户存在",data]);
-		})
-		.error(function(data){
-			console.log(JSON.stringify(data));//把json对象转为字符串
-			if((JSON.stringify(data).indexOf("用户不存在"))>0){
-				console.log("用户不存在");
-			}else{
-				console.log("其它问题......");
-			}
-		})
-		// var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
-		// $http.post("http://yunwan2.3322.org:57093/accounts/verification-code?codeType=MOBILE&account="+$scope.productData.telenum+"&template="+templatetext)
-		// .success(function(data){
-		// 	console.log(["success",data]);
-		// })
-		// .error(function(){
-		// 	console.log(["error",data]);
-		// })
+
+		verifyUserNameExist($scope.productData.telenum,
+			function(telenum){//如果用户名存在则读取用户信息
+			},
+			function(telenum){//如果用户名不存在则注册
+				register(telenum);
+				saveUserInfo(telenum);
+			});
+
+		 getverificationcode($scope.productData.telenum);
+		
 	}
 
 
 
 	$scope.submit1=function(){
-		$http.post("http://yunwan2.3322.org:57093/login?username=15026590036&password=744758")
+		$http.post(URLPort+"/login?username="+$scope.productData.telenum+"&password="+$scope.productData.verificationCode)
 		.success(function(data){
-			console.log(["aaa",data]);
+			console.log(["登录成功",data]);
+
+
+						$http.post(URLPort+"/accounts/current")//获得当前登录账号
+						.success(function(data){
+							console.log(["获得当前登录用户账号",data]);
+							var currentUserName = data.username;
+							var currentAccountId = data.accountId;
+							var saveUserMobile = data.mobile;
+
+							getUserInfo(currentUserName,
+								function(currentUserId){//User存在  根据用户id修改信息
+									$http.post(URLPort+"/users/"+currentUserName+"",{
+							              "id": currentUserId,
+							              "account_id": currentAccountId,
+							              "name": "老3",
+							              "gender": 1,
+							              "nick": "zhang3",
+							              "email": "zy3@qq.com",
+							              "birthday": 1420017957000,
+							              "mobile": saveUserMobile,
+							              "weixin_no": "zy3@qq.com",
+							              "weixin_nick": "老3就是我",
+							              "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+									.success(function(data){
+										console.log(["修改用户信息成功",data]);
+									})
+									.error(function(data){
+										console.log(["修改用户信息失败",data]);
+									})
+
+								},
+								function(){//User不存在
+									$http.post(URLPort+"/users",{"account_id": currentAccountId,
+							            "name" : "老5",
+							            "name_py": "lao5",
+							            "gender": 1,
+							            "nick": "zhang",
+							            "email": "zy@qq.com",
+							            "birthday": 1420017957000,
+							            "mobile": saveUserMobile,
+							            "weixin_no": "zy@qq.com",
+							            "weixin_nick":"老5就是我",
+							            "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+									.success(function(data){
+										console.log(["新增用户信息成功",data]);
+									})
+									.error(function(data){
+										console.log(["新增用户信息失败",data]);
+									})
+								})
+						})
+						.error(function(data){
+							console.log(["没获得当前登录用户账号",data]);
+						})
+						
+
+
 		})
 		.error(function(data){
-			console.log(["aaa",data]);
+			console.log(["登录失败",data]);
 		})
+	
+		
 	}
 
 }])
