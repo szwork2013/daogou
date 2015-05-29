@@ -55,7 +55,7 @@ var URLPort = URLPort();
             "nick": "管理员",
             "weixin": "weixin",
             "weixinName": "weixin nick",
-            "mobile": "12345678901",
+            "mobile": "12345678902",
             "email": "fjdk@dkfj.com",
             "accountId": 1,
             "birthday": null,
@@ -116,69 +116,79 @@ var URLPort = URLPort();
 		$http.post(URLPort+"/login?username="+$scope.productData.telenum+"&password="+$scope.productData.verificationCode)
 		.success(function(data){
 			console.log(["登录成功",data]);
-
-
-						$http.post(URLPort+"/accounts/current")//获得当前登录账号
-						.success(function(data){
-							console.log(["获得当前登录用户账号",data]);
-							var currentUserName = data.username;
-							var currentAccountId = data.accountId;
-							var saveUserMobile = data.mobile;
-
-							getUserInfo(currentUserName,
-								function(currentUserId){//User存在  根据用户id修改信息
-									$http.post(URLPort+"/users/"+currentUserName+"",{
-							              "id": currentUserId,
-							              "account_id": currentAccountId,
-							              "name": "老3",
-							              "gender": 1,
-							              "nick": "zhang3",
-							              "email": "zy3@qq.com",
-							              "birthday": 1420017957000,
-							              "mobile": saveUserMobile,
-							              "weixin_no": "zy3@qq.com",
-							              "weixin_nick": "老3就是我",
-							              "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
-									.success(function(data){
-										console.log(["修改用户信息成功",data]);
-									})
-									.error(function(data){
-										console.log(["修改用户信息失败",data]);
-									})
-
-								},
-								function(){//User不存在
-									$http.post(URLPort+"/users",{"account_id": currentAccountId,
-							            "name" : "老5",
-							            "name_py": "lao5",
-							            "gender": 1,
-							            "nick": "zhang",
-							            "email": "zy@qq.com",
-							            "birthday": 1420017957000,
-							            "mobile": saveUserMobile,
-							            "weixin_no": "zy@qq.com",
-							            "weixin_nick":"老5就是我",
-							            "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
-									.success(function(data){
-										console.log(["新增用户信息成功",data]);
-									})
-									.error(function(data){
-										console.log(["新增用户信息失败",data]);
-									})
-								})
-						})
-						.error(function(data){
-							console.log(["没获得当前登录用户账号",data]);
-						})
-						
-
-
 		})
 		.error(function(data){
 			console.log(["登录失败",data]);
 		})
 	
 		
+	}
+
+   $scope.submit2 = function(){
+		   	$http.post(URLPort+"/accounts/current")//获得当前登录账号
+		   	.success(function(data){
+		   		console.log(["获得当前登录用户账号",data]);
+		   		var currentUserName = data.username;
+		   		var currentAccountId = data.accountId;
+		   		var saveUserMobile = data.mobile;
+
+		   		getUserInfo(currentUserName,
+		   			function(currentUserId){//User存在  根据用户id修改信息
+		   				$http.put(URLPort+"/users/"+currentUserName+"",{
+		   		              "id": currentUserId,
+		   		              "account_id": currentAccountId,
+		   		              "name": "老3",
+		   		              "gender": 1,
+		   		              "nick": "zhang3",
+		   		              "email": "zy3@qq.com",
+		   		              "birthday": 1420017957000,
+		   		              "mobile": saveUserMobile,
+		   		              "weixin_no": "zy3@qq.com",
+		   		              "weixin_nick": "老3就是我",
+		   		              "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+		   				.success(function(data){
+		   					console.log(["修改用户信息成功",data]);
+		   				})
+		   				.error(function(data){
+		   					console.log(["修改用户信息失败",data]);
+		   				})
+
+		   			},
+		   			function(){//User不存在
+		   				$http.post(URLPort+"/users",{"account_id": currentAccountId,
+		   		            "name" : "老5",
+		   		            "name_py": "lao5",
+		   		            "gender": 1,
+		   		            "nick": "zhang",
+		   		            "email": "zy@qq.com",
+		   		            "birthday": 1420017957000,
+		   		            "mobile": saveUserMobile,
+		   		            "weixin_no": "zy@qq.com",
+		   		            "weixin_nick":"老5就是我",
+		   		            "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+		   				.success(function(data){
+		   					console.log(["新增用户信息成功",data]);
+		   				})
+		   				.error(function(data){
+		   					console.log(["新增用户信息失败",data]);
+		   				})
+		   			})
+		   	})
+		   	.error(function(data){
+		   		console.log(["没获得当前登录用户账号",data]);
+		   	})
+   }
+
+
+
+	$scope.logout = function(){
+		$http.get(URLPort+"/logout")
+		.success(function(data){
+			console.log(["退出成功",data])
+		})
+		.error(function(){
+			console.log(["退出失败",data]);
+		})
 	}
 
 }])

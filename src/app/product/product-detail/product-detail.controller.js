@@ -1,7 +1,7 @@
 'use strict';
 
 var product = angular.module('product',['ionic']);
-product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','URLPort',function($rootScope,$scope,$log,$http,URLPort){
+product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$state','URLPort',function($rootScope,$scope,$log,$http,$state,URLPort){
 	// $rootScope.URLPort = "http://yunwan2.3322.org:57095";
 	var URLPort = URLPort();
 	$http.get(URLPort+"/items/100030")
@@ -71,42 +71,52 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','UR
 		}
 	}
 //打开选取商品尺寸 颜色，初始化商品规格状态，有些已经无货了，控件就不可选
-	$scope.propertyShow =function(){
-		$(".mengban").show();
-		$(".chooseProductInfoWarp").show();
-		for(var ii in $scope.productDetailData.specification){
-			console.log($scope.productDetailData.specification[ii].array);
-			for(var cc in $scope.productDetailData.specification[ii].array){
-				var total = 0;
-				console.log($scope.productDetailData.specification[ii].array[cc]);
+    function propertyMenu(){
+    	$(".mengban").show();
+    	$(".chooseProductInfoWarp").show();
+    	for(var ii in $scope.productDetailData.specification){
+    		console.log($scope.productDetailData.specification[ii].array);
+    		for(var cc in $scope.productDetailData.specification[ii].array){
+    			var total = 0;
+    			console.log($scope.productDetailData.specification[ii].array[cc]);
 
-				for(var dd in $scope.productDetailData.skus){
-					if($scope.productDetailData.skus[dd].properties.indexOf($scope.productDetailData.specification[ii].array[cc])>0){
-						//检测商品每个skus 是否包含 规格值，如果包含查其库存，库存总量为0 则不可选
-						console.log("real_quantity:"+$scope.productDetailData.skus[dd].real_quantity);
-						total += parseInt($scope.productDetailData.skus[dd].real_quantity);
-						console.log("total:"+total);
-					}
-				}
+    			for(var dd in $scope.productDetailData.skus){
+    				if($scope.productDetailData.skus[dd].properties.indexOf($scope.productDetailData.specification[ii].array[cc])>0){
+    					//检测商品每个skus 是否包含 规格值，如果包含查其库存，库存总量为0 则不可选
+    					console.log("real_quantity:"+$scope.productDetailData.skus[dd].real_quantity);
+    					total += parseInt($scope.productDetailData.skus[dd].real_quantity);
+    					console.log("total:"+total);
+    				}
+    			}
 
-				if(total === 0){
-						$("input").each(function(){
-							if($(this).val()===$scope.productDetailData.specification[ii].array[cc]){
-								console.log("youyouyou");
-								console.log("$(this).val():"+$(this).val());
-								console.log($scope.productDetailData.specification[ii].array[cc]);
-								$(this).attr({"disabled":"disabled"});
-								$(this).next().addClass("invalid");
-							}
-						})
-				}
+    			if(total === 0){
+    					$("input").each(function(){
+    						if($(this).val()===$scope.productDetailData.specification[ii].array[cc]){
+    							console.log("youyouyou");
+    							console.log("$(this).val():"+$(this).val());
+    							console.log($scope.productDetailData.specification[ii].array[cc]);
+    							$(this).attr({"disabled":"disabled"});
+    							$(this).next().addClass("invalid");
+    						}
+    					})
+    			}
 
-			}   
-		}
-
-
-
+    		}   
+    	}
+    }
+//当点击购物车时让设置goCart 和 goOrder 的参数使参数面板的下一步 跳转到购物车还是生成订单
+	$scope.propertyShowCart =function(){
+		propertyMenu();
+		$scope.goCart = false;
+		$scope.goOrder = true;
 	}
+	$scope.propertyShowOrder =function(){
+		propertyMenu();
+		$scope.goCart = true;
+		$scope.goOrder = false;
+	}
+
+
 //关闭选取商品尺寸 颜色
 	$scope.propertyClose = function(){
 		$(".mengban").hide();
@@ -116,7 +126,7 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','UR
 	$scope.delNum = function(num){
 		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
 		console.log(["$scope.productDetailData.buynum",$scope.productDetailData.buynum]);
-		if($scope.productDetailData.buynum>0){
+		if($scope.productDetailData.buynum>1){
 			$scope.productDetailData.realquantity++;
 			$scope.productDetailData.buynum--;
 		}
@@ -203,7 +213,15 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','UR
 
     }
 	
-	
+	$scope.goToOrder = function(){
+		$state.go("creatorder",{
+			title:$scope.productDetailData.title,
+			price:$scope.productDetailData.price,
+			color:"",
+			size:"",
+			num:$scope.productDetailData.buynum
+		});
+	}
 
 
 

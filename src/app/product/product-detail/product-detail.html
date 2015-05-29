@@ -55,8 +55,8 @@
 <!-- 每个选项都有库存，这边显示的库存要 根据 选择项 实时计算的 -->
 <!-- ============阅完可删除,若不删,留作纪念,我也不反对线=========== -->
 		
-		<div class="button button-light" ng-click="propertyShow()">加入购物车</div>
-		<div class="button button-assertive" ng-click="propertyShow()">立即购买</div>
+		<div class="button button-light" ng-click="propertyShowCart()">加入购物车</div>
+		<div class="button button-assertive" ng-click="propertyShowOrder()">立即购买</div>
 	</div>
 	<div class="mengban"></div>
 
@@ -92,7 +92,8 @@
 				</div>
 				<div class="clearBoth"></div>
 		</div>
-		<div class="nextStep" ui-sref="creatorder">下一步</div>
+		<div class="nextStep" ng-click="goToOrder()" ng-class="{disnone:goOrder}">下一步order</div>
+		<div class="nextStep" ui-sref="cart"  ng-class="{disnone:goCart}">下一步cart</div>
 	</div>
 
 
