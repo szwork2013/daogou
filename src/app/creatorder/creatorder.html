@@ -3,17 +3,17 @@
     <ion-content class="createorder-content">
       <div class="statusWrap">
           <ul class="list marginbt0">
-              <li class="item item-checkbox product-item" ng-repeat="item in productData">
+              <li class="item item-checkbox product-item">
                  <label class="checkbox disnone">
                    <input type="checkbox" ng-model="choose">
                  </label>
                 <img src="assets/images/pic1.png" class="product-img">
                 <div class="paramenters">
-                    <div class="name">{{item.title}}</div>
-                    <div class="paras">{{item.sku_properties_name}}</div>
+                    <div class="name">{{buytitle}}</div>
+                    <div class="paras">{{buyskudetail}}</div>
                 </div>
-                <span class="price">￥{{item.price}}</span>
-                <div class="countNum">X1
+                <span class="price">￥{{buyprice}}</span>
+                <div class="countNum">X{{buynum}}
                 </div>
               </li>
           </ul>
@@ -51,7 +51,7 @@
                    <div class="yanzhengma" ng-click="verify()">获取验证码</div>
               </div>
           </div>
-          <div class="commonBtn backred" ng-click="submit1()">确认1</div>
+          <div class="commonBtn backred" ng-click="submit1()">确认登录1</div>
       </div>
 
 
@@ -111,7 +111,7 @@
           </div>
       </div>
       <div class="commonBtn disnone" ui-sref="payWay">微信支付</div>
-      <div class="commonBtn backred" ng-click="submit2()">确认2</div>
-      <div class="commonBtn backred" ng-click="logout()">确认3</div>
+      <div class="commonBtn backred" ng-click="submit2()">确认登录成功后获取user信息2</div>
+      <div class="commonBtn backred" ng-click="logout()">确认退出3</div>
     </ion-content>
 </ion-view>

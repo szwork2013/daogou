@@ -1,19 +1,15 @@
 'use strict';
 
 angular.module('createOrder',['ionic'])
-.controller('creatorderCtrl',['$scope','$log','$http','URLPort',function($scope,$log,$http,URLPort){
+.controller('creatorderCtrl',['$scope','$log','$http','URLPort','$stateParams',function($scope,$log,$http,URLPort,$stateParams){
 	$log.debug('creatorderCtrl');
-	$http.get('assets/testdata/cart.json')
-	.success(function(data){
-		$log.debug(["success data",data]);
-		$scope.productData = data;
-		//发送验证码
-	    $scope.productData.telenum= "";
-	    $scope.productData.verificationCode= "";
-	})
-	.error(function(data){
-		$log.debug(["error data",data]);
-	})
+
+	$scope.buytitle = $stateParams.title;
+	$scope.buyprice = $stateParams.price;
+	$scope.buyskudetail = $stateParams.skudetail;
+	$scope.buyskuid = $stateParams.skuid;
+	$scope.buynum = $stateParams.num;
+console.log(["$stateParams.title",$stateParams.title])
 	$scope.post = true;
 	$scope.shop = false;
 	$scope.postway = function(){
@@ -24,6 +20,8 @@ angular.module('createOrder',['ionic'])
 		$scope.post = false;
 		$scope.shop = true;
 	}
+
+	
 
 var URLPort = URLPort();
 //验证当前输入用户名是否存在
@@ -134,7 +132,7 @@ var URLPort = URLPort();
 
 		   		getUserInfo(currentUserName,
 		   			function(currentUserId){//User存在  根据用户id修改信息
-		   				$http.put(URLPort+"/users/"+currentUserName+"",{
+		   				$http.put(URLPort+"/users/"+currentUserId+"",{
 		   		              "id": currentUserId,
 		   		              "account_id": currentAccountId,
 		   		              "name": "老3",

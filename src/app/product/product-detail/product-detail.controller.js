@@ -8,7 +8,7 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
 	// $http.get("assets/testdata/product-detail.json")
 
 	.success(function(data){
-		console.log(['success',data]);
+		console.log(['获得商品详情成功',data]);
 		$scope.productDetailData = data;
 		$scope.productDetailData.buynum = 0;//买家购买数
 		$scope.productDetailData.realquantity = 0;//剩余库存数量
@@ -55,7 +55,7 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
 		}
 	})
 	.error(function(data){
-		console.log(['error',data]);
+		console.log(['获得商品详情失败',data]);
 	});
 
 
@@ -202,10 +202,20 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
 					}
 					if(strSku===strInput){
 						$scope.productDetailData.realquantity = $scope.productDetailData.skus[id].real_quantity;
+						$scope.productDetailData.skuid = $scope.productDetailData.skus[id].skuid;
 						$scope.productDetailData.buynum = 0;
+						$scope.productDetailData.skudetail = "";
+						var skuArray = $scope.productDetailData.skus[id].properties.split(";");
+						for (var ff in skuArray){
+							var skuffArray = skuArray[ff].split(":");
+							$scope.productDetailData.skudetail += skuffArray[skuffArray.length-2]+":"+skuffArray[skuffArray.length-1]+";";
+						}
+						$scope.productDetailData.skudetail=$scope.productDetailData.skudetail.substring(0,$scope.productDetailData.skudetail.length-1);
+						console.log(["$scope.productDetailData.skudetail",$scope.productDetailData.skudetail]);
+
 					}
 				}
-					
+					 
 				
     		}
     	}
@@ -214,11 +224,12 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
     }
 	
 	$scope.goToOrder = function(){
+		console.log(["$scope.productDetailData.title",$scope.productDetailData.title])
 		$state.go("creatorder",{
 			title:$scope.productDetailData.title,
 			price:$scope.productDetailData.price,
-			color:"",
-			size:"",
+			skudetail:$scope.productDetailData.skudetail,
+			skuid:$scope.productDetailData.skuid,
 			num:$scope.productDetailData.buynum
 		});
 	}
