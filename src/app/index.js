@@ -74,7 +74,7 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 		templateUrl: 'app/return-goods/logisticsInfo.html'
 	})
 	.state('creatorder', {
-		url: '/creatorder/:title/:price/:skudetail/:skuid/:num',
+		url: '/creatorder/:title/:price/:skudetail/:skuid/:num/:freight',
 		templateUrl: 'app/creatorder/creatorder.html',
 		controller: 'creatorderCtrl'
 	})
@@ -101,7 +101,7 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 	.state('newAddress', {
 		url: '/newAddress',
 		templateUrl: 'app/creatorder/new-address.html',
-		controller: 'newAddressCtrl'
+		controller: 'creatorderCtrl'
 	})
 	.state('guide', {
 		url: '/guide',

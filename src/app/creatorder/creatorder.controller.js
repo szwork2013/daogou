@@ -9,34 +9,116 @@ angular.module('createOrder',['ionic'])
 	$scope.buyskudetail = $stateParams.skudetail;
 	$scope.buyskuid = $stateParams.skuid;
 	$scope.buynum = $stateParams.num;
-console.log(["$stateParams.title",$stateParams.title])
-	$scope.post = true;
-	$scope.shop = false;
-	$scope.postway = function(){
-		$scope.post = true;
-		$scope.shop = false;
-	}
-	$scope.shopway = function(){
-		$scope.post = false;
-		$scope.shop = true;
-	}
+	$scope.buyfreight = $stateParams.freight;
+	$scope.totalprice = $stateParams.price*$stateParams.num;
+	$scope.totalcost = $scope.totalprice + parseFloat($scope.buyfreight);
+	console.log(["$stateParams.title",$stateParams.title])
 
 	
+	$scope.mainData = {
+		telenum : "",
+		verificationCode: ""
+	}
+
+    $scope.weixinpay = true;
+	$scope.loginhandle = true;//初始让登录模块隐藏
+   	$scope.alladdress = true;//初始让地址模块隐藏
+
+   	$scope.buyeraddress = true;
+   	$scope.firstBuyerAddress = true;
+	$scope.allbuyeraddress = true;
+	$scope.shopaddress = true;
+	$scope.postway = function(){
+		$scope.allbuyeraddress = true;
+		$scope.shopaddress = false;
+	}
+	$scope.shopway = function(){
+		$scope.allbuyeraddress = false;
+		$scope.shopaddress = true;
+	}
+//判断是否登录
+   function judgeLogin(){
+   		$http.post(URLPort+"/accounts/current")//获得当前登录账号
+   		.success(function(data){
+   			//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
+   			console.log(["用户已登录,获得当前登录用户账号",data]);
+   			$scope.loginhandle = true;//已经登录让 登录模块隐藏
+   			$scope.alladdress = false;//让地址模不隐藏
+   			$scope.shopaddress = false;//默认显示用户地址，隐藏实体店地址
+   			$scope.allbuyeraddress = true;
+            console.log(["$scope.loginhandle",$scope.loginhandle]);
+            // $scope.firstBuyerAddress = false;
+
+   			// var currentUserName = data.username;
+   			// var currentAccountId = data.accountId;
+   			// var saveUserMobile = data.mobile;
+
+   			// getUserInfo(currentUserName,
+   			// 	function(currentUserId){//User存在  根据用户id修改信息
+   			// 		$http.put(URLPort+"/users/"+currentUserId+"",{
+   			//               "id": currentUserId,
+   			//               "account_id": currentAccountId,
+   			//               "name": "老3",
+   			//               "gender": 1,
+   			//               "nick": "zhang3",
+   			//               "email": "zy3@qq.com",
+   			//               "birthday": 1420017957000,
+   			//               "mobile": saveUserMobile,
+   			//               "weixin_no": "zy3@qq.com",
+   			//               "weixin_nick": "老3就是我",
+   			//               "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+   			// 		.success(function(data){
+   			// 			console.log(["修改用户信息成功",data]);
+   			// 		})
+   			// 		.error(function(data){
+   			// 			console.log(["修改用户信息失败",data]);
+   			// 		})
+
+   			// 	},
+   			// 	function(){//User不存在
+   			// 		$http.post(URLPort+"/users",{"account_id": currentAccountId,
+   			//             "name" : "老5",
+   			//             "name_py": "lao5",
+   			//             "gender": 1,
+   			//             "nick": "zhang",
+   			//             "email": "zy@qq.com",
+   			//             "birthday": 1420017957000,
+   			//             "mobile": saveUserMobile,
+   			//             "weixin_no": "zy@qq.com",
+   			//             "weixin_nick":"老5就是我",
+   			//             "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+   			// 		.success(function(data){
+   			// 			console.log(["新增用户信息成功",data]);
+   			// 		})
+   			// 		.error(function(data){
+   			// 			console.log(["新增用户信息失败",data]);
+   			// 		})
+   			// 	})
+   		})
+   		.error(function(data){
+   			//如果未登录,显示登录框，进行登录
+   			console.log(["用户未登录,没获得当前登录用户账号",data]);
+   			$scope.loginhandle = false;//未登录让 登录模块不隐藏
+   			$scope.alladdress = true;//让地址模隐藏
+   		})
+   } 
+
+   judgeLogin();
 
 var URLPort = URLPort();
-//验证当前输入用户名是否存在
+//判断手机号是否已经注册account账户
     function verifyUserNameExist(telenum,callBack,errorCallBack){
     	$http.get(URLPort+"/accounts/exists?username="+telenum)
     	.success(function(data){
-    		console.log(["查询用户名存在",data]);
+    		console.log(["手机号已经注册account",data]);
     		callBack(telenum);
     	})
     	.error(function(data){
-    		console.log(["查询用户名不存在",data]);
+    		console.log(["手机号未注册account",data]);
     		errorCallBack(telenum);
     	})
     }
-//注册
+//注册account
     function register(telenum){
     	$http.post(URLPort+"/accounts/register",{"username": telenum,"password": "admin","enabled": true})
     	.success(function(data){
@@ -46,90 +128,85 @@ var URLPort = URLPort();
     		console.log(["注册失败",data]);
     	})
     }
- //注册以后第一次保存用户信息
+ //注册以后第一次保存用户信息 注册accountinfo
 	function saveUserInfo(telenum){
 			$http.post(URLPort+"/accounts/register/info",{"id": 1,"username": telenum, //required
             "name": "管理员",
             "nick": "管理员",
             "weixin": "weixin",
             "weixinName": "weixin nick",
-            "mobile": "12345678902",
+            "mobile": telenum,
             "email": "fjdk@dkfj.com",
             "accountId": 1,
             "birthday": null,
             "gender": "FEMALE"})
             .success(function(data){
-            	console.log(["保存个人信息成功",data]);
+            	console.log(["注册accountinfo成功",data]);
             })
             .error(function(data){
-            	console.log(["保存个人信息失败",data]);
+            	console.log(["注册accountinfo失败",data]);
             })
 		}
-   //获取用户信息
+   //获取登录账号（手机号）获取User信息
     function getUserInfo(telenum,callBack,errorCallBack){
     	$http.get(URLPort+"/users/mobiles/"+telenum)//根据手机号码来获取用户信息，检测用户是否存在，如果不存在要先注册
     	.success(function(data){
-    		console.log(["用户存在",data]);
+    		console.log(["获取用户User信息,用户存在",data]);
     		var currentUserId =data.id;
+    		$scope.curUserId = data.id;
     		callBack(currentUserId);
     	})
     	.error(function(data){
-    		console.log("用户不存在");
+    		console.log("获取用户User信息,用户不存在");
     		errorCallBack();
     	})
     }
-    //获取验证码
+    //通过手机号码获取验证码
     function getverificationcode(telenum){
     	var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
     	$http.post(URLPort+"/accounts/verification-code?codeType=MOBILE&account="+telenum+"&template="+templatetext)
     	.success(function(data){
-    		console.log(["success",data]);
+    		console.log(["获取验证码成功",data]);
     	})
     	.error(function(data){
-    		console.log(["error",data]);
+    		console.log(["获取验证码失败",data]);
     	})
     }
-
+//获取验证码
 	$scope.verify=function(){
 		console.log("hihihi");
-		console.log("$scope.productData.telenum:"+$scope.productData.telenum);
-		console.log("$scope.productData.verificationCode:"+$scope.productData.verificationCode);
+		console.log("$scope.mainData.telenum:"+$scope.mainData.telenum);
+		console.log("$scope.mainData.verificationCode:"+$scope.mainData.verificationCode);
 		$(".yanzhengma").addClass("clickdown");
 
-		verifyUserNameExist($scope.productData.telenum,
-			function(telenum){//如果用户名存在则读取用户信息
-			},
-			function(telenum){//如果用户名不存在则注册
-				register(telenum);
-				saveUserInfo(telenum);
-			});
+		//判断手机号是否已经注册account账户
+		verifyUserNameExist($scope.mainData.telenum,
+		function(telenum){//如果用户名存在则读取用户信息
+		},
+		function(telenum){//手机号未注册account则注册
+			register(telenum);//注册account
+			saveUserInfo(telenum);//注册后第一次注册accountinfo
+		});
 
-		 getverificationcode($scope.productData.telenum);
+		//通过手机号码获取验证码
+		getverificationcode($scope.mainData.telenum);
 		
 	}
 
 
-
+//登录
 	$scope.submit1=function(){
-		$http.post(URLPort+"/login?username="+$scope.productData.telenum+"&password="+$scope.productData.verificationCode)
+		$http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
 		.success(function(data){
 			console.log(["登录成功",data]);
-		})
-		.error(function(data){
-			console.log(["登录失败",data]);
-		})
-	
-		
-	}
-
-   $scope.submit2 = function(){
-		   	$http.post(URLPort+"/accounts/current")//获得当前登录账号
+			//获得当前登录账号
+		   	$http.post(URLPort+"/accounts/current")
 		   	.success(function(data){
-		   		console.log(["获得当前登录用户账号",data]);
+		   		console.log(["获得当前登录用户账号,已经登录",data]);
 		   		var currentUserName = data.username;
 		   		var currentAccountId = data.accountId;
 		   		var saveUserMobile = data.mobile;
-
+                //获取登录账号（手机号）获取User信息
 		   		getUserInfo(currentUserName,
 		   			function(currentUserId){//User存在  根据用户id修改信息
 		   				$http.put(URLPort+"/users/"+currentUserId+"",{
@@ -145,10 +222,10 @@ var URLPort = URLPort();
 		   		              "weixin_nick": "老3就是我",
 		   		              "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
 		   				.success(function(data){
-		   					console.log(["修改用户信息成功",data]);
+		   					console.log(["更新User信息成功",data]);
 		   				})
 		   				.error(function(data){
-		   					console.log(["修改用户信息失败",data]);
+		   					console.log(["更新User信息失败",data]);
 		   				})
 
 		   			},
@@ -165,17 +242,101 @@ var URLPort = URLPort();
 		   		            "weixin_nick":"老5就是我",
 		   		            "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
 		   				.success(function(data){
-		   					console.log(["新增用户信息成功",data]);
+		   					console.log(["新增User信息成功",data]);
 		   				})
 		   				.error(function(data){
-		   					console.log(["新增用户信息失败",data]);
+		   					console.log(["新增User信息失败",data]);
 		   				})
 		   			})
 		   	})
 		   	.error(function(data){
-		   		console.log(["没获得当前登录用户账号",data]);
+		   		console.log(["没获得当前登录用户账号，未登录",data]);
 		   	})
-   }
+
+		   	//登录成功，登录模块隐藏，地址模块不影藏
+		   	$scope.loginhandle = true;
+		   	$scope.alladdress = false;
+		   	//查询用户的收获地址信息
+		   	$http.post(URLPort+"/users/"+$scope.curUserId +"/shipping-addresses")
+		   	.success(function(){
+            	console.log("当前用户有收货地址，选择收获地址");
+            	$scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
+            	$scope.buyeraddress = false;
+		   	})
+		   	.error(function(){
+		   		console.log("当前用户没有收货地址，请填写第一个收货地址");
+
+		   		$scope.shopaddress = false;//显示用户地址，隐藏实体店地址
+		   		$scope.allbuyeraddress = true;
+		   		
+		   		$scope.firstBuyerAddress = false;//隐藏选择地址模块，显示填写第一个地址模块
+		   		console.log(["$scope.firstBuyerAddress!!!!!!",$scope.firstBuyerAddress])
+            	$scope.buyeraddress = true;
+
+		   	})
+			
+		})
+		.error(function(data){
+			console.log(["登录失败",data]);
+		})
+	
+		
+	}
+
+   // $scope.submit2 = function(){
+		 //   	$http.post(URLPort+"/accounts/current")//获得当前登录账号
+		 //   	.success(function(data){
+		 //   		console.log(["获得当前登录用户账号,已经登录",data]);
+		 //   		var currentUserName = data.username;
+		 //   		var currentAccountId = data.accountId;
+		 //   		var saveUserMobile = data.mobile;
+   //              //获取登录账号（手机号）获取User信息
+		 //   		getUserInfo(currentUserName,
+		 //   			function(currentUserId){//User存在  根据用户id修改信息
+		 //   				$http.put(URLPort+"/users/"+currentUserId+"",{
+		 //   		              "id": currentUserId,
+		 //   		              "account_id": currentAccountId,
+		 //   		              "name": "老3",
+		 //   		              "gender": 1,
+		 //   		              "nick": "zhang3",
+		 //   		              "email": "zy3@qq.com",
+		 //   		              "birthday": 1420017957000,
+		 //   		              "mobile": saveUserMobile,
+		 //   		              "weixin_no": "zy3@qq.com",
+		 //   		              "weixin_nick": "老3就是我",
+		 //   		              "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+		 //   				.success(function(data){
+		 //   					console.log(["更新User信息成功",data]);
+		 //   				})
+		 //   				.error(function(data){
+		 //   					console.log(["更新User信息失败",data]);
+		 //   				})
+
+		 //   			},
+		 //   			function(){//User不存在
+		 //   				$http.post(URLPort+"/users",{"account_id": currentAccountId,
+		 //   		            "name" : "老5",
+		 //   		            "name_py": "lao5",
+		 //   		            "gender": 1,
+		 //   		            "nick": "zhang",
+		 //   		            "email": "zy@qq.com",
+		 //   		            "birthday": 1420017957000,
+		 //   		            "mobile": saveUserMobile,
+		 //   		            "weixin_no": "zy@qq.com",
+		 //   		            "weixin_nick":"老5就是我",
+		 //   		            "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+		 //   				.success(function(data){
+		 //   					console.log(["新增User信息成功",data]);
+		 //   				})
+		 //   				.error(function(data){
+		 //   					console.log(["新增User信息失败",data]);
+		 //   				})
+		 //   			})
+		 //   	})
+		 //   	.error(function(data){
+		 //   		console.log(["没获得当前登录用户账号，未登录",data]);
+		 //   	})
+   // }
 
 
 
@@ -189,39 +350,18 @@ var URLPort = URLPort();
 		})
 	}
 
-}])
-.controller('goodsShopCtrl',['$scope','$log','$http',function($scope,$log,$http){
-	$log.debug('goodsShopCtrl');
-	$http.get('assets/testdata/cart.json')
-	.success(function(data){
-		$log.debug(["success data",data]);
-		$scope.productData = data;
-	})
-	.error(function(data){
-		$log.debug(["error data",data]);
-	})
-}])
-.controller('changeReceiveInfoCtrl',['$scope','$log','$http',function($scope,$log,$http){
-	$log.debug('changeReceiveInfoCtrl');
-	$http.get('assets/testdata/cart.json')
-	.success(function(data){
-		$log.debug(["success data",data]);
-		$scope.productData = data;
-	})
-	.error(function(data){
-		$log.debug(["error data",data]);
-	})
-}])
-.controller('newAddressCtrl',['$scope','$log','$http',function($scope,$log,$http){
-	$log.debug('newAddressCtrl');
-	$http.get('assets/testdata/cart.json')
-	.success(function(data){
-		$log.debug(["success data",data]);
-		$scope.productData = data;
-	})
-	.error(function(data){
-		$log.debug(["error data",data]);
-	})
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -687,16 +827,39 @@ var URLPort = URLPort();
 
 
 
-
-
-
-
-
-
-
-
-
-
+}])
+.controller('goodsShopCtrl',['$scope','$log','$http',function($scope,$log,$http){
+	$log.debug('goodsShopCtrl');
+	$http.get('assets/testdata/cart.json')
+	.success(function(data){
+		$log.debug(["success data",data]);
+		$scope.productData = data;
+	})
+	.error(function(data){
+		$log.debug(["error data",data]);
+	})
+}])
+.controller('changeReceiveInfoCtrl',['$scope','$log','$http',function($scope,$log,$http){
+	$log.debug('changeReceiveInfoCtrl');
+	$http.get('assets/testdata/cart.json')
+	.success(function(data){
+		$log.debug(["success data",data]);
+		$scope.productData = data;
+	})
+	.error(function(data){
+		$log.debug(["error data",data]);
+	})
+}])
+.controller('newAddressCtrl',['$scope','$log','$http',function($scope,$log,$http){
+	$log.debug('newAddressCtrl');
+	$http.get('assets/testdata/cart.json')
+	.success(function(data){
+		$log.debug(["success data",data]);
+		$scope.productData = data;
+	})
+	.error(function(data){
+		$log.debug(["error data",data]);
+	})
 
 }])
 ;

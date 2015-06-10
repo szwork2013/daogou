@@ -53,6 +53,8 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
 				
 			}
 		}
+
+		$scope.productDetailData.buynum = $scope.productDetailData.realquantity;
 	})
 	.error(function(data){
 		console.log(['获得商品详情失败',data]);
@@ -230,7 +232,8 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
 			price:$scope.productDetailData.price,
 			skudetail:$scope.productDetailData.skudetail,
 			skuid:$scope.productDetailData.skuid,
-			num:$scope.productDetailData.buynum
+			num:$scope.productDetailData.buynum,
+			freight:$scope.productDetailData.freight
 		});
 	}
 

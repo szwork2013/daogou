@@ -12,14 +12,14 @@
                     <div class="name">{{buytitle}}</div>
                     <div class="paras">{{buyskudetail}}</div>
                 </div>
-                <span class="price">￥{{buyprice}}</span>
+                <span class="price">{{buyprice|currency:"￥":2}}</span>
                 <div class="countNum">X{{buynum}}
                 </div>
               </li>
           </ul>
           <div class="perAccount">
             <div class="account"><span class="heji">商品总价：</span></div>
-            <div class="time">￥23333.00</div>
+            <div class="time">{{totalprice|currency:"￥":2}}</div>
             <div class="clearBoth"></div>
           </div>
       </div>
@@ -27,58 +27,76 @@
       <div class="statusWrap remarkpadding">
           <div class="costwrap">
               <span class="costname">运费</span>
-              <span class="costvalue">￥123.00</span>
+              <span class="costvalue">{{buyfreight|currency:"￥":2}}</span>
               <div class="clearBoth"></div>
           </div>
            <div class="costwrap">
               <span class="costname">实付</span>
-              <span class="costvalue commonRed">￥123.00</span>
+              <span class="costvalue commonRed">{{totalcost|currency:"￥":2}}</span>
               <div class="clearBoth"></div>
           </div>
           <textarea class="remark" placeholder="订单备注"></textarea>
       </div>
 
-      <div class="pay-way">
+<!-- 登录模块 -->
+      <div class="pay-way" ng-class="{disnone:loginhandle}">
           <div class="total-cost backfff border-tp">
             请验证您的手机
           </div>
           <div class="statusWrap">
               <div class="way-item">
-                   <input class="inputclass" placeholder="请输入手机号码" ng-model="productData.telenum"/>
+                   <input class="inputclass" placeholder="请输入手机号码" ng-model="mainData.telenum"/>
               </div>
               <div class="way-item posRelative">
-                   <input class="inputclass" placeholder="验证码"  ng-model="productData.verificationCode"/>
+                   <input class="inputclass" placeholder="验证码"  ng-model="mainData.verificationCode"/>
                    <div class="yanzhengma" ng-click="verify()">获取验证码</div>
               </div>
           </div>
           <div class="commonBtn backred" ng-click="submit1()">确认登录1</div>
       </div>
+<!-- 登录模块 -->
 
-
-
-
-       <div class="statusWrap disnone">
+<!-- 各种地址模块 -->
+       <div class="statusWrap" ng-class="{disnone:alladdress}">
           <span class="pickupway">取货方式</span>
           <div>
-              <div class="pickupways" ng-class="{pickwayselect:post}" ng-click="postway()">快递到家</div>
-              <div class="pickupways" ng-class="{pickwayselect:shop}" ng-click="shopway()">门店自取</div>
+              <div class="pickupways" ng-class="{pickwayselect:allbuyeraddress}" ng-click="postway()">快递到家</div>
+              <div class="pickupways" ng-class="{pickwayselect:shopaddress}" ng-click="shopway()">门店自取</div>
               <div class="clearBoth"></div>
           </div>
-          <div ng-class="{disnone:shop}">
-              <input class="input-address-info" placeholder="收货人姓名"/>
-              <input class="input-address-info" placeholder="手机号码"/>
-              <div class="input-address-info">省、市、区</div>
-              <input class="input-address-info border-bt0" placeholder="详细地址"/>
-          </div>
-          <div class="addressInfo remarkpadding disnone" ng-class="{disnone:shop}">
-              <div>
-                  <span class="floatL">李志伟，18094705373 </span>
-                  <span class="colorBlue floatR font13" ui-sref="changeReceiveInfo">修改</span>
-                  <div class="clearBoth"></div>
+
+          <!--收货人地址-->
+          <div ng-class="{disnone:shopaddress}">
+             <!-- 第一次写收货地址 -->
+              <div ng-class="{disnone:firstBuyerAddress}">
+                  <input class="input-address-info" placeholder="收货人姓名"/>
+                  <input class="input-address-info" placeholder="手机号码"/>
+                  <div class="input-address-info">
+                       <select id="loc_province"></select>
+                       <select id="loc_city"></select>
+                       <select id="loc_town"></select>
+                       <input type="hidden" name="location_id" />
+                  </div>
+                  <input class="input-address-info border-bt0" placeholder="详细地址"/>
               </div>
-              <span class="font13">[默认]上海市长宁区 杨宅路255号新发现财富园5幢 4楼 </span>
+            <!-- 第一次写收货地址 -->
+              
+              <!-- 已经有收货地址 -->
+              <div class="addressInfo remarkpadding" ng-class="{disnone:buyeraddress}">
+                  <div>
+                      <span class="floatL">李志伟，18094705373 </span>
+                      <span class="colorBlue floatR font13" ui-sref="changeReceiveInfo">修改</span>
+                      <div class="clearBoth"></div>
+                  </div>
+                  <span class="font13">[默认]上海市长宁区 杨宅路255号新发现财富园5幢 4楼 </span>
+              </div>
+             <!-- 已经有收货地址 -->
           </div>
-           <div class="addressInfo remarkpadding" ng-class="{disnone:post}">
+           <!--收货人地址-->
+
+
+          <!-- 实体店地址 -->
+          <div class="addressInfo remarkpadding" ng-class="{disnone:allbuyeraddress}">
               <div>
                   <span class="floatL width85">中山公园龙之梦店，021-54347586  </span>
                   <span class="colorBlue floatR font13" ui-sref="goodsShop">修改</span>
@@ -89,9 +107,8 @@
                   <span class="font13 colorRed floatR">3.0km</span>
                   <div class="clearBoth"></div>
               </div>
-            
           </div>
-          <div class="order-time" ng-class="{disnone:post}">
+          <div class="order-time" ng-class="{disnone:allbuyeraddress}">
                 预约取货时间（营业时间 10：00-20：00）
                 <div class="select-time">
                   3月20日 16:00
@@ -109,8 +126,13 @@
                    </select>
                 </div>
           </div>
+          <!-- 实体店地址 -->
       </div>
-      <div class="commonBtn disnone" ui-sref="payWay">微信支付</div>
+<!-- 各种地址模块 -->
+
+
+      <div class="commonBtn" ng-class="{disnone:weixinpay}" ui-sref="payWay">微信支付</div>
+      <div class="commonBtn backred" ng-class="{disnone:firstBuyerAddress}" ui-sref="payWay">保存地址</div>
       <div class="commonBtn backred" ng-click="submit2()">确认登录成功后获取user信息2</div>
       <div class="commonBtn backred" ng-click="logout()">确认退出3</div>
     </ion-content>
