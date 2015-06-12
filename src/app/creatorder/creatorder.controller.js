@@ -196,7 +196,18 @@ var URLPort = URLPort();
 
 //登录
 	$scope.submit1=function(){
-		$http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
+		// $http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
+		$http({
+			method: 'POST',
+			url: URLPort+'/login',
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			transformRequest: function(obj) {
+				var str = [];
+				for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+				return str.join("&");
+			},
+			data: {username:$scope.mainData.telenum, password: $scope.mainData.verificationCode}
+		})
 		.success(function(data){
 			console.log(["登录成功",data]);
 			//获得当前登录账号
