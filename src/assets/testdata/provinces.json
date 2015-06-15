@@ -1,0 +1,16 @@
+ [
+    {
+        "code": "120101",
+        "name": "上海",
+        "pcode": "1",
+        "level": 0,
+        "pinyin": "shanghai"
+    },
+    {
+        "code": "120102",
+        "name": "湖南省",
+        "pcode": "1",
+        "level": 0,
+        "pinyin": "hunan"
+    }
+]

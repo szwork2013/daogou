@@ -4,7 +4,10 @@ var product = angular.module('product',['ionic']);
 product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort){
 	// $rootScope.URLPort = "http://yunwan2.3322.org:57095";
 	var URLPort = URLPort();
+
 	$http.get(URLPort+"/items/"+$stateParams.detailId)
+	
+	// $http.get(URLPort+"/items/100003")
 	// $http.get("assets/testdata/product-detail.json")
 
 	.success(function(data){
