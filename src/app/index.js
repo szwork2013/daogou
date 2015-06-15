@@ -35,7 +35,7 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 
 	$stateProvider
 	.state('productDetail', {
-		url: '/productDetail',
+		url: '/productDetail/:detailId',
 		templateUrl: 'app/product/product-detail/product-detail.html',
 		controller: 'productDetailCtrl'
 	})
@@ -110,7 +110,7 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 	})
 	;
 
-	$urlRouterProvider.otherwise('productDetail');
+	$urlRouterProvider.otherwise('productDetail/100030');
 	// $urlRouterProvider.otherwise('/login');
 //http://codepen.io/ahsx/pen/mDcEd
 }]);
