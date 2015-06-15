@@ -52,11 +52,12 @@
                    <div class="yanzhengma" ng-click="verify()">获取验证码</div>
               </div>
           </div>
-          <div class="commonBtn backred" ng-click="submit1()">确认登录1</div>
+          <div class="commonBtn backred" ng-click="submit()">确认登录</div>
       </div>
 <!-- 登录模块 -->
 
 <!-- 各种地址模块 -->
+       <!-- <div class="statusWrap" ng-class="{disnone:0}"> -->
        <div class="statusWrap" ng-class="{disnone:alladdress}">
           <span class="pickupway">取货方式</span>
           <div>
@@ -66,29 +67,33 @@
           </div>
 
           <!--收货人地址-->
-          <div ng-class="{disnone:shopaddress}">
+          <!-- <div ng-class="{disnone:0}"> -->
+           <div ng-class="{disnone:shopaddress}">
              <!-- 第一次写收货地址 -->
               <div ng-class="{disnone:firstBuyerAddress}">
-                  <input class="input-address-info" placeholder="收货人姓名"/>
-                  <input class="input-address-info" placeholder="手机号码"/>
+               <!-- <div ng-class="{disnone:0}"> -->
+                  <input class="input-address-info" placeholder="收货人姓名" ng-model="firstAddressInput.name"/>
+                  <input class="input-address-info" placeholder="手机号码" ng-model="firstAddressInput.mobile"/>
                   <div class="input-address-info">
-                       <select id="loc_province"></select>
-                       <select id="loc_city"></select>
-                       <select id="loc_town"></select>
+                       <select id="loc_province"  ng-model="firstAddressInput.provinceInfo" ng-options="province.name for province in provincesdata" ng-change="provinceSelect(firstAddressInput.provinceInfo)">
+                       </select>
+                       <select id="loc_city" ng-model="firstAddressInput.cityInfo" ng-options="city.name for city in citiesdata" ng-change="citySelect(firstAddressInput.provinceInfo,firstAddressInput.cityInfo)">市</select>
+                       <select id="loc_town" ng-model="firstAddressInput.districtInfo" ng-options="district.name for district in districtsdata">区、县</select>
                        <input type="hidden" name="location_id" />
                   </div>
-                  <input class="input-address-info border-bt0" placeholder="详细地址"/>
+                  <input class="input-address-info" placeholder="详细地址" ng-model="firstAddressInput.address"/>
+                  <input class="input-address-info border-bt0" placeholder="邮编" ng-model="firstAddressInput.zip"/>
               </div>
             <!-- 第一次写收货地址 -->
               
               <!-- 已经有收货地址 -->
               <div class="addressInfo remarkpadding" ng-class="{disnone:buyeraddress}">
                   <div>
-                      <span class="floatL">李志伟，18094705373 </span>
+                      <span class="floatL">{{defaultAddressdata.name}}，{{defaultAddressdata.mobile}} </span>
                       <span class="colorBlue floatR font13" ui-sref="changeReceiveInfo">修改</span>
                       <div class="clearBoth"></div>
                   </div>
-                  <span class="font13">[默认]上海市长宁区 杨宅路255号新发现财富园5幢 4楼 </span>
+                  <span class="font13">[默认]&nbsp;{{defaultAddressdata.state}}&nbsp;{{defaultAddressdata.city}}&nbsp;{{defaultAddressdata.district}}&nbsp;{{defaultAddressdata.address}} </span>
               </div>
              <!-- 已经有收货地址 -->
           </div>
@@ -132,8 +137,13 @@
 
 
       <div class="commonBtn" ng-class="{disnone:weixinpay}" ui-sref="payWay">微信支付</div>
-      <div class="commonBtn backred" ng-class="{disnone:firstBuyerAddress}" ui-sref="payWay">保存地址</div>
-      <div class="commonBtn backred" ng-click="submit2()">确认登录成功后获取user信息2</div>
-      <div class="commonBtn backred" ng-click="logout()">确认退出3</div>
+      <div class="commonBtn backred" ng-class="{disnone:firstBuyerAddress}" ng-click="addAddress(1)">保存地址</div>
+      <!-- <div class="commonBtn backred" ng-click="submit2()">确认登录成功后获取user信息2</div> -->
+      <!-- <div class="commonBtn backred" ng-click="logout()">确认退出</div> -->
+
+      <!-- <div class="commonBtn backred"  ng-click="addAddress()">保存地址模拟</div> -->
+      <!-- <div class="commonBtn backred"  ng-click="deleteAddress()">删除地址模拟</div> -->
+    
+      <!-- <div class="commonBtn backred"  ng-click="searchProvinces()">查询省份模拟</div> -->
     </ion-content>
 </ion-view>
