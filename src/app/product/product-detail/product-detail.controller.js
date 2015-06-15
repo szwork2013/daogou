@@ -1,10 +1,10 @@
 'use strict';
 
 var product = angular.module('product',['ionic']);
-product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$state','URLPort',function($rootScope,$scope,$log,$http,$state,URLPort){
+product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort){
 	// $rootScope.URLPort = "http://yunwan2.3322.org:57095";
 	var URLPort = URLPort();
-	$http.get(URLPort+"/items/100030")
+	$http.get(URLPort+"/items/"+$stateParams.detailId)
 	// $http.get("assets/testdata/product-detail.json")
 
 	.success(function(data){
@@ -15,7 +15,8 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
 		$scope.productDetailData.picUrlArr =  $scope.productDetailData.pic_url.split(',');//轮播图片url获取
 		console.log(["$scope.productDetailData.picUrlArr",$scope.productDetailData.picUrlArr]);
 
-		$scope.productDetailData.content = $scope.productDetailData.content.substring(6,$scope.productDetailData.content.length-7);//content中间内容获取
+
+		//$scope.productDetailData.content = $scope.productDetailData.content.substring(6,$scope.productDetailData.content.length-7);//content中间内容获取
 
 		$log.debug(['$scope.productDetailData',$scope.productDetailData.skus]);
 		
@@ -239,5 +240,5 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
 
 
 
-}])
+})
 ;
