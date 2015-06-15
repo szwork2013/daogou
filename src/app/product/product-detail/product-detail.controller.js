@@ -4,7 +4,7 @@ var product = angular.module('product',['ionic']);
 product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$state','URLPort',function($rootScope,$scope,$log,$http,$state,URLPort){
 	// $rootScope.URLPort = "http://yunwan2.3322.org:57095";
 	var URLPort = URLPort();
-	$http.get(URLPort+"/items/100003")
+	$http.get(URLPort+"/items/100034")
 	// $http.get("assets/testdata/product-detail.json")
 
 	.success(function(data){
@@ -15,7 +15,7 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
 		$scope.productDetailData.picUrlArr =  $scope.productDetailData.pic_url.split(',');//轮播图片url获取
 		console.log(["$scope.productDetailData.picUrlArr",$scope.productDetailData.picUrlArr]);
 
-		$scope.productDetailData.content = $scope.productDetailData.content.substring(6,$scope.productDetailData.content.length-7);//content中间内容获取
+		// $scope.productDetailData.content = $scope.productDetailData.content.substring(6,$scope.productDetailData.content.length-7);//content中间内容获取
 
 		$log.debug(['$scope.productDetailData',$scope.productDetailData.skus]);
 		
@@ -204,7 +204,7 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
 					}
 					if(strSku===strInput){
 						$scope.productDetailData.realquantity = $scope.productDetailData.skus[id].real_quantity;
-						$scope.productDetailData.skuid = $scope.productDetailData.skus[id].skuid;
+						$scope.productDetailData.skuid = $scope.productDetailData.skus[id].sku_id;
 						$scope.productDetailData.buynum = 0;
 						$scope.productDetailData.skudetail = "";
 						var skuArray = $scope.productDetailData.skus[id].properties.split(";");
@@ -226,17 +226,17 @@ product.controller('productDetailCtrl',['$rootScope','$scope','$log','$http','$s
     }
 	
 	$scope.goToOrder = function(){
-		console.log(["$scope.productDetailData.title",$scope.productDetailData.title])
+		console.log(["$scope.productDetailData.brand_id111",$scope.productDetailData.brand_id])
 		$state.go("creatorder",{
 			title:$scope.productDetailData.title,
 			price:$scope.productDetailData.price,
 			skudetail:$scope.productDetailData.skudetail,
 			skuid:$scope.productDetailData.skuid,
 			num:$scope.productDetailData.buynum,
-			freight:$scope.productDetailData.freight
+			freight:$scope.productDetailData.freight,
+			brandid:$scope.productDetailData.brand_id
 		});
 	}
-
 
 
 }])
