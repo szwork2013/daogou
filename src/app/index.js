@@ -55,7 +55,7 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 		controller: 'orderListCtrl'
 	})
 	.state('orderDetail', {
-		url: '/orderDetail',
+		url: '/orderDetail/:tid',
 		templateUrl: 'app/order/order-detail/order-detail.html',
 		controller: 'orderDetailCtrl'
 	})

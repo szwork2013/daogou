@@ -18,10 +18,10 @@
     </div>
 
     <ion-content class="orderlist-content">
-      <ion-refresher
+     <!--  <ion-refresher
       pulling-text="下拉更新..."
       on-refresh="refreshproductList()">
-      </ion-refresher>
+      </ion-refresher> -->
       <div class="statusWrap backf8" ng-repeat="item in productListData">
           <div class="status backf8">
               <div class="status-name countDel">{{item.statusCN}}</div>
@@ -30,7 +30,7 @@
               剩余32小时23分24秒 </div>
               <div class="clearBoth"></div>
           </div> 
-          <ul class="list marginbt0" ng-repeat="order in item.orders">
+          <ul class="list marginbt0" ng-repeat="order in item.orders" ng-click="orderDetail(item.tid)">
               <li class="item item-checkbox product-item backf8">
                  <label class="checkbox disnone">
                    <input type="checkbox" ng-model="choose">
@@ -52,36 +52,7 @@
           </div>
       </div>
 
-     <!--  <div class="statusWrap backf8" ng-repeat="item in productListData">
-          <div class="status backf8">
-              <div class="status-name countDel">待付款</div>
-              <div class="edit">
-              <i class="iconfont icon-shijian"></i> 剩余32小时23分24秒</div>
-              <div class="clearBoth"></div>
-          </div>
-          
-          <ul class="list marginbt0">
-              <li class="item item-checkbox product-item backf8">
-                 <label class="checkbox disnone">
-                   <input type="checkbox" ng-model="choose">
-                 </label>
-                <img src="assets/images/pic1.png" class="product-img">
-                <div class="paramenters">
-                    <div class="name">{{item.title}}</div>
-                    <div class="paras">{{item.sku_properties_name}}</div>
-                </div>
-                <span class="price">￥{{item.price}}</span>
-                <div class="countNum">X1
-                </div>
-              </li>
-          </ul>
-          <div class="perAccount backf8">
-            <div class="account"><span class="heji">合计：</span>￥1234.00</div>
-            <div class="time">2015-11-26 15:33:33</div>
-            <div class="clearBoth"></div>
-          </div>
-      </div> -->
-
+   
 
 
 
@@ -89,8 +60,7 @@
     
     <ion-infinite-scroll
       ng-if="hasMoreOrder"
-      immediate-check = "false"
-    
+      immediate-check="false"
       on-infinite="loadMoreData()"
       distance="10%"
       >

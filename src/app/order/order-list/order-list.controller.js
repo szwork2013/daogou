@@ -1,7 +1,7 @@
 'use strict';
 
 var order = angular.module('orderList',['ionic']);
-order.controller('orderListCtrl',['$rootScope','$scope', '$log', '$http', 'URLPort', 'daogouAPI',function($rootScope,$scope,$log,$http,URLPort,daogouAPI){
+order.controller('orderListCtrl',['$rootScope','$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state',function($rootScope,$scope,$log,$http,URLPort,daogouAPI,$state){
 
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
@@ -24,7 +24,7 @@ var URLPort = URLPort();
 // 	console.log(["查询消费者的订单列表失败",data]);
 // })
 console.log(["$rootScope.curUserID",$rootScope.curUserID]);
-// $rootScope.curUserID = 18;
+$rootScope.curUserID = 18;
 $scope.productListData = [];
 var pageindex = 1;
 var pagesize = 5;
@@ -55,8 +55,9 @@ function getOrderListFunc(){
 	    	$scope.hasMoreOrder = false;
 	    	console.log(["hasMoreOrder",$scope.hasMoreOrder])
 	    }
-
+	   
 	    $scope.$broadcast('scroll.infiniteScrollComplete');
+	    
 	},function(data, status, headers, config){
 		console.log(["查询消费者的订单列表失败",data]);
 	});
@@ -73,9 +74,18 @@ $scope.loadMoreData = function(){
 	console.log(["loadMoreData"]);
 	getOrderListFunc();
 }
+
 $scope.$on('$stateChangeSuccess', function() {
-   $scope.loadMoreData();
+	 if(pageindex>2){
+   		$scope.loadMoreData();
+   	 }
  });
+
+
+$scope.orderDetail = function(tid){
+	    $state.go("orderDetail",{tid:tid});
+}
+
 
 	$scope.cart = 1;
 	$scope.list = 0;
