@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('createOrder',['ionic'])
-.controller('creatorderCtrl',['$scope','$log','$http','$state','URLPort','$stateParams',function($scope,$log,$http,$state,URLPort,$stateParams){
+.controller('creatorderCtrl',['$rootScope','$scope','$log','$http','$state','URLPort','$stateParams',function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams){
 	$log.debug('creatorderCtrl');
 	$scope.buytitle = $stateParams.title;
 	$scope.buyprice = $stateParams.price;
@@ -190,10 +190,12 @@ var URLPort = URLPort();
 		   		var currentUserName = data.username;
 		   		var currentAccountId = data.accountId;
 		   		var saveUserMobile = data.mobile;
-		   		$scope.curUserInfo={
-		   			"curUserId":data.id
-		   		}
-		   		console.log(["$scope.curUserInfo.curUserId",$scope.curUserInfo.curUserId])
+		   		$scope.curUserId = data.id;
+		   		$rootScope.curUserID = data.id;
+		   		console.log(["$rootScope.curUserID",$rootScope.curUserID])
+                // $rootScope.curUserInfo
+
+		   		console.log(["$scope.curUserId",$scope.curUserId])
                 //获取登录账号（手机号）获取User信息
 		   		getUserInfo(currentUserName,
 		   			function(currentUserId){//User存在  根据用户id修改信息
@@ -244,7 +246,7 @@ var URLPort = URLPort();
 				   	$scope.shopaddress = false;
 				   	//查询用户的收获地址信息
 
-				   	$http.get(URLPort+"/users/"+$scope.curUserInfo.curUserId+"/shipping-addresses")
+				   	$http.get(URLPort+"/users/"+$scope.curUserId+"/shipping-addresses")
 				   	.success(function(data){
 		            	
 		            	if(data.length>0){
@@ -313,8 +315,8 @@ var URLPort = URLPort();
    $scope.addAddress = function(defaultAddress){
     console.log(["$scope.firstAddressInput.provinceInfo", $scope.firstAddressInput.provinceInfo]);
    
-   	$http.post(URLPort+"/users/"+$scope.curUserInfo.curUserId+"/shipping-addresses",{
-	   		"user_id": $scope.curUserInfo.curUserId,
+   	$http.post(URLPort+"/users/"+$scope.curUserId+"/shipping-addresses",{
+	   		"user_id": $scope.curUserId,
 	        "name": $scope.firstAddressInput.name,
 	        "state": $scope.firstAddressInput.provinceInfo.name,
 	        "state_code": $scope.firstAddressInput.provinceInfo.code,
@@ -377,7 +379,7 @@ var URLPort = URLPort();
    	
    $scope.deleteAddress = function(){
    	   
-   		$http.delete(URLPort+"/users/"+$scope.curUserInfo.curUserId+"/shipping-addresses/18")
+   		$http.delete(URLPort+"/users/"+$scope.curUserId+"/shipping-addresses/18")
    	   	.success(function(){
    	    	console.log("删除地址成功");
    	    	$scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
@@ -416,7 +418,7 @@ var URLPort = URLPort();
    	console.log(["$stateParams.brandid",$stateParams.brandid]);
    	$http.post(URLPort+"/trades",
    		{
-   		   "buyer_user_id": $scope.curUserInfo.curUserId,
+   		   "buyer_user_id": $scope.curUserId,
    		   "bring_guider_id": 12,
    		   "brand_id": parseInt($stateParams.brandid),
    		   "buyer_memo": $scope.buyerMessage.buyer_memo,
@@ -455,7 +457,7 @@ var URLPort = URLPort();
    	)
    	.success(function(data){
    		console.log(["提交订单成功",data]);
-   		$state.go("payWay")
+   		$state.go("orderList")
    	})
    	.error(function(data){
    		console.log(["提交订单失败",data]);

@@ -18,50 +18,50 @@
     </div>
 
     <ion-content class="orderlist-content">
-    <!--   <ion-refresher
+      <ion-refresher
       pulling-text="下拉更新..."
-      on-refresh="pageFunc.refreshproductList()">
-      </ion-refresher> -->
-      <div class="statusWrap backf8">
+      on-refresh="refreshproductList()">
+      </ion-refresher>
+      <div class="statusWrap backf8" ng-repeat="item in productListData">
           <div class="status backf8">
-              <div class="status-name countDel">待发货</div>
+              <div class="status-name countDel">{{item.statusCN}}</div>
               <div class="edit">
               <i class="iconfont icon-shijian"></i>
               剩余32小时23分24秒 </div>
               <div class="clearBoth"></div>
           </div> 
-          <ul class="list marginbt0">
-              <li class="item item-checkbox product-item backf8" ng-repeat="item in productData">
+          <ul class="list marginbt0" ng-repeat="order in item.orders">
+              <li class="item item-checkbox product-item backf8">
                  <label class="checkbox disnone">
                    <input type="checkbox" ng-model="choose">
                  </label>
                 <img src="assets/images/pic1.png" class="product-img">
                 <div class="paramenters">
-                    <div class="name">{{item.title}}</div>
-                    <div class="paras">{{item.sku_properties_name}}</div>
+                    <div class="name">{{order.title}}</div>
+                    <div class="paras">{{order.sku_properties_name}}</div>
                 </div>
-                <span class="price">￥{{item.price}}</span>
-                <div class="countNum">X1
+                <span class="price">￥{{order.price}}</span>
+                <div class="countNum">X{{order.num}}
                 </div>
               </li>
           </ul>
           <div class="perAccount backf8">
-            <div class="account"><span class="heji">合计：</span>￥1234.00</div>
+            <div class="account"><span class="heji">合计：</span>{{item.total_fee | currency:"￥":2}}</div>
             <div class="time">2015-11-26 15:33:33</div>
             <div class="clearBoth"></div>
           </div>
       </div>
 
-      <div class="statusWrap backf8">
+     <!--  <div class="statusWrap backf8" ng-repeat="item in productListData">
           <div class="status backf8">
-              <div class="status-name countDel">待发货</div>
+              <div class="status-name countDel">待付款</div>
               <div class="edit">
               <i class="iconfont icon-shijian"></i> 剩余32小时23分24秒</div>
               <div class="clearBoth"></div>
           </div>
           
           <ul class="list marginbt0">
-              <li class="item item-checkbox product-item backf8" ng-repeat="item in productData">
+              <li class="item item-checkbox product-item backf8">
                  <label class="checkbox disnone">
                    <input type="checkbox" ng-model="choose">
                  </label>
@@ -80,21 +80,21 @@
             <div class="time">2015-11-26 15:33:33</div>
             <div class="clearBoth"></div>
           </div>
-      </div>
+      </div> -->
 
 
 
 
 
-    <!-- 
+    
     <ion-infinite-scroll
-      ng-if="pageData.isHaveMoreData"
-      icon="ion-loading-c"
-      on-infinite="pageFunc.loadMoreData()"
-      distance="20%"
-      spinner="ios"
+      ng-if="hasMoreOrder"
+      immediate-check = "false"
+    
+      on-infinite="loadMoreData()"
+      distance="10%"
       >
-    </ion-infinite-scroll> -->
+    </ion-infinite-scroll>
     </ion-content>
   <!--   这个切换其实是2个页面 不是页面内切换的
     一个是购物车页cart   应该是订单列表 order → order-list -->
