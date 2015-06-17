@@ -103,8 +103,9 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 })
 
 
-$scope.refundfunc = function(tid){
-	$state.go("returnApply",{tid:tid});
+$scope.refundfunc = function(tid,oid){
+	console.log(["oid",oid])
+	$state.go("returnApply",{tid:tid,oid:oid});
 }
 
 

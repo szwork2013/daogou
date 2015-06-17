@@ -2,6 +2,7 @@
 
 angular.module('goodsReturn',['ionic'])
 .controller('returnApplyCtrl',['$scope','$log','$http','checklocalimg','$stateParams','URLPort','$state',function($scope,$log,$http,checklocalimg,$stateParams,URLPort,$state){
+	console.log(["$stateParams.oid",$stateParams.oid])
 	console.log(["$stateParams.tid",$stateParams.tid])
     var URLPort = URLPort();
     $http.get(URLPort+"/trades/"+$stateParams.tid+"/refunds")
