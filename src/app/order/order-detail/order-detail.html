@@ -5,25 +5,25 @@
               <div class="order-status">
                    <div class="iconfont icon-dingdan order-img"></div>
                    <span class="order-infos">
-                         <span>已发货</span><br/>
-                         <span>订单金额（含运费）: ¥ 1482.00</span><br/>
-                         <span>运费: ¥ 0.00</span>
+                         <span>{{orderDetailData.statusCN}}</span><br/>
+                         <span>订单金额（含运费）: {{orderDetailData.total_fee|currency:"￥":2}}</span><br/>
+                         <span>运费: {{orderDetailData.post_fee|currency:"￥":2}}</span>
                    </span>
                    <div class="clearBoth"></div>
               </div>
-              <div class="receiver-infos">
+              <div class="receiver-infos" ng-show="expressReceiver">
                    <div class="iconfont icon-dingwei receiver-img font23"></div>
                    <span class="receiver-info">
                          <div class="font15">
-                              <span class="floatL">收货人：李志伟</span>        
-                              <span class="floatR">18094705373</span> 
+                              <span class="floatL">收货人：{{orderDetailData.receiver_name}}</span>        
+                              <span class="floatR">{{orderDetailData.receiver_mobile}}</span> 
                               <div class="clearBoth"></div>
                          </div>
-                         <span>收货地址：长宁区 杨宅路255号新发现财富园5幢 4楼   </span>
+                         <span>收货地址：{{orderDetailData.receiver_state}}&nbsp;{{orderDetailData.receiver_city}}&nbsp;{{orderDetailData.receiver_district}}&nbsp;{{orderDetailData.receiver_address}}   </span>
                    </span>
                    <div class="clearBoth"></div>
               </div>
-              <div class="receiver-infos">
+              <div class="receiver-infos" ng-show="fetchReceiver">
                    <div class="iconfont icon-dingwei receiver-img font23"></div>
                    <span class="receiver-info">
                          <div class="font15">
@@ -46,7 +46,7 @@
                    </span>
                    <div class="clearBoth"></div>
               </div>
-              <div class="receiver-infos">
+              <div class="receiver-infos" ng-show="fetchshop">
                    <div class="iconfont icon-dingwei receiver-img font23 novisible"></div>
                    <span class="receiver-info">
                          <div class="font15">
@@ -58,7 +58,7 @@
                    <div class="clearBoth"></div>
               </div>
 
-              <div class="receiver-infos">
+              <div class="receiver-infos" ng-show="fetchQRcode">
                    <div class="erweima-wrap">
                       <img class="erweima floatL margin-r15" src="assets/images/erweima.png"/>
                       <div class="floatL">
@@ -70,7 +70,7 @@
                    </div>
               </div>
 
-              <div class="wuliu-infos">
+              <div class="wuliu-infos" ng-show="logistics">
                    <div class="wuliu-img"></div>
                    <span class="wuliu-infos">
                          <span class="font15">物流信息</span><br/>
@@ -82,23 +82,23 @@
           </div>
           <div class="statusWrap">
                 <ul class="list marginbt0">
-                    <li class="item item-checkbox product-item backfff" ng-repeat="item in productData">
+                    <li class="item item-checkbox product-item backfff" ng-repeat="item in orderDetailData.orders">
                       <img src="assets/images/pic1.png" class="product-img">
                       <div class="paramenters">
                           <div class="name">{{item.title}}</div>
                           <div class="paras">{{item.sku_properties_name}}</div>
                       </div>
-                      <span class="price">￥{{item.price}}</span>
-                      <div class="countNum">X1</div>
-                      <div class="sale-return"  ng-show="1">退货</div>
-                      <div class="on-sale-return" ng-show="0">退货中</div>
+                      <span class="price">{{item.price|currency:"￥":2}}</span>
+                      <div class="countNum">X{{item.num}}</div>
+                      <div class="sale-return"  ng-show="refund" ng-click="refundfunc(orderDetailData.tid)">退货</div>
+                      <div class="on-sale-return" ng-show="refunding">退货中</div>
                     </li>
                 </ul>
                 <div class="summary">
                         品牌：Lily商务时装 <br/>
-                        订单号：2323212232324344354546 <br/>
-                        付款方式：微信支付 <br/>
-                        交易号：2323212232
+                        订单号：{{orderDetailData.tid}} <br/>
+                        <span ng-show="payWay">付款方式：{{orderDetailData.pay_typeCN}}</span><br/>
+                        <span ng-show="payNo">交易号：2323212232</span>
                 </div>
           </div>
       </ion-content>
@@ -117,7 +117,7 @@
       </div>
 
 
-      <ion-footer-bar align-title="left" class="footer">
+      <ion-footer-bar align-title="left" class="footer" ng-show="deleteOrder">
         <ul class="list footerul">
               <li class="item item-checkbox footerli">
                  <button class="delcount">删除订单</button>
@@ -125,6 +125,31 @@
           </ul>
          
       </ion-footer-bar>
+
+      <ion-footer-bar align-title="left" class="footer" ng-show="cancelpayOrder">
+        <ul class="list footerul">
+              <li class="item item-checkbox footerli">
+                <button class="delcount backred colorfff" ui-sref="payWay">立即付款</button>
+                <button class="delcount" ui-sref="orderList">取消订单</button>
+                
+              </li>
+            
+          </ul>
+         
+      </ion-footer-bar>
+
+      <ion-footer-bar align-title="left" class="footer" ng-show="cancelOrder">
+        <ul class="list footerul">
+              <li class="item item-checkbox footerli">
+                
+                <button class="delcount" ui-sref="orderList">取消订单</button>
+                
+              </li>
+            
+          </ul>
+         
+      </ion-footer-bar>
+
 
   <!--   这个切换其实是2个页面 不是页面内切换的
     一个是购物车页cart   应该是订单列表 order → order-list -->

@@ -8,18 +8,18 @@
                 </div>
                 
                 <ul class="list marginbt0">
-                    <li class="item item-checkbox product-item backfff" ng-repeat="item in productData">
+                    <li class="item item-checkbox product-item backfff" ng-repeat="item in refundData.details">
                        <label class="checkbox disnone">
                          <input type="checkbox" ng-model="choose">
                        </label>
                       <i class="iconfont icon-gou bggou graygou font24 selected-img"></i>
-                      <img src="assets/images/pic1.png" class="product-img">
+                      <img ng-src="{{item.pic}}" class="product-img">
                       <div class="paramenters-select">
                           <div class="name">{{item.title}}</div>
                           <div class="paras">{{item.sku_properties_name}}</div>
                       </div>
-                      <span class="price">￥{{item.price}}</span>
-                      <div class="countNum">X1
+                      <span class="price">{{item.price|currency:"￥":2}}</span>
+                      <div class="countNum">X{{item.item_num}}
                       </div>
                     </li>
                 </ul>
@@ -41,7 +41,7 @@
                     <div class="prompt">补充描述</div>
                     <input class="text"/>
                 </div>
-                <div class="commonBtn backred" ui-sref="returnOrderDetail">提交</div>
+                <div class="commonBtn backred" ng-click="goRefundState()">提交</div>
           </div>
 
       </ion-content>
