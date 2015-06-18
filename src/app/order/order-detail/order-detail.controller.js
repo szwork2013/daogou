@@ -32,7 +32,7 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 	// shipping_type: "express"
 	if(data.status==="WAIT_BUYER_PAY"){
 		data.statusCN = "待付款";
-		if(data.shipping_type==="express"){
+		if(data.shipping_type==="EXPRESS"){
 			$scope.expressReceiver = true;
 		}else if(data.shipping_type==="FETCH"){
 			$scope.fetchReceiver = true;
@@ -45,7 +45,7 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 		data.statusCN = "待卖家发货（快递发货 买家已付款）";
 		$scope.expressReceiver = true;//快递方式收货人地址模块
 		$scope.cancelOrder = true;//取消订单
-		$scope.refund = true;//商品列表上的退款按钮
+		// $scope.refund = true;//商品列表上的退款按钮
 		// $scope.refunding = true;//商品列表上的退款中按钮
 		$scope.payWay = true;//付款方式
 		$scope.payNo = true;//交易号
@@ -68,7 +68,7 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 		$scope.cancelOrder = true;
 	}else if(data.status==="TRADE_FINISHED"){
 		data.statusCN = "已完成";
-		if(data.shipping_type==="express"){
+		if(data.shipping_type==="EXPRESS"){
 			$scope.expressReceiver = true;
 			$scope.logistics = true;//物流信息
 		}else if(data.shipping_type==="FETCH"){
@@ -82,17 +82,34 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 		$scope.payNo = true;//交易号
 	}else if((data.status==="TRADE_CLOSED_BY_SYSTEM")||(data.status==="TRADE_CLOSED_BY_SELLER")||(data.status==="TRADE_CLOSED_BY_BUYER")||(data.status==="TRADE_CLOSED_BY_SPLIT")){
 		data.statusCN = "已关闭";
-		if(data.shipping_type==="express"){
+		if(data.shipping_type==="EXPRESS"){
 			$scope.expressReceiver = true;
 			$scope.logistics = true;//物流信息
 		}else if(data.shipping_type==="FETCH"){
 			$scope.fetchReceiver = true;
 			$scope.fetchshop = true;//门店自取门店地址信息
+			console.log(["typeof(data.receive_guider_id)",typeof(data.receive_guider_id)])
+			if(typeof(data.receive_guider_id)==="undefined"){
+				$scope.fetchshop = false;//门店自取门店地址信息
+			}
 		}
 		$scope.deleteOrder = true;//删除订单
 		$scope.payWay = true;//付款方式
 		$scope.payNo = true;//交易号
 	}
+
+	//根据导购编号和品牌编号获取导购名和工作号
+	if(data.receive_guider_id){
+		$http.get(URLPort+"/brands/"+data.brand_id+"/guiders/"+data.receive_guider_id+"/details")
+		.success(function(data){
+			console.log(["获取导购信息成功",data]);
+			$scope.guiderData = data;
+		})
+		.error(function(data){
+			console.log(["获取导购信息失败",data])
+		})
+	}
+	
 
 
 	$scope.orderDetailData = data;

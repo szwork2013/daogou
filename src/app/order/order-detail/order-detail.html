@@ -27,13 +27,13 @@
                    <div class="iconfont icon-dingwei receiver-img font23"></div>
                    <span class="receiver-info">
                          <div class="font15">
-                              <span class="floatL">取货人：李志伟</span>        
-                              <span class="floatR">18094705373</span> 
+                              <span class="floatL">取货人：{{orderDetailData.fetch_name}}</span>        
+                              <span class="floatR">15025858989</span> 
                               <div class="clearBoth"></div>
                          </div>
-                         <span>取货门店：上海市淮海中路店 </span>
+                         <span>取货门店：{{orderDetailData.fetch_store_name}} </span>
                          <div>
-                              <span class="floatL width78">取货地址：淮海中路255号淮海中路255号淮海中路255号</span>        
+                              <span class="floatL width78">取货地址：{{orderDetailData.fetch_state}}&nbsp;{{orderDetailData.fetch_city}}&nbsp;{{orderDetailData.fetch_district}}&nbsp;{{orderDetailData.fetch_address}}&nbsp;</span>        
                               <span class="floatR colorBlue2">获取路线</span> 
                               <div class="clearBoth"></div>
                          </div>
@@ -42,7 +42,7 @@
                               <span class="floatR colorBlue2">拨号</span> 
                               <div class="clearBoth"></div>
                          </div>
-                         <span>预约时间：2015-04-18 12:00-14:00 </span>
+                         <span>预约时间：{{orderDetailData.fetch_subscribe_begin_time}}&nbsp;{{orderDetailData.fetch_subscribe_end_time}} </span>
                    </span>
                    <div class="clearBoth"></div>
               </div>
@@ -50,20 +50,20 @@
                    <div class="iconfont icon-dingwei receiver-img font23 novisible"></div>
                    <span class="receiver-info">
                          <div class="font15">
-                              <span>取货门店：上海市淮海中路店</span>        
+                              <span>取货门店：{{orderDetailData.fetch_store_name}}</span>        
                          </div>
-                         <span>接待导购：曾丽 34343344555</span><br/>
-                         <span>预约时间：2015-04-18 12:00-14:00 </span>
+                         <span>接待导购：{{guiderData.full_name}}&nbsp;{{guiderData.work_no}}</span><br/>
+                         <span>取货时间：{{orderDetailData.fetch_time}} </span>
                    </span>
                    <div class="clearBoth"></div>
               </div>
 
               <div class="receiver-infos" ng-show="fetchQRcode">
                    <div class="erweima-wrap">
-                      <img class="erweima floatL margin-r15" src="assets/images/erweima.png"/>
+                      <img class="erweima floatL margin-r15" ng-src="{{orderDetailData.fetch_qrcode_url}}"/>
                       <div class="floatL">
                           <span>请在取货时向店员出示此码</span><br/>
-                          <span class="font18">2323 2454 454123</span><br/>
+                          <!-- <span class="font18">2323 2454 454123</span><br/> -->
                           <span class="colorRed">切勿透露他人以防冒取</span>
                       </div>
                       <div class="clearBoth"></div>

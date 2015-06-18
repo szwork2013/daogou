@@ -8,7 +8,7 @@
                 </div>
                 
                 <ul class="list marginbt0">
-                    <li class="item item-checkbox product-item backfff" ng-repeat="item in refundData.details">
+                    <li class="item item-checkbox product-item backfff" ng-repeat="item in refundData.details" ng-click="changeCheck($index)">
                        <label class="checkbox disnone">
                          <input type="checkbox" ng-model="choose">
                        </label>
@@ -19,28 +19,32 @@
                           <div class="paras">{{item.sku_properties_name}}</div>
                       </div>
                       <span class="price">{{item.price|currency:"￥":2}}</span>
-                      <div class="countNum">X{{item.item_num}}
+                      <div class="countNum">{{item.selectedOid}}X{{item.item_num}}
                       </div>
                     </li>
                 </ul>
                 <div class="prompt-text">
                     <div class="prompt">退货原因（必选）</div>
-                    <input class="text"/>
+                    <input class="text" ng-model="refundInputInfo.buyer_memo"/>
                 </div>
                 <div class="prompt-text">
                     <div class="prompt">退货渠道（必选）</div>
-                    <input class="text"/>
+                    <!-- <input class="text"/> -->
+                   
+                    <select id="shippingType"  ng-model="refundInputInfo.shipping_type" ng-options="shippingType.shipping_typeCN for shippingType in shippingData" ng-change="provinceSelect(firstAddressInput.provinceInfo)">
+                    </select>
                 </div>
                 <div class="prompt-text">
                     <div class="prompt">图片</div>
                     <img src="assets/images/addImg.png" id="img1" class="img" ng-click="uploadImg('img1')"/>
                     <img src="assets/images/addImg.png" id="img2" class="img"  ng-click="uploadImg('img2')"/>
                     <img src="assets/images/addImg.png" id="img3" class="img"  ng-click="uploadImg('img3')"/>
+                    {{picuel1}}
                 </div>
-                <div class="prompt-text">
+               <!--  <div class="prompt-text">
                     <div class="prompt">补充描述</div>
                     <input class="text"/>
-                </div>
+                </div> -->
                 <div class="commonBtn backred" ng-click="goRefundState()">提交</div>
           </div>
 

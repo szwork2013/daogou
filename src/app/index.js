@@ -65,9 +65,9 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 		controller: 'returnApplyCtrl'
 	})
 	.state('returnOrderDetail', {
-		url: '/returnOrderDetail',
+		url: '/returnOrderDetail/:id',
 		templateUrl: 'app/return-goods/return-order-detail.html',
-		controller: 'orderListCtrl'
+		controller: 'returnOrderDetailCtrl'
 	})
 	.state('logisticsInfo', {
 		url: '/logisticsInfo',
