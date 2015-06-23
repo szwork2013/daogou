@@ -38,7 +38,8 @@ servicesFactory.factory('checklocalimg', function(){
 		// $rootScope.URLPort = "http://yunwan2.3322.org:57099";
 		// return $rootScope.URLPort ;
 		// return "http://192.168.51.191:3000"
-		return "http://yunwan2.3322.org:57099"
+		// return "http://yunwan2.3322.org:57099"
+		return "";
 	};
 
 }])
