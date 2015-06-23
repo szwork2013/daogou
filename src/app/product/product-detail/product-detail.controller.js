@@ -25,6 +25,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 
 		$log.debug(['$scope.productDetailData',$scope.productDetailData.skus]);
 		
+		console.log(["$scope.productDetailData.skus.length",$scope.productDetailData.skus.length])
 		var propertyArr = $scope.productDetailData.skus[0].properties.split(';');//propertyArr.length规格种类
 			$scope.productDetailData.specification = [];//$scope上添加的存放规格种类以及内容的数组。
 			for(var idx in propertyArr){

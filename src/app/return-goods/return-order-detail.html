@@ -4,26 +4,26 @@
           <div class="statusWrap backfff padding-bt20">
                 <div class="shop">
                     <div class="shop-name countDel">退货商品</div>
-                    <div class="return-saler">等待卖家同意</div>
+                    <div class="return-saler">{{refundOrderData.statusCN}}</div>
                     <div class="clearBoth"></div>
                 </div>
                 
                 <ul class="list marginbt0" ng-class="{'border-bt':1}">
-                    <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                    <li class="item item-checkbox product-item" ng-repeat="item in refundOrderData.details">
                        <label class="checkbox disnone">
                          <input type="checkbox" ng-model="choose">
                        </label>
-                      <img src="assets/images/pic1.png" class="product-img">
+                      <img ng-src="{{item.pic}}" class="product-img">
                       <div class="paramenters">
                           <div class="name">{{item.title}}</div>
                           <div class="paras">{{item.sku_properties_name}}</div>
                       </div>
-                      <span class="price">￥{{item.price}}</span>
-                      <div class="countNum">X1
+                      <span class="price">{{item.price | currency:"￥":2}}</span>
+                      <div class="countNum">X{{item.num}}
                       </div>
                     </li>
                 </ul>
-                <div class="return-item">
+                <div class="return-item" ng-show="fetchAddress">
                      <div class="addressInfo">
                      <span class="font14">请前往以下门店退货</span>
                         <div>
@@ -39,8 +39,18 @@
                       
                     </div>
                 </div>
-    
-                 <div class="return-item">
+                
+                <div class="return-item" ng-show="fetchSuccess">
+                     <div class="addressInfo">
+                         <span class="font14">退货门店</span><br/>
+                         <span>中山公园龙之梦店，021-54347586  </span><br/>
+                         <span>上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</span>
+                         <span>退货时间：2015-03-03 12：00</span>
+                         <span>接待导购：曾莉 23456789</span>
+                    </div>
+                </div>
+
+                <div class="return-item" ng-show="fetchQRcode">
                     <div class="erweima-wrap">
                        <img class="erweima floatL margin-r15" src="assets/images/erweima.png"/>
                        <div class="floatL">
@@ -52,37 +62,50 @@
                     </div>
                 </div>
                 
-                <div class="return-item">
+                <div class="return-item" ng-show="expressAddress">
                   请将要退的商品寄至以下地址并填写物流信息<br/>
                   退货地址：长宁区杨宅路255号新发现才富园<br/>  
                   收件人：李志伟<br/> 
                   联系电话：13034343545 
                 </div>
-                <div class="return-item">
+                <div class="return-item" ng-show="logisticInfo">
                   物流信息提交时间：2015-02-15 12：34：56<br/>
                   快递公司：顺丰快递<br/> 
                   快递单号：2343435454645656232
                 </div>
                 <div class="returnReason" ng-class="{'margin-tp10':1}">
                   <span>提交时间：2015-02-15 12：34：56</span><br/>
-                  <span>退款原因：不想要了 </span><br/>
-                  <span>证明图片：</span><br/>
-                  <img src="assets/images/pic1.png" class="return-imgs">
-                  <img src="assets/images/pic1.png" class="return-imgs">
-                  <img src="assets/images/pic1.png" class="return-imgs"><br/>
-                  <span>补充描述：就是不想要了</span><br/>
+                  <span ng-show="refundReason">退款原因：{{refundOrderData.buyer_memo}} </span><br/>
+                  <span ng-show="refundpics">证明图片：</span><br/>
+
+                  <img ng-show="refundpics" ng-src="{{item}}" class="return-imgs" ng-repeat="item in refundpicUrls">
                 </div>
           </div>
 
       </ion-content>
 
-      <ion-footer-bar align-title="left" class="footer">
+      <ion-footer-bar align-title="left" class="footer"  ng-show="cancelRefundInputlogis">
         <ul class="list footerul">
               <li class="item item-checkbox footerli">
                  <button class="delcount">取消退货</button>
+                 <button class="delcount backred colorfff" ui-sref="logisticsInfo">填写退货物流信息</button>
+              </li>
+          </ul>
+      </ion-footer-bar>
+
+      <ion-footer-bar align-title="left" class="footer"  ng-show="cancelRefund">
+        <ul class="list footerul">
+              <li class="item item-checkbox footerli">
+                 <button class="delcount">取消退货</button>
+              </li>
+          </ul>
+      </ion-footer-bar>
+
+      <ion-footer-bar align-title="left" class="footer"  ng-show="changeLogistic">
+        <ul class="list footerul">
+              <li class="item item-checkbox footerli">
                  <button class="delcount backred colorfff" ui-sref="logisticsInfo">修改退货物流信息</button>
               </li>
           </ul>
-         
       </ion-footer-bar>
 </ion-view>

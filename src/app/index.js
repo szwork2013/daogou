@@ -60,14 +60,14 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 		controller: 'orderDetailCtrl'
 	})
 	.state('returnApply', {
-		url: '/returnApply',
+		url: '/returnApply/:tid/:oid',
 		templateUrl: 'app/return-goods/return-apply.html',
 		controller: 'returnApplyCtrl'
 	})
 	.state('returnOrderDetail', {
-		url: '/returnOrderDetail',
+		url: '/returnOrderDetail/:id',
 		templateUrl: 'app/return-goods/return-order-detail.html',
-		controller: 'orderListCtrl'
+		controller: 'returnOrderDetailCtrl'
 	})
 	.state('logisticsInfo', {
 		url: '/logisticsInfo',

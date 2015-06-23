@@ -24,7 +24,7 @@ var URLPort = URLPort();
 // 	console.log(["查询消费者的订单列表失败",data]);
 // })
 console.log(["$rootScope.curUserID",$rootScope.curUserID]);
-$rootScope.curUserID = 18;
+$rootScope.curUserID = 4;
 $scope.productListData = [];
 var pageindex = 1;
 var pagesize = 5;
@@ -42,6 +42,24 @@ function getOrderListFunc(){
 			data[i].testnummmmmmmmmm = parseInt((pageindex-1)*pagesize) + parseInt(i)+1 ; //测试后期删掉
 	 		if(data[i].status==="WAIT_BUYER_PAY"){
 				data[i].statusCN = "待付款";
+			}else if(data[i].status==="SELLER_CONSIGNED_PART"){
+				data[i].statusCN = "卖家部分发货";
+			}else if(data[i].status==="WAIT_SELLER_SEND_GOODS"){
+				data[i].statusCN = "待发货";
+			}else if(data[i].status==="WAIT_BUYER_CONFIRM_GOODS"){
+				data[i].statusCN = "待签收";
+			}else if(data[i].status==="WAIT_BUYER_FETCH_GOODS"){
+				data[i].statusCN = "待取货";
+			}else if(data[i].status==="TRADE_FINISHED"){
+				data[i].statusCN = "已完成";
+			}else if(data[i].status==="TRADE_CLOSED_BY_SYSTEM"){
+				data[i].statusCN = "已关闭，系统自动关闭交易";
+			}else if(data[i].status==="TRADE_CLOSED_BY_SELLER"){
+				data[i].statusCN = "已关闭，卖家关闭交易";
+			}else if(data[i].status==="TRADE_CLOSED_BY_BUYER"){
+				data[i].statusCN = "已关闭，买家关闭交易";
+			}else if(data[i].status==="TRADE_CLOSED_BY_SPLIT"){
+				data[i].statusCN = "已关闭，订单被拆分后关闭交易";
 			}
 	    }
 

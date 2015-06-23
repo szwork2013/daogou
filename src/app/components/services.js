@@ -80,6 +80,19 @@ servicesFactory.factory('checklocalimg', function(){
 			ecallback(data, status, headers, config);
 		});
 	};
+	/*
+	通用get方法
+	*/
+	daogouAPI.prototype.post = function(url,scallback,ecallback) {
+		$http.post(url)
+		.success(function(data, status, headers, config){
+			scallback(data, status, headers, config);
+		})
+		.error(function(data, status, headers, config){
+			ecallback(data, status, headers, config);
+		});
+	};
+
 
 	/*  
 	查询消费者的订单列表
@@ -100,8 +113,30 @@ servicesFactory.factory('checklocalimg', function(){
 	};
 
 
+	/*  
+	提交退货信息
+	actionurl 接口
+	dataobj(接口数据)  {object}   [必填]
+	scallback 成功的回调函数 {function} [必填]
+	ecallback 失败的回调函数 {function} [必填]
+	*/
+	daogouAPI.prototype.submitRefundInfo = function(actionurl,dataobj,scallback,ecallback) {
+		var action=actionurl;
+		var data={
+			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
+			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5,
+			show_orders: typeof dataobj.show_orders === 'boolean' ? dataobj.show_orders : false
+		};
+		
+		this.post(this.apiurl(action,data),scallback,ecallback);
+	};
+
+
+
 
 	return new daogouAPI();
 })
+
+
 
 ;
