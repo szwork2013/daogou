@@ -13,7 +13,7 @@
 //   })
 // ;
 
-angular.module('daogou',['ionic','servicesFactory','product','cart','order','orderList','createOrder','goodsReturn','payWay','guide'])
+angular.module('daogou',['ionic','servicesFactory','product','cart','order','orderList','createOrder','goodsReturn','payWay','guide','login'])
 .run(['$ionicPlatform', function($ionicPlatform){
   	$ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard

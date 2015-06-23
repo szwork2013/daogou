@@ -42,8 +42,24 @@ servicesFactory.factory('checklocalimg', function(){
 	};
 
 }])
+//判断是否登录  写在daogouAPI中是否更合适
+// .factory('judgeLogin', ['$http','URLPort', function($http,URLPort){
+// 	var URLPort = URLPort();
 
-
+// 	return  function judgeLogin(callback,callbackerror){
+//    		$http.get(URLPort+"/accounts/current")//获得当前登录账号
+//    		.success(function(data){
+//    			//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
+//    			console.log(["用户已登录,获得当前登录用户账号",data]);
+//    			callback();
+//    		})
+//    		.error(function(data){
+//    			//如果未登录,显示登录框，进行登录
+//    			console.log(["用户未登录,没获得当前登录用户账号",data]);
+//    			callbackerror();
+//    		})
+//   	 } 
+// }])
 
 .factory('daogouAPI', function($http,$log,URLPort){
 	function daogouAPI(){
@@ -111,6 +127,17 @@ servicesFactory.factory('checklocalimg', function(){
 		
 		this.get(this.apiurl(action,data),scallback,ecallback);
 	};
+	daogouAPI.prototype.daogouProductList = function(actionurl,dataobj,scallback,ecallback) {
+		var action=actionurl;
+		var data={
+			guiderId: dataobj.guiderId,
+			brandId: dataobj.brandId,
+			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
+			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
+		};
+		
+		this.get(this.apiurl(action,data),scallback,ecallback);
+	};
 
 
 	/*  
@@ -132,10 +159,22 @@ servicesFactory.factory('checklocalimg', function(){
 	};
 
 
+///accounts/current 类似于这种请求地址，没有？。。。后面的参数也不带 {}
+	daogouAPI.prototype.getshortUrl = function(url,callback,callbackerror){
+   		$http.get(url)
+   		.success(function(data){
+   			callback(data);
+   		})
+   		.error(function(data){
+   			callbackerror(data);
+   		})
+  	 };
+
 
 
 	return new daogouAPI();
 })
+
 
 
 

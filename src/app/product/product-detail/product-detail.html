@@ -12,16 +12,16 @@
 			<div class="title">{{productDetailData.title}}</div>
 			<div class="price">{{productDetailData.price|currency:"￥":2}}</div>
 			<div ng-repeat = "item in productDetailData.specification">
-				<sapn class="graya3">{{item.key}}：</sapn><span>{{item.val}}</span>
+				<span class="graya3">{{item.key}}：</span><span>{{item.val}}</span>
 			</div>
 			<div>
-				<sapn class="graya3">剩余：</sapn><span>{{productDetailData.num}}</span>
+				<span class="graya3">剩余：</span><span>{{productDetailData.num}}</span>
 			</div>
 			<div>
-				<sapn class="graya3">运费：</sapn><span>{{productDetailData.freight|currency:"￥":2}}</span>
+				<span class="graya3">运费：</span><span>{{productDetailData.freight|currency:"￥":2}}</span>
 			</div>
 			<div>
-				<sapn class="graya3">服务：</sapn><span>支持专卖店取货 </span>
+				<span class="graya3">服务：</span><span>支持专卖店取货 </span>
 			</div>
 		</div>
 	    <div class="productPicWrap">
@@ -38,10 +38,10 @@
 		<div class="daogouImgWarp">
 			<div class="iconfont icon-wo daogouImg2"></div>
 			<span class="daogouImgTxt">个人中心</span>
-			<div class="iconfont icon-dianpu daogouImg2"></div>
-			<span class="daogouImgTxt">导购橱窗</span>
-			<div class="iconfont icon-gouwuche daogouImg2" ui-sref="cart"></div>
-			<span class="daogouImgTxt" ui-sref="cart">购物车</span>
+			<div class="iconfont icon-dianpu daogouImg2" ng-click="guide()"></div>
+			<span class="daogouImgTxt" ng-click="guide()">导购橱窗</span>
+			<div class="iconfont icon-gouwuche daogouImg2" ng-click="cart()"></div>
+			<span class="daogouImgTxt" ng-click="cart()">购物车</span>
 			<div class="redPointCart"></div>
 		</div>
 		<!-- 此处有交互，点击小圆出 购物车按钮，导购橱窗(商品列表)，个人中心(订单列表) -->
@@ -92,10 +92,26 @@
 				<div class="clearBoth"></div>
 		</div>
 		<div class="nextStep" ng-click="goToOrder()" ng-class="{disnone:goOrder}">下一步order</div>
-		<div class="nextStep" ui-sref="cart"  ng-class="{disnone:goCart}">下一步cart</div>
+		<div class="nextStep" ng-click="goToCart()"  ng-class="{disnone:goCart}">下一步cart</div>
 	</div>
 
-
+<div style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;"  ng-show="login">
+	<div class="pay-way">
+	    <div class="total-cost backfff border-tp height80">
+	      请验证您的手机
+	    </div>
+	    <div class="statusWrap">
+	        <div class="way-item">
+	             <input class="inputclass" placeholder="请输入手机号码" ng-model="mainData.telenum"/>
+	        </div>
+	        <div class="way-item posRelative">
+	             <input class="inputclass" placeholder="验证码"  ng-model="mainData.verificationCode"/>
+	             <div class="yanzhengma" ng-click="verify()">获取验证码</div>
+	        </div>
+	    </div>
+	    <div class="commonBtn backred marginBt0" ng-click="submit()">确认登录</div>
+	</div>
+</div>
 </ion-view>
 
 

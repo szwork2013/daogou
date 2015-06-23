@@ -68,12 +68,15 @@ angular.module('goodsReturn',['ionic'])
     	.success(function(data){
     		console.log(["提交退货成功",data]);
     		console.log(["退货编号data.id",data.id])
-    		$state.go("returnOrderDetail",{"id":data.id})
+    		data.id =  "33914552763954000";
+    		$state.go("returnOrderDetail",{"id":data.id});
     		
     	})
     	.error(function(data){
     		console.log(["提交退货成功",data])
     	})
+ 	// 	var fid="33914552763954000";
+		// $state.go("returnOrderDetail",{"id":fid})
     	
     }
 
@@ -188,6 +191,20 @@ angular.module('goodsReturn',['ionic'])
 	.error(function(data){
 		console.log(["获取订单的退货信息失败",data])
 	})
+
+
+	//根据导购编号和品牌编号获取导购名和工作号
+	if(data.receive_guider_id){
+		$http.get(URLPort+"/brands/"+data.brand_id+"/guiders/"+data.receive_guider_id+"/details")
+		.success(function(data){
+			console.log(["获取导购信息成功",data]);
+			$scope.guiderData = data;
+		})
+		.error(function(data){
+			console.log(["获取导购信息失败",data])
+		})
+	}
+	
 
 }])
 

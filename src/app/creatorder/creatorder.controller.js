@@ -239,7 +239,6 @@ var URLPort = URLPort();
 		   				})
 		   			})
 
-
 				   	//登录成功，登录模块隐藏，地址模块不影藏
 				   	$scope.loginhandle = true;
 				   	$scope.alladdress = false;
