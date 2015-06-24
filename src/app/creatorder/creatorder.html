@@ -103,13 +103,13 @@
           <!-- 实体店地址 -->
           <div class="addressInfo remarkpadding" ng-class="{disnone:allbuyeraddress}">
               <div>
-                  <span class="floatL width85">中山公园龙之梦店，021-54347586  </span>
+                  <span class="floatL width85">{{minDistance.name}}，021-54347586  </span>
                   <span class="colorBlue floatR font13" ui-sref="goodsShop">修改</span>
                   <div class="clearBoth"></div>
               </div>
               <div>
-                  <span class="font13 floatL width85">上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</span>
-                  <span class="font13 colorRed floatR">3.0km</span>
+                  <span class="font13 floatL width85">{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</span>
+                  <span class="font13 colorRed floatR">{{minDistance.distance}}km</span>
                   <div class="clearBoth"></div>
               </div>
           </div>
