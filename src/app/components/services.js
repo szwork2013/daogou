@@ -38,8 +38,8 @@ servicesFactory.factory('checklocalimg', function(){
 		// $rootScope.URLPort = "http://yunwan2.3322.org:57099";
 		// return $rootScope.URLPort ;
 		// return "http://192.168.51.191:3000"
-		// return "http://yunwan2.3322.org:57099"
-		return "";
+		return "http://yunwan2.3322.org:57099"
+		// return "";
 	};
 
 }])
@@ -133,6 +133,19 @@ servicesFactory.factory('checklocalimg', function(){
 		var data={
 			guiderId: dataobj.guiderId,
 			brandId: dataobj.brandId,
+			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
+			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
+		};
+		
+		this.get(this.apiurl(action,data),scallback,ecallback);
+	};
+
+	daogouAPI.prototype.shopAddress = function(actionurl,dataobj,scallback,ecallback) {
+		var action=actionurl;
+		var data={
+			user_id: dataobj.user_id,
+			longitude: dataobj.longitude,
+			latitude: dataobj.latitude,
 			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
 			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
 		};

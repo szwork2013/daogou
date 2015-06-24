@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('guide',['ionic'])
-.controller('guideCtrl',['$scope','$log','$http','daogouAPI','URLPort','$state',function($scope,$log,$http,daogouAPI,URLPort,$state){
+.controller('guideCtrl',['$scope','$log','$http','daogouAPI','URLPort','$state','$stateParams',function($scope,$log,$http,daogouAPI,URLPort,$state,$stateParams){
 	// $log.debug('creatorderCtrl');
 	// $http.get('assets/testdata/cart.json')
 	// .success(function(data){
@@ -15,8 +15,10 @@ angular.module('guide',['ionic'])
 	$scope.daogouProductListData = [];
 	var pageindex = 1;
 	var pagesize = 5;
-	var guiderId = 145;
-	var brandId = 1;
+	var guiderId = $stateParams.guideid;
+	// var guiderId = 145;
+	var brandId = $stateParams.brandid;
+	// var brandId = 1;
 	$scope.hasMoreOrder = true;
 
 	$http.get(URLPort+"/brands/"+brandId+"/guiders/"+guiderId+"/details")

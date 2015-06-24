@@ -4,7 +4,8 @@ var product = angular.module('product',['ionic']);
 product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort){
 	// $rootScope.URLPort = "http://yunwan2.3322.org:57095";
 	var URLPort = URLPort();
-
+	//导购id会传进来的
+	var bringGuiderId = 145;
 
 	$http.get(URLPort+"/items/"+$stateParams.detailId)
 	
@@ -257,7 +258,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 				"user_id":$scope.curUserId,
 				"sku_id" : $scope.productDetailData.skuid,
 				"num": $scope.productDetailData.buynum,
-				"bring_guider_id" : 4
+				"bring_guider_id" : bringGuiderId
             })
             .success(function(data){
             	console.log(["加入购物车成功",data]);
@@ -454,7 +455,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
    					"user_id":$scope.curUserId,
    					"sku_id" : $scope.productDetailData.skuid,
    					"num": $scope.productDetailData.buynum,
-   					"bring_guider_id" : 4
+   					"bring_guider_id" :bringGuiderId
    	            })
    	            .success(function(data){
    	            	console.log(["加入购物车成功",data]);
@@ -476,16 +477,28 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		}
 
 		$scope.guide = function(){
-			$state.go("guide")
+			$state.go("guide",{"guideid":bringGuiderId,"brandid":$scope.productDetailData.brand_id})
 		}
 		$scope.cart = function(){
 			$state.go("cart")
 		}
 
+		//测试地理位置 经纬度
+		// var x=document.getElementById("demo");
+		// $scope.getLocation = function(){
+		// 	  if (navigator.geolocation)
+		// 	    {
+		// 	    navigator.geolocation.getCurrentPosition(showPosition);
+		// 	    }
+		// 	  else{x.innerHTML="Geolocation is not supported by this browser.";}
+		// }
 
+		// function showPosition(position){
+		//   x.innerHTML="Latitude: " + position.coords.latitude + 
+		//   "<br />Longitude: " + position.coords.longitude;	
+		// }
 
-
-
+	 //    $scope.getLocation();
 
 
 })

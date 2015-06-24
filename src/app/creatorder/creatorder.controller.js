@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('createOrder',['ionic'])
-.controller('creatorderCtrl',['$rootScope','$scope','$log','$http','$state','URLPort','$stateParams',function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams){
+.controller('creatorderCtrl',['$rootScope','$scope','$log','$http','$state','URLPort','$stateParams','daogouAPI',function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI){
 	$log.debug('creatorderCtrl');
 	$scope.buytitle = $stateParams.title;
 	$scope.buyprice = $stateParams.price;
@@ -48,14 +48,26 @@ angular.module('createOrder',['ionic'])
            // 获取到当前位置经纬度  本例中是chrome浏览器取到的是google地图中的经纬度
            var lng = position.coords.longitude;
            var lat = position.coords.latitude;
-           console.log(["lng",lng]);
-           console.log(["lat",lat]);
+           console.log(["geolocation lng",lng]);
+           console.log(["geolocation lat",lat]);
 	     }
 		           
        function handleError(error){
-       	console.log("error")
+       	console.log("geolocation error")
        
        }
+
+      daogouAPI.shopAddress("store-fetch/brands/1/stores",{
+      		user_id:18,
+      		longitude:121.399411,
+      		latitude:31.168323
+      	},function(data, status, headers, config){
+      		console.log(["查询门店列表成功",data]);
+      	    
+      	},function(data, status, headers, config){
+      		console.log(["查询门店列表失败",data]);
+      	});
+
 	}
 //判断是否登录
    function judgeLogin(){
@@ -474,6 +486,9 @@ var URLPort = URLPort();
 			console.log(["退出失败",data]);
 		})
 	}
+
+
+
 
 
 }])

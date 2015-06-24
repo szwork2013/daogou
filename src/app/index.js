@@ -104,7 +104,7 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 		controller: 'creatorderCtrl'
 	})
 	.state('guide', {
-		url: '/guide',
+		url: '/guide/:guideid/:brandid',
 		templateUrl: 'app/guide/guide.html',
 		controller: 'guideCtrl'
 	})
