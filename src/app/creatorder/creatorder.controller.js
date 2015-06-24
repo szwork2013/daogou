@@ -56,12 +56,19 @@ createOrder.controller('creatorderCtrl',['$rootScope','$scope','$log','$http','$
        
        }
 
-      daogouAPI.shopAddress("store-fetch/brands/1/stores",{
+      daogouAPI.shopAddress("/brands/1/stores/store-fetch",{
       		user_id:18,
       		longitude:121.399411,
       		latitude:31.168323
       	},function(data, status, headers, config){
       		console.log(["查询门店列表成功",data]);
+      		var minIndex = 0;
+      		for(var i=0;i<data.length-1;i++){
+      			if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+      				minIndex = i+1;
+      			}
+      		}
+      		$scope.minDistance = data[minIndex]; 
       	    
       	},function(data, status, headers, config){
       		console.log(["查询门店列表失败",data]);
