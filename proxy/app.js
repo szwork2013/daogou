@@ -44,7 +44,7 @@ app.use(function(req, res, next){
     })
     return;
   }
-  console.log([1,req.originalUrl]);
+  // console.log([1,req.originalUrl]);
   next();
 
 });
