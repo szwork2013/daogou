@@ -251,8 +251,9 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 
 		$http.get(URLPort+"/accounts/current")//获得当前登录账号
 		.success(function(data){
-			console.log(["用户已登录,获得当前登录用户账号",data]);
-            console.log(["$scope.loginhandle",$scope.loginhandle]);
+			console.log(["用户数据",data]);
+
+
             $scope.curUserId = data.id;
 			$http.post(URLPort+"/users/"+$scope.curUserId+"/shopping-carts",{
 				"user_id":$scope.curUserId,
@@ -389,7 +390,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 				data: {username:$scope.mainData.telenum, password: $scope.mainData.verificationCode}
 			})
 			.success(function(data){
-				console.log(["登录成功",data]);
+				console.log(["登录接口返回数据",data]);
 				//获得当前登录账号
 			   	$http.get(URLPort+"/accounts/current")
 			   	.success(function(data){

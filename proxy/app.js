@@ -69,7 +69,6 @@ app.all("*", function(req, res, next) {
 
 
 
-
   //服务器代理
   var proxyOption = {
     url: proxy.protocol + "://" + proxy.hostname + ":" + proxy.port + req.originalUrl,
@@ -79,14 +78,24 @@ app.all("*", function(req, res, next) {
   }
 
   request(proxyOption, function (error, response, body) {
-  if (!error && response.statusCode == 200) {
+
+  // console.log(proxyOption.)
+  
+  // if (!error && response.statusCode == 200) {
+    if (!error) {
 
       res.set(response.headers);
       // res.setHeader('Access-Control-Allow-Origin', "*");
       // res.setHeader('Access-Control-Allow-Credentials', true);
       // res.setHeader('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
-      
-      res.send(body);
+      if(response.statusCode == 200){
+        res.send(body);
+      }else{
+        console.log(['接口调用不成功',response.statusCode,response.headers,body])
+        res.sendStatus(response.statusCode);
+      }
+
+
     } else {
       console.log(error)
       res.send("代理请求出错!");

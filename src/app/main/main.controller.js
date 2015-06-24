@@ -49,4 +49,6 @@ angular.module('daogou')
     angular.forEach($scope.awesomeThings, function(awesomeThing) {
       awesomeThing.rank = Math.random();
     });
-  });
+  })
+
+;
