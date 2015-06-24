@@ -27,12 +27,12 @@
                      <div class="addressInfo">
                      <span class="font14">请前往以下门店退货</span>
                         <div>
-                            <span class="floatL width80">中山公园龙之梦店，021-54347586  </span>
+                            <span class="floatL width80">{{refundOrderData.receive_store_name}}，{{refundOrderData.receive_store_tel}}  </span>
                             <span class="colorBlue2 floatR font13" ui-sref="goodsShop">其它门店</span>
                             <div class="clearBoth"></div>
                         </div>
                         <div>
-                            <span class="font13 floatL width85">上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</span>
+                            <span class="font13 floatL width85">{{refundOrderData.receive_store_state}}&nbsp;{{refundOrderData.receive_store_city}}&nbsp;{{refundOrderData.receive_store_district}}&nbsp;{{refundOrderData.receive_store_address}}</span>
                             <span class="font13 colorRed floatR">3.0km</span>
                             <div class="clearBoth"></div>
                         </div>
@@ -43,19 +43,18 @@
                 <div class="return-item" ng-show="fetchSuccess">
                      <div class="addressInfo">
                          <span class="font14">退货门店</span><br/>
-                         <span>中山公园龙之梦店，021-54347586  </span><br/>
-                         <span>上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</span>
-                         <span>退货时间：2015-03-03 12：00</span>
-                         <span>接待导购：曾莉 23456789</span>
+                         <span>{{refundOrderData.receive_store_name}}，{{refundOrderData.receive_store_tel}} </span><br/>
+                         <span>{{refundOrderData.receive_store_state}}&nbsp;{{refundOrderData.receive_store_city}}&nbsp;{{refundOrderData.receive_store_district}}&nbsp;{{refundOrderData.receive_store_address}}</span>
+                         <span>退货时间：{{refundOrderData.finished_time}}</span>
+                         <span>接待导购：{{guiderData.full_name}}&nbsp;{{guiderData.work_no}}</span>
                     </div>
                 </div>
 
                 <div class="return-item" ng-show="fetchQRcode">
                     <div class="erweima-wrap">
-                       <img class="erweima floatL margin-r15" src="assets/images/erweima.png"/>
+                       <img class="erweima floatL margin-r15" ng-src="{{refundOrderData.qr_code}}"/>
                        <div class="floatL">
                            <span>请在取货时向店员出示此码</span><br/>
-                           <span class="font18">2323 2454 454123</span><br/>
                            <span class="colorRed">切勿透露他人以防冒取</span>
                        </div>
                        <div class="clearBoth"></div>
@@ -64,17 +63,17 @@
                 
                 <div class="return-item" ng-show="expressAddress">
                   请将要退的商品寄至以下地址并填写物流信息<br/>
-                  退货地址：长宁区杨宅路255号新发现才富园<br/>  
-                  收件人：李志伟<br/> 
-                  联系电话：13034343545 
+                  退货地址：{{refundOrderData.receiver_state}} {{refundOrderData.receiver_city}} {{refundOrderData.receiver_district}} {{refundOrderData.receiver_address}}<br/>  
+                  收件人：{{refundOrderData.receiver_name}}<br/> 
+                  联系电话：{{refundOrderData.receiver_mobile}}
                 </div>
                 <div class="return-item" ng-show="logisticInfo">
-                  物流信息提交时间：2015-02-15 12：34：56<br/>
-                  快递公司：顺丰快递<br/> 
-                  快递单号：2343435454645656232
+                  物流信息提交时间：{{refundOrderData.express_confirm_time}}<br/>
+                  快递公司：{{refundOrderData.express_company}}<br/> 
+                  快递单号：{{refundOrderData.express_no}}
                 </div>
                 <div class="returnReason" ng-class="{'margin-tp10':1}">
-                  <span>提交时间：2015-02-15 12：34：56</span><br/>
+                  <span>提交时间：{{refundOrderData.created_at}}</span><br/>
                   <span ng-show="refundReason">退款原因：{{refundOrderData.buyer_memo}} </span><br/>
                   <span ng-show="refundpics">证明图片：</span><br/>
 

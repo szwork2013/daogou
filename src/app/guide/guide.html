@@ -3,21 +3,21 @@
     <ion-content>
     <div class="guidebg">
       <img src="assets/images/daogou1.png" class="guidelogo">
-      <span class="guidename">牛蕙</span>
-      <span class="chatname">微信号：牛小蕙</span>
+      <span class="guidename">{{guiderData.full_name}}</span>
+      <span class="chatname">微信号:{{guiderData.weixin_no}}</span>
       <span class="myorders">我的订单</span>
-      <span class="shopname">Lily商务时装 | 中山公园龙之梦店</span>
+      <span class="shopname">{{brandData.brand_name}} | {{guiderData.store_address}}</span>
     </div>
         <div class="statusWrap">
             <ul class="list marginbt0">
-                <li class="item item-checkbox product-item" ng-repeat="item in productData">
+                <li class="item item-checkbox product-item" ng-repeat="item in daogouProductListData" ng-click="productDetail(item.num_iid)">
                    <label class="checkbox disnone">
                      <input type="checkbox" ng-model="choose">
                    </label>
                   <img src="assets/images/pic1.png" class="product-img">
                   <div class="paramenters-daogou">
                       <div class="name">{{item.title}}</div>
-                      <div class="paras">￥1234.00    <s class="paras2">￥5555.0</s></div>
+                      <div class="paras">{{item.quote_price | currency:"￥":2}}<s class="paras2">{{item.price | currency:"￥":2}}</s></div>
                   </div>
                   
                  <i class="iconfont icon-jiantouleft daogou-arrow rotate180"></i>
@@ -25,7 +25,13 @@
             </ul>
         </div>
 
-
+        <ion-infinite-scroll
+          ng-if="hasMoreOrder"
+          immediate-check="false"
+          on-infinite="loadMoreData()"
+          distance="10%"
+          >
+        </ion-infinite-scroll>
 
     </ion-content>
 </ion-view>

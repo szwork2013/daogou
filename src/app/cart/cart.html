@@ -25,7 +25,8 @@
           <div class="statusWrap">
                 <div class="shop">
                     <div class="shop-name countDel">Lily商务时装</div>
-                    <div class="edit">编辑</div>
+                    <div class="edit" ng-show="edit" ng-click="edit()">编辑</div>
+                    <div class="edit" ng-show="finish" ng-click="finish()">完成</div>
                     <div class="clearBoth"></div>
                 </div>
                 
@@ -37,7 +38,7 @@
                           <div class="name" ng-bind="item.title"></div>
                           <div class="paras" ng-bind="item.sku_properties_name"></div>
                       </div>
-                      <span class="price">￥{{item.price}}</span>
+                      <span class="price">{{item.price | currency:"￥":2}}</span>
                       <div class="countNumCount">
                         <img src="assets/images/del.png" class="countImg" ng-click="delNum($index)">
                             <input class="num"  ng-model="item.num"/>
