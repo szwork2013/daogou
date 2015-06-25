@@ -1,7 +1,17 @@
 'use strict';
 
 angular.module('daogou')
-  .controller('MainCtrl', function ($scope) {
+.service('loginapi',function(){
+
+  function loginapi(){
+    alert(0)
+  }
+  return loginapi;
+})
+  .controller('MainCtrl', function ($scope,loginapi) {
+// alert(0)
+    // console.log(login)
+    console.log(loginapi)
     $scope.awesomeThings = [
       {
         'title': 'AngularJS',
@@ -49,4 +59,6 @@ angular.module('daogou')
     angular.forEach($scope.awesomeThings, function(awesomeThing) {
       awesomeThing.rank = Math.random();
     });
-  });
+  })
+
+;

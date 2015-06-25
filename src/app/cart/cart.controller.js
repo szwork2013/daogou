@@ -24,7 +24,8 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
     console.log(["userid",userid]);
     console.log(["brandid",brandid]);
 	function cartProductListFunc(){
-		daogouAPI.shopcart("/users/"+userid+"/shopping-carts",{
+		daogouAPI.shopcart({
+			userid:userid,
 			brand_id:brandid,
 			page:pageindex,
 			per_page:pagesize

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('createOrder',['ionic'])
-.controller('creatorderCtrl',['$rootScope','$scope','$log','$http','$state','URLPort','$stateParams','daogouAPI',function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI){
+var createOrder=angular.module('createOrder',['ionic']);
+createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,loginsSrvice){
 	$log.debug('creatorderCtrl');
 	$scope.buytitle = $stateParams.title;
 	$scope.buyprice = $stateParams.price;
@@ -13,7 +13,6 @@ angular.module('createOrder',['ionic'])
 	$scope.totalcost = $scope.totalprice + parseFloat($scope.buyfreight);
 	console.log(["$stateParams.title",$stateParams.title])
 
-	
 	$scope.mainData = {
 		telenum : "",
 		verificationCode: ""
@@ -76,30 +75,30 @@ angular.module('createOrder',['ionic'])
       	});
 
 	}
-//判断是否登录
-   function judgeLogin(){
-   		$http.get(URLPort+"/accounts/current")//获得当前登录账号
-   		.success(function(data){
-   			//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
-   			console.log(["用户已登录,获得当前登录用户账号",data]);
-   			$scope.loginhandle = true;//已经登录让 登录模块隐藏
-   			$scope.alladdress = false;//让地址模不隐藏
-   			$scope.shopaddress = false;//默认显示用户地址，隐藏实体店地址
-   			$scope.allbuyeraddress = true;
-            console.log(["$scope.loginhandle",$scope.loginhandle]);
-   		})
-   		.error(function(data){
-   			//如果未登录,显示登录框，进行登录
-   			console.log(["用户未登录,没获得当前登录用户账号",data]);
-   			$scope.loginhandle = false;//未登录让 登录模块不隐藏
-   			$scope.alladdress = true;//让地址模隐藏
-   		})
-   } 
+	//判断是否登录
+	function judgeLogin(){
+			$http.get(URLPort+"/accounts/current")//获得当前登录账号
+			.success(function(data){
+				//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
+				console.log(["用户已登录,获得当前登录用户账号",data]);
+				$scope.loginhandle = true;//已经登录让 登录模块隐藏
+				$scope.alladdress = false;//让地址模不隐藏
+				$scope.shopaddress = false;//默认显示用户地址，隐藏实体店地址
+				$scope.allbuyeraddress = true;
+	        console.log(["$scope.loginhandle",$scope.loginhandle]);
+			})
+			.error(function(data){
+				//如果未登录,显示登录框，进行登录
+				console.log(["用户未登录,没获得当前登录用户账号",data]);
+				$scope.loginhandle = false;//未登录让 登录模块不隐藏
+				$scope.alladdress = true;//让地址模隐藏
+			})
+	} 
 
-   judgeLogin();
+	judgeLogin();
 
-var URLPort = URLPort();
-//判断手机号是否已经注册account账户
+	var URLPort = URLPort();
+	//判断手机号是否已经注册account账户
     function verifyUserNameExist(telenum,callBack,errorCallBack){
     	$http.get(URLPort+"/accounts/exists?username="+telenum)
     	.success(function(data){
@@ -111,7 +110,7 @@ var URLPort = URLPort();
     		errorCallBack(telenum);
     	})
     }
-//注册account
+	//注册account
     function register(telenum){
     	$http.post(URLPort+"/accounts/register",{"username": telenum,"password": "admin","enabled": true})
     	.success(function(data){
@@ -121,50 +120,50 @@ var URLPort = URLPort();
     		console.log(["注册失败",data]);
     	})
     }
- //注册以后第一次保存用户信息 注册accountinfo
+ 	//注册以后第一次保存用户信息 注册accountinfo
 	function saveUserInfo(telenum){
-			$http.post(URLPort+"/accounts/register/info",{"id": 1,"username": telenum, //required
-            "name": "管理员",
-            "nick": "管理员",
-            "weixin": "weixin",
-            "weixinName": "weixin nick",
-            "mobile": telenum,
-            "email": "fjdk@dkfj.com",
-            "accountId": 1,
-            "birthday": null,
-            "gender": "FEMALE"})
-            .success(function(data){
-            	console.log(["注册accountinfo成功",data]);
-            })
-            .error(function(data){
-            	console.log(["注册accountinfo失败",data]);
-            })
-		}
+		$http.post(URLPort+"/accounts/register/info",{"id": 1,"username": telenum, //required
+		"name": "管理员",
+		"nick": "管理员",
+		"weixin": "weixin",
+		"weixinName": "weixin nick",
+		"mobile": telenum,
+		"email": "fjdk@dkfj.com",
+		"accountId": 1,
+		"birthday": null,
+		"gender": "FEMALE"})
+		.success(function(data){
+			console.log(["注册accountinfo成功",data]);
+		})
+		.error(function(data){
+			console.log(["注册accountinfo失败",data]);
+		})
+	}
    //获取登录账号（手机号）获取User信息
-    function getUserInfo(telenum,callBack,errorCallBack){
-    	$http.get(URLPort+"/users/mobiles/"+telenum)//根据手机号码来获取用户信息，检测用户是否存在，如果不存在要先注册
-    	.success(function(data){
-    		console.log(["获取用户User信息,用户存在",data]);
-    		var currentUserId =data.id;
-    		callBack(currentUserId);
-    	})
-    	.error(function(data){
-    		console.log(["获取用户User信息,用户不存在",data]);
-    		errorCallBack();
-    	})
-    }
+	function getUserInfo(telenum,callBack,errorCallBack){
+		$http.get(URLPort+"/users/mobiles/"+telenum)//根据手机号码来获取用户信息，检测用户是否存在，如果不存在要先注册
+		.success(function(data){
+			console.log(["获取用户User信息,用户存在",data]);
+			var currentUserId =data.id;
+			callBack(currentUserId);
+		})
+		.error(function(data){
+			console.log(["获取用户User信息,用户不存在",data]);
+			errorCallBack();
+		})
+	}
     //通过手机号码获取验证码
-    function getverificationcode(telenum){
-    	var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
-    	$http.post(URLPort+"/accounts/verification-code?codeType=MOBILE&account="+telenum+"&template="+templatetext)
-    	.success(function(data){
-    		console.log(["获取验证码成功",data]);
-    	})
-    	.error(function(data){
-    		console.log(["获取验证码失败",data]);
-    	})
-    }
-//获取验证码
+	function getverificationcode(telenum){
+		var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
+		$http.post(URLPort+"/accounts/verification-code?codeType=MOBILE&account="+telenum+"&template="+templatetext)
+		.success(function(data){
+			console.log(["获取验证码成功",data]);
+		})
+		.error(function(data){
+			console.log(["获取验证码失败",data]);
+		})
+	}
+	//获取验证码
 	$scope.verify=function(){
 		console.log("hihihi");
 		console.log("$scope.mainData.telenum:"+$scope.mainData.telenum);
@@ -182,11 +181,10 @@ var URLPort = URLPort();
 
 		//通过手机号码获取验证码
 		getverificationcode($scope.mainData.telenum);
-		
 	}
 
 
-//登录
+	//登录
 	$scope.submit=function(){
 		// $http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
 		$http({
@@ -311,14 +309,12 @@ var URLPort = URLPort();
 		.error(function(data){
 			console.log(["登录失败",data]);
 		})
-	
-		
 	}
 
 
- $scope.getAddresses = function(){
+	$scope.getAddresses = function(){
 
- }
+	}
    //新增用户第一个收货地址信息
     $scope.firstAddressInput = {
     	name:"",
@@ -330,41 +326,39 @@ var URLPort = URLPort();
     	zip:""
     };
 
-   $scope.addAddress = function(defaultAddress){
-    console.log(["$scope.firstAddressInput.provinceInfo", $scope.firstAddressInput.provinceInfo]);
-   
-   	$http.post(URLPort+"/users/"+$scope.curUserId+"/shipping-addresses",{
-	   		"user_id": $scope.curUserId,
-	        "name": $scope.firstAddressInput.name,
-	        "state": $scope.firstAddressInput.provinceInfo.name,
-	        "state_code": $scope.firstAddressInput.provinceInfo.code,
-	        "city": $scope.firstAddressInput.cityInfo.name,
-	        "city_code":  $scope.firstAddressInput.cityInfo.code,
-	        "district": $scope.firstAddressInput.districtInfo.name,
-	        "district_code": $scope.firstAddressInput.districtInfo.code,
-	        "address": $scope.firstAddressInput.address,
-	        "zip": $scope.firstAddressInput.zip,
-	        "mobile": $scope.firstAddressInput.mobile,
-	        "is_default": defaultAddress
-	    })
-   		.success(function(data){
-   	 	console.log(["增加新地址成功",data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
-   	 	$scope.defaultAddressdata = data;
-   	 	$scope.loginhandle = true;
-   	 	$scope.alladdress = false;
-   	 	$scope.shopaddress = false;
-   	 	$scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
-   	 	$scope.buyeraddress = false;
-   	 	$scope.weixinpay = false;
-   		})
-   		.error(function(data){
-   			console.log(["增加新地址失败",data]);//弹出失败提示 停在原页
+	$scope.addAddress = function(defaultAddress){
+		console.log(["$scope.firstAddressInput.provinceInfo", $scope.firstAddressInput.provinceInfo]);
 
-   		})
-
-   }
-//根据选择的省查询市
-   $scope.provinceSelect = function(dataobj){
+		$http.post(URLPort+"/users/"+$scope.curUserId+"/shipping-addresses",{
+			"user_id": $scope.curUserId,
+			"name": $scope.firstAddressInput.name,
+			"state": $scope.firstAddressInput.provinceInfo.name,
+			"state_code": $scope.firstAddressInput.provinceInfo.code,
+			"city": $scope.firstAddressInput.cityInfo.name,
+			"city_code":  $scope.firstAddressInput.cityInfo.code,
+			"district": $scope.firstAddressInput.districtInfo.name,
+			"district_code": $scope.firstAddressInput.districtInfo.code,
+			"address": $scope.firstAddressInput.address,
+			"zip": $scope.firstAddressInput.zip,
+			"mobile": $scope.firstAddressInput.mobile,
+			"is_default": defaultAddress
+		})
+		.success(function(data){
+			console.log(["增加新地址成功",data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
+			$scope.defaultAddressdata = data;
+			$scope.loginhandle = true;
+			$scope.alladdress = false;
+			$scope.shopaddress = false;
+			$scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
+			$scope.buyeraddress = false;
+			$scope.weixinpay = false;
+		})
+		.error(function(data){
+			console.log(["增加新地址失败",data]);//弹出失败提示 停在原页
+		})
+	}
+	//根据选择的省查询市
+	$scope.provinceSelect = function(dataobj){
 	   	console.log(["selectpinyin",dataobj.pinyin])
 	   	
 		$http.get(URLPort+"/provinces/"+dataobj.pinyin+"/cities")
@@ -376,112 +370,111 @@ var URLPort = URLPort();
 	   		console.log(["查询省下市失败",data]);
 
 	   	})
-   }
+	}
 
-   //根据选择的市查询地区
-  $scope.citySelect = function(dataobj1,dataobj2){
-  	console.log(["selectpinyin1",dataobj1.pinyin])
-  	console.log(["selectpinyin2",dataobj2.pinyin])
+	//根据选择的市查询地区
+	$scope.citySelect = function(dataobj1,dataobj2){
+		console.log(["selectpinyin1",dataobj1.pinyin])
+		console.log(["selectpinyin2",dataobj2.pinyin])
 
-	$http.get(URLPort+"/provinces/"+dataobj1.pinyin+"/cities/"+dataobj2.pinyin+"/districts")
-  	.success(function(data){
-   	console.log(["查询市下地区成功",data]);
-   	$scope.districtsdata = data;
-  	})
-  	.error(function(data){
-  		console.log(["查询市下地区失败",data]);
+		$http.get(URLPort+"/provinces/"+dataobj1.pinyin+"/cities/"+dataobj2.pinyin+"/districts")
+		.success(function(data){
+			console.log(["查询市下地区成功",data]);
+			$scope.districtsdata = data;
+		})
+		.error(function(data){
+			console.log(["查询市下地区失败",data]);
 
-  	})
-  }
+		})
+	}
 
-   	
-   $scope.deleteAddress = function(){
-   	   
-   		$http.delete(URLPort+"/users/"+$scope.curUserId+"/shipping-addresses/18")
-   	   	.success(function(){
-   	    	console.log("删除地址成功");
-   	    	$scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
-   	    	$scope.buyeraddress = false;
-   	   	})
-   	   	.error(function(){
-   	   		console.log("删除新地址失败");
+		
+	$scope.deleteAddress = function(){
+		$http.delete(URLPort+"/users/"+$scope.curUserId+"/shipping-addresses/18")
+		.success(function(){
+			console.log("删除地址成功");
+			$scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
+			$scope.buyeraddress = false;
+		})
+		.error(function(){
+			console.log("删除新地址失败");
 
-   	   		$scope.shopaddress = false;//显示用户地址，隐藏实体店地址
-   	   		$scope.allbuyeraddress = true;
-   	   		
-   	   		$scope.firstBuyerAddress = false;//隐藏选择地址模块，显示填写第一个地址模块
-   	   		console.log(["$scope.firstBuyerAddress!!!!!!",$scope.firstBuyerAddress])
-   	    	$scope.buyeraddress = true;
+			$scope.shopaddress = false;//显示用户地址，隐藏实体店地址
+			$scope.allbuyeraddress = true;
 
-   	   	})
-   }
-//查询省
+			$scope.firstBuyerAddress = false;//隐藏选择地址模块，显示填写第一个地址模块
+			console.log(["$scope.firstBuyerAddress!!!!!!",$scope.firstBuyerAddress])
+			$scope.buyeraddress = true;
+
+		})
+	}
+	//查询省
    $scope.searchProvinces = function(){
-   			$http.get(URLPort+"/provinces")
-   		   	.success(function(data){
-   		   		$scope.provincesdata = data;
-   		    	console.log(["查询省份成功",data]);
-   		   	})
-   		   	.error(function(data){
-   		   		console.log(["查询省份失败",data]);
-   		   	})
+		$http.get(URLPort+"/provinces")
+		.success(function(data){
+		$scope.provincesdata = data;
+		console.log(["查询省份成功",data]);
+		})
+		.error(function(data){
+		console.log(["查询省份失败",data]);
+		})
    }
 
-  $scope.buyerMessage ={
-  	"buyer_memo":""
+	$scope.buyerMessage ={
+		"buyer_memo":""
+	}
 
-  }
-   $scope.submitOrder = function(){
-   	console.log("提交订单");
-   	console.log(["$stateParams.brandid",$stateParams.brandid]);
-   	$http.post(URLPort+"/trades",
-   		{
-   		   "buyer_user_id": $scope.curUserId,
-   		   "bring_guider_id": 12,
-   		   "brand_id": parseInt($stateParams.brandid),
-   		   "buyer_memo": $scope.buyerMessage.buyer_memo,
-   		   "pay_type": "WEIXIN",
-   		   "shipping_type": "express",
-   		   "receiver_state": $scope.defaultAddressdata.state,
-	       "receiver_state_code": $scope.defaultAddressdata.state_code,
-	       "receiver_city": $scope.defaultAddressdata.city,
-	       "receiver_city_code": $scope.defaultAddressdata.city_code,
-	       "receiver_district": $scope.defaultAddressdata.district,
-	       "receiver_district_code": $scope.defaultAddressdata.district_cod,
-	       "receiver_address": $scope.defaultAddressdata.address,
-	       "receiver_name": $scope.defaultAddressdata.name,
-	       "receiver_zip": $scope.defaultAddressdata.zip,
-	       "receiver_mobile": $scope.defaultAddressdata.mobile,
-	       // "fetch_name": "西门庆",
-	       // "fetch_store_id": "145",
-	       // "fetch_store_name": "老西门店",
-	       // "fetch_state": "上海",
-	       // "fetch_state_code": "310000",
-	       // "fetch_city": "上海市",
-	       // "fetch_city_code": "310100",
-	       // "fetch_district": "黄浦区",
-	       // "fetch_district_code": "310101",
-	       // "fetch_address": "中华路555号",
-	       // "fetch_subscribe_begin_time": "2015-05-14T11:00:50+0800",
-	       // "fetch_subscribe_end_time": "2015-05-14T13:00:50+0800",
-   		   "orders": [
-   		         {
-   		             "sku_id": $stateParams.skuid,
-   		             "num": parseInt($stateParams.num),
-   		             "bring_guider_id": 12
-   		         }
-   		     ]
-   		 }
-   	)
-   	.success(function(data){
-   		console.log(["提交订单成功",data]);
-   		$state.go("orderList")
-   	})
-   	.error(function(data){
-   		console.log(["提交订单失败",data]);
-   	})
+	$scope.submitOrder = function(){
+		console.log("提交订单");
+		console.log(["$stateParams.brandid",$stateParams.brandid]);
+		$http.post(URLPort+"/trades",
+			{
+			"buyer_user_id": $scope.curUserId,
+			"bring_guider_id": 12,
+			"brand_id": parseInt($stateParams.brandid),
+			"buyer_memo": $scope.buyerMessage.buyer_memo,
+			"pay_type": "WEIXIN",
+			"shipping_type": "express",
+			"receiver_state": $scope.defaultAddressdata.state,
+			"receiver_state_code": $scope.defaultAddressdata.state_code,
+			"receiver_city": $scope.defaultAddressdata.city,
+			"receiver_city_code": $scope.defaultAddressdata.city_code,
+			"receiver_district": $scope.defaultAddressdata.district,
+			"receiver_district_code": $scope.defaultAddressdata.district_cod,
+			"receiver_address": $scope.defaultAddressdata.address,
+			"receiver_name": $scope.defaultAddressdata.name,
+			"receiver_zip": $scope.defaultAddressdata.zip,
+			"receiver_mobile": $scope.defaultAddressdata.mobile,
+			// "fetch_name": "西门庆",
+			// "fetch_store_id": "145",
+			// "fetch_store_name": "老西门店",
+			// "fetch_state": "上海",
+			// "fetch_state_code": "310000",
+			// "fetch_city": "上海市",
+			// "fetch_city_code": "310100",
+			// "fetch_district": "黄浦区",
+			// "fetch_district_code": "310101",
+			// "fetch_address": "中华路555号",
+			// "fetch_subscribe_begin_time": "2015-05-14T11:00:50+0800",
+			// "fetch_subscribe_end_time": "2015-05-14T13:00:50+0800",
+			"orders": [
+			     {
+			         "sku_id": $stateParams.skuid,
+			         "num": parseInt($stateParams.num),
+			         "bring_guider_id": 12
+			     }
+			 ]
+			}
+		)
+		.success(function(data){
+			console.log(["提交订单成功",data]);
+			$state.go("orderList")
+		})
+		.error(function(data){
+			console.log(["提交订单失败",data]);
+		})
 
-   }
+	}
 
 
 	$scope.logout = function(){
@@ -495,10 +488,7 @@ var URLPort = URLPort();
 	}
 
 
-
-
-
-}])
+})
 .controller('goodsShopCtrl',['$scope','$log','$http',function($scope,$log,$http){
 	$log.debug('goodsShopCtrl');
 	$http.get('assets/testdata/cart.json')

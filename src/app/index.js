@@ -1,6 +1,6 @@
 'use strict';
 
-// angular.module('daogou', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ui.router'])
+// angular.module('daogou', ['ionic','ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ui.router'])
 //   .config(function ($stateProvider, $urlRouterProvider) {
 //     $stateProvider
 //       .state('home', {
@@ -10,10 +10,11 @@
 //       });
 
 //     $urlRouterProvider.otherwise('/');
+//     console.log(0)
 //   })
 // ;
 
-angular.module('daogou',['ionic','servicesFactory','product','cart','order','orderList','createOrder','goodsReturn','payWay','guide','login'])
+angular.module('daogou',['ionic','product','cart','order','orderList','createOrder','goodsReturn','payWay','guide','daogouAPImodule'])
 .run(['$ionicPlatform', function($ionicPlatform){
   	$ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -27,7 +28,7 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
     }
   });
 }])
-.config(['$stateProvider','$urlRouterProvider','$ionicConfigProvider',function($stateProvider,$urlRouterProvider,$ionicConfigProvider) {
+.config(function($stateProvider,$urlRouterProvider,$ionicConfigProvider) {
 	// $ionicConfigProvider.backButton.text("返回");
 	// $ionicConfigProvider.views.maxCache(0);
 	// $ionicConfigProvider.views.forwardCache(false);
@@ -113,4 +114,4 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 	$urlRouterProvider.otherwise('productDetail/100030');
 	// $urlRouterProvider.otherwise('/login');
 //http://codepen.io/ahsx/pen/mDcEd
-}]);
+});
