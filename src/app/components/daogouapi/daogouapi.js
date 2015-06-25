@@ -27,6 +27,11 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		post(url,scallback,ecallback)
 		*/
 		post:post,
+		/*
+		通用delete方法
+		delete(url,scallback,ecallback)
+		*/
+		deletef:deletef,
 
 		/*  
 		查询消费者的订单列表
@@ -72,8 +77,18 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		ecallback 失败的回调函数 {function} [必填]
 		*/
 		login:login,
-
+		/*
+		获取购物车商品列表接口
+		scallback 成功的回调函数 {function} [必填]
+		ecallback 失败的回调函数 {function} [必填]
+		*/
 		shopcart:shopcart,
+		/*
+		批量删除购物车商品
+		scallback 成功的回调函数 {function} [必填]
+		ecallback 失败的回调函数 {function} [必填]
+		*/
+		deleteCartProduct:deleteCartProduct,
 
 
 	};
@@ -113,7 +128,15 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		});
 	};
 
-
+	function deletef(url,scallback,ecallback) {
+		$http.delete(url)
+		.success(function(data, status, headers, config){
+			scallback(data, status, headers, config);
+		})
+		.error(function(data, status, headers, config){
+			ecallback(data, status, headers, config);
+		});
+	};
 	function getOrderList(actionurl,dataobj,scallback,ecallback) {
 		var action=actionurl;
 		var data={
@@ -199,6 +222,18 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		};
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	};
+
+	
+	
+	function deleteCartProduct (dataobj,scallback,ecallback) {
+
+		var action="/users/"+dataobj.userid+"/shopping-carts";
+		var data={
+			ids:dataobj.ids
+		};
+
+		daogouAPI.deletef(daogouAPI.apiurl(action,data),scallback,ecallback);
 	};
 
 });
