@@ -33,6 +33,9 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
 			console.log(["查询导购商品列表成功",data]);
 			console.log(["hasMoreOrder",$scope.hasMoreOrder])
 			console.log(["pageindex",pageindex]);
+			for(var i in data){
+				data[i].seleted = false;
+			}
 			$scope.cartProductListData = $scope.cartProductListData.concat(data);
 			
 		    console.log(["data.length",data.length])
@@ -76,30 +79,104 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
 	
 //点击+ - 增减商品数
 	$scope.delNum = function(index){
-		$scope.productData[index].num--;
-		$scope.productData[index].num = $scope.productData[index].num>0?$scope.productData[index].num:0;
+		$scope.cartProductListData[index].num--;
+		$scope.cartProductListData[index].num = $scope.cartProductListData[index].num>0?$scope.cartProductListData[index].num:0;
 	}
 	$scope.addNum = function(index){
-		$scope.productData[index].num++;
+		$scope.cartProductListData[index].num++;
 	}
 
-   
+	
+   $scope.totalNum = 0;//购物车中选中商品总量
+   $scope.totalFee = 0;//合计价格
+   //通过点击选中圆圈选中
     $scope.changeCheck = function(index){
     	console.log(["indexindexindex",index])
- 		if($(".selected-img").eq(index).hasClass("graygou")){
- 			console.log("biangreen")
- 			$(".selected-img").eq(index).removeClass("graygou");
- 			$(".selected-img").eq(index).addClass("greengou");
- 		}else{
- 			console.log("biangray")
- 			$(".selected-img").eq(index).removeClass("greengou");
- 			$(".selected-img").eq(index).addClass("graygou");
- 		}
+    	if($scope.cartProductListData[index].seleted === true){
+    		$scope.cartProductListData[index].seleted = false;
+    	}else{
+    		$scope.cartProductListData[index].seleted = true;
+    	}
+    	
+    	
+    	$scope.totalFee = 0;//合计价格
+    	$scope.totalNum = 0;
+    	$scope.ids = "";//选中商品id集合
+    	
+    	for(var i in $scope.cartProductListData){
+    		if($scope.cartProductListData[i].seleted === true){
+    			$scope.totalFee += parseFloat($scope.cartProductListData[i].total_fee);
+    			$scope.totalNum++;
+    			$scope.ids +=$scope.cartProductListData[i].id+",";
+    		}
+    		
+    	}
+    	$scope.ids = $scope.ids.substr(0,$scope.ids.length-1);
+    	console.log(["$scope.ids",$scope.ids])
+ 		
  		
     }
 
+    $scope.Allseleted = false;
+     //全选全不选
+    $scope.changeAll = function(){
+    	console.log(["changeAll"]);
+    	//选中与不选中 选中图标的转换
+    	if($scope.Allseleted === false){
+    		console.log("biangreen")
+    		$scope.Allseleted = true;
+    		for(var i in $scope.cartProductListData){
+    			$scope.cartProductListData[i].seleted = true;
+    			console.log(["$scope.cartProductListData[i].seleted",$scope.cartProductListData[i].seleted]);
+    		}
+    	}else{
+    		console.log("biangray")
+    		$scope.Allseleted = false;
+    		for(var i in $scope.cartProductListData){
+    		    $scope.cartProductListData[i].seleted = false;
+    		}
+    	}
+    	//合计价格
+    	 $scope.totalFee = 0;
+    	 $scope.totalNum = 0;
+    	 $scope.ids = "";//选中商品id集合
+    	for(var i in $scope.cartProductListData){
+    		if($scope.cartProductListData[i].seleted === true){
+    			$scope.totalFee += parseFloat($scope.cartProductListData[i].total_fee);
+    			$scope.totalNum++;
+    			$scope.ids +=$scope.cartProductListData[i].id+",";
+    		}
+    		
+    	}
+    	$scope.ids = $scope.ids.substr(0,$scope.ids.length-1);
+    	console.log(["$scope.ids",$scope.ids])
+    }
+    $scope.deleteCartProduct = function(){
+    	console.log(["删除商品$scope.ids",$scope.ids]);
+    	daogouAPI.deleteCartProduct({
+			userid:userid,
+			ids:$scope.ids
+		},function(data, status, headers, config){
+			console.log(["删除购物车商品成功",data]);
 
-    $scope.edit = true;
-    $scope.finish = false;
+		},function(data, status, headers, config){
+			console.log(["删除购物车商品失败",data]);
+		});
+    }
+
+    $scope.edithandle = true;
+    $scope.finishhandle = false;
+    console.log(["$scope.edit",$scope.edit]);
+    console.log(["$scope.finish",$scope.finish]);
+    $scope.edit = function(){
+    	console.log(["编辑"]);
+    	$scope.edithandle = false;
+    	$scope.finishhandle = true;
+    }
+    $scope.finish = function(){
+    	console.log(["完成啦"])
+    	$scope.edithandle = true;
+    	$scope.finishhandle = false;
+    }
 
 }]);

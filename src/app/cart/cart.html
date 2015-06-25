@@ -25,26 +25,26 @@
           <div class="statusWrap">
                 <div class="shop">
                     <div class="shop-name countDel">{{brandData.brand_name}}</div>
-                    <div class="edit" ng-show="edit" ng-click="edit()">编辑</div>
-                    <div class="edit" ng-show="finish" ng-click="finish()">完成</div>
+                    <div class="edit" ng-show="edithandle" ng-click="edit()">编辑</div>
+                    <div class="edit" ng-show="finishhandle" ng-click="finish()">完成</div>
                     <div class="clearBoth"></div>
                 </div>
                 
                 <ul class="list">
-                    <li class="item item-checkbox product-item" ng-repeat="item in cartProductListData" ng-click="changeCheck($index)">
-                      <i class="iconfont icon-gou bggou graygou font24 selected-img"></i>
-                      <img src="assets/images/pic1.png" class="product-img">
-                      <div class="paramenters-select">
+                    <li class="item item-checkbox product-item" ng-repeat="item in cartProductListData">
+                      <i class="iconfont icon-gou bggou font24 selected-img" ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck($index)"></i>
+                      <img ng-src="{{item.pic_path}}" class="product-img">
+                      <div class="paramenters-select">{{item.id}}
                           <div class="name" ng-bind="item.title"></div>
                           <div class="paras" ng-bind="item.sku_properties_name"></div>
                       </div>
                       <span class="price">{{item.price | currency:"￥":2}}</span>
-                      <div class="countNumCount" ng-show="finish">
+                      <div class="countNumCount" ng-show="finishhandle">
                         <img src="assets/images/del.png" class="countImg" ng-click="delNum($index)">
                             <input class="num"  ng-model="item.num"/>
                         <img src="assets/images/add.png" class="countImg" ng-click="addNum($index)">
                       </div>
-                      <div class="countNum" ng-show="edit">X{{item.num}}</div>
+                      <div class="countNum" ng-show="edithandle">X{{item.num}}</div>
                     </li>
                 </ul>
           </div>
@@ -58,19 +58,32 @@
       </ion-infinite-scroll>
       </ion-content>
 
-      <ion-footer-bar align-title="left" class="footer">
+      <ion-footer-bar align-title="left" class="footer"  ng-show="edithandle">
         <ul class="list footerul">
               <li class="item item-checkbox footerli">
-                 <label class="checkbox disnone">
+                 <!-- <label class="checkbox disnone">
                    <input type="checkbox">
-                 </label>
-                 <img src="assets/images/unselected.png" class="selected-img">
-                 <button class="goAccount">结算(1)</button>
-                 <span class="totalPrice">1234.00</span>
-                 <span class="total">合计：￥</span>
+                 </label> -->
+                  <i class="iconfont icon-gou bggou font24 selected-img All" ng-class="{'graygou':!Allseleted,'greengou':Allseleted}"  ng-click="changeAll()"></i>
+                 <button class="goAccount">结算({{totalNum}})</button>
+                 <span class="totalPrice">{{totalFee | currency:"￥":2}}</span>
+                 <span class="total">合计：</span>
               </li>
           </ul>
-         
+      </ion-footer-bar>
+
+      <ion-footer-bar align-title="left" class="footer" ng-show="finishhandle" >
+        <ul class="list footerul">
+              <li class="item item-checkbox footerli">
+                 <!-- <label class="checkbox disnone">
+                   <input type="checkbox">
+                 </label> -->
+                  <i class="iconfont icon-gou bggou font24 selected-img All" ng-class="{'graygou':!Allseleted,'greengou':Allseleted}"  ng-click="changeAll()"></i>
+                 <button class="goAccount" ng-click="deleteCartProduct()">删除({{totalNum}})</button>
+                 <span class="totalPrice">{{totalFee | currency:"￥":2}}</span>
+                 <span class="total">合计：</span>
+              </li>
+          </ul>
       </ion-footer-bar>
 
   <!--   这个切换其实是2个页面 不是页面内切换的
