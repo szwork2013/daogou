@@ -210,8 +210,8 @@ var URLPort = URLPort();
 		   		var currentAccountId = data.accountId;
 		   		var saveUserMobile = data.mobile;
 		   		$scope.curUserId = data.id;
-		   		$rootScope.curUserID = data.id;
-		   		console.log(["$rootScope.curUserID",$rootScope.curUserID])
+		   		$rootScope.curUserId = data.id;
+		   		console.log(["$rootScope.curUserId",$rootScope.curUserId])
                 // $rootScope.curUserInfo
 
 		   		console.log(["$scope.curUserId",$scope.curUserId])

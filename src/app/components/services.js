@@ -153,6 +153,17 @@ servicesFactory.factory('checklocalimg', function(){
 		this.get(this.apiurl(action,data),scallback,ecallback);
 	};
 
+	daogouAPI.prototype.shopcart = function(actionurl,dataobj,scallback,ecallback) {
+		var action=actionurl;
+		var data={
+			brand_id: dataobj.brand_id,
+			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
+			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
+		};
+		
+		this.get(this.apiurl(action,data),scallback,ecallback);
+	};
+
 
 	/*  
 	提交退货信息

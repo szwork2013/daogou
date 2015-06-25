@@ -254,6 +254,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 			console.log(["用户已登录,获得当前登录用户账号",data]);
             console.log(["$scope.loginhandle",$scope.loginhandle]);
             $scope.curUserId = data.id;
+            $rootScope.curUserId = data.id;
 			$http.post(URLPort+"/users/"+$scope.curUserId+"/shopping-carts",{
 				"user_id":$scope.curUserId,
 				"sku_id" : $scope.productDetailData.skuid,
@@ -477,10 +478,15 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		}
 
 		$scope.guide = function(){
-			$state.go("guide",{"guideid":bringGuiderId,"brandid":$scope.productDetailData.brand_id})
+			$state.go("guide",{"guideid":bringGuiderId,"brandid":$scope.productDetailData.brand_id});
 		}
 		$scope.cart = function(){
-			$state.go("cart")
+			console.log(["$rootScope.curUserId",$rootScope.curUserId]);
+			$state.go("cart",{"userid": $rootScope.curUserId,"brandid":$scope.productDetailData.brand_id});
+		}
+
+		$scope.orderList = function(){
+			$state.go("orderList",{"userid": $rootScope.curUserId});
 		}
 
 		//测试地理位置 经纬度

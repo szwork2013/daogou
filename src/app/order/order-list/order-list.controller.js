@@ -1,7 +1,7 @@
 'use strict';
 
 var order = angular.module('orderList',['ionic']);
-order.controller('orderListCtrl',['$rootScope','$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state',function($rootScope,$scope,$log,$http,URLPort,daogouAPI,$state){
+order.controller('orderListCtrl',['$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state','$stateParams',function($scope,$log,$http,URLPort,daogouAPI,$state,$stateParams){
 
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
@@ -23,14 +23,14 @@ var URLPort = URLPort();
 // .error(function(data){
 // 	console.log(["查询消费者的订单列表失败",data]);
 // })
-console.log(["$rootScope.curUserID",$rootScope.curUserID]);
-$rootScope.curUserID = 4;
+
+$scope.curUserID = $stateParams.userid;
 $scope.productListData = [];
 var pageindex = 1;
 var pagesize = 5;
 $scope.hasMoreOrder = true;
 function getOrderListFunc(){
-	daogouAPI.getOrderList("/trades/users/"+$rootScope.curUserID,{
+	daogouAPI.getOrderList("/trades/users/"+$scope.curUserID,{
 		page:pageindex,
 		per_page:pagesize,
 		show_orders:true

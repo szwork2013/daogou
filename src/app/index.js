@@ -45,12 +45,12 @@ angular.module('daogou',['ionic','servicesFactory','product','cart','order','ord
 		controller: 'productListCtrl'
 	})
 	.state('cart', {
-		url: '/cart',
+		url: '/cart/:userid/:brandid',
 		templateUrl: 'app/cart/cart.html',
 		controller: 'cartCtrl'
 	})
 	.state('orderList', {
-		url: '/orderList',
+		url: '/orderList/:userid',
 		templateUrl: 'app/order/order-list/order-list.html',
 		controller: 'orderListCtrl'
 	})
