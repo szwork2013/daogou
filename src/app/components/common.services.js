@@ -1,6 +1,7 @@
-var servicesFactory = angular.module("servicesFactory",['ionic']);
+'use strict';
 
-servicesFactory.factory('checklocalimg', function(){
+angular.module('daogou')
+.factory('checklocalimg', function(){
 	return function checklocalimg(callback){
 			//选择本地图片
 			var fileinput;

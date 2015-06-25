@@ -1,7 +1,7 @@
 'use strict';
 
 var createOrder=angular.module('createOrder',['ionic']);
-createOrder.controller('creatorderCtrl',['$rootScope','$scope','$log','$http','$state','URLPort','$stateParams','daogouAPI',function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI){
+createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,loginsSrvice){
 	$log.debug('creatorderCtrl');
 	$scope.buytitle = $stateParams.title;
 	$scope.buyprice = $stateParams.price;
@@ -488,7 +488,7 @@ createOrder.controller('creatorderCtrl',['$rootScope','$scope','$log','$http','$
 	}
 
 
-}])
+})
 .controller('goodsShopCtrl',['$scope','$log','$http',function($scope,$log,$http){
 	$log.debug('goodsShopCtrl');
 	$http.get('assets/testdata/cart.json')
