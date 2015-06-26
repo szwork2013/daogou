@@ -158,6 +158,11 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
 			ids:$scope.ids
 		},function(data, status, headers, config){
 			console.log(["删除购物车商品成功",data]);
+            $scope.cartProductListData = [];
+            pageindex = 1;
+            pagesize = 5;
+            $scope.hasMoreOrder = true;
+            cartProductListFunc();
 
 		},function(data, status, headers, config){
 			console.log(["删除购物车商品失败",data]);
