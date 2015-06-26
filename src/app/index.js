@@ -92,7 +92,7 @@ angular.module('daogou',['ionic','product','cart','order','orderList','createOrd
 		controller: 'creatorderCtrl'
 	})
 	.state('goodsShop', {
-		url: '/goodsShop',
+		url: '/goodsShop/:userid/:brandid',
 		templateUrl: 'app/creatorder/goods-shop.html',
 		controller: 'goodsShopCtrl'
 	})

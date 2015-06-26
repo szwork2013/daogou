@@ -6,6 +6,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	var URLPort = URLPort();
 	//导购id会传进来的
 	var bringGuiderId = 145;
+    $scope.bringGuiderIds = 145;
 
 	$http.get(URLPort+"/items/"+$stateParams.detailId)
 	
@@ -71,15 +72,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 
 	$log.debug('productDetailCtrl');
 
-//点击导购头像出现个人中心，导购橱窗，购物车，以及关闭
-	$scope.showmenu = function(){
-		if(parseInt($(".daogou").css("height"))<100){
-			$(".daogou").animate({"height":"180"},100);
-			$(".redPoint").hide();
-		}else{
-			$(".daogou").animate({"height":"46"},100);
-		}
-	}
 //打开选取商品尺寸 颜色，初始化商品规格状态，有些已经无货了，控件就不可选
     function propertyMenu(){
     	$(".mengban").show();
@@ -246,16 +238,28 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		});
 	}
 
+
+
+//检测是否登陆，获得当前登录账号
+	$http.get(URLPort+"/accounts/current")
+	.success(function(data){
+		console.log(["获得当前登录账号，用户数据",data]);
+        $scope.curUserId = data.id;
+        $rootScope.curUserId = data.id;
+        console.log(["$scope.curUserId",$scope.curUserId]);
+	})
+	.error(function(data){
+		//如果未登录,显示登录框，进行登录
+		console.log(["用户未登录,没获得当前登录用户账号",data]);
+		console.log(["$scope.curUserId",$scope.curUserId]);
+	})
+
 	$scope.login = false;//是否显示登录页面
 	$scope.goToCart = function(){
-
-		$http.get(URLPort+"/accounts/current")//获得当前登录账号
-		.success(function(data){
-			console.log(["用户数据",data]);
-
-
-            $scope.curUserId = data.id;
-            $rootScope.curUserId = data.id;
+		if($scope.curUserId === undefined){
+			console.log(["用户未登录,没获得当前登录用户账号"]);
+			$scope.login = true;
+		}else{
 			$http.post(URLPort+"/users/"+$scope.curUserId+"/shopping-carts",{
 				"user_id":$scope.curUserId,
 				"sku_id" : $scope.productDetailData.skuid,
@@ -271,13 +275,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
             .error(function(data){
             	console.log(["加入购物车失败",data]);
             })
-		})
-		.error(function(data){
-			//如果未登录,显示登录框，进行登录
-			console.log(["用户未登录,没获得当前登录用户账号",data]);
-			$scope.login = true;
-		})
-
+		}
 		// $http.post(URLPort+"/users/"++"/shopping-carts",{})
 		// .success(function(data){
 		// 	$log.debug(["success data",data]);
@@ -476,18 +474,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 			})
 		
 			
-		}
-
-		$scope.guide = function(){
-			$state.go("guide",{"guideid":bringGuiderId,"brandid":$scope.productDetailData.brand_id});
-		}
-		$scope.cart = function(){
-			console.log(["$rootScope.curUserId",$rootScope.curUserId]);
-			$state.go("cart",{"userid": $rootScope.curUserId,"brandid":$scope.productDetailData.brand_id});
-		}
-
-		$scope.orderList = function(){
-			$state.go("orderList",{"userid": $rootScope.curUserId});
 		}
 
 		//测试地理位置 经纬度

@@ -23,10 +23,15 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		get:get,
 
 		/*
-		通用get方法
+		通用post方法
 		post(url,scallback,ecallback)
 		*/
 		post:post,
+		/*
+		通用patch方法
+		patch(url,scallback,ecallback)
+		*/
+		patch:patch,
 		/*
 		通用delete方法
 		delete(url,scallback,ecallback)
@@ -109,6 +114,10 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		检测用户是否存在		
 		*/
 		isLogin:isLogin,
+		/*
+		设置默认取货门店		
+		*/
+		defaultstore:defaultstore,
 
 
 	};
@@ -152,6 +161,17 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 
 	function deletef(url,scallback,ecallback) {
 		$http.delete(url)
+		.success(function(data, status, headers, config){
+			scallback(data, status, headers, config);
+		})
+		.error(function(data, status, headers, config){
+			ecallback(data, status, headers, config);
+		});
+	};
+
+
+	function patch(url,scallback,ecallback) {
+		$http.patch(url)
 		.success(function(data, status, headers, config){
 			scallback(data, status, headers, config);
 		})
@@ -309,7 +329,17 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		};
 
 		daogouAPI.deletef(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
+
+	function defaultstore (dataobj,scallback,ecallback) {
+
+		var action="/brands/"+dataobj.brand_id+"/users/"+dataobj.user_id+"/stores/"+dataobj.store_id+"/store-fetch/default";
+		var data='';
+
+		daogouAPI.patch(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+	
+
 
 
 });
