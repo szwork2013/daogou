@@ -4,12 +4,12 @@
           <div class="tabs-striped tabs-top tabs-background-positive tabs-color-light">
             <div class="tabsm">
                 <div class="tab-item-wrap" >
-                    <a class="tab-itemm iactive" ui-sref="cart">
+                    <a class="tab-itemm iactive">
                       购物车
                     </a>
                 </div>
                 <div class="tab-item-wrap" >
-                    <a class="tab-itemm" ui-sref="orderList">
+                    <a class="tab-itemm" ng-click="goOrderList()">
                      我的订单
                     </a>
                 </div>
@@ -34,7 +34,7 @@
                     <li class="item item-checkbox product-item" ng-repeat="item in cartProductListData">
                       <i class="iconfont icon-gou bggou font24 selected-img" ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck($index)"></i>
                       <img ng-src="{{item.pic_path}}" class="product-img">
-                      <div class="paramenters-select">{{item.id}}
+                      <div class="paramenters-select">
                           <div class="name" ng-bind="item.title"></div>
                           <div class="paras" ng-bind="item.sku_properties_name"></div>
                       </div>
