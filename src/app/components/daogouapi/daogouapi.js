@@ -5,9 +5,9 @@ var daogouAPImodule=angular.module('daogouAPImodule',['ionic']);
 
 daogouAPImodule.factory('daogouAPI', function($http,$log){
 	// 正式接口
-	var rootapi='http://yunwan2.3322.org:57099';
+	var ROOT_URL='http://yunwan2.3322.org:57099';
 	// 测试接口	
-	// rootapi='';
+	ROOT_URL='';
 
 	var daogouAPI={
 		/*
@@ -90,23 +90,44 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		*/
 		deleteCartProduct:deleteCartProduct,
 
+		/*
+		注册用户
+		*/
+		register:register,
+
+		/*
+		注册用户info
+		*/
+		registerInfo:registerInfo,
+
+		/*
+		检测用户是否存在		
+		*/
+		isRegistered:isRegistered,
+
+		/*
+		检测用户是否存在		
+		*/
+		isLogin:isLogin,
+
 
 	};
 
 	return daogouAPI;
 
 	function apiurl(action,data) {
-		var normaldata={};
-		var url =rootapi;
-		// var url='http://192.168.51.191:3000';
-		//合并对象
-		url += action+"?";
-		data=angular.extend(data,normaldata);
 
-		for(var key in data){
-			url+=key+'='+data[key]+'&';
+		var url =ROOT_URL+action;
+
+		if(typeof data==='object'){
+			url+="?";
+			for(var key in data){
+				url+=key+'='+data[key]+'&';
+			}
+			url=url.slice(0,url.length-1);
 		}
-		return url.slice(0,url.length-1);
+
+		return url
 	};
 
 	function get(url,scallback,ecallback) {
@@ -118,8 +139,9 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 			ecallback(data, status, headers, config);
 		});
 	};
-	function post(url,scallback,ecallback) {
-		$http.post(url)
+	function post(action,data,scallback,ecallback) {
+		var url=ROOT_URL+action;
+		$http.post(url,data)
 		.success(function(data, status, headers, config){
 			scallback(data, status, headers, config);
 		})
@@ -203,12 +225,13 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 			ecallback('daogouAPI.login传入参数错误 {username,password');
 			return;
 		}
+		var action='brand-login';
 		var data={
-			username:username,
-			password:password,
+			username:dataobj.username,
+			password:dataobj.password,
 		};
 
-		daogouAPI.post(daogouAPI.apiurl('brand-login',data),scallback,ecallback);
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	};
 
 
@@ -224,7 +247,59 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	};
 
-	
+
+
+	function register(username,scallback,ecallback){
+		var action='/accounts/register';
+		var data={
+			username:username,
+			password:"admin",
+			enabled:true,
+		};
+
+		daogouAPI.post(action,data,scallback,ecallback);
+	}
+
+	function registerInfo(objdata,scallback,ecallback){
+		var action='/accounts/register';
+		var data = {
+			"id": 1,
+			"username": 'telenum',
+			"name": "管理员",
+			"nick": "管理员",
+			"weixin": "weixin",
+			"weixinName": "weixin nick",
+			"mobile": 'telenum',
+			"email": "",
+			"accountId": 1,
+			"birthday": null,
+			"gender": "FEMALE"
+		};
+
+		daogouAPI.post(action,data,scallback,ecallback);
+	}
+
+	function isRegistered(username,scallback,ecallback){
+		if(!angular.isString(username)&&!angular.isNumber(username)){
+			ecallback('daogouAPI.isRegistered传入的username不是字符串');
+			return;
+		}
+		var action="/accounts/exists";
+		var data={
+			username:username,
+		};
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+
+	function isLogin(scallback,ecallback){
+
+		var action="/accounts/current";
+		var data='';
+
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
 	
 	function deleteCartProduct (dataobj,scallback,ecallback) {
 
@@ -236,7 +311,32 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		daogouAPI.deletef(daogouAPI.apiurl(action,data),scallback,ecallback);
 	};
 
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
