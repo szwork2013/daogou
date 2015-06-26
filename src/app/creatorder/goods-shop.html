@@ -1,43 +1,17 @@
 
 <ion-view view-title="取货门店">
     <ion-content class="createorder-content">
-      <div class="statusWrap">
+      <div class="statusWrap" ng-repeat="item in shopaddressData">
          <div class="shop-address">
              <div>
-                 <span>中山公园龙之梦店 </span>
+                 <span>{{item.name}}</span>
                  <span> 021-54347586 </span>
              </div>
-             <span>营业时间： 10：00-20：00</span>
-             <div>上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</div>
+             <span>营业时间： {{item.business_begin_time}}-{{item.business_end_time}}</span>
+             <div>{{item.state}} {{item.city}} {{item.district}} {{item.address}}</div>
          </div>
          <div class="default-shop"> 
-         <i class="iconfont icon-gou slgou greengou font16"></i>  默认取货门店</div>
-      </div>
-
-       <div class="statusWrap">
-         <div class="shop-address">
-             <div>
-                 <span>中山公园龙之梦店 </span>
-                 <span> 021-54347586 </span>
-             </div>
-             <span>营业时间： 10：00-20：00</span>
-             <div>上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</div>
-         </div>
-         <div class="default-shop"> 
-         <i class="iconfont icon-gou slgou greengou font16"></i>  默认取货门店</div>
-      </div>
-
-       <div class="statusWrap">
-         <div class="shop-address">
-             <div>
-                 <span>中山公园龙之梦店 </span>
-                 <span> 021-54347586 </span>
-             </div>
-             <span>营业时间： 10：00-20：00</span>
-             <div>上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</div>
-         </div>
-         <div class="default-shop"> 
-         <i class="iconfont icon-gou slgou graygou font16"></i>  默认取货门店</div>
+         <i class="iconfont icon-gou slgou font16" ng-click="defaultstorefunc(item.id,$index)" ng-class="{'graygou':!item.is_default,'greengou':item.is_default}"></i>  默认取货门店</div>
       </div>
       
       <div class="selectCity1 border-bt font13">根据地区选择其他门店</div>
@@ -55,7 +29,7 @@
              <div>上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</div>
          </div>
          <div class="default-shop"> 
-         <i class="iconfont icon-gou slgou greengou font16"></i>  默认取货门店</div>
+         <i class="iconfont icon-gou slgou graygou font16"></i>  默认取货门店</div>
       </div>
 
        <div class="statusWrap">
@@ -68,7 +42,7 @@
              <div>上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</div>
          </div>
          <div class="default-shop"> 
-         <i class="iconfont icon-gou slgou graygou font16"></i>  默认取货门店</div>
+         <i class="iconfont icon-gou slgou greengou font16"></i>  默认取货门店</div>
       </div>
 
 

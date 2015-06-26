@@ -102,19 +102,8 @@
                 </div>
           </div>
       </ion-content>
-      <div class="redPoint"></div>
-      <div class="daogou">
-        <img class="daogouImg1" src="assets/images/daogou1.png" ng-click="showmenu()">
-        <div class="daogouImgWarp">
-          <img class="daogouImg2" src="assets/images/daogou2.png">
-          <span class="daogouImgTxt">个人中心</span>
-          <img class="daogouImg2" src="assets/images/daogou3.png">
-          <span class="daogouImgTxt">导购橱窗</span>
-          <img class="daogouImg2" src="assets/images/daogou4.png" ui-sref="cart">
-          <span class="daogouImgTxt" ui-sref="cart">购物车</span>
-          <div class="redPointCart"></div>
-        </div>
-      </div>
+      <!-- 悬浮点击打开个人中心、购物车、导购 -->
+      <div float-center></div>
 
 
       <ion-footer-bar align-title="left" class="footer" ng-show="deleteOrder">

@@ -58,19 +58,36 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
        
        }
 
-      daogouAPI.shopAddress("/brands/1/stores/store-fetch",{
-      		user_id:18,
+      $scope.user_id = $scope.curUserId || $stateParams.userid;
+      daogouAPI.shopAddress("/brands/"+$stateParams.brandid+"/stores/store-fetch",{
+      		user_id:$scope.curUserId,
       		longitude:121.399411,
       		latitude:31.168323
       	},function(data, status, headers, config){
       		console.log(["查询门店列表成功",data]);
-      		var minIndex = 0;
-      		for(var i=0;i<data.length-1;i++){
-      			if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
-      				minIndex = i+1;
+      		$scope.shopaddressData = data;
+      		var flag = false;
+      		var defaultIndex = 0;
+      		for(var i in $scope.shopaddressData){
+      			if($scope.shopaddressData[i].is_default===1){
+      				flag = true;//如果有默认地址 flag为true
+      				defaultIndex = i;
       			}
       		}
-      		$scope.minDistance = data[minIndex]; 
+      		if(flag === true){//有默认地址
+      			console.log("有默认地址");
+      			$scope.minDistance=$scope.shopaddressData[defaultIndex];
+      		}else{//没有默认地址
+      			console.log("无有默认地址");
+      			var minIndex = 0;
+      			for(var i=0;i<data.length-1;i++){
+      				if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+      					minIndex = i+1;
+      				}
+      			}
+      			$scope.minDistance = data[minIndex]; 
+      		}
+      		
       	    
       	},function(data, status, headers, config){
       		console.log(["查询门店列表失败",data]);
@@ -94,6 +111,8 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 			$scope.shopaddress = false; //默认显示用户地址，隐藏实体店地址
 			$scope.allbuyeraddress = true;
 			console.log(["$scope.loginhandle", $scope.loginhandle]);
+			$scope.curUserId = data.id;
+			$rootScope.curUserId = data.id;
 		}, function(data) {
 			//如果未登录,显示登录框，进行登录
 			console.log(["用户未登录,没获得当前登录用户账号", data]);
@@ -648,19 +667,44 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 		// 	console.log(["退出失败",data]);
 		// })
 	}
-
+	$scope.goGoodsShop = function(){
+		$state.go("goodsShop",{"userid":$scope.curUserId,"brandid":$stateParams.brandid});
+	}
 
 })
-.controller('goodsShopCtrl',['$scope','$log','$http',function($scope,$log,$http){
+.controller('goodsShopCtrl',['$scope','$log','$http','daogouAPI','$stateParams',function($scope,$log,$http,daogouAPI,$stateParams){
 	$log.debug('goodsShopCtrl');
-	$http.get('assets/testdata/cart.json')
-	.success(function(data){
-		$log.debug(["success data",data]);
-		$scope.productData = data;
-	})
-	.error(function(data){
-		$log.debug(["error data",data]);
-	})
+	daogouAPI.shopAddress("/brands/"+$stateParams.brandid+"/stores/store-fetch",{
+		user_id:$stateParams.userid,
+		longitude:121.399411,
+		latitude:31.168323
+	},function(data, status, headers, config){
+		console.log(["查询门店列表成功",data]);
+		$scope.shopaddressData = data;
+	},function(data, status, headers, config){
+		console.log(["查询门店列表失败",data]);
+	});
+
+	$scope.defaultstorefunc = function(store_id,index){
+		console.log("123");
+		daogouAPI.defaultstore({
+			brand_id:$stateParams.brandid,
+			user_id:$stateParams.userid,
+			store_id:store_id
+		},function(data, status, headers, config){
+			for(var i in $scope.shopaddressData){
+				$scope.shopaddressData[i].is_default = false;
+			}
+			$scope.shopaddressData[index].is_default = true;
+			console.log(["设置默认取货门店成功",data]);
+		    
+		},function(data, status, headers, config){
+			console.log(["设置默认取货门店失败",data]);
+		});
+	}
+
+
+	
 }])
 .controller('changeReceiveInfoCtrl',['$scope','$log','$http',function($scope,$log,$http){
 	$log.debug('changeReceiveInfoCtrl');
