@@ -323,7 +323,6 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 	};
 
 	function getuserinfo(dataobj,scallback,ecallback){
-		console.log(0)
 		var action="/users/mobiles/"+dataobj.username;
 		var data='';
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
@@ -333,7 +332,6 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 		var action="/logout";
 		var data='';
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-
 	}
 
 });

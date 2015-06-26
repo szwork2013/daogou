@@ -329,6 +329,7 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 			//获取登录账号（手机号）获取User信息
 
 		daogouAPI.getuserinfo({username: data.username}, function(currentUserId) { //User存在  根据用户id修改信息
+			console.log(['currentUserId',currentUserId])
 			$http.put(URLPort + "/users/" + currentUserId + "", {
 					"id": currentUserId,
 					"account_id": currentAccountId,

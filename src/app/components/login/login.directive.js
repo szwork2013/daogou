@@ -57,18 +57,18 @@ angular.module('daogou')
 			};
 
 			//获取登录账号（手机号）获取User信息
-			function getUserInfo(telenum, callBack, errorCallBack) {
-				$http.get(URLPort + "/users/mobiles/" + telenum) //根据手机号码来获取用户信息，检测用户是否存在，如果不存在要先注册
-					.success(function(data) {
-						console.log(["获取用户User信息,用户存在", data]);
-						var currentUserId = data.id;
-						callBack(currentUserId);
-					})
-					.error(function(data) {
-						console.log(["获取用户User信息,用户不存在", data]);
-						errorCallBack();
-					})
-			}
+			// function getUserInfo(telenum, callBack, errorCallBack) {
+			// 	$http.get(URLPort + "/users/mobiles/" + telenum) //根据手机号码来获取用户信息，检测用户是否存在，如果不存在要先注册
+			// 		.success(function(data) {
+			// 			console.log(["获取用户User信息,用户存在", data]);
+			// 			var currentUserId = data.id;
+			// 			callBack(currentUserId);
+			// 		})
+			// 		.error(function(data) {
+			// 			console.log(["获取用户User信息,用户不存在", data]);
+			// 			errorCallBack();
+			// 		})
+			// }
 
 			console.log(['iAttrs',iAttrs])
 
@@ -77,15 +77,26 @@ angular.module('daogou')
 				// $http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
 				daogouAPI.login($scope.logindate,function(data){
 
-					var data=angular.extend({},data,$scope.logindate)
 
-					var getter=$parse(iAttrs.loginsuccess);
-					var loginsuccess=getter($scope);
-					loginsuccess(data)
+					//获取当前用户信息
+					daogouAPI.isLogin(function(data) {
+
+						var getter=$parse(iAttrs.loginsuccess);
+						var loginsuccess=getter($scope);
+						loginsuccess(data)
+
+						//获取用户信息
+						// daogouAPI.getuserinfo({username: $scope.logindate.username}, function(data) {
+
+						// },function(data){
+
+						// })
+
+					})
+
 
 				},function(data){
 
-					var data=angular.extend({},data,$scope.logindate)
 					var getter=$parse(iAttrs.loginerror)
 					var loginerror=getter($scope);
 					loginerror(data)
