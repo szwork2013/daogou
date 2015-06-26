@@ -39,8 +39,9 @@ angular.module('daogou')
 		// $rootScope.URLPort = "http://yunwan2.3322.org:57099";
 		// return $rootScope.URLPort ;
 		// return "http://192.168.51.191:3000"
-		return "http://yunwan2.3322.org:57099"
-		// return "";
+		var url="http://yunwan2.3322.org:57099";
+		url=""; 
+		return url;
 	};
 
 }])

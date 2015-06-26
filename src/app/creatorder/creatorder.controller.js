@@ -26,6 +26,8 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
    	$scope.firstBuyerAddress = true;
 	$scope.allbuyeraddress = true;
 	$scope.shopaddress = true;
+
+
 	$scope.postway = function(){
 		$scope.allbuyeraddress = true;
 		$scope.shopaddress = false;
@@ -157,19 +159,6 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 	// 		console.log(["注册accountinfo失败",data]);
 	// 	})
 	// }
- //   //获取登录账号（手机号）获取User信息
-	// function getUserInfo(telenum,callBack,errorCallBack){
-	// 	$http.get(URLPort+"/users/mobiles/"+telenum)//根据手机号码来获取用户信息，检测用户是否存在，如果不存在要先注册
-	// 	.success(function(data){
-	// 		console.log(["获取用户User信息,用户存在",data]);
-	// 		var currentUserId =data.id;
-	// 		callBack(currentUserId);
-	// 	})
-	// 	.error(function(data){
-	// 		console.log(["获取用户User信息,用户不存在",data]);
-	// 		errorCallBack();
-	// 	})
-	// }
  //    //通过手机号码获取验证码
 	// function getverificationcode(telenum){
 	// 	var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
@@ -201,6 +190,19 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 	// 	getverificationcode($scope.mainData.telenum);
 	// }
 
+ //   //获取登录账号（手机号）获取User信息
+	// function getUserInfo(telenum,callBack,errorCallBack){
+	// 	$http.get(URLPort+"/users/mobiles/"+telenum)//根据手机号码来获取用户信息，检测用户是否存在，如果不存在要先注册
+	// 	.success(function(data){
+	// 		console.log(["获取用户User信息,用户存在",data]);
+	// 		var currentUserId =data.id;
+	// 		callBack(currentUserId);
+	// 	})
+	// 	.error(function(data){
+	// 		console.log(["获取用户User信息,用户不存在",data]);
+	// 		errorCallBack();
+	// 	})
+	// }
 
 	// //登录
 	// $scope.submit=function(){
@@ -329,6 +331,157 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 	// 	})
 	// }
 
+
+	$scope.loginsuccess=function(data){
+		console.log(['登录成功回调',data])
+		var currentUserName = data.username;
+		var currentAccountId = data.accountId;
+		var saveUserMobile = data.mobile;
+		$scope.curUserId = data.id;
+		$rootScope.curUserId = data.id;
+		console.log(["$rootScope.curUserId", $rootScope.curUserId])
+			// $rootScope.curUserInfo
+
+		console.log(["$scope.curUserId", $scope.curUserId])
+			//获取登录账号（手机号）获取User信息
+
+		daogouAPI.getuserinfo({username: data.username}, function(currentUserId) { //User存在  根据用户id修改信息
+			$http.put(URLPort + "/users/" + currentUserId + "", {
+					"id": currentUserId,
+					"account_id": currentAccountId,
+					"name": "老3",
+					"gender": 1,
+					"nick": "zhang3",
+					"email": "zy3@qq.com",
+					"birthday": 1420017957000,
+					"mobile": saveUserMobile,
+					"weixin_no": "zy3@qq.com",
+					"weixin_nick": "老3就是我",
+					"avatar": "http://brand-guide.b0.upaiyun.com/avatar.jpg"
+				})
+				.success(function(data) {
+					console.log(["更新User信息成功", data]);
+				})
+				.error(function(data) {
+					console.log(["更新User信息失败", data]);
+				})
+
+			},
+			function() { //User不存在
+				$http.post(URLPort + "/users", {
+						"account_id": currentAccountId,
+						"name": "老5",
+						"name_py": "lao5",
+						"gender": 1,
+						"nick": "zhang",
+						"email": "zy@qq.com",
+						"birthday": 1420017957000,
+						"mobile": saveUserMobile,
+						"weixin_no": "zy@qq.com",
+						"weixin_nick": "老5就是我",
+						"avatar": "http://brand-guide.b0.upaiyun.com/avatar.jpg"
+					})
+					.success(function(data) {
+						console.log(["新增User信息成功", data]);
+					})
+					.error(function(data) {
+						console.log(["新增User信息失败", data]);
+					})
+			})
+
+		// getUserInfo(currentUserName,
+		// 	function(currentUserId) { //User存在  根据用户id修改信息
+		// 		$http.put(URLPort + "/users/" + currentUserId + "", {
+		// 				"id": currentUserId,
+		// 				"account_id": currentAccountId,
+		// 				"name": "老3",
+		// 				"gender": 1,
+		// 				"nick": "zhang3",
+		// 				"email": "zy3@qq.com",
+		// 				"birthday": 1420017957000,
+		// 				"mobile": saveUserMobile,
+		// 				"weixin_no": "zy3@qq.com",
+		// 				"weixin_nick": "老3就是我",
+		// 				"avatar": "http://brand-guide.b0.upaiyun.com/avatar.jpg"
+		// 			})
+		// 			.success(function(data) {
+		// 				console.log(["更新User信息成功", data]);
+		// 			})
+		// 			.error(function(data) {
+		// 				console.log(["更新User信息失败", data]);
+		// 			})
+
+		// 	},
+		// 	function() { //User不存在
+		// 		$http.post(URLPort + "/users", {
+		// 				"account_id": currentAccountId,
+		// 				"name": "老5",
+		// 				"name_py": "lao5",
+		// 				"gender": 1,
+		// 				"nick": "zhang",
+		// 				"email": "zy@qq.com",
+		// 				"birthday": 1420017957000,
+		// 				"mobile": saveUserMobile,
+		// 				"weixin_no": "zy@qq.com",
+		// 				"weixin_nick": "老5就是我",
+		// 				"avatar": "http://brand-guide.b0.upaiyun.com/avatar.jpg"
+		// 			})
+		// 			.success(function(data) {
+		// 				console.log(["新增User信息成功", data]);
+		// 			})
+		// 			.error(function(data) {
+		// 				console.log(["新增User信息失败", data]);
+		// 			})
+		// 	})
+
+		//登录成功，登录模块隐藏，地址模块不影藏
+		$scope.loginhandle = true;
+		$scope.alladdress = false;
+		$scope.shopaddress = false;
+		//查询用户的收获地址信息
+
+		$http.get(URLPort + "/users/" + $scope.curUserId + "/shipping-addresses")
+			.success(function(data) {
+
+				if (data.length > 0) {
+					console.log(["当前用户有收货地址，选择收获地址", data]);
+					$scope.firstBuyerAddress = true; //隐藏填写第一个地址模块，显示选择地址模块
+					$scope.buyeraddress = false;
+					$scope.weixinpay = false;
+					for (var i in data) { //选出默认收货地址
+						if (data[i].is_default === 1) {
+							$scope.defaultAddressdata = data[i];
+						}
+					}
+
+				} else {
+					console.log(["当前用户没有收货地址，请填写第一个收货地址", data]);
+					$scope.shopaddress = false; //显示用户地址，隐藏实体店地址
+					$scope.allbuyeraddress = true;
+					$scope.firstBuyerAddress = false; //隐藏选择地址模块，显示填写第一个地址模块
+					$scope.buyeraddress = true;
+					$scope.searchProvinces();
+
+				}
+
+			})
+			.error(function(data) {
+				console.log(["当前用户没有收货地址，请填写第一个收货地址", data]);
+
+				$scope.shopaddress = false; //显示用户地址，隐藏实体店地址
+				$scope.allbuyeraddress = true;
+
+				$scope.firstBuyerAddress = false; //隐藏选择地址模块，显示填写第一个地址模块
+				$scope.buyeraddress = true;
+
+				$scope.searchProvinces();
+
+			})
+	};
+	$scope.loginerror=function(data){
+		console.log(["登录失败回调",data])
+
+	};
 
 	$scope.getAddresses = function(){
 
@@ -496,13 +649,20 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 
 
 	$scope.logout = function(){
-		$http.get(URLPort+"/logout")
-		.success(function(data){
+		daogouAPI.logout(function(data){
 			console.log(["退出成功",data])
-		})
-		.error(function(data){
+
+		},function(data){
 			console.log(["退出失败",data]);
+
 		})
+		// $http.get(URLPort+"/logout")
+		// .success(function(data){
+		// 	console.log(["退出成功",data])
+		// })
+		// .error(function(data){
+		// 	console.log(["退出失败",data]);
+		// })
 	}
 	$scope.goGoodsShop = function(){
 		$state.go("goodsShop",{"userid":18,"brandid":$stateParams.brandid});
