@@ -3,9 +3,12 @@
 
 var daogouAPImodule=angular.module('daogouAPImodule',['ionic']);
 
-daogouAPImodule.factory('daogouAPI', function($http,$log){
+daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 	// 正式接口
+
 	var ROOT_URL='http://yunwan2.3322.org:57099';
+	
+	ROOT_URL = URLPort();
 	// 测试接口	
 	// ROOT_URL='';
 
@@ -69,7 +72,7 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 
 		/*
 		登录接口
-		login(objdata,password,callback)
+		login(dataobj,password,callback)
 		dataobj(接口数据)  {object}   [必填]
 			username(账号)	{string}
 			password(验证码)	{string}
@@ -110,7 +113,15 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		*/
 		isLogin:isLogin,
 
+		/*
+		获取用户信息
+		*/
+		getuserinfo:getuserinfo,
 
+		/*
+		退出登录
+		*/
+		logout:logout,
 	};
 
 	return daogouAPI;
@@ -261,17 +272,17 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		daogouAPI.post(action,data,scallback,ecallback);
 	}
 
-	function registerInfo(objdata,scallback,ecallback){
-		var action='/accounts/register';
+	function registerInfo(dataobj,scallback,ecallback){
+		var action='/accounts/register/info';
 		var data = {
 			"id": 1,
-			"username": 'telenum',
+			"username":dataobj.username,
 			"name": "管理员",
 			"nick": "管理员",
 			"weixin": "weixin",
 			"weixinName": "weixin nick",
-			"mobile": 'telenum',
-			"email": "",
+			"mobile":dataobj.username,
+			"email": "fjdk@dkfj.com",
 			"accountId": 1,
 			"birthday": null,
 			"gender": "FEMALE"
@@ -311,6 +322,19 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 		daogouAPI.deletef(daogouAPI.apiurl(action,data),scallback,ecallback);
 	};
 
+	function getuserinfo(dataobj,scallback,ecallback){
+		console.log(0)
+		var action="/users/mobiles/"+dataobj.username;
+		var data='';
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	function logout(scallback,ecallback){
+		var action="/logout";
+		var data='';
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+
+	}
 
 });
 
