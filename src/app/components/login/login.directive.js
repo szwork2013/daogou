@@ -129,11 +129,13 @@ angular.module('daogou')
 			//登录
 			$scope.submit = function() {
 				// $http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
+				console.log(0)
 				daogouAPI.login($scope.logindate,function(data){
 					console.log(['登录成功',data]);
 				},function(data){
 					console.log(['登录失败',data]);
 				})
+				// console.log(15026590036)
 				// $http({
 				// 		method: 'POST',
 				// 		url: URLPort + '/login',

@@ -68,7 +68,7 @@ app.all("*", function(req, res, next) {
 			url: proxy.protocol + "://" + proxy.hostname + ":" + proxy.port + req.originalUrl,
 			method: req.method,
 			headers: req.headers,
-			body:JSON.stringify(req.body)!=='{}'?JSON.stringify(req.body):'',
+			// body:JSON.stringify(req.body)!=='{}'?JSON.stringify(req.body):'',
 			gzip: true
 		}
 

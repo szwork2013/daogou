@@ -221,11 +221,12 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 
 
 	function login(dataobj,scallback,ecallback){
+
 		if(!angular.isString(dataobj.username)||!angular.isString(dataobj.password)){
-			ecallback('daogouAPI.login传入参数错误 {username,password');
+			ecallback('daogouAPI.login传入参数错误 username,password');
 			return;
 		}
-		var action='brand-login';
+		var action='/brand-login';
 		var data={
 			username:dataobj.username,
 			password:dataobj.password,
@@ -293,7 +294,6 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 
 
 	function isLogin(scallback,ecallback){
-
 		var action="/accounts/current";
 		var data='';
 
