@@ -60,7 +60,7 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 
       $scope.user_id = $scope.curUserId || $stateParams.userid;
       daogouAPI.shopAddress("/brands/"+$stateParams.brandid+"/stores/store-fetch",{
-      		user_id:18,
+      		user_id:$scope.curUserId,
       		longitude:121.399411,
       		latitude:31.168323
       	},function(data, status, headers, config){
@@ -111,6 +111,8 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 			$scope.shopaddress = false; //默认显示用户地址，隐藏实体店地址
 			$scope.allbuyeraddress = true;
 			console.log(["$scope.loginhandle", $scope.loginhandle]);
+			$scope.curUserId = data.id;
+			$rootScope.curUserId = data.id;
 		}, function(data) {
 			//如果未登录,显示登录框，进行登录
 			console.log(["用户未登录,没获得当前登录用户账号", data]);
@@ -665,7 +667,7 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 		// })
 	}
 	$scope.goGoodsShop = function(){
-		$state.go("goodsShop",{"userid":18,"brandid":$stateParams.brandid});
+		$state.go("goodsShop",{"userid":$scope.curUserId,"brandid":$stateParams.brandid});
 	}
 
 })
