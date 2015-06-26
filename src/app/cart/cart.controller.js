@@ -1,7 +1,7 @@
 'use strict';
 
 var cart = angular.module('cart',['ionic']);
-cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$stateParams','daogouAPI', function($scope,$log,$http,$state,URLPort,$stateParams,daogouAPI){
+cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$stateParams','daogouAPI','$rootScope', function($scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,$rootScope){
 
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
@@ -9,10 +9,9 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
 	//一个是购物车页cart   应该是订单列表  order → order-list
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
 
+   
 
 
-	$scope.cart = 1;
-	$scope.list = 0;
     var URLPort = URLPort();
 
     $scope.cartProductListData = [];
@@ -184,4 +183,12 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
     	$scope.finishhandle = false;
     }
 
+
+
+    //购物车 订单列表切换
+    $scope.goOrderList = function(){
+        console.log(["goOrderList  $stateParams.userid",$stateParams.userid]);
+        $state.go("orderList",{"userid": $stateParams.userid});
+    }
+    
 }]);

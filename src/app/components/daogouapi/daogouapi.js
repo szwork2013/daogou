@@ -7,7 +7,7 @@ daogouAPImodule.factory('daogouAPI', function($http,$log){
 	// 正式接口
 	var ROOT_URL='http://yunwan2.3322.org:57099';
 	// 测试接口	
-	ROOT_URL='';
+	// ROOT_URL='';
 
 	var daogouAPI={
 		/*
