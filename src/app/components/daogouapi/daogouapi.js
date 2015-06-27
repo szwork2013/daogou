@@ -131,11 +131,20 @@ angular.module('daogou')
 		*/
 		setUserInfo:setUserInfo,
 
-
 		/*
 		退出登录
 		*/
 		logout:logout,
+
+		/*
+		获取微信ticket
+		*/
+		WXgetTicket:WXgetTicket,
+
+		/*
+		获取微信授权地址
+		*/
+		WXgetAuth:WXgetAuth,
 	};
 
 	return daogouAPI;
@@ -370,6 +379,21 @@ angular.module('daogou')
 		var data='';
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
+
+	function WXgetTicket(brand_id,scallback,ecallback){
+		var action='/weixin/jsapi-ticket';
+		var data={
+			brand_id:brand_id
+		};
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	function WXgetAuth(scallback,ecallback){
+		var action='/weixin/auth/url';
+		var data='';
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
 
 });
 
