@@ -1,14 +1,14 @@
 
 <ion-view view-title="我的订单">
     <ion-content class="createorder-content">
-      <div class="statusWrap">
+      <div class="statusWrap" ng-repeat="item in receiverAddressDate">
           <div class="shop-address">
              <div>
-                 <span class="name">中山公园龙之梦店 </span>
-                 <span class="call"> 021-54347586 </span>
+                 <span class="name">{{item.name}} </span>
+                 <span class="call">{{item.mobile}} </span>
                  <div class="clearBoth"></div>
              </div>
-             <div class="address">上海市徐汇区  淮海中路776号3楼(近瑞金一路)2013室</div>
+             <div class="address"><span ng-show="{{item.is_default}}">[默认]</span>{{item.state}}{{item.city}}{{item.district}}{{item.address}}</div>
          </div>
          <div class="default-shop">
             <div class="default">
@@ -19,7 +19,7 @@
          </div>
       </div>
      
-       <div class="statusWrap">
+       <!-- <div class="statusWrap">
           <div class="shop-address">
              <div>
                  <span class="name">中山公园龙之梦店 </span>
@@ -35,7 +35,7 @@
             <div class="edit">编辑</div>
             <div class="delete">删除</div>
          </div>
-      </div>
+      </div> -->
 
       <div class="commonBtn backred" ui-sref="newAddress">添加新地址</div>
      

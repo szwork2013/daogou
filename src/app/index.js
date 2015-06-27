@@ -97,7 +97,7 @@ angular.module('daogou',['ionic','product','cart','order','orderList','createOrd
 		controller: 'goodsShopCtrl'
 	})
 	.state('changeReceiveInfo', {
-		url: '/changeReceiveInfo',
+		url: '/changeReceiveInfo/:userid',
 		templateUrl: 'app/creatorder/change-receive-info.html',
 		controller: 'changeReceiveInfoCtrl'
 	})
