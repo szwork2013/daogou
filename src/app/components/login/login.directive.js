@@ -23,11 +23,7 @@ angular.module('daogou')
 			};
 			//获取验证码
 			$scope.verify=function(){
-				// console.log("hihihi");
-				// console.log("$scope.mainData.telenum:"+$scope.mainData.telenum);
-				// console.log("$scope.mainData.verificationCode:"+$scope.mainData.verificationCode);
 				$(".yanzhengma").addClass("clickdown");
-
 				//判断是否注册用户  非注册用户需帮用户注册
 				daogouAPI.isRegistered($scope.logindate.username,function(data){
 					console.log(["U乃注册用户",data]);
@@ -48,62 +44,70 @@ angular.module('daogou')
 					},function(data){
 						console.log(['注册accountinfo失败',data])
 					});
-
-
-					// saveUserInfo(telenum);//注册后第一次注册accountinfo
 				});
 				//通过手机号码获取验证码
 				// getverificationcode($scope.mainData.telenum);
 			};
 
-			//获取登录账号（手机号）获取User信息
-			// function getUserInfo(telenum, callBack, errorCallBack) {
-			// 	$http.get(URLPort + "/users/mobiles/" + telenum) //根据手机号码来获取用户信息，检测用户是否存在，如果不存在要先注册
-			// 		.success(function(data) {
-			// 			console.log(["获取用户User信息,用户存在", data]);
-			// 			var currentUserId = data.id;
-			// 			callBack(currentUserId);
-			// 		})
-			// 		.error(function(data) {
-			// 			console.log(["获取用户User信息,用户不存在", data]);
-			// 			errorCallBack();
-			// 		})
-			// }
-
+	// function getverificationcode(telenum){
+	// 	var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
+	// 	$http.post(URLPort+"/accounts/verification-code?codeType=MOBILE&account="+telenum+"&template="+templatetext)
+	// 	.success(function(data){
+	// 		console.log(["获取验证码成功",data]);
+	// 	})
+	// 	.error(function(data){
+	// 		console.log(["获取验证码失败",data]);
+	// 	})
+	// }
 			console.log(['iAttrs',iAttrs])
+
 
 			//登录
 			$scope.submit = function() {
 				// $http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
 				daogouAPI.login($scope.logindate,function(data){
-
-
-					//获取当前用户信息
-					daogouAPI.isLogin(function(data) {
-
-						var getter=$parse(iAttrs.loginsuccess);
-						var loginsuccess=getter($scope);
-						loginsuccess(data)
-
-						//获取用户信息
-						// daogouAPI.getuserinfo({username: $scope.logindate.username}, function(data) {
-
-						// },function(data){
-
-						// })
-
+					console.log(['登录 成功',data]);
+					//获取account信息
+					daogouAPI.isLogin(function(accountdata) {
+						console.log(['accountinfo 成功',accountdata]);
+						// 获取用户信息
+						daogouAPI.getUserInfo({username: $scope.logindate.username}, function(userinfo) {
+							console.log(['获取用户信息 成功',userinfo])
+							//登录成功 启用回调函数并传入userinfo
+							successcallback(userinfo)
+						},function(data){
+							console.log(['获取用户信息 失败',data])
+							// 添加用户信息
+							daogouAPI.setUserInfo(accountdata,function(userinfo){
+								console.log(['添加用户信息 成功',userinfo])
+								//添加用户信息成功 启用回调函数并传入userinfo
+								successcallback(userinfo)
+							},function(data){
+								console.log(['添加用户信息 失败',data])
+								errorcallback(data)
+							})
+						})
+					},function(data){
+						console.log(['accountinfo 失败',data]);
+						errorcallback(data)
 					})
-
-
 				},function(data){
-
-					var getter=$parse(iAttrs.loginerror)
-					var loginerror=getter($scope);
-					loginerror(data)
-
+					console.log(['登录 失败',data]);
+					errorcallback(data)
 				})
+			};
+
+			function successcallback(data){
+				var getter=$parse(iAttrs.loginsuccess);
+				var loginsuccess=getter($scope);
+				loginsuccess(data);
 			}
 
+			function errorcallback(data){
+				var getter=$parse(iAttrs.loginerror)
+				var loginerror=getter($scope);
+				loginerror(data);
+			}
 		}
 	};
 });

@@ -1,9 +1,7 @@
 'use strict';
-// var createOrder=angular.module('createOrder',['ionic']);
 
-var daogouAPImodule=angular.module('daogouAPImodule',['ionic']);
-
-daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
+angular.module('daogou')
+.factory('daogouAPI', function($http,$log,URLPort){
 	// 正式接口
 
 	var ROOT_URL='http://yunwan2.3322.org:57099';
@@ -99,12 +97,12 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 		deleteCartProduct:deleteCartProduct,
 
 		/*
-		注册用户
+		account注册用户
 		*/
 		register:register,
 
 		/*
-		注册用户info
+		account添加用户info
 		*/
 		registerInfo:registerInfo,
 
@@ -114,18 +112,25 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 		isRegistered:isRegistered,
 
 		/*
-		检测用户是否存在		
+		检测用户是否登录  返回account用户信息
 		*/
 		isLogin:isLogin,
+
 		/*
 		设置默认取货门店		
 		*/
 		defaultstore:defaultstore,
 
 		/*
-		获取用户信息
+		user获取用户信息
 		*/
-		getuserinfo:getuserinfo,
+		getUserInfo:getUserInfo,
+
+		/*
+		user添加用户信息
+		*/
+		setUserInfo:setUserInfo,
+
 
 		/*
 		退出登录
@@ -140,7 +145,7 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 		var url =ROOT_URL+action;
 
 		if(typeof data==='object'){
-			url+="?";
+			url+='?';
 			for(var key in data){
 				url+=key+'='+data[key]+'&';
 			}
@@ -269,7 +274,7 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 
 	function shopcart (dataobj,scallback,ecallback) {
 
-		var action="/users/"+dataobj.userid+"/shopping-carts";
+		var action='/users/'+dataobj.userid+'/shopping-carts';
 		var data={
 			brand_id: dataobj.brand_id,
 			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
@@ -285,7 +290,7 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 		var action='/accounts/register';
 		var data={
 			username:username,
-			password:"admin",
+			password:'admin',
 			enabled:true,
 		};
 
@@ -295,19 +300,9 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 	function registerInfo(dataobj,scallback,ecallback){
 		var action='/accounts/register/info';
 		var data = {
-			"id": 1,
-			"username":dataobj.username,
-			"name": "管理员",
-			"nick": "管理员",
-			"weixin": "weixin",
-			"weixinName": "weixin nick",
-			"mobile":dataobj.username,
-			"email": "fjdk@dkfj.com",
-			"accountId": 1,
-			"birthday": null,
-			"gender": "FEMALE"
+			username:dataobj.username,
+			mobile:dataobj.username,
 		};
-
 		daogouAPI.post(action,data,scallback,ecallback);
 	}
 
@@ -316,7 +311,7 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 			ecallback('daogouAPI.isRegistered传入的username不是字符串');
 			return;
 		}
-		var action="/accounts/exists";
+		var action='/accounts/exists';
 		var data={
 			username:username,
 		};
@@ -325,7 +320,7 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 
 
 	function isLogin(scallback,ecallback){
-		var action="/accounts/current";
+		var action='/accounts/current';
 		var data='';
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
@@ -334,7 +329,7 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 	
 	function deleteCartProduct (dataobj,scallback,ecallback) {
 
-		var action="/users/"+dataobj.userid+"/shopping-carts";
+		var action='/users/'+dataobj.userid+'/shopping-carts';
 		var data={
 			ids:dataobj.ids
 		};
@@ -344,7 +339,7 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 
 	function defaultstore (dataobj,scallback,ecallback) {
 
-		var action="/brands/"+dataobj.brand_id+"/users/"+dataobj.user_id+"/stores/"+dataobj.store_id+"/store-fetch/default";
+		var action='/brands/'+dataobj.brand_id+'/users/'+dataobj.user_id+'/stores/'+dataobj.store_id+'/store-fetch/default';
 		var data='';
 
 		daogouAPI.patch(daogouAPI.apiurl(action,data),scallback,ecallback);
@@ -352,14 +347,26 @@ daogouAPImodule.factory('daogouAPI', function($http,$log,URLPort){
 	
 
 
-	function getuserinfo(dataobj,scallback,ecallback){
-		var action="/users/mobiles/"+dataobj.username;
+	function getUserInfo(dataobj,scallback,ecallback){
+		var action='/users/mobiles/'+dataobj.username;
 		var data='';
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
+	function setUserInfo(dataobj,scallback,ecallback){
+		var action='/users';
+		var data = {
+			username:dataobj.username,
+			mobile:dataobj.username,
+			accountId:dataobj.accountId,
+		};
+
+		daogouAPI.post(action,data,scallback,ecallback);
+
+	}
+
 	function logout(scallback,ecallback){
-		var action="/logout";
+		var action='/logout';
 		var data='';
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
