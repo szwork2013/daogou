@@ -27,6 +27,10 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 	console.log(["获取订单详情成功",data]);
 	if(data.pay_type === "WEIXIN"){
 		data.pay_typeCN = "微信支付";
+	}else if(data.pay_type === "ALIPAY"){
+		data.pay_typeCN = "支付宝支付";
+	}else if(data.pay_type === "BANKCARDPAY"){
+		data.pay_typeCN = "银行卡支付";
 	}
 
 	// shipping_type: "express"
@@ -95,7 +99,7 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 		}
 		$scope.deleteOrder = true;//删除订单
 		$scope.payWay = true;//付款方式
-		$scope.payNo = true;//交易号
+		// $scope.payNo = true;//交易号
 	}
 
 	//根据导购编号和品牌编号获取导购名和工作号

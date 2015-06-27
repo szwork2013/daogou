@@ -91,7 +91,7 @@
               <div class="addressInfo remarkpadding" ng-class="{disnone:buyeraddress}">
                   <div>
                       <span class="floatL">{{defaultAddressdata.name}}，{{defaultAddressdata.mobile}} </span>
-                      <span class="colorBlue floatR font13" ui-sref="changeReceiveInfo">修改</span>
+                      <span class="colorBlue floatR font13" ng-click="changeReceiveInfoFunc()">修改</span>
                       <div class="clearBoth"></div>
                   </div>
                   <span class="font13">[默认]&nbsp;{{defaultAddressdata.state}}&nbsp;{{defaultAddressdata.city}}&nbsp;{{defaultAddressdata.district}}&nbsp;{{defaultAddressdata.address}} </span>

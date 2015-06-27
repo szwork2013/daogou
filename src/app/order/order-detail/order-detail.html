@@ -28,7 +28,7 @@
                    <span class="receiver-info">
                          <div class="font15">
                               <span class="floatL">取货人：{{orderDetailData.fetch_name}}</span>        
-                              <span class="floatR">15025858989</span> 
+                              <span class="floatR">{{orderDetailData.fetch_mobile}}</span> 
                               <div class="clearBoth"></div>
                          </div>
                          <span>取货门店：{{orderDetailData.fetch_store_name}} </span>
@@ -38,7 +38,7 @@
                               <div class="clearBoth"></div>
                          </div>
                          <div>
-                              <span class="floatL width85">联系电话：18094705373</span>        
+                              <span class="floatL width85">联系电话：{{orderDetailData.fetch_store_tel}}</span>        
                               <span class="floatR colorBlue2">拨号</span> 
                               <div class="clearBoth"></div>
                          </div>
@@ -98,7 +98,7 @@
                         品牌：Lily商务时装 <br/>
                         订单号：{{orderDetailData.tid}} <br/>
                         <span ng-show="payWay">付款方式：{{orderDetailData.pay_typeCN}}</span><br/>
-                        <span ng-show="payNo">交易号：2323212232</span>
+                        <span ng-show="payNo">交易号：{{orderDetailData.pay_no}}</span>
                 </div>
           </div>
       </ion-content>

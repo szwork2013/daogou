@@ -667,8 +667,12 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 		// 	console.log(["退出失败",data]);
 		// })
 	}
-	$scope.goGoodsShop = function(){
+	$scope.goGoodsShop = function(){//门店地址列表页面
 		$state.go("goodsShop",{"userid":$scope.curUserId,"brandid":$stateParams.brandid});
+	}
+	$scope.changeReceiveInfoFunc = function(){//收货人地址列表页面
+		console.log(["userid",$scope.curUserId]);
+		$state.go("changeReceiveInfo",{"userid":$scope.curUserId});
 	}
 
 })
@@ -704,18 +708,27 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 	}
 
 
+
+
+
 	
 }])
-.controller('changeReceiveInfoCtrl',['$scope','$log','$http',function($scope,$log,$http){
+.controller('changeReceiveInfoCtrl',['$scope','$log','$http','URLPort','$stateParams',function($scope,$log,$http,URLPort,$stateParams){
 	$log.debug('changeReceiveInfoCtrl');
-	$http.get('assets/testdata/cart.json')
-	.success(function(data){
-		$log.debug(["success data",data]);
-		$scope.productData = data;
-	})
-	.error(function(data){
-		$log.debug(["error data",data]);
-	})
+	var URLPort = URLPort();
+	
+		$http.get(URLPort + "/users/" + $stateParams.userid + "/shipping-addresses")
+			.success(function(data) {
+				$scope.receiverAddressDate = data; 
+				console.log(["获取用户收货地址列表成功", data]);
+			})
+			.error(function(data) {
+				console.log(["获取用户收货地址列表失败", data]);
+
+				
+			})
+	
+	
 }])
 .controller('newAddressCtrl',['$scope','$log','$http',function($scope,$log,$http){
 	$log.debug('newAddressCtrl');
