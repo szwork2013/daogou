@@ -124,7 +124,7 @@ angular.module('daogou',['ionic','product','cart','order','orderList','createOrd
 })
 .controller('configCtrl',function($scope,wxconfig){
 
-	// wxconfig();
+	wxconfig();
 
 })
 

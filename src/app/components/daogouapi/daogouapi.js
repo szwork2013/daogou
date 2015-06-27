@@ -131,7 +131,6 @@ angular.module('daogou')
 		*/
 		setUserInfo:setUserInfo,
 
-
 		/*
 		退出登录
 		*/
@@ -152,6 +151,17 @@ angular.module('daogou')
 		添加地址
 		*/
 		addAddress:addAddress,
+
+
+		/*
+		获取微信ticket
+		*/
+		WXgetTicket:WXgetTicket,
+
+		/*
+		获取微信授权地址
+		*/
+		WXgetAuth:WXgetAuth,
 
 	};
 
@@ -388,6 +398,7 @@ angular.module('daogou')
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
+
 	function searchProvinces(dataobj,scallback,ecallback){
 		var action='/provinces';
 		var data ='';
@@ -431,6 +442,22 @@ angular.module('daogou')
 		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
 
 	}
+
+	function WXgetTicket(brand_id,scallback,ecallback){
+		var action='/weixin/jsapi-ticket';
+		var data={
+			brand_id:brand_id
+		};
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	function WXgetAuth(scallback,ecallback){
+		var action='/weixin/auth/url';
+		var data='';
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+
 
 });
 
