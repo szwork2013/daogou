@@ -107,7 +107,7 @@ angular.module('daogou',['ionic','product','cart','order','orderList','createOrd
 	.state('newAddress', {
 		url: '/newAddress',
 		templateUrl: 'app/creatorder/new-address.html',
-		controller: 'creatorderCtrl'
+		controller: 'newAddressCtrl'
 	})
 	.state('guide', {
 		url: '/guide/:guideid/:brandid',
