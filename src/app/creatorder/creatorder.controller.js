@@ -347,50 +347,50 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 		console.log(["$scope.curUserId", $scope.curUserId])
 			//获取登录账号（手机号）获取User信息
 
-		daogouAPI.getuserinfo({username: data.username}, function(currentUserId) { //User存在  根据用户id修改信息
-			console.log(['currentUserId',currentUserId])
-			$http.put(URLPort + "/users/" + currentUserId + "", {
-					"id": currentUserId,
-					"account_id": currentAccountId,
-					"name": "老3",
-					"gender": 1,
-					"nick": "zhang3",
-					"email": "zy3@qq.com",
-					"birthday": 1420017957000,
-					"mobile": saveUserMobile,
-					"weixin_no": "zy3@qq.com",
-					"weixin_nick": "老3就是我",
-					"avatar": "http://brand-guide.b0.upaiyun.com/avatar.jpg"
-				})
-				.success(function(data) {
-					console.log(["更新User信息成功", data]);
-				})
-				.error(function(data) {
-					console.log(["更新User信息失败", data]);
-				})
+		// daogouAPI.getUserInfo({username: data.username}, function(currentUserId) { //User存在  根据用户id修改信息
+		// 	console.log(['currentUserId',currentUserId])
+		// 	$http.put(URLPort + "/users/" + currentUserId + "", {
+		// 			"id": currentUserId,
+		// 			"account_id": currentAccountId,
+		// 			"name": "老3",
+		// 			"gender": 1,
+		// 			"nick": "zhang3",
+		// 			"email": "zy3@qq.com",
+		// 			"birthday": 1420017957000,
+		// 			"mobile": saveUserMobile,
+		// 			"weixin_no": "zy3@qq.com",
+		// 			"weixin_nick": "老3就是我",
+		// 			"avatar": "http://brand-guide.b0.upaiyun.com/avatar.jpg"
+		// 		})
+		// 		.success(function(data) {
+		// 			console.log(["更新User信息成功", data]);
+		// 		})
+		// 		.error(function(data) {
+		// 			console.log(["更新User信息失败", data]);
+		// 		})
 
-			},
-			function() { //User不存在
-				$http.post(URLPort + "/users", {
-						"account_id": currentAccountId,
-						"name": "老5",
-						"name_py": "lao5",
-						"gender": 1,
-						"nick": "zhang",
-						"email": "zy@qq.com",
-						"birthday": 1420017957000,
-						"mobile": saveUserMobile,
-						"weixin_no": "zy@qq.com",
-						"weixin_nick": "老5就是我",
-						"avatar": "http://brand-guide.b0.upaiyun.com/avatar.jpg"
-					})
-					.success(function(data) {
-						console.log(["新增User信息成功", data]);
-					})
-					.error(function(data) {
-						console.log(["新增User信息失败", data]);
-					})
-			})
+		// 	},
+		// 	function() { //User不存在
+		// 		$http.post(URLPort + "/users", {
+		// 				"account_id": currentAccountId,
+		// 				"name": "老5",
+		// 				"name_py": "lao5",
+		// 				"gender": 1,
+		// 				"nick": "zhang",
+		// 				"email": "zy@qq.com",
+		// 				"birthday": 1420017957000,
+		// 				"mobile": saveUserMobile,
+		// 				"weixin_no": "zy@qq.com",
+		// 				"weixin_nick": "老5就是我",
+		// 				"avatar": "http://brand-guide.b0.upaiyun.com/avatar.jpg"
+		// 			})
+		// 			.success(function(data) {
+		// 				console.log(["新增User信息成功", data]);
+		// 			})
+		// 			.error(function(data) {
+		// 				console.log(["新增User信息失败", data]);
+		// 			})
+		// 	})
 
 		// getUserInfo(currentUserName,
 		// 	function(currentUserId) { //User存在  根据用户id修改信息
