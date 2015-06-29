@@ -116,10 +116,11 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 		});
 
 	$urlRouterProvider.otherwise('productDetail/100030');
+
 	// $urlRouterProvider.otherwise('/login');
 
-
 	//http://codepen.io/ahsx/pen/mDcEd
+
 })
 .controller('configCtrl', function($scope, wxconfig, pay) {
 

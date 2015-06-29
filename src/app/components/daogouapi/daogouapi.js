@@ -169,9 +169,6 @@ angular.module('daogou')
 		*/
 		WXgetAppid:WXgetAppid,
 
-		/*获取授权openid的url*/
-		WXgetAuth:WXgetAuth,
-
 	};
 
 	return daogouAPI;
