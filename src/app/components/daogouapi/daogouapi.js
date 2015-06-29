@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-.factory('daogouAPI', function($http,$log,URLPort){
+.factory('daogouAPI', function($rootScope,$http,$log,URLPort){
 	// 正式接口
 
 	var ROOT_URL='http://yunwan2.3322.org:57099';
@@ -112,9 +112,14 @@ angular.module('daogou')
 		isRegistered:isRegistered,
 
 		/*
-		检测用户是否登录  返回account用户信息
+		检测用户是否登录  返回user信息
 		*/
 		isLogin:isLogin,
+
+		/*
+		检测用户是否登录  返回account信息
+		*/
+		isAccountLogin:isAccountLogin,
 
 		/*
 		设置默认取货门店		
@@ -168,7 +173,7 @@ angular.module('daogou')
 		根据品牌id获取公众号信息
 		*/
 		WXgetAppid:WXgetAppid,
-		
+
 		/*
 		设置默认收货地址		
 		*/
@@ -227,8 +232,9 @@ angular.module('daogou')
 	};
 
 
-	function patch(url,scallback,ecallback) {
-		$http.patch(url)
+	function patch(action,data,scallback,ecallback) {
+		var url=ROOT_URL+action;
+		$http.patch(url,data)
 		.success(function(data, status, headers, config){
 			scallback(data, status, headers, config);
 		})
@@ -363,10 +369,17 @@ angular.module('daogou')
 	function isLogin(scallback,ecallback){
 		var action='/accounts/current';
 		var data='';
+		daogouAPI.get(daogouAPI.apiurl(action,data),function(data){
+			daogouAPI.getUserInfo(data,scallback,ecallback)
+		},ecallback);
+	}
+
+	function isAccountLogin(scallback,ecallback){
+		var action='/accounts/current';
+		var data='';
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
-
 	
 	function deleteCartProduct (dataobj,scallback,ecallback) {
 
@@ -391,7 +404,14 @@ angular.module('daogou')
 	function getUserInfo(dataobj,scallback,ecallback){
 		var action='/users/mobiles/'+dataobj.username;
 		var data='';
-		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+		daogouAPI.get(daogouAPI.apiurl(action,data),function(data){
+			//设置 rootScope.USERINFO
+			$rootScope.USERINFO = {
+				id:data.id,
+				mobile:data.mobile
+			};
+			scallback(data);
+		},ecallback);
 	}
 
 	function setUserInfo(dataobj,scallback,ecallback){
@@ -478,7 +498,14 @@ angular.module('daogou')
 	function WXgetAppid(brand_id,scallback,ecallback){
 		var action='/weixin/accounts/brands/'+brand_id;
 		var data="";
-		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+		daogouAPI.get(daogouAPI.apiurl(action,data),function(data){
+			$rootScope.WXINFO={
+				appid:data.appid,
+				js_api_ticket:data.js_api_ticket,
+				mch_key:'shuyunwdg20150603qwertyuiopasdfg'
+			}
+			scallback(data)
+		},ecallback);
 	}
 
 	function defaultAddress (dataobj,scallback,ecallback) {
@@ -486,13 +513,16 @@ angular.module('daogou')
 		var action='/users/'+dataobj.user_id+'/shipping-addresses/'+dataobj.address_id+'/default';
 		var data='';
 
-		daogouAPI.patch(daogouAPI.apiurl(action,data),scallback,ecallback);
+		daogouAPI.patch(action,data,scallback,ecallback);
 	}
 	
 	function tradesPay(dataobj,scallback,ecallback){
 		var action='/trades/'+dataobj.tid+'/buyer-pay';
-		var data='';
-		daogouAPI.patch(daogouAPI.apiurl(action,data),scallback,ecallback);
+		var data={
+			tid:dataobj.tid,
+			pay_type:dataobj.pay_type
+		};
+		daogouAPI.patch(action,data,scallback,ecallback);
 	}
 
 });

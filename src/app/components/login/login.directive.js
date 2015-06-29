@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-.directive('login', function($parse,daogouAPI){
+.directive('login', function($rootScope,$parse,daogouAPI){
 	// Runs during compile
 	return {
 		// name: '',
@@ -46,21 +46,19 @@ angular.module('daogou')
 					});
 				});
 				//通过手机号码获取验证码
-				// getverificationcode($scope.mainData.telenum);
+				getverificationcode($scope.logindate.username);
 			};
 
-	// function getverificationcode(telenum){
-	// 	var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
-	// 	$http.post(URLPort+"/accounts/verification-code?codeType=MOBILE&account="+telenum+"&template="+templatetext)
-	// 	.success(function(data){
-	// 		console.log(["获取验证码成功",data]);
-	// 	})
-	// 	.error(function(data){
-	// 		console.log(["获取验证码失败",data]);
-	// 	})
-	// }
-			console.log(['iAttrs',iAttrs])
-
+			function getverificationcode(telenum){
+				var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
+				$http.post(URLPort+"/accounts/verification-code?codeType=MOBILE&account="+telenum+"&template="+templatetext)
+				.success(function(data){
+					console.log(["获取验证码成功",data]);
+				})
+				.error(function(data){
+					console.log(["获取验证码失败",data]);
+				})
+			}
 
 			//登录
 			$scope.submit = function() {

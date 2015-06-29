@@ -90,6 +90,7 @@ app.all("*", function(req, res, next) {
 				} else {
 					console.log(['接口调用不成功', response.statusCode, response.headers, body])
 					// res.sendStatus(response.statusCode);
+					console.log(response.statusCode,body)
 					res.status(response.statusCode).send(body);
 
 				}
