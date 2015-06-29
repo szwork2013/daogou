@@ -144,7 +144,12 @@ angular.module('daogou')
 		/*
 		获取微信授权地址
 		*/
-		WXgetAuth:WXgetAuth,
+		WXgetAuthurl:WXgetAuthurl,
+
+		/*
+		根据品牌id获取公众号信息
+		*/
+		WXgetAppid:WXgetAppid,
 	};
 
 	return daogouAPI;
@@ -388,13 +393,21 @@ angular.module('daogou')
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
-	function WXgetAuth(scallback,ecallback){
+	function WXgetAuthurl(dataobj,scallback,ecallback){
 		var action='/weixin/auth/url';
-		var data='';
-		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+		var data={
+			brand_id:dataobj.brand_id,
+			redirect_uri:dataobj.redirect_uri
+		};
+		daogouAPI.post(action,data,scallback,ecallback);
 	}
 
 
+	function WXgetAppid(brand_id,scallback,ecallback){
+		var action='/weixin/accounts/brands/'+brand_id;
+		var data="";
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
 });
 
 

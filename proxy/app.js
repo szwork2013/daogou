@@ -89,7 +89,9 @@ app.all("*", function(req, res, next) {
 					res.send(body);
 				} else {
 					console.log(['接口调用不成功', response.statusCode, response.headers, body])
-					res.sendStatus(response.statusCode);
+					// res.sendStatus(response.statusCode);
+					res.status(response.statusCode).send(body);
+
 				}
 
 
