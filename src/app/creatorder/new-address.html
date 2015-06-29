@@ -2,20 +2,23 @@
 <ion-view view-title="我的订单">
     <ion-content class="createorder-content">
       <div class="statusWrap posRelative">
-         <input class="input-address-info" placeholder="收货人姓名"/>
+         <input class="input-address-info" placeholder="收货人姓名" ng-model="newAddressInput.name"/>
          <div class="iconfont icon-guanbi2 close2"></div>
-         <input class="input-address-info" placeholder="手机号码"/>
+         <input class="input-address-info" placeholder="手机号码" ng-model="newAddressInput.mobile"/>
          <div class="input-address-info">
-              <select id="loc_province"></select>
-              <select id="loc_city"></select>
-              <select id="loc_town"></select>
+              <select id="loc_province"  ng-model="newAddressInput.provinceInfo" ng-options="province.name for province in provincesdata" ng-change="provinceSelect(newAddressInput.provinceInfo)">
+              </select>
+              <select id="loc_city" ng-model="newAddressInput.cityInfo" ng-options="city.name for city in citiesdata" ng-change="citySelect(newAddressInput.provinceInfo,newAddressInput.cityInfo)">市</select>
+              <select id="loc_town" ng-model="newAddressInput.districtInfo" ng-options="district.name for district in districtsdata">区、县</select>
               <input type="hidden" name="location_id" />
          </div>
            
          <div class="iconfont icon-guanbi2 close2 close2top2"></div>
-         <input class="input-address-info border-bt0" placeholder="详细地址"/>
+         <input class="input-address-info" placeholder="详细地址" ng-model="newAddressInput.address"/>
          <div class="iconfont icon-guanbi2 close2 close3top3"></div>
+         <input class="input-address-info border-bt0" placeholder="邮编" ng-model="newAddressInput.zip"/>
       </div>
-      <div class="commonBtn backred margin-tp40" ui-sref="changeReceiveInfo">提交</div>
+      <div class="commonBtn backred margin-tp40" ng-click="addAddress(0)">提交</div>
     </ion-content>
 </ion-view>
+

@@ -135,6 +135,23 @@ angular.module('daogou')
 		退出登录
 		*/
 		logout:logout,
+		/*
+		查询省
+		*/
+		searchProvinces:searchProvinces,
+		/*
+		根据选择的省查询市
+		*/
+		provinceSelect:provinceSelect,
+		/*
+		根据选择的市查询地区
+		*/
+		citySelect:citySelect,
+		/*
+		添加地址
+		*/
+		addAddress:addAddress,
+
 
 		/*
 		获取微信ticket
@@ -144,12 +161,17 @@ angular.module('daogou')
 		/*
 		获取微信授权地址
 		*/
+
 		WXgetAuthurl:WXgetAuthurl,
 
 		/*
 		根据品牌id获取公众号信息
 		*/
 		WXgetAppid:WXgetAppid,
+
+		/*获取授权openid的url*/
+		WXgetAuth:WXgetAuth,
+
 	};
 
 	return daogouAPI;
@@ -385,6 +407,51 @@ angular.module('daogou')
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
+
+	function searchProvinces(dataobj,scallback,ecallback){
+		var action='/provinces';
+		var data ='';
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+
+	}
+
+	function provinceSelect(dataobj,scallback,ecallback){
+		var action="/provinces/"+dataobj.pinyin+"/cities";
+		var data = '';
+
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+
+	}
+
+	function citySelect(dataobj,scallback,ecallback){
+		var action="/provinces/"+dataobj.pinyin1+"/cities/"+dataobj.pinyin2+"/districts";
+		var data = '';
+
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+
+	}
+
+	function addAddress(dataobj,scallback,ecallback){
+		var action="/users/"+dataobj.user_id+"/shipping-addresses";
+		var data = {
+			user_id: dataobj.user_id,
+			name: dataobj.name,
+			state: dataobj.state,
+			state_code: dataobj.state_code,
+			city: dataobj.city,
+			city_code:  dataobj.city_code,
+			district: dataobj.district,
+			district_code:dataobj.district_code,
+			address: dataobj.address,
+			zip: dataobj.zip,
+			mobile: dataobj.mobile,
+			is_default: dataobj.is_default
+		};
+
+		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
+
+	}
+
 	function WXgetTicket(brand_id,scallback,ecallback){
 		var action='/weixin/jsapi-ticket';
 		var data={
@@ -408,6 +475,7 @@ angular.module('daogou')
 		var data="";
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
+
 });
 
 

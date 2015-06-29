@@ -730,16 +730,80 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 	
 	
 }])
-.controller('newAddressCtrl',['$scope','$log','$http',function($scope,$log,$http){
+.controller('newAddressCtrl',['$scope','$log','$http','daogouAPI',function($scope,$log,$http,daogouAPI){
 	$log.debug('newAddressCtrl');
-	$http.get('assets/testdata/cart.json')
-	.success(function(data){
-		$log.debug(["success data",data]);
-		$scope.productData = data;
-	})
-	.error(function(data){
-		$log.debug(["error data",data]);
-	})
+	//新增用户收货地址信息
+	 $scope.newAddressInput = {
+	 	name:"1",
+	 	mobile:"",
+	 	provinceInfo : '',
+	 	cityInfo:'',
+	 	districtInfo:'',
+	 	address:"",
+	 	zip:""
+	 };
+	 
+	 daogouAPI.searchProvinces({
+	 },function(data, status, headers, config){
+	 	$scope.provincesdata = data;
+	 	console.log(["查询省份成功",data]);
+	 },function(data, status, headers, config){
+	 	console.log(["查询省份失败",data]);
+	 });
+
+	 //根据选择的省查询市
+	 $scope.provinceSelect = function(dataobj){
+	    console.log(["selectpinyin",dataobj.pinyin]);
+    	daogouAPI.provinceSelect({
+    		pinyin:dataobj.pinyin
+    	},function(data, status, headers, config){
+    		console.log(["查询省下市成功",data]);
+    		$scope.citiesdata = data;
+    	},function(data, status, headers, config){
+    		console.log(["查询省下市失败",data]);
+    	});
+	 }
+
+	 //根据选择的市查询地区
+	 $scope.citySelect = function(dataobj1,dataobj2){
+	 	console.log(["selectpinyin1",dataobj1.pinyin]);
+	 	console.log(["selectpinyin2",dataobj2.pinyin]);
+	 	daogouAPI.citySelect({
+	 		pinyin1:dataobj1.pinyin,
+	 		pinyin2:dataobj2.pinyin,
+	 	},function(data, status, headers, config){
+	 		console.log(["查询市下地区成功",data]);
+	 		$scope.districtsdata = data;
+	 	},function(data, status, headers, config){
+	 		console.log(["查询市下地区失败",data]);
+	 	});
+	 }
+
+	 $scope.addAddress = function(defaultAddress){
+	 	console.log(["$scope.newAddressInput.provinceInfo", $scope.newAddressInput.provinceInfo]);
+	 	daogouAPI.addAddress({
+	 		user_id: $scope.curUserId,
+	 		name: $scope.newAddressInput.name,
+	 		state: $scope.newAddressInput.provinceInfo.name,
+	 		state_code: $scope.newAddressInput.provinceInfo.code,
+	 		city: $scope.newAddressInput.cityInfo.name,
+	 		city_code:  $scope.newAddressInput.cityInfo.code,
+	 		district: $scope.newAddressInput.districtInfo.name,
+	 		district_code: $scope.newAddressInput.districtInfo.code,
+	 		address: $scope.newAddressInput.address,
+	 		zip: $scope.newAddressInput.zip,
+	 		mobile: $scope.newAddressInput.mobile,
+	 		is_default: defaultAddress
+	 	},function(data, status, headers, config){
+	 		console.log(["增加新地址成功",data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
+	 		$scope.defaultAddressdata = data;
+	 	},function(data, status, headers, config){
+	 		console.log(["增加新地址失败",data]);//弹出失败提示 停在原页
+	 	});
+	 }
+
+
+
 
 }])
 ;
