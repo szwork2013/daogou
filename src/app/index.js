@@ -30,9 +30,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 }])
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
 
-
 	// wxconfig();
-
 
 	// $ionicConfigProvider.backButton.text("返回");
 	// $ionicConfigProvider.views.maxCache(0);
@@ -169,8 +167,10 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 					'openCard'
 				] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 		});
+
+		pay(1);
+
 	});
-	pay(1);
 
 
 })

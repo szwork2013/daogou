@@ -168,11 +168,15 @@ angular.module('daogou')
 		根据品牌id获取公众号信息
 		*/
 		WXgetAppid:WXgetAppid,
+		
 		/*
 		设置默认收货地址		
 		*/
 		defaultAddress:defaultAddress,
 
+
+		/*支付接口*/
+		tradesPay:tradesPay,
 	};
 
 	return daogouAPI;
@@ -485,6 +489,11 @@ angular.module('daogou')
 		daogouAPI.patch(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 	
+	function tradesPay(dataobj,scallback,ecallback){
+		var action='/trades/'+dataobj.tid+'/buyer-pay';
+		var data='';
+		daogouAPI.patch(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
 
 });
 

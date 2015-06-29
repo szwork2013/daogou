@@ -642,7 +642,9 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 		)
 		.success(function(data){
 			console.log(["提交订单成功",data]);
-			$state.go("orderList")
+			// $state.go("orderList")
+			// tid: "18615519548506000"
+			
 		})
 		.error(function(data){
 			console.log(["提交订单失败",data]);
