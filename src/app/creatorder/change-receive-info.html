@@ -1,4 +1,3 @@
-
 <ion-view view-title="我的订单">
     <ion-content class="createorder-content">
       <div class="statusWrap" ng-repeat="item in receiverAddressDate">
@@ -8,11 +7,11 @@
                  <span class="call">{{item.mobile}} </span>
                  <div class="clearBoth"></div>
              </div>
-             <div class="address"><span ng-show="{{item.is_default}}">[默认]</span>{{item.state}}{{item.city}}{{item.district}}{{item.address}}</div>
+             <div class="address"><span ng-show="{{item.is_default}}">[默认]&nbsp;&nbsp;&nbsp;</span>{{item.state}}{{item.city}}{{item.district}}{{item.address}}</div>
          </div>
          <div class="default-shop">
             <div class="default">
-            <i class="iconfont icon-gou slgou greengou font16"></i>
+            <i class="iconfont icon-gou slgou font16" ng-class="{greengou:item.is_default,graygou:!item.is_default}" ng-click="setDefaultAddress(item.id,$index)"></i>
             &nbsp;默认地址</div>
             <div class="edit">编辑</div>
             <div class="delete">删除</div>

@@ -713,7 +713,7 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 
 	
 }])
-.controller('changeReceiveInfoCtrl',['$scope','$log','$http','URLPort','$stateParams',function($scope,$log,$http,URLPort,$stateParams){
+.controller('changeReceiveInfoCtrl',['$scope','$log','$http','URLPort','$stateParams','daogouAPI','$state',function($scope,$log,$http,URLPort,$stateParams,daogouAPI,$state){
 	$log.debug('changeReceiveInfoCtrl');
 	var URLPort = URLPort();
 	
@@ -724,13 +724,33 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 			})
 			.error(function(data) {
 				console.log(["获取用户收货地址列表失败", data]);
-
-				
 			})
+
+
+	  $scope.setDefaultAddress = function(addressId,index){
+            console.log(["addressId",addressId]);
+            daogouAPI.defaultAddress({
+            	user_id:$stateParams.userid,
+            	address_id:addressId
+            },function(data, status, headers, config){
+            	for(var i in $scope.receiverAddressDate){
+            		$scope.receiverAddressDate[i].is_default = false;
+            	}
+            	$scope.receiverAddressDate[index].is_default = true;
+            	console.log(["设置默认收货地址成功",data]);
+                
+            },function(data, status, headers, config){
+            	console.log(["设置默认收货地址失败",data]);
+            });
+	  }
+
+	  $scope.gonewAddress = function(){
+	  		$state.go("newAddress",{userid:$stateParams.userid});
+	  }
 	
 	
 }])
-.controller('newAddressCtrl',['$scope','$log','$http','daogouAPI',function($scope,$log,$http,daogouAPI){
+.controller('newAddressCtrl',['$scope','$log','$http','daogouAPI','$stateParams',function($scope,$log,$http,daogouAPI,$stateParams){
 	$log.debug('newAddressCtrl');
 	//新增用户收货地址信息
 	 $scope.newAddressInput = {
@@ -779,10 +799,10 @@ createOrder.controller('creatorderCtrl',function($rootScope,$scope,$log,$http,$s
 	 	});
 	 }
 
-	 $scope.addAddress = function(defaultAddress){
+	 $scope.addAddressfunc = function(defaultAddress){
 	 	console.log(["$scope.newAddressInput.provinceInfo", $scope.newAddressInput.provinceInfo]);
 	 	daogouAPI.addAddress({
-	 		user_id: $scope.curUserId,
+	 		user_id: $stateParams.userid,
 	 		name: $scope.newAddressInput.name,
 	 		state: $scope.newAddressInput.provinceInfo.name,
 	 		state_code: $scope.newAddressInput.provinceInfo.code,

@@ -168,6 +168,10 @@ angular.module('daogou')
 		根据品牌id获取公众号信息
 		*/
 		WXgetAppid:WXgetAppid,
+		/*
+		设置默认收货地址		
+		*/
+		defaultAddress:defaultAddress,
 
 	};
 
@@ -472,6 +476,15 @@ angular.module('daogou')
 		var data="";
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
+
+	function defaultAddress (dataobj,scallback,ecallback) {
+
+		var action='/users/'+dataobj.user_id+'/shipping-addresses/'+dataobj.address_id+'/default';
+		var data='';
+
+		daogouAPI.patch(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+	
 
 });
 
