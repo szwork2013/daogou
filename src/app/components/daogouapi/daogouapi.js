@@ -198,8 +198,8 @@ angular.module('daogou')
 			url=url.slice(0,url.length-1);
 		}
 
-		return url
-	};
+		return url;
+	}
 
 	function get(url,scallback,ecallback) {
 		$http.get(url)
@@ -209,7 +209,8 @@ angular.module('daogou')
 		.error(function(data, status, headers, config){
 			ecallback(data, status, headers, config);
 		});
-	};
+	}
+
 	function post(action,data,scallback,ecallback) {
 		var url=ROOT_URL+action;
 		$http.post(url,data)
@@ -219,7 +220,7 @@ angular.module('daogou')
 		.error(function(data, status, headers, config){
 			ecallback(data, status, headers, config);
 		});
-	};
+	}
 
 	function deletef(url,scallback,ecallback) {
 		$http.delete(url)
@@ -229,7 +230,7 @@ angular.module('daogou')
 		.error(function(data, status, headers, config){
 			ecallback(data, status, headers, config);
 		});
-	};
+	}
 
 
 	function patch(action,data,scallback,ecallback) {
@@ -241,7 +242,8 @@ angular.module('daogou')
 		.error(function(data, status, headers, config){
 			ecallback(data, status, headers, config);
 		});
-	};
+	}
+
 	function getOrderList(actionurl,dataobj,scallback,ecallback) {
 		var action=actionurl;
 		var data={
@@ -251,7 +253,7 @@ angular.module('daogou')
 		};
 		
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 	function daogouProductList(actionurl,dataobj,scallback,ecallback) {
@@ -264,7 +266,7 @@ angular.module('daogou')
 		};
 		
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 	function shopAddress(actionurl,dataobj,scallback,ecallback) {
 		var action=actionurl;
@@ -277,7 +279,7 @@ angular.module('daogou')
 		};
 		
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 	function submitRefundInfo(actionurl,dataobj,scallback,ecallback) {
@@ -289,7 +291,7 @@ angular.module('daogou')
 		};
 		
 		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 	function getshortUrl(url,callback,callbackerror){
@@ -300,7 +302,7 @@ angular.module('daogou')
 			.error(function(data){
 				callbackerror(data);
 			})
-	};
+	}
 
 
 	function login(dataobj,scallback,ecallback){
@@ -316,7 +318,7 @@ angular.module('daogou')
 		};
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 	function shopcart (dataobj,scallback,ecallback) {
@@ -329,7 +331,7 @@ angular.module('daogou')
 		};
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 
@@ -498,13 +500,13 @@ angular.module('daogou')
 	function WXgetAppid(brand_id,scallback,ecallback){
 		var action='/weixin/accounts/brands/'+brand_id;
 		var data="";
-		daogouAPI.get(daogouAPI.apiurl(action,data),function(data){
+		daogouAPI.get(daogouAPI.apiurl(action,data),function(wxdata){
 			$rootScope.WXINFO={
-				appid:data.appid,
-				js_api_ticket:data.js_api_ticket,
-				mch_key:'shuyunwdg20150603qwertyuiopasdfg'
+				appid:wxdata.appid,
+				js_api_ticket:wxdata.js_api_ticket,
+				mch_key:wxdata.mch_key
 			}
-			scallback(data)
+			scallback(wxdata)
 		},ecallback);
 	}
 
