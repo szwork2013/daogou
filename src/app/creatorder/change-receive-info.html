@@ -13,12 +13,12 @@
             <div class="default">
             <i class="iconfont icon-gou slgou font16" ng-class="{greengou:item.is_default,graygou:!item.is_default}" ng-click="setDefaultAddress(item.id,$index)"></i>
             &nbsp;默认地址</div>
-            <div class="edit">编辑</div>
-            <div class="delete">删除</div>
+            <div class="edit" ng-click="editAddressFunc(item.id)">编辑</div>
+            <div class="delete" ng-click="deleteAddressFunc(item.id,$index)">删除</div>
          </div>
       </div>
 
-      <div class="commonBtn backred" ui-sref="newAddress">添加新地址</div>
+      <div class="commonBtn backred" ng-click="gonewAddress()">添加新地址</div>
      
     </ion-content>
 </ion-view>

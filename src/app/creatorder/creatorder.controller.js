@@ -451,24 +451,73 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
             });
 	  }
 
+
+	  $scope.deleteAddressFunc = function(addressId,index){
+		  	daogouAPI.deleteAddress({
+		  		user_id:$stateParams.userid,
+		  		address_id:addressId
+		  	},function(data, status, headers, config){
+		  		console.log(['删除收货地址成功',data]);
+		  		$scope.receiverAddressDate.splice(index,1);
+		  	},function(data, status, headers, config){
+		  		console.log(['删除收货地址失败',data]);
+		  	});
+	  }
+
+	  $scope.editAddressFunc = function(addressId){
+	  	     $state.go('newAddress',{userid:$stateParams.userid,addressid:addressId});
+	  }
+
 	  $scope.gonewAddress = function(){
+	  	console.log(["$stateParams.userid",$stateParams.userid])
 	  		$state.go('newAddress',{userid:$stateParams.userid});
 	  }
 	
 	
 }])
-.controller('newAddressCtrl',['$scope','$log','$http','daogouAPI','$stateParams',function($scope,$log,$http,daogouAPI,$stateParams){
+.controller('newAddressCtrl',['$scope','$log','$http','daogouAPI','$stateParams','$state',function($scope,$log,$http,daogouAPI,$stateParams,$state){
 	$log.debug('newAddressCtrl');
 	//新增用户收货地址信息
 	 $scope.newAddressInput = {
-	 	name:'1',
+	 	name:'',
 	 	mobile:'',
-	 	provinceInfo : '',
-	 	cityInfo:'',
-	 	districtInfo:'',
+	 	provinceInfo : {},
+	 	cityInfo:{},
+	 	districtInfo:{},
 	 	address:'',
-	 	zip:''
+	 	zip:'',
+	 	defaultAddress:''
 	 };
+	 $scope.newAddressInput.provinceInfo.name = "";
+	 $scope.newAddressInput.provinceInfo.code = "";
+	 $scope.newAddressInput.cityInfo.name = "";
+	 $scope.newAddressInput.cityInfo.code = "";
+	 $scope.newAddressInput.districtInfo.name = "";
+	 $scope.newAddressInput.districtInfo.code = "";
+	 console.log(["$stateParams.addressid",$stateParams.addressid]);
+	 if($stateParams.addressid === ""){
+	 	console.log("添加新地址");
+	 }else{
+	 	daogouAPI.getAddress({
+	 		user_id:$stateParams.userid,
+	 		address_id:$stateParams.addressid
+	 	},function(data, status, headers, config){
+	 		console.log(['获取要修改收货地址成功',data]);
+	 		$scope.newAddressInput.name = data.name;
+	 		$scope.newAddressInput.mobile = data.mobile;
+	 		$scope.newAddressInput.address = data.address;
+	 		$scope.newAddressInput.zip = data.zip;
+	 		$scope.newAddressInput.provinceInfo.name = data.state;
+	 		$scope.newAddressInput.provinceInfo.code = data.state_code;
+	 		$scope.newAddressInput.cityInfo.name = data.city;
+	 		$scope.newAddressInput.cityInfo.code = data.city_code;
+	 		$scope.newAddressInput.districtInfo.name = data.district;
+	 		$scope.newAddressInput.districtInfo.code = data.district_code;
+	 		$scope.newAddressInput.defaultAddress =data.is_default;
+	 	},function(data, status, headers, config){
+	 		console.log(['获取要修改收货地址失败',data]);
+	 	});
+	 }
 	 
 	 daogouAPI.searchProvinces({
 	 },function(data, status, headers, config){
@@ -507,26 +556,55 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	 }
 
 	 $scope.addAddressfunc = function(defaultAddress){
-	 	console.log(['$scope.newAddressInput.provinceInfo', $scope.newAddressInput.provinceInfo]);
-	 	daogouAPI.addAddress({
-	 		user_id: $stateParams.userid,
-	 		name: $scope.newAddressInput.name,
-	 		state: $scope.newAddressInput.provinceInfo.name,
-	 		state_code: $scope.newAddressInput.provinceInfo.code,
-	 		city: $scope.newAddressInput.cityInfo.name,
-	 		city_code:  $scope.newAddressInput.cityInfo.code,
-	 		district: $scope.newAddressInput.districtInfo.name,
-	 		district_code: $scope.newAddressInput.districtInfo.code,
-	 		address: $scope.newAddressInput.address,
-	 		zip: $scope.newAddressInput.zip,
-	 		mobile: $scope.newAddressInput.mobile,
-	 		is_default: defaultAddress
-	 	},function(data, status, headers, config){
-	 		console.log(['增加新地址成功',data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
-	 		$scope.defaultAddressdata = data;
-	 	},function(data, status, headers, config){
-	 		console.log(['增加新地址失败',data]);//弹出失败提示 停在原页
-	 	});
+	 	console.log(['$scope.newAddressInput', $scope.newAddressInput]);
+	 	if($stateParams.addressid === ""){
+		 		daogouAPI.addAddress({
+		 			user_id: $stateParams.userid,
+		 			name: $scope.newAddressInput.name,
+		 			state: $scope.newAddressInput.provinceInfo.name,
+		 			state_code: $scope.newAddressInput.provinceInfo.code,
+		 			city: $scope.newAddressInput.cityInfo.name,
+		 			city_code:  $scope.newAddressInput.cityInfo.code,
+		 			district: $scope.newAddressInput.districtInfo.name,
+		 			district_code: $scope.newAddressInput.districtInfo.code,
+		 			address: $scope.newAddressInput.address,
+		 			zip: $scope.newAddressInput.zip,
+		 			mobile: $scope.newAddressInput.mobile,
+		 			is_default: defaultAddress
+		 		},function(data, status, headers, config){
+		 			console.log(['增加新地址成功',data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
+		 			$scope.defaultAddressdata = data;
+		 			$state.go('changeReceiveInfo',{'userid':$stateParams.userid});
+		 		},function(data, status, headers, config){
+		 			console.log(['增加新地址失败',data]);//弹出失败提示 停在原页
+		 		});
+	 	}else{
+		 		daogouAPI.editAddress({
+		 			id:$stateParams.addressid,
+		 			user_id: $stateParams.userid,
+		 			name: $scope.newAddressInput.name,
+		 			state: $scope.newAddressInput.provinceInfo.name,
+		 			state_code: $scope.newAddressInput.provinceInfo.code,
+		 			city: $scope.newAddressInput.cityInfo.name,
+		 			city_code:  $scope.newAddressInput.cityInfo.code,
+		 			district: $scope.newAddressInput.districtInfo.name,
+		 			district_code: $scope.newAddressInput.districtInfo.code,
+		 			address: $scope.newAddressInput.address,
+		 			zip: $scope.newAddressInput.zip,
+		 			mobile: $scope.newAddressInput.mobile,
+		 			is_default: $scope.newAddressInput.defaultAddress
+		 		},function(data, status, headers, config){
+		 			console.log(['修改地址成功',data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
+		 			$scope.defaultAddressdata = data;
+		 			$state.go('changeReceiveInfo',{'userid':$stateParams.userid});
+		 		},function(data, status, headers, config){
+		 			console.log(['修改地址失败',data]);//弹出失败提示 停在原页
+		 		});
+
+	 	}
+	 	
+
+	 	
 	 }
 
 
