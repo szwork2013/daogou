@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-.factory('daogouAPI', function($http,$log,URLPort){
+.factory('daogouAPI', function($rootScope,$http,$log,URLPort){
 	// 正式接口
 
 	var ROOT_URL='http://yunwan2.3322.org:57099';
@@ -112,9 +112,14 @@ angular.module('daogou')
 		isRegistered:isRegistered,
 
 		/*
-		检测用户是否登录  返回account用户信息
+		检测用户是否登录  返回user信息
 		*/
 		isLogin:isLogin,
+
+		/*
+		检测用户是否登录  返回account信息
+		*/
+		isAccountLogin:isAccountLogin,
 
 		/*
 		设置默认取货门店		
@@ -168,11 +173,15 @@ angular.module('daogou')
 		根据品牌id获取公众号信息
 		*/
 		WXgetAppid:WXgetAppid,
+
 		/*
 		设置默认收货地址		
 		*/
 		defaultAddress:defaultAddress,
 
+
+		/*支付接口*/
+		tradesPay:tradesPay,
 	};
 
 	return daogouAPI;
@@ -189,8 +198,8 @@ angular.module('daogou')
 			url=url.slice(0,url.length-1);
 		}
 
-		return url
-	};
+		return url;
+	}
 
 	function get(url,scallback,ecallback) {
 		$http.get(url)
@@ -200,7 +209,8 @@ angular.module('daogou')
 		.error(function(data, status, headers, config){
 			ecallback(data, status, headers, config);
 		});
-	};
+	}
+
 	function post(action,data,scallback,ecallback) {
 		var url=ROOT_URL+action;
 		$http.post(url,data)
@@ -210,7 +220,7 @@ angular.module('daogou')
 		.error(function(data, status, headers, config){
 			ecallback(data, status, headers, config);
 		});
-	};
+	}
 
 	function deletef(url,scallback,ecallback) {
 		$http.delete(url)
@@ -220,18 +230,20 @@ angular.module('daogou')
 		.error(function(data, status, headers, config){
 			ecallback(data, status, headers, config);
 		});
-	};
+	}
 
 
-	function patch(url,scallback,ecallback) {
-		$http.patch(url)
+	function patch(action,data,scallback,ecallback) {
+		var url=ROOT_URL+action;
+		$http.patch(url,data)
 		.success(function(data, status, headers, config){
 			scallback(data, status, headers, config);
 		})
 		.error(function(data, status, headers, config){
 			ecallback(data, status, headers, config);
 		});
-	};
+	}
+
 	function getOrderList(actionurl,dataobj,scallback,ecallback) {
 		var action=actionurl;
 		var data={
@@ -241,7 +253,7 @@ angular.module('daogou')
 		};
 		
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 	function daogouProductList(actionurl,dataobj,scallback,ecallback) {
@@ -254,7 +266,7 @@ angular.module('daogou')
 		};
 		
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 	function shopAddress(actionurl,dataobj,scallback,ecallback) {
 		var action=actionurl;
@@ -267,7 +279,7 @@ angular.module('daogou')
 		};
 		
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 	function submitRefundInfo(actionurl,dataobj,scallback,ecallback) {
@@ -279,7 +291,7 @@ angular.module('daogou')
 		};
 		
 		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 	function getshortUrl(url,callback,callbackerror){
@@ -290,7 +302,7 @@ angular.module('daogou')
 			.error(function(data){
 				callbackerror(data);
 			})
-	};
+	}
 
 
 	function login(dataobj,scallback,ecallback){
@@ -306,7 +318,7 @@ angular.module('daogou')
 		};
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 	function shopcart (dataobj,scallback,ecallback) {
@@ -319,7 +331,7 @@ angular.module('daogou')
 		};
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
-	};
+	}
 
 
 
@@ -359,10 +371,17 @@ angular.module('daogou')
 	function isLogin(scallback,ecallback){
 		var action='/accounts/current';
 		var data='';
+		daogouAPI.get(daogouAPI.apiurl(action,data),function(data){
+			daogouAPI.getUserInfo(data,scallback,ecallback)
+		},ecallback);
+	}
+
+	function isAccountLogin(scallback,ecallback){
+		var action='/accounts/current';
+		var data='';
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
-
 	
 	function deleteCartProduct (dataobj,scallback,ecallback) {
 
@@ -387,7 +406,14 @@ angular.module('daogou')
 	function getUserInfo(dataobj,scallback,ecallback){
 		var action='/users/mobiles/'+dataobj.username;
 		var data='';
-		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+		daogouAPI.get(daogouAPI.apiurl(action,data),function(data){
+			//设置 rootScope.USERINFO
+			$rootScope.USERINFO = {
+				id:data.id,
+				mobile:data.mobile
+			};
+			scallback(data);
+		},ecallback);
 	}
 
 	function setUserInfo(dataobj,scallback,ecallback){
@@ -448,8 +474,8 @@ angular.module('daogou')
 			mobile: dataobj.mobile,
 			is_default: dataobj.is_default
 		};
-        console.log(["daogouAPI data",data]);
-		daogouAPI.post(action,data,scallback,ecallback);
+
+		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
 
 	}
 
@@ -474,7 +500,14 @@ angular.module('daogou')
 	function WXgetAppid(brand_id,scallback,ecallback){
 		var action='/weixin/accounts/brands/'+brand_id;
 		var data="";
-		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+		daogouAPI.get(daogouAPI.apiurl(action,data),function(wxdata){
+			$rootScope.WXINFO={
+				appid:wxdata.appid,
+				js_api_ticket:wxdata.js_api_ticket,
+				mch_key:wxdata.mch_key
+			}
+			scallback(wxdata)
+		},ecallback);
 	}
 
 	function defaultAddress (dataobj,scallback,ecallback) {
@@ -482,11 +515,20 @@ angular.module('daogou')
 		var action='/users/'+dataobj.user_id+'/shipping-addresses/'+dataobj.address_id+'/default';
 		var data='';
 
-		daogouAPI.patch(daogouAPI.apiurl(action,data),scallback,ecallback);
+		daogouAPI.patch(action,data,scallback,ecallback);
 	}
 	
+	function tradesPay(dataobj,scallback,ecallback){
+		var action='/trades/'+dataobj.tid+'/buyer-pay';
+		var data={
+			tid:dataobj.tid,
+			pay_type:dataobj.pay_type
+		};
+		daogouAPI.patch(action,data,scallback,ecallback);
+	}
 
 });
+
 
 
 
