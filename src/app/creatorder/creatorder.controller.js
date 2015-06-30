@@ -59,9 +59,8 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
        
        }
 
-      $scope.user_id = $scope.curUserId || $stateParams.userid;
       daogouAPI.shopAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
-      		user_id:$scope.curUserId,
+      		user_id:$rootScope.USERINFO.id,
       		longitude:121.399411,
       		latitude:31.168323
       	},function(data, status, headers, config){
@@ -144,8 +143,8 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	$scope.addAddress = function(defaultAddress){
 		console.log(['$scope.firstAddressInput.provinceInfo', $scope.firstAddressInput.provinceInfo]);
 
-		$http.post(URLPort+'/users/'+$scope.curUserId+'/shipping-addresses',{
-			'user_id': $scope.curUserId,
+		$http.post(URLPort+'/users/'+$rootScope.USERINFO.id+'/shipping-addresses',{
+			'user_id': $rootScope.USERINFO.id,
 			'name': $scope.firstAddressInput.name,
 			'state': $scope.firstAddressInput.provinceInfo.name,
 			'state_code': $scope.firstAddressInput.provinceInfo.code,
@@ -205,7 +204,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 
 		
 	$scope.deleteAddress = function(){
-		$http.delete(URLPort+'/users/'+$scope.curUserId+'/shipping-addresses/18')
+		$http.delete(URLPort+'/users/'+$rootScope.USERINFO.id+'/shipping-addresses/18')
 		.success(function(){
 			console.log('删除地址成功');
 			$scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
@@ -249,9 +248,10 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 
 		console.log('提交订单');
 		console.log(['$stateParams.brandid',$stateParams.brandid]);
+
 		$http.post(URLPort+'/trades',
 			{
-			'buyer_user_id': $scope.curUserId,
+			'buyer_user_id': $rootScope.USERINFO.id,
 			'bring_guider_id': 12,
 			'brand_id': parseInt($stateParams.brandid),
 			'buyer_memo': $scope.buyerMessage.buyer_memo,
@@ -319,11 +319,11 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		// })
 	}
 	$scope.goGoodsShop = function(){//门店地址列表页面
-		$state.go('goodsShop',{'userid':$scope.curUserId,'brandid':$stateParams.brandid});
+		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$stateParams.brandid});
 	}
 	$scope.changeReceiveInfoFunc = function(){//收货人地址列表页面
-		console.log(['userid',$scope.curUserId]);
-		$state.go('changeReceiveInfo',{'userid':$scope.curUserId});
+		console.log(['userid',$rootScope.USERINFO.id]);
+		$state.go('changeReceiveInfo',{'userid':$rootScope.USERINFO.id});
 	}
 
 
@@ -334,14 +334,14 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		$scope.alladdress = false; //让地址模不隐藏
 		$scope.shopaddress = false; //默认显示用户地址，隐藏实体店地址
 		$scope.allbuyeraddress = true;
-		$scope.curUserId = $rootScope.USERINFO.id;
+		$rootScope.USERINFO.id = $rootScope.USERINFO.id;
 		//查询用户的收获地址信息
 		checkoutAddress();
 	}
 
 	function checkoutAddress(){
 
-			$http.get(URLPort + '/users/' + $scope.curUserId + '/shipping-addresses')
+			$http.get(URLPort + '/users/' + $rootScope.USERINFO.id + '/shipping-addresses')
 				.success(function(data) {
 
 					if (data.length > 0) {

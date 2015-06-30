@@ -1,19 +1,35 @@
 'use strict';
 
 var product = angular.module('product',['ionic']);
-product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort){
+product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort,daogouAPI){
 	// $rootScope.URLPort = "http://yunwan2.3322.org:57095";
 	var URLPort = URLPort();
 	//导购id会传进来的
 	var bringGuiderId = 145;
     $scope.bringGuiderIds = 145;
+	$scope.login = false;//是否显示登录页面
+	//选择的宝贝数据
+	$scope.myproduct={		
+		title:'',
+		price:'',
+		skudetail:'',
+		skuid:'',
+		num:'',
+		freight:'',
+		brandid:''
+	};
+
+
+	//检测是否登陆，获得当前登录账号
+	daogouAPI.isLogin(function(data){
+		console.log(["获得当前登录账号，用户数据",data]);
+	},function(data){
+
+	})
 
 	$http.get(URLPort+"/items/"+$stateParams.detailId)
-	
 	// $http.get(URLPort+"/items/100003")
-
 	// $http.get("assets/testdata/product-detail.json")
-
 	.success(function(data){
 		console.log(['获得商品详情成功',data]);
 		$scope.productDetailData = data;
@@ -73,42 +89,45 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	$log.debug('productDetailCtrl');
 
 //打开选取商品尺寸 颜色，初始化商品规格状态，有些已经无货了，控件就不可选
-    function propertyMenu(){
-    	$(".mengban").show();
-    	$(".chooseProductInfoWarp").show();
-    	for(var ii in $scope.productDetailData.specification){
-    		console.log($scope.productDetailData.specification[ii].array);
-    		for(var cc in $scope.productDetailData.specification[ii].array){
-    			var total = 0;
-    			console.log($scope.productDetailData.specification[ii].array[cc]);
+	function propertyMenu(){
+		$(".mengban").show();
+		$(".chooseProductInfoWarp").show();
+		for(var ii in $scope.productDetailData.specification){
+			console.log($scope.productDetailData.specification[ii].array);
+			for(var cc in $scope.productDetailData.specification[ii].array){
+				var total = 0;
+				console.log($scope.productDetailData.specification[ii].array[cc]);
+				for(var dd in $scope.productDetailData.skus){
+					if($scope.productDetailData.skus[dd].properties.indexOf($scope.productDetailData.specification[ii].array[cc])>0){
+						//检测商品每个skus 是否包含 规格值，如果包含查其库存，库存总量为0 则不可选
+						console.log("real_quantity:"+$scope.productDetailData.skus[dd].real_quantity);
+						total += parseInt($scope.productDetailData.skus[dd].real_quantity);
+						console.log("total:"+total);
+					}
+				}
+				if(total === 0){
+					$("input").each(function(){
+						if($(this).val()===$scope.productDetailData.specification[ii].array[cc]){
+							console.log("youyouyou");
+							console.log("$(this).val():"+$(this).val());
+							console.log($scope.productDetailData.specification[ii].array[cc]);
+							$(this).attr({"disabled":"disabled"});
+							$(this).next().addClass("invalid");
+						}
+					})
+				}
 
-    			for(var dd in $scope.productDetailData.skus){
-    				if($scope.productDetailData.skus[dd].properties.indexOf($scope.productDetailData.specification[ii].array[cc])>0){
-    					//检测商品每个skus 是否包含 规格值，如果包含查其库存，库存总量为0 则不可选
-    					console.log("real_quantity:"+$scope.productDetailData.skus[dd].real_quantity);
-    					total += parseInt($scope.productDetailData.skus[dd].real_quantity);
-    					console.log("total:"+total);
-    				}
-    			}
-
-    			if(total === 0){
-    					$("input").each(function(){
-    						if($(this).val()===$scope.productDetailData.specification[ii].array[cc]){
-    							console.log("youyouyou");
-    							console.log("$(this).val():"+$(this).val());
-    							console.log($scope.productDetailData.specification[ii].array[cc]);
-    							$(this).attr({"disabled":"disabled"});
-    							$(this).next().addClass("invalid");
-    						}
-    					})
-    			}
-
-    		}   
-    	}
-    }
+			}   
+		}
+	}
 //当点击购物车时让设置goCart 和 goOrder 的参数使参数面板的下一步 跳转到购物车还是生成订单
 	$scope.propertyShowCart =function(){
-		propertyMenu();
+		if($rootScope.USERINFO === undefined){
+			console.log(["用户未登录,没获得当前登录用户账号"]);
+			$scope.login = true;
+		}else{
+			propertyMenu();
+		}
 		$scope.goCart = false;
 		$scope.goOrder = true;
 	}
@@ -227,6 +246,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	
 	$scope.goToOrder = function(){
 		console.log(["$scope.productDetailData.brand_id111",$scope.productDetailData.brand_id])
+		console.log($scope.productDetailData)
 		$state.go("creatorder",{
 			title:$scope.productDetailData.title,
 			price:$scope.productDetailData.price,
@@ -240,28 +260,24 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 
 
 
-//检测是否登陆，获得当前登录账号
-	$http.get(URLPort+"/accounts/current")
-	.success(function(data){
-		console.log(["获得当前登录账号，用户数据",data]);
-        $scope.curUserId = data.id;
-        $rootScope.curUserId = data.id;
-        console.log(["$scope.curUserId",$scope.curUserId]);
-	})
-	.error(function(data){
-		//如果未登录,显示登录框，进行登录
-		console.log(["用户未登录,没获得当前登录用户账号",data]);
-		console.log(["$scope.curUserId",$scope.curUserId]);
-	})
 
-	$scope.login = false;//是否显示登录页面
+	// $http.get(URLPort+"/accounts/current")
+	// .success(function(data){
+	// 	console.log(["获得当前登录账号，用户数据",data]);
+ //        $rootScope.USERINFO.id = data.id;
+ //        $rootScope.curUserId = data.id;
+ //        console.log(["$rootScope.USERINFO.id",$rootScope.USERINFO.id]);
+	// })
+	// .error(function(data){
+	// 	//如果未登录,显示登录框，进行登录
+	// 	console.log(["用户未登录,没获得当前登录用户账号",data]);
+	// 	console.log(["$rootScope.USERINFO.id",$rootScope.USERINFO.id]);
+	// })
+
 	$scope.goToCart = function(){
-		if($scope.curUserId === undefined){
-			console.log(["用户未登录,没获得当前登录用户账号"]);
-			$scope.login = true;
-		}else{
-			$http.post(URLPort+"/users/"+$scope.curUserId+"/shopping-carts",{
-				"user_id":$scope.curUserId,
+
+			$http.post(URLPort+"/users/"+$rootScope.USERINFO.id+"/shopping-carts",{
+				"user_id":$rootScope.USERINFO.id,
 				"sku_id" : $scope.productDetailData.skuid,
 				"num": $scope.productDetailData.buynum,
 				"bring_guider_id" : bringGuiderId
@@ -275,7 +291,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
             .error(function(data){
             	console.log(["加入购物车失败",data]);
             })
-		}
 		// $http.post(URLPort+"/users/"++"/shopping-carts",{})
 		// .success(function(data){
 		// 	$log.debug(["success data",data]);
@@ -374,107 +389,119 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		}
 
 
+
+		$scope.loginsuccess=function(data){
+			console.log(['登录成功回调',data])
+			
+			$scope.login = false; //是否显示登录页面
+
+		};
+		$scope.loginerror=function(data){
+			console.log(['登录失败回调',data])
+
+		};
+
 	//登录
-		$scope.submit=function(){
-			// $http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
-			$http({
-				method: 'POST',
-				url: URLPort+'/login',
-				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-				transformRequest: function(obj) {
-					var str = [];
-					for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-					return str.join("&");
-				},
-				data: {username:$scope.mainData.telenum, password: $scope.mainData.verificationCode}
-			})
-			.success(function(data){
-				console.log(["登录接口返回数据",data]);
-				//获得当前登录账号
-			   	$http.get(URLPort+"/accounts/current")
-			   	.success(function(data){
-			   		console.log(["获得当前登录用户账号,已经登录",data]);
-			   		var currentUserName = data.username;
-			   		var currentAccountId = data.accountId;
-			   		var saveUserMobile = data.mobile;
-			   		$scope.curUserId = data.id;
-			   		$rootScope.curUserID = data.id;
-			   		console.log(["$rootScope.curUserID",$rootScope.curUserID])
-	                // $rootScope.curUserInfo
+		// $scope.submit=function(){
+		// 	// $http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
+		// 	$http({
+		// 		method: 'POST',
+		// 		url: URLPort+'/login',
+		// 		headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+		// 		transformRequest: function(obj) {
+		// 			var str = [];
+		// 			for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+		// 			return str.join("&");
+		// 		},
+		// 		data: {username:$scope.mainData.telenum, password: $scope.mainData.verificationCode}
+		// 	})
+		// 	.success(function(data){
+		// 		console.log(["登录接口返回数据",data]);
+		// 		//获得当前登录账号
+		// 	   	$http.get(URLPort+"/accounts/current")
+		// 	   	.success(function(data){
+		// 	   		console.log(["获得当前登录用户账号,已经登录",data]);
+		// 	   		var currentUserName = data.username;
+		// 	   		var currentAccountId = data.accountId;
+		// 	   		var saveUserMobile = data.mobile;
+		// 	   		$rootScope.USERINFO.id = data.id;
+		// 	   		$rootScope.curUserID = data.id;
+		// 	   		console.log(["$rootScope.curUserID",$rootScope.curUserID])
+	 //                // $rootScope.curUserInfo
 
-			   		console.log(["$scope.curUserId",$scope.curUserId])
-	                //获取登录账号（手机号）获取User信息
-			   		getUserInfo(currentUserName,
-			   			function(currentUserId){//User存在  根据用户id修改信息
-			   				$http.put(URLPort+"/users/"+currentUserId+"",{
-			   		              "id": currentUserId,
-			   		              "account_id": currentAccountId,
-			   		              "name": "老3",
-			   		              "gender": 1,
-			   		              "nick": "zhang3",
-			   		              "email": "zy3@qq.com",
-			   		              "birthday": 1420017957000,
-			   		              "mobile": saveUserMobile,
-			   		              "weixin_no": "zy3@qq.com",
-			   		              "weixin_nick": "老3就是我",
-			   		              "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
-			   				.success(function(data){
-			   					console.log(["更新User信息成功",data]);
-			   				})
-			   				.error(function(data){
-			   					console.log(["更新User信息失败",data]);
-			   				})
+		// 	   		console.log(["$rootScope.USERINFO.id",$rootScope.USERINFO.id])
+	 //                //获取登录账号（手机号）获取User信息
+		// 	   		getUserInfo(currentUserName,
+		// 	   			function(currentUserId){//User存在  根据用户id修改信息
+		// 	   				$http.put(URLPort+"/users/"+currentUserId+"",{
+		// 	   		              "id": currentUserId,
+		// 	   		              "account_id": currentAccountId,
+		// 	   		              "name": "老3",
+		// 	   		              "gender": 1,
+		// 	   		              "nick": "zhang3",
+		// 	   		              "email": "zy3@qq.com",
+		// 	   		              "birthday": 1420017957000,
+		// 	   		              "mobile": saveUserMobile,
+		// 	   		              "weixin_no": "zy3@qq.com",
+		// 	   		              "weixin_nick": "老3就是我",
+		// 	   		              "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+		// 	   				.success(function(data){
+		// 	   					console.log(["更新User信息成功",data]);
+		// 	   				})
+		// 	   				.error(function(data){
+		// 	   					console.log(["更新User信息失败",data]);
+		// 	   				})
 
-			   			},
-			   			function(){//User不存在
-			   				$http.post(URLPort+"/users",{"account_id": currentAccountId,
-			   		            "name" : "老5",
-			   		            "name_py": "lao5",
-			   		            "gender": 1,
-			   		            "nick": "zhang",
-			   		            "email": "zy@qq.com",
-			   		            "birthday": 1420017957000,
-			   		            "mobile": saveUserMobile,
-			   		            "weixin_no": "zy@qq.com",
-			   		            "weixin_nick":"老5就是我",
-			   		            "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
-			   				.success(function(data){
-			   					console.log(["新增User信息成功",data]);
-			   				})
-			   				.error(function(data){
-			   					console.log(["新增User信息失败",data]);
-			   				})
-			   			})
+		// 	   			},
+		// 	   			function(){//User不存在
+		// 	   				$http.post(URLPort+"/users",{"account_id": currentAccountId,
+		// 	   		            "name" : "老5",
+		// 	   		            "name_py": "lao5",
+		// 	   		            "gender": 1,
+		// 	   		            "nick": "zhang",
+		// 	   		            "email": "zy@qq.com",
+		// 	   		            "birthday": 1420017957000,
+		// 	   		            "mobile": saveUserMobile,
+		// 	   		            "weixin_no": "zy@qq.com",
+		// 	   		            "weixin_nick":"老5就是我",
+		// 	   		            "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
+		// 	   				.success(function(data){
+		// 	   					console.log(["新增User信息成功",data]);
+		// 	   				})
+		// 	   				.error(function(data){
+		// 	   					console.log(["新增User信息失败",data]);
+		// 	   				})
+		// 	   			})
 
-			   	})
-			   	.error(function(data){
-			   		console.log(["没获得当前登录用户账号，未登录",data]);
-			   	})
+		// 	   	})
+		// 	   	.error(function(data){
+		// 	   		console.log(["没获得当前登录用户账号，未登录",data]);
+		// 	   	})
 
-   				$http.post(URLPort+"/users/"+$scope.curUserId+"/shopping-carts",{
-   					"user_id":$scope.curUserId,
-   					"sku_id" : $scope.productDetailData.skuid,
-   					"num": $scope.productDetailData.buynum,
-   					"bring_guider_id" :bringGuiderId
-   	            })
-   	            .success(function(data){
-   	            	console.log(["加入购物车成功",data]);
-            	   	$scope.login = false;//是否显示登录页面
-            		$(".mengban").hide();
-            		$(".chooseProductInfoWarp").hide();
-   	            })
-   	            .error(function(data){
-   	            	console.log(["加入购物车失败",data]);
-   	            })
+  //  				$http.post(URLPort+"/users/"+$rootScope.USERINFO.id+"/shopping-carts",{
+  //  					"user_id":$rootScope.USERINFO.id,
+  //  					"sku_id" : $scope.productDetailData.skuid,
+  //  					"num": $scope.productDetailData.buynum,
+  //  					"bring_guider_id" :bringGuiderId
+  //  	            })
+  //  	            .success(function(data){
+  //  	            	console.log(["加入购物车成功",data]);
+  //           	   	$scope.login = false;//是否显示登录页面
+  //           		$(".mengban").hide();
+  //           		$(".chooseProductInfoWarp").hide();
+  //  	            })
+  //  	            .error(function(data){
+  //  	            	console.log(["加入购物车失败",data]);
+  //  	            })
 
 			  
-			})
-			.error(function(data){
-				console.log(["登录失败",data]);
-			})
+		// 	})
+		// 	.error(function(data){
+		// 		console.log(["登录失败",data]);
+		// 	})
 		
 			
-		}
+		// }
 
 		//测试地理位置 经纬度
 		// var x=document.getElementById("demo");
