@@ -507,7 +507,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	 }
 
 	 $scope.addAddressfunc = function(defaultAddress){
-	 	console.log(['$scope.newAddressInput.provinceInfo', $scope.newAddressInput.provinceInfo]);
+	 	console.log(['$scope.newAddressInput', $scope.newAddressInput]);
 	 	daogouAPI.addAddress({
 	 		user_id: $stateParams.userid,
 	 		name: $scope.newAddressInput.name,
@@ -527,6 +527,8 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	 	},function(data, status, headers, config){
 	 		console.log(['增加新地址失败',data]);//弹出失败提示 停在原页
 	 	});
+
+	 	console.log(['addAddress end']);
 	 }
 
 
