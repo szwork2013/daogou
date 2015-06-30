@@ -475,7 +475,7 @@ angular.module('daogou')
 			is_default: dataobj.is_default
 		};
 
-		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
+		daogouAPI.post(action,data,scallback,ecallback);
 
 	}
 
