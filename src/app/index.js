@@ -103,7 +103,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 			controller: 'successPayCtrl'
 		})
 		.state('newAddress', {
-			url: '/newAddress/:userid',
+			url: '/newAddress/:userid/:addressid',
 			templateUrl: 'app/creatorder/new-address.html',
 			controller: 'newAddressCtrl'
 		})

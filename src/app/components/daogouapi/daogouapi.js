@@ -38,7 +38,12 @@ angular.module('daogou')
 		delete(url,scallback,ecallback)
 		*/
 		deletef:deletef,
-
+		/*
+		通用put方法
+		put(url,scallback,ecallback)
+		*/
+		put:put,
+		/*
 		/*  
 		查询消费者的订单列表
 		getOrderList(actionurl,dataobj,scallback,ecallback)
@@ -182,6 +187,18 @@ angular.module('daogou')
 
 		/*支付接口*/
 		tradesPay:tradesPay,
+		/*
+		删除收货地址		
+		*/
+		deleteAddress:deleteAddress,
+		/*
+		获取收货地址		
+		*/
+		getAddress:getAddress,
+		/*
+		修改收货地址		
+		*/
+		editAddress:editAddress,
 	};
 
 	return daogouAPI;
@@ -214,6 +231,16 @@ angular.module('daogou')
 	function post(action,data,scallback,ecallback) {
 		var url=ROOT_URL+action;
 		$http.post(url,data)
+		.success(function(data, status, headers, config){
+			scallback(data, status, headers, config);
+		})
+		.error(function(data, status, headers, config){
+			ecallback(data, status, headers, config);
+		});
+	}
+	function put(action,data,scallback,ecallback) {
+		var url=ROOT_URL+action;
+		$http.put(url,data)
 		.success(function(data, status, headers, config){
 			scallback(data, status, headers, config);
 		})
@@ -526,6 +553,39 @@ angular.module('daogou')
 		};
 		daogouAPI.patch(action,data,scallback,ecallback);
 	}
+
+
+	function deleteAddress(dataobj,scallback,ecallback) {
+		var action='/users/'+dataobj.user_id+'/shipping-addresses/'+dataobj.address_id;
+		var data='';
+		daogouAPI.deletef(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	function getAddress(dataobj,scallback,ecallback) {
+		var action='/users/'+dataobj.user_id+'/shipping-addresses/'+dataobj.address_id;
+		var data='';
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+	function editAddress(dataobj,scallback,ecallback) {
+		var action='/users/'+dataobj.user_id+'/shipping-addresses/'+dataobj.id;
+		var data = {
+			        id: dataobj.address_id,
+					user_id: dataobj.user_id,
+					name: dataobj.name,
+					state: dataobj.state,
+					state_code: dataobj.state_code,
+					city: dataobj.city,
+					city_code:  dataobj.city_code,
+					district: dataobj.district,
+					district_code:dataobj.district_code,
+					address: dataobj.address,
+					zip: dataobj.zip,
+					mobile: dataobj.mobile,
+					is_default: dataobj.is_default
+				};
+		daogouAPI.put(action,data,scallback,ecallback);
+	}
+	
 
 });
 
