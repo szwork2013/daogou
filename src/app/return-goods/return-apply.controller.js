@@ -12,11 +12,9 @@ angular.module('goodsReturn',['ionic'])
     		var picArr = data.details[i].pic_path.split(",");
     		console.log(["picArr",picArr]);
     		data.details[i].pic = picArr[0];
+    		data.details[i].seleted = false;
     	}
     	$scope.refundData = data;
-    	for(var i in $scope.refundData.details){
-    		$scope.refundData.details[i].selectedOid=false;
-    	}
     })
     .error(function(data){
     	console.log(["获取可退货商品失败",data])
@@ -33,12 +31,23 @@ angular.module('goodsReturn',['ionic'])
     	"prove_images": "http://brand-guide.b0.upaiyun.com/refund-qr-code/1434009839066_495203.jpg"
     }
     
-  
+  //通过点击选中圆圈选中
+   $scope.changeCheck = function(index){
+	   	console.log(["indexindexindex",index])
+	   	if($scope.refundData.details[index].seleted === true){
+	   		$scope.refundData.details[index].seleted = false;
+	   	}else{
+	   		$scope.refundData.details[index].seleted = true;
+	   	}
+   }
+
     $scope.goRefundState = function(){
     	var detailsData = [];
     	var k = 0;
     	 for(var i in $scope.refundData.details){
-    	 	if($scope.refundData.details[i].selectedOid===true){
+    	 	console.log(["$scope.refundData.details[i].seleted",$scope.refundData.details[i].seleted]);
+    	 	if($scope.refundData.details[i].seleted===true){
+    	 		console.log(["$scope.refundData.details[i].seleted",i]);
     	 		detailsData[k]={
     	 			"oid": $scope.refundData.details[i].oid,
     	 			"num": $scope.refundData.details[i].item_num
@@ -82,21 +91,9 @@ angular.module('goodsReturn',['ionic'])
 
 
 
-   $scope.changeCheck = function(index){
-   	console.log(["indexindexindex",index])
-		if($(".selected-img").eq(index).hasClass("graygou")){
-			console.log("biangreen")
-			$(".selected-img").eq(index).removeClass("graygou");
-			$(".selected-img").eq(index).addClass("greengou");
-			$scope.refundData.details[index].selectedOid = true;
-		}else{ 
-			console.log("biangray")
-			$(".selected-img").eq(index).removeClass("greengou");
-			$(".selected-img").eq(index).addClass("graygou");
-			$scope.refundData.details[index].selectedOid = false;
-		}
-		
-   }
+  
+
+
 	$scope.uploadImg =function(id){
 		checklocalimg(function(data){
 			$("#"+id+"").attr("src",data.src);
@@ -194,16 +191,16 @@ angular.module('goodsReturn',['ionic'])
 
 
 	//根据导购编号和品牌编号获取导购名和工作号
-	if(data.receive_guider_id){
-		$http.get(URLPort+"/brands/"+data.brand_id+"/guiders/"+data.receive_guider_id+"/details")
-		.success(function(data){
-			console.log(["获取导购信息成功",data]);
-			$scope.guiderData = data;
-		})
-		.error(function(data){
-			console.log(["获取导购信息失败",data])
-		})
-	}
+	// if($scope.refundOrderData.receive_guider_id){
+	// 	$http.get(URLPort+"/brands/"+$scope.refundOrderData.brand_id+"/guiders/"+$scope.refundOrderData.receive_guider_id+"/details")
+	// 	.success(function(data){
+	// 		console.log(["获取导购信息成功",data]);
+	// 		$scope.guiderData = data;
+	// 	})
+	// 	.error(function(data){
+	// 		console.log(["获取导购信息失败",data])
+	// 	})
+	// }
 	
 
 }])

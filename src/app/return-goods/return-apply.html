@@ -8,18 +8,18 @@
                 </div>
                 
                 <ul class="list marginbt0">
-                    <li class="item item-checkbox product-item backfff" ng-repeat="item in refundData.details" ng-click="changeCheck($index)">
+                    <li class="item item-checkbox product-item backfff" ng-repeat="item in refundData.details">
                        <label class="checkbox disnone">
                          <input type="checkbox" ng-model="choose">
                        </label>
-                      <i class="iconfont icon-gou bggou graygou font24 selected-img"></i>
+                      <i class="iconfont icon-gou bggou font24 selected-img" ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck($index)"></i>
                       <img ng-src="{{item.pic}}" class="product-img">
                       <div class="paramenters-select">
                           <div class="name">{{item.title}}</div>
                           <div class="paras">{{item.sku_properties_name}}</div>
                       </div>
                       <span class="price">{{item.price|currency:"￥":2}}</span>
-                      <div class="countNum">X{{item.item_num}}
+                      <div class="countNum">{{item.seleted}}X{{item.item_num}}
                       </div>
                     </li>
                 </ul>

@@ -54,13 +54,13 @@ function getOrderListFunc(){
 			}else if(data[i].status==="TRADE_FINISHED"){
 				data[i].statusCN = "已完成";
 			}else if(data[i].status==="TRADE_CLOSED_BY_SYSTEM"){
-				data[i].statusCN = "已关闭，系统自动关闭交易";
+				data[i].statusCN = "系统自动关闭交易";
 			}else if(data[i].status==="TRADE_CLOSED_BY_SELLER"){
-				data[i].statusCN = "已关闭，卖家关闭交易";
+				data[i].statusCN = "卖家关闭交易";
 			}else if(data[i].status==="TRADE_CLOSED_BY_BUYER"){
-				data[i].statusCN = "已关闭，买家关闭交易";
+				data[i].statusCN = "买家关闭交易";
 			}else if(data[i].status==="TRADE_CLOSED_BY_SPLIT"){
-				data[i].statusCN = "已关闭，订单被拆分后关闭交易";
+				data[i].statusCN = "订单被拆分后关闭交易";
 			}
 	    }
 
