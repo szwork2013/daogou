@@ -52,6 +52,30 @@ angular.module('daogou')
 	};
 })
 
+.factory('WXpayspellstring', function(){
+	return function WXspellstring(args){
+		/*
+		拼接规则 请看如下地址  搜索“附录1”
+		http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+		*/
+		//排序
+		var keys = Object.keys(args);
+		keys = keys.sort();
+		var newArgs = {};
+		//小写
+		keys.forEach(function(key) {
+			newArgs[key] = args[key];
+		});
+		//拼接
+		var string = '';
+		for (var k in newArgs) {
+			string += '&' + k + '=' + newArgs[k];
+		}
+		string = string.substr(1);
+		return string;
+	};
+})
+
 .factory('countConfigInfo', function(sha1,WXnonceStr,WXtimestamp,WXspellstring) {
 
 
@@ -109,7 +133,7 @@ angular.module('daogou')
 
 
 
-.factory('pay', function($rootScope,daogouAPI,WXnonceStr,WXtimestamp,WXspellstring,MD5) {
+.factory('pay', function($rootScope,daogouAPI,WXnonceStr,WXtimestamp,WXpayspellstring,MD5) {
 	return function pay(brandId,tid,callback) {
 		// 'https://open.weixin.qq.com/connect/oauth2/authorize?
 		// appid=wx1b83843264997d6b&
@@ -122,8 +146,8 @@ angular.module('daogou')
 		daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
 			console.log(['tradesPay成功', data])
 
-			// wxpay2(data)
-			wxpay(data)
+			wxpay2(data)
+			// wxpay(data)
 		},function(data){
 			console.log(['tradesPay失败',data])
 
@@ -171,6 +195,7 @@ angular.module('daogou')
 			var paySign = MD5(paySignString + '&key=' + $rootScope.WXINFO.mch_key).toUpperCase();
 			paySignData.paySign=paySign;
 
+
 			function onBridgeReady() {
 				// var time = Date.now();
 				// var payid = 'wx2015060315253068388eef800437987255';
@@ -200,7 +225,7 @@ angular.module('daogou')
 
 			var paySignData = {
 				appId: $rootScope.WXINFO.appid,
-				timestamp: timestamp,
+				timeStamp: timestamp,
 				nonceStr: nonceStr,
 				package: 'prepay_id=' + data.pre_pay_no,
 				signType: 'MD5',
@@ -208,16 +233,22 @@ angular.module('daogou')
 			console.log(paySignData)
 			
 			//paySign  拼接字符串
-			var paySignString = WXspellstring(paySignData);
+			var paySignString = WXpayspellstring(paySignData);
 			console.log(paySignString)
-
 			//paySign  sha1签名
 			var paySign = MD5(paySignString + '&key=' + $rootScope.WXINFO.mch_key).toUpperCase();
 			console.log(paySign)
 
 
+			// var paySignString="appId="+paySignData.appId + "&nonceStr="+paySignData.nonceStr + "&package="+paySignData.package+"&signType=MD5&timeStamp=" + paySignData.timeStamp + "&key="+$rootScope.WXINFO.mch_key;
+			// console.log(paySignString)
+
+			// var paySign = MD5(paySignString);
+			// console.log(paySign)
+
+
 			wx.chooseWXPay({
-				appId: $rootScope.WXINFO.appid,
+				// appId: $rootScope.WXINFO.appid,
 				timestamp: timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
 				nonceStr: nonceStr, // 支付签名随机串，不长于 32 位
 				package: 'prepay_id=' + data.pre_pay_no, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
@@ -229,8 +260,6 @@ angular.module('daogou')
 				}
 			});
 		}
-
-
 
 	};
 })

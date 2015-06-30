@@ -85,8 +85,10 @@
 		<div class="nextStep" ng-click="goToOrder()" ng-class="{disnone:goOrder}">下一步order</div>
 		<div class="nextStep" ng-click="goToCart()"  ng-class="{disnone:goCart}">下一步cart</div>
 	</div>
-
-<div style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;"  ng-show="login">
+	<!-- 登录模块 -->
+	<!-- {{login}} -->
+    <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;"   ng-show="login" loginsuccess="loginsuccess" loginerror="loginerror"></div>
+<!-- <div style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;"  ng-show="login">
 	<div class="pay-way">
 	    <div class="total-cost backfff border-tp height80">
 	      请验证您的手机
@@ -102,7 +104,7 @@
 	    </div>
 	    <div class="commonBtn backred marginBt0" ng-click="submit()">确认登录</div>
 	</div>
-</div>
+</div> -->
 </ion-view>
 
 
