@@ -25,7 +25,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	.success(function(data){
 		console.log(['获得商品详情成功',data]);
 		$scope.productDetailData = data;
-		$scope.productDetailData.buynum = 0;//买家购买数
+		$scope.productDetailData.buynum = 1;//买家购买数
 		$scope.productDetailData.realquantity = 0;//剩余库存数量
 		$scope.productDetailData.picUrlArr =  $scope.productDetailData.pic_url.split(',');//轮播图片url获取
 		console.log(["$scope.productDetailData.picUrlArr",$scope.productDetailData.picUrlArr]);
@@ -71,7 +71,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 			}
 		}
 
-		$scope.productDetailData.buynum = $scope.productDetailData.realquantity;
+		// $scope.productDetailData.buynum = $scope.productDetailData.realquantity;
 	})
 	.error(function(data){
 		console.log(['获得商品详情失败',data]);
@@ -140,16 +140,17 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
 		console.log(["$scope.productDetailData.buynum",$scope.productDetailData.buynum]);
 		if($scope.productDetailData.buynum>1){
-			$scope.productDetailData.realquantity++;
 			$scope.productDetailData.buynum--;
 		}
+
 	}
 	$scope.addNum = function(num){
 		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
 		console.log(["$scope.productDetailData.buynum",$scope.productDetailData.buynum]);
-		if($scope.productDetailData.realquantity>0){
-			$scope.productDetailData.realquantity--;
+		if($scope.productDetailData.buynum<$scope.productDetailData.realquantity){
 			$scope.productDetailData.buynum++;
+		}else{
+			alert("您所填写的商品数量超过库存!");
 		}
 	}
 //选择产品规格，显示是否有剩余

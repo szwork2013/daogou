@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-.directive('login', function($rootScope,$parse,daogouAPI){
+.directive('login', function($rootScope,$parse,daogouAPI,$http){
 	// Runs during compile
 	return {
 		// name: '',
