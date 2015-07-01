@@ -8,16 +8,8 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	var bringGuiderId = 145;
     $scope.bringGuiderIds = 145;
 	$scope.login = false;//是否显示登录页面
-	//选择的宝贝数据
-	$scope.myproduct={		
-		title:'',
-		price:'',
-		skudetail:'',
-		skuid:'',
-		num:'',
-		freight:'',
-		brandid:''
-	};
+	//创建订单页的 订单数据
+	$rootScope.productOrders=[];
 
 
 	//检测是否登陆，获得当前登录账号
@@ -248,15 +240,17 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	$scope.goToOrder = function(){
 		console.log(["$scope.productDetailData.brand_id111",$scope.productDetailData.brand_id])
 		console.log($scope.productDetailData)
-		$state.go("creatorder",{
-			title:$scope.productDetailData.title,
-			price:$scope.productDetailData.price,
-			skudetail:$scope.productDetailData.skudetail,
-			skuid:$scope.productDetailData.skuid,
-			num:$scope.productDetailData.buynum,
-			freight:$scope.productDetailData.freight,
-			brandid:$scope.productDetailData.brand_id
-		});
+		$rootScope.productOrders.push($scope.productDetailData);
+		$state.go("creatorder")
+		// $state.go("creatorder",{
+		// 	title:$scope.productDetailData.title,
+		// 	price:$scope.productDetailData.price,
+		// 	skudetail:$scope.productDetailData.skudetail,
+		// 	skuid:$scope.productDetailData.skuid,
+		// 	num:$scope.productDetailData.buynum,
+		// 	freight:$scope.productDetailData.freight,
+		// 	brandid:$scope.productDetailData.brand_id
+		// });
 	}
 
 
@@ -402,105 +396,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 
 		};
 
-	//登录
-		// $scope.submit=function(){
-		// 	// $http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
-		// 	$http({
-		// 		method: 'POST',
-		// 		url: URLPort+'/login',
-		// 		headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-		// 		transformRequest: function(obj) {
-		// 			var str = [];
-		// 			for(var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-		// 			return str.join("&");
-		// 		},
-		// 		data: {username:$scope.mainData.telenum, password: $scope.mainData.verificationCode}
-		// 	})
-		// 	.success(function(data){
-		// 		console.log(["登录接口返回数据",data]);
-		// 		//获得当前登录账号
-		// 	   	$http.get(URLPort+"/accounts/current")
-		// 	   	.success(function(data){
-		// 	   		console.log(["获得当前登录用户账号,已经登录",data]);
-		// 	   		var currentUserName = data.username;
-		// 	   		var currentAccountId = data.accountId;
-		// 	   		var saveUserMobile = data.mobile;
-		// 	   		$rootScope.USERINFO.id = data.id;
-		// 	   		$rootScope.curUserID = data.id;
-		// 	   		console.log(["$rootScope.curUserID",$rootScope.curUserID])
-	 //                // $rootScope.curUserInfo
-
-		// 	   		console.log(["$rootScope.USERINFO.id",$rootScope.USERINFO.id])
-	 //                //获取登录账号（手机号）获取User信息
-		// 	   		getUserInfo(currentUserName,
-		// 	   			function(currentUserId){//User存在  根据用户id修改信息
-		// 	   				$http.put(URLPort+"/users/"+currentUserId+"",{
-		// 	   		              "id": currentUserId,
-		// 	   		              "account_id": currentAccountId,
-		// 	   		              "name": "老3",
-		// 	   		              "gender": 1,
-		// 	   		              "nick": "zhang3",
-		// 	   		              "email": "zy3@qq.com",
-		// 	   		              "birthday": 1420017957000,
-		// 	   		              "mobile": saveUserMobile,
-		// 	   		              "weixin_no": "zy3@qq.com",
-		// 	   		              "weixin_nick": "老3就是我",
-		// 	   		              "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
-		// 	   				.success(function(data){
-		// 	   					console.log(["更新User信息成功",data]);
-		// 	   				})
-		// 	   				.error(function(data){
-		// 	   					console.log(["更新User信息失败",data]);
-		// 	   				})
-
-		// 	   			},
-		// 	   			function(){//User不存在
-		// 	   				$http.post(URLPort+"/users",{"account_id": currentAccountId,
-		// 	   		            "name" : "老5",
-		// 	   		            "name_py": "lao5",
-		// 	   		            "gender": 1,
-		// 	   		            "nick": "zhang",
-		// 	   		            "email": "zy@qq.com",
-		// 	   		            "birthday": 1420017957000,
-		// 	   		            "mobile": saveUserMobile,
-		// 	   		            "weixin_no": "zy@qq.com",
-		// 	   		            "weixin_nick":"老5就是我",
-		// 	   		            "avatar":"http://brand-guide.b0.upaiyun.com/avatar.jpg"})
-		// 	   				.success(function(data){
-		// 	   					console.log(["新增User信息成功",data]);
-		// 	   				})
-		// 	   				.error(function(data){
-		// 	   					console.log(["新增User信息失败",data]);
-		// 	   				})
-		// 	   			})
-
-		// 	   	})
-		// 	   	.error(function(data){
-		// 	   		console.log(["没获得当前登录用户账号，未登录",data]);
-		// 	   	})
-
-  //  				$http.post(URLPort+"/users/"+$rootScope.USERINFO.id+"/shopping-carts",{
-  //  					"user_id":$rootScope.USERINFO.id,
-  //  					"sku_id" : $scope.productDetailData.skuid,
-  //  					"num": $scope.productDetailData.buynum,
-  //  					"bring_guider_id" :bringGuiderId
-  //  	            })
-  //  	            .success(function(data){
-  //  	            	console.log(["加入购物车成功",data]);
-  //           	   	$scope.login = false;//是否显示登录页面
-  //           		$(".mengban").hide();
-  //           		$(".chooseProductInfoWarp").hide();
-  //  	            })
-  //  	            .error(function(data){
-  //  	            	console.log(["加入购物车失败",data]);
-  //  	            })
-
-			  
-		// 	})
-		// 	.error(function(data){
-		// 		console.log(["登录失败",data]);
-		// 	})
-		
 			
 		// }
 

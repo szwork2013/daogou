@@ -4,13 +4,27 @@ var createOrder=angular.module('createOrder',['ionic']);
 createOrder.controller('creatorderCtrl',
 function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay){
 	$log.debug('creatorderCtrl');
-	$scope.buytitle = $stateParams.title;
-	$scope.buyprice = $stateParams.price;
-	$scope.buyskudetail = $stateParams.skudetail;
-	$scope.buyskuid = $stateParams.skuid;
-	$scope.buynum = $stateParams.num;
-	$scope.buyfreight = $stateParams.freight;
-	$scope.totalprice = $stateParams.price*$stateParams.num;
+	// $scope.buytitle = $stateParams.title;
+	// $scope.buyprice = $stateParams.price;
+	// $scope.buyskudetail = $stateParams.skudetail;
+	// $scope.buyskuid = $stateParams.skuid;
+	// $scope.buynum = $stateParams.num;
+	// $scope.buyfreight = $stateParams.freight;
+	// $scope.totalprice = $stateParams.price*$stateParams.num;
+
+	//没有订单数据返回首页
+	if(typeof $rootScope.productOrders==='undefined' || typeof $rootScope.productOrders[0]==='undefined'){
+		$state.go('productDetail');
+		return;
+	}
+	//总价格
+	$scope.totalprice=0;
+	for (var i in $rootScope.productOrders) {
+		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].num
+	};
+	console.log($rootScope.productOrders)
+
+
 	$scope.totalcost = $scope.totalprice + parseFloat($scope.buyfreight);
 	console.log(['$stateParams.title',$stateParams.title])
 
