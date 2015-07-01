@@ -121,10 +121,34 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 	//http://codepen.io/ahsx/pen/mDcEd
 
 })
-.controller('configCtrl', function($scope, wxconfig, pay) {
+.controller('configCtrl', function($rootScope,$scope, wxconfig, pay) {
+
+	/*
+	https://open.weixin.qq.com/connect/oauth2/authorize?
+	appid=wx520c15f417810387&
+	redirect_uri=http%3A%2F%2Fchong.qq.com%2Fphp%2Findex.php%3Fd%3D%26c%3DwxAdapter%26m%3DmobileDeal%26showwxpaytitle%3D1%26vb2ctag%3D4_2030_5_1194_60
+	&response_type=code&
+	scope=snsapi_base&
+	state=123#wechat_redirect
+	
+	*/
+
+
 
 	wxconfig(1, function(configdata) {
 		console.log(['微信config', configdata]);
+		
+
+
+// 		var url='https://open.weixin.qq.com/connect/oauth2/authorize?'+
+// 			'appid='+$rootScope.WXINFO.appid+
+// 			'&redirect_uri='+encodeURIComponent(window.location.href)+
+// 			'&response_type=code'+
+// 			'&scope=snsapi_base'+
+// 			'#wechat_redirect';
+// console.log(url)
+
+
 		wx.config({
 			debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 			appId: configdata.appId, // 必填，公众号的唯一标识

@@ -91,6 +91,7 @@ angular.module('daogou')
 			url: window.location.href.split('#')[0]
 			// url:window.location.hostname
 		};
+		// alert(signatureData.url)
 		console.log()
 		//signature  拼接字符串
 		var signatureString = WXspellstring(signatureData);
@@ -146,8 +147,8 @@ angular.module('daogou')
 		daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
 			console.log(['tradesPay成功', data])
 
-			wxpay2(data)
-			// wxpay(data)
+			wxpay2(data)//微信支付新接口
+			// wxpay(data)//微信支付老接口
 		},function(data){
 			console.log(['tradesPay失败',data])
 
@@ -166,9 +167,8 @@ angular.module('daogou')
 		});
 
 
+		//微信支付老接口
 		function wxpay(data) {
-
-			//微信支付
 			if (typeof WeixinJSBridge == 'undefined') {
 				if (document.addEventListener) {
 					document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
@@ -216,8 +216,9 @@ angular.module('daogou')
 			}
 		}
 
+		//微信支付新接口
 		function wxpay2(data){
-			alert(JSON.stringify(data));
+			// alert(JSON.stringify(data));
 
 			var timestamp = WXtimestamp();
 
@@ -238,14 +239,11 @@ angular.module('daogou')
 			//paySign  sha1签名
 			var paySign = MD5(paySignString + '&key=' + $rootScope.WXINFO.mch_key).toUpperCase();
 			console.log(paySign)
-
-
 			// var paySignString="appId="+paySignData.appId + "&nonceStr="+paySignData.nonceStr + "&package="+paySignData.package+"&signType=MD5&timeStamp=" + paySignData.timeStamp + "&key="+$rootScope.WXINFO.mch_key;
 			// console.log(paySignString)
 
 			// var paySign = MD5(paySignString);
 			// console.log(paySign)
-
 
 			wx.chooseWXPay({
 				// appId: $rootScope.WXINFO.appid,

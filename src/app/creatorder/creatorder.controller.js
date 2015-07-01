@@ -21,9 +21,10 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	//总价格
 	$scope.totalprice=0;
 	for (var i in $rootScope.productOrders) {
-		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].num
+		console.log([i,$rootScope.productOrders[i]])
+		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].buynum
 	};
-	console.log($rootScope.productOrders)
+	console.log(['$scope.totalprice',$scope.totalprice])
 
 
 	$scope.totalcost = $scope.totalprice + parseFloat($scope.buyfreight);
