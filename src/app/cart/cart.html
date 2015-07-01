@@ -29,14 +29,19 @@
                     <div class="edit" ng-show="finishhandle" ng-click="finish()">完成</div>
                     <div class="clearBoth"></div>
                 </div>
-                
+
                 <ul class="list">
                     <li class="item item-checkbox product-item" ng-repeat="item in cartProductListData">
                       <i class="iconfont icon-gou bggou font24 selected-img" ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck($index)"></i>
                       <img ng-src="{{item.pic_path}}" class="product-img">
                       <div class="paramenters-select">
                           <div class="name" ng-bind="item.title"></div>
-                          <div class="paras" ng-bind="item.sku_properties_name"></div>
+                          <!-- <div class="paras" ng-bind="item.sku_properties_name"></div> -->
+                          <div  class="paras">
+                              <span  ng-repeat = "items in cartProductListData.specification">
+                                {{items.key}}：{{items.val}}
+                              </span>
+                          </div>
                       </div>
                       <span class="price">{{item.price | currency:"￥":2}}</span>
                       <div class="countNumCount" ng-show="finishhandle">

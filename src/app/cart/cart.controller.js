@@ -36,7 +36,35 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
 				data[i].seleted = false;
 			}
 			$scope.cartProductListData = $scope.cartProductListData.concat(data);
-			
+                console.log(['datadatadatadatadatadatadata',data]);
+
+
+            //获得当前购物车的物品属性
+            var cartArr=$scope.cartProductListData[0].sku_properties_name.split(';');
+            console.log(['cartArr',cartArr])
+            console.log(['$scope.cartProductListData[0].sku_properties_name',$scope.cartProductListData[0].sku_properties_name])
+            $scope.cartProductListData.specification=[];
+            for(var idx in data){
+                $scope.cartProductListData.specification[idx] = {};
+                $scope.cartProductListData.specification[idx].key = "";
+                $scope.cartProductListData.specification[idx].val = "";
+                console.log(["SAAAAAAAAAAAAAAAA",$scope.cartProductListData.specification])
+            }
+            for(var id in data){//cartProductListData的数量
+            var flag = true;
+            var cartArr = $scope.cartProductListData[id].sku_properties_name.split(';');//cartArr.length参数种类
+             console.log(['$scope.cartProductListData[id].sku_properties_name',$scope.cartProductListData[id].sku_properties_name])
+            for(var tz in cartArr){//一个规格种类一个规格种类来
+                var cartendArr = cartArr[tz].split(':');//取每个规格的规格名和规格值
+                $scope.cartProductListData.specification[tz].val = cartendArr[cartendArr.length-1];//规格值
+                $log.debug(['$scope.cartProductListData.specification',$scope.cartProductListData.specification]);
+                $scope.cartProductListData.specification[tz].array = $scope.cartProductListData.specification[tz].val.split(" ");
+                $scope.cartProductListData.specification[tz].array.splice($scope.cartProductListData.specification[tz].array.length-1,1);
+                $scope.cartProductListData.specification[tz].key = cartendArr[cartendArr.length-2];//规格名
+            }
+        };
+
+
 		    console.log(["data.length",data.length])
 		    if(data.length>=pagesize){
 		    	pageindex++;
