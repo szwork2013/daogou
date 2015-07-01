@@ -7,7 +7,7 @@
                  <label class="checkbox disnone">
                    <input type="checkbox" ng-model="choose">
                  </label>
-                <img ng-src="order.pic" class="product-img">
+                <img ng-src="{{order.pic}}" class="product-img">
                 <div class="paramenters">
                     <div class="name">{{order.title}}</div>
                     <div class="paras">{{order.skudetail}}</div>
@@ -19,7 +19,7 @@
           </ul>
           <div class="perAccount">
             <div class="account"><span class="heji">商品总价：</span></div>
-            <div class="time">{{productOrders.totalprice|currency:"￥":2}}</div>
+            <div class="time">{{totalprice|currency:"￥":2}}</div>
             <div class="clearBoth"></div>
           </div>
       </div>
