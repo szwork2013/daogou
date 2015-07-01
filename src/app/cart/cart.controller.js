@@ -44,7 +44,7 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
             console.log(['cartArr',cartArr])
             console.log(['$scope.cartProductListData[0].sku_properties_name',$scope.cartProductListData[0].sku_properties_name])
             $scope.cartProductListData.specification=[];
-            for(var idx in data){
+            for(var idx in cartArr){
                 $scope.cartProductListData.specification[idx] = {};
                 $scope.cartProductListData.specification[idx].key = "";
                 $scope.cartProductListData.specification[idx].val = "";
@@ -62,6 +62,7 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
                 $scope.cartProductListData.specification[tz].array.splice($scope.cartProductListData.specification[tz].array.length-1,1);
                 $scope.cartProductListData.specification[tz].key = cartendArr[cartendArr.length-2];//规格名
             }
+            console.log(["SBBBBBBBBBBBBB",$scope.cartProductListData.specification])
         };
 
 
