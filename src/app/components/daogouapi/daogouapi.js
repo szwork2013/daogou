@@ -601,7 +601,7 @@ angular.module('daogou')
 		};
  		console.log(["action",action]);
  		console.log(["data",data]);
-		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
+		daogouAPI.post(daogouAPI.apiurl(action,data),'',scallback,ecallback);
 	}
 
 	
