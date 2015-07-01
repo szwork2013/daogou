@@ -199,6 +199,10 @@ angular.module('daogou')
 		修改收货地址		
 		*/
 		editAddress:editAddress,
+		/*
+		获取验证码		
+		*/
+		verificationcode:verificationcode,
 	};
 
 	return daogouAPI;
@@ -214,7 +218,7 @@ angular.module('daogou')
 			}
 			url=url.slice(0,url.length-1);
 		}
-
+        console.log(["apiurl",url]);
 		return url;
 	}
 
@@ -585,6 +589,21 @@ angular.module('daogou')
 				};
 		daogouAPI.put(action,data,scallback,ecallback);
 	}
+
+
+	function verificationcode(dataobj,scallback,ecallback){
+         console.log("get vertify code !!!!!!!!!!!!!!!");
+		var action='/accounts/verification-code';
+		var data={
+			codeType:dataobj.codeTypes,
+			account:dataobj.account,
+			template:dataobj.template
+		};
+ 		console.log(["action",action]);
+ 		console.log(["data",data]);
+		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
 	
 
 });
