@@ -78,7 +78,8 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 			templateUrl: 'app/return-goods/logisticsInfo.html'
 		})
 		.state('creatorder', {
-			url: '/creatorder/:title/:price/:skudetail/:skuid/:num/:freight/:brandid',
+			// url: '/creatorder/:title/:price/:skudetail/:skuid/:num/:freight/:brandid',
+			url: '/creatorder',
 			templateUrl: 'app/creatorder/creatorder.html',
 			controller: 'creatorderCtrl'
 		})

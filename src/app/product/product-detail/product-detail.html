@@ -72,11 +72,11 @@
 				<span class="chsTitle fl">数量</span>
 				<div class="addDelWrap">
 					<span class="font12">剩余：</span><span class="font12">{{productDetailData.realquantity}}&nbsp;&nbsp;</span>
-					<span class="suanBtn del" ng-click="delNum(productDetailData.buynum)">
+					<span class="suanBtn del" ng-click="delNum()">
 						<i class="iconfont icon-jian"></i>
 					</span>
-					<input class="suanBtn num" value="{{productDetailData.buynum}}"/>
-					<span class="suanBtn add" ng-click="addNum(productDetailData.buynum)">
+					<input class="suanBtn num" ng-model="productDetailData.buynum"/>
+					<span class="suanBtn add" ng-click="addNum()">
 						<i class="iconfont icon-jia"></i>
 					</span>
 				</div>
