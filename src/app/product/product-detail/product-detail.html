@@ -53,9 +53,10 @@
 	<div class="chooseProductInfoWarp">
 		<div class="list">
 		    <div class="item item-avatar">
-			      <img class="productImg" src="assets/images/pic1.png">
-			      <h2>新款撞色连衣裙</h2>
-			      <p>¥ 241.00</p>
+			      <!-- <img class="productImg" src="assets/images/pic1.png"> -->
+			      <img class="productImg" ng-src="{{productDetailData.picUrlArr[0]}}">
+			      <h2>{{productDetailData.title}}</h2>
+			      <p>￥{{productDetailData.price}}</p>
 			      <div class="iconfont icon-guanbi close" ng-click="propertyClose()"></div>
 		    </div>
 		</div>
