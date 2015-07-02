@@ -535,7 +535,8 @@ angular.module('daogou')
 			$rootScope.WXINFO={
 				appid:wxdata.appid,
 				js_api_ticket:wxdata.js_api_ticket,
-				mch_key:wxdata.mch_key
+				mch_key:wxdata.mch_key,
+				secret:wxdata.secret
 			}
 			scallback(wxdata)
 		},ecallback);

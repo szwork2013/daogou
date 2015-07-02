@@ -261,12 +261,13 @@ angular.module('daogou')
 
 	};
 })
-.factory('WXgetOpenid', function($rootScope,getRequest){
+.factory('WXgetOpenid', function($rootScope,getRequest,$http){
 	return function WXgetOpenid(scallback,ecallback){
 
 			var code=getRequest('code');
 			if($rootScope.DEBUG){
 				scallback('测试期间不跳转微信')
+				return;
 			}
 			// http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html#.E7.AC.AC.E4.B8.80.E6.AD.A5.EF.BC.9A.E7.94.A8.E6.88.B7.E5.90.8C.E6.84.8F.E6.8E.88.E6.9D.83.EF.BC.8C.E8.8E.B7.E5.8F.96code
 			//没有code去取code
@@ -283,9 +284,10 @@ angular.module('daogou')
 			}else{
 				var getOpenIdUrl='https://api.weixin.qq.com/sns/oauth2/access_token?'+
 					'appid='+$rootScope.WXINFO.appid+
-					'&secret='+secret+
-					'&code='+CODE+
+					'&secret='+$rootScope.WXINFO.secret+
+					'&code='+code+
 					'&grant_type=authorization_code'
+				console.log(getOpenIdUrl)
 				$http.get(getOpenIdUrl)
 				.success(function(data){
 					// {
@@ -309,7 +311,7 @@ angular.module('daogou')
 	};
 })
 
-
+https://api.weixin.qq.com/sns/oauth2/access_token?appid=wx1b83843264997d6b&secret=26aa5590994ce8f5a429481940dccfeb&code=03153eb4e513b31366165f06392d36d5&grant_type=authorization_code
 ;
 
 

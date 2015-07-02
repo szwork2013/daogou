@@ -39,8 +39,8 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 
 	$stateProvider
 		.state('productDetail', {
-			// url: '/productDetail/:detailId',
-			url: '/productDetail',
+			url: '/productDetail/:detailId',
+			// url: '/productDetail',
 			templateUrl: 'app/product/product-detail/product-detail.html',
 			controller: 'productDetailCtrl'
 		})
@@ -115,8 +115,8 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 			controller: 'guideCtrl'
 		});
 
-	// $urlRouterProvider.otherwise('productDetail/100030');
-	$urlRouterProvider.otherwise('productDetail');
+	$urlRouterProvider.otherwise('productDetail/100030');
+	// $urlRouterProvider.otherwise('productDetail');
 
 	// $urlRouterProvider.otherwise('/login');
 
@@ -125,7 +125,10 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 })
 .controller('configCtrl', function($rootScope,$scope,$location,wxconfig,getRequest,WXgetOpenid) {
 
-	$rootScope.DEBUG=true;
+// /shopping/index.html?guider_id=123124&share=false#/productDetail/100030
+// 导购ID：123124
+// 是否为消费者打开页面：share=true：消费者打开，share=false：导购打开
+
 	/*
 	https://open.weixin.qq.com/connect/oauth2/authorize?
 	appid=wx520c15f417810387&
@@ -134,65 +137,60 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 	scope=snsapi_base&
 	state=123#wechat_redirect
 	*/
+//导购id
+$rootScope.GUIDID=getRequest('guider_id');
+//app访问
+$rootScope.ISWX=(getRequest('share')==='true'?true:false);
 
 console.log(window.location)
 	
 	//微信注册
 	wxconfig(1, function(configdata) {
 		console.log(['微信config', configdata]);
-		
-		//微信获取openid  获取不到会有页面跳转
-		//获取openid在后面的微信支付会用到 获取成功后会赋值给$rootScope.OPENID
-		WXgetOpenid(function(opendiddata){
-
-			//微信 JSSDK 注册
-			wx.config({
-				debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-				appId: configdata.appId, // 必填，公众号的唯一标识
-				timestamp: configdata.timestamp, // 必填，生成签名的时间戳
-				nonceStr: configdata.nonceStr, // 必填，生成签名的随机串
-				signature: configdata.signature, // 必填，签名，见附录1
-				jsApiList: [
-						'onMenuShareTimeline',
-						'onMenuShareAppMessage',
-						'onMenuShareQQ',
-						'onMenuShareWeibo',
-						'startRecord',
-						'stopRecord',
-						'onVoiceRecordEnd',
-						'playVoice',
-						'pauseVoice',
-						'stopVoice',
-						'onVoicePlayEnd',
-						'uploadVoice',
-						'downloadVoice',
-						'chooseImage',
-						'previewImage',
-						'uploadImage',
-						'downloadImage',
-						'translateVoice',
-						'getNetworkType',
-						'openLocation',
-						'getLocation',
-						'hideOptionMenu',
-						'showOptionMenu',
-						'hideMenuItems',
-						'showMenuItems',
-						'hideAllNonBaseMenuItem',
-						'showAllNonBaseMenuItem',
-						'closeWindow',
-						'scanQRCode',
-						'chooseWXPay',
-						'openProductSpecificView',
-						'addCard',
-						'chooseCard',
-						'openCard'
-					] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-			});
-
-		},function(data){
-
-		})
+		//微信 JSSDK 注册
+		wx.config({
+			debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			appId: configdata.appId, // 必填，公众号的唯一标识
+			timestamp: configdata.timestamp, // 必填，生成签名的时间戳
+			nonceStr: configdata.nonceStr, // 必填，生成签名的随机串
+			signature: configdata.signature, // 必填，签名，见附录1
+			jsApiList: [
+					'onMenuShareTimeline',
+					'onMenuShareAppMessage',
+					'onMenuShareQQ',
+					'onMenuShareWeibo',
+					'startRecord',
+					'stopRecord',
+					'onVoiceRecordEnd',
+					'playVoice',
+					'pauseVoice',
+					'stopVoice',
+					'onVoicePlayEnd',
+					'uploadVoice',
+					'downloadVoice',
+					'chooseImage',
+					'previewImage',
+					'uploadImage',
+					'downloadImage',
+					'translateVoice',
+					'getNetworkType',
+					'openLocation',
+					'getLocation',
+					'hideOptionMenu',
+					'showOptionMenu',
+					'hideMenuItems',
+					'showMenuItems',
+					'hideAllNonBaseMenuItem',
+					'showAllNonBaseMenuItem',
+					'closeWindow',
+					'scanQRCode',
+					'chooseWXPay',
+					'openProductSpecificView',
+					'addCard',
+					'chooseCard',
+					'openCard'
+				] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+		});
 
 	});
 

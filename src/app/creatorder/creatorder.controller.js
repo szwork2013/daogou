@@ -2,7 +2,7 @@
 
 var createOrder=angular.module('createOrder',['ionic']);
 createOrder.controller('creatorderCtrl',
-function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay){
+function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpay){
 	$log.debug('creatorderCtrl');
 	$scope.login = false;//处理登录框的一点样式问题，背景为白色
 	// $scope.buytitle = $stateParams.title;
@@ -265,7 +265,7 @@ code=00177a72afbef088d656bb480b90625p
 */
 
 	$scope.submitOrder = function(){
-			pay(1,49815344003486000,function(data){
+			WXpay(1,49815344003486000,function(data){
 				alert('支付成功');
 				alert(JSON.stringify(data));
 			});
