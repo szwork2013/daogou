@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('daogou')
-.factory('wxconfig', function(daogouAPI, countConfigInfo) {
+.factory('wxconfig', function(daogouAPI, WXcountConfigInfo) {
 	return function wxconfig(brandId, callback) {
 
 		daogouAPI.WXgetAppid(brandId, function(wxdata) {
 			console.log(['微信公众号信息 成功', wxdata]);
-			var configdata = countConfigInfo(wxdata.appid, wxdata.js_api_ticket);
+			var configdata = WXcountConfigInfo(wxdata.appid, wxdata.js_api_ticket);
 			callback(configdata)
 		}, function(data) {
 			console.log(['微信公众号信息 失败', data]);
@@ -28,8 +28,8 @@ angular.module('daogou')
 	}
 })
 
-.factory('WXspellstring', function(){
-	return function WXspellstring(args){
+.factory('WXconfigSpellstring', function(){
+	return function WXconfigSpellstring(args){
 		/*
 		拼接规则 请看如下地址  搜索“附录1”
 		http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
@@ -52,8 +52,8 @@ angular.module('daogou')
 	};
 })
 
-.factory('WXpayspellstring', function(){
-	return function WXspellstring(args){
+.factory('WXpaySpellstring', function(){
+	return function WXpaySpellstring(args){
 		/*
 		拼接规则 请看如下地址  搜索“附录1”
 		http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
@@ -76,10 +76,10 @@ angular.module('daogou')
 	};
 })
 
-.factory('countConfigInfo', function(sha1,WXnonceStr,WXtimestamp,WXspellstring) {
+.factory('WXcountConfigInfo', function(sha1,WXnonceStr,WXtimestamp,WXconfigSpellstring) {
 
 
-	return function countconfiginfo(appid, jsapi_ticket) {
+	return function WXcountconfiginfo(appid, jsapi_ticket) {
 
 		var nonceStr =WXnonceStr();// Math.random().toString(36).substr(2, 15);
 		var timestamp =WXtimestamp();// parseInt(new Date().getTime() / 1000) + '';
@@ -94,7 +94,7 @@ angular.module('daogou')
 		// alert(signatureData.url)
 		console.log()
 		//signature  拼接字符串
-		var signatureString = WXspellstring(signatureData);
+		var signatureString = WXconfigSpellstring(signatureData);
 		//signature  sha1签名
 		var signature = sha1(signatureString);
 
@@ -134,8 +134,8 @@ angular.module('daogou')
 
 
 
-.factory('pay', function($rootScope,daogouAPI,WXnonceStr,WXtimestamp,WXpayspellstring,MD5) {
-	return function pay(brandId,tid,callback) {
+.factory('WXpay', function($rootScope,daogouAPI,WXnonceStr,WXtimestamp,WXpaySpellstring,MD5) {
+	return function WXpay(brandId,tid,callback) {
 		// 'https://open.weixin.qq.com/connect/oauth2/authorize?
 		// appid=wx1b83843264997d6b&
 		// redirect_uri=http://yunwan2.3322.org:57093/wechat/auth/callback&
@@ -148,7 +148,7 @@ angular.module('daogou')
 			console.log(['tradesPay成功', data])
 
 			wxpay2(data)//微信支付新接口
-			// wxpay(data)//微信支付老接口
+			// wxpay1(data)//微信支付老接口
 		},function(data){
 			console.log(['tradesPay失败',data])
 
@@ -168,7 +168,7 @@ angular.module('daogou')
 
 
 		//微信支付老接口
-		function wxpay(data) {
+		function wxpay1(data) {
 			if (typeof WeixinJSBridge == 'undefined') {
 				if (document.addEventListener) {
 					document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
@@ -191,7 +191,7 @@ angular.module('daogou')
 				package: 'prepay_id=' + data.pre_pay_no,
 				signType: 'MD5',
 			};
-			var paySignString = WXspellstring(paySignData);
+			var paySignString = WXconfigSpellstring(paySignData);
 			var paySign = MD5(paySignString + '&key=' + $rootScope.WXINFO.mch_key).toUpperCase();
 			paySignData.paySign=paySign;
 
@@ -234,7 +234,7 @@ angular.module('daogou')
 			console.log(paySignData)
 			
 			//paySign  拼接字符串
-			var paySignString = WXpayspellstring(paySignData);
+			var paySignString = WXpaySpellstring(paySignData);
 			console.log(paySignString)
 			//paySign  sha1签名
 			var paySign = MD5(paySignString + '&key=' + $rootScope.WXINFO.mch_key).toUpperCase();
@@ -261,7 +261,53 @@ angular.module('daogou')
 
 	};
 })
+.factory('WXgetOpenid', function($rootScope,getRequest){
+	return function WXgetOpenid(scallback,ecallback){
 
+			var code=getRequest('code');
+			if($rootScope.DEBUG){
+				scallback('测试期间不跳转微信')
+			}
+			// http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html#.E7.AC.AC.E4.B8.80.E6.AD.A5.EF.BC.9A.E7.94.A8.E6.88.B7.E5.90.8C.E6.84.8F.E6.8E.88.E6.9D.83.EF.BC.8C.E8.8E.B7.E5.8F.96code
+			//没有code去取code
+			if(!code){
+				var getCodeUrl='https://open.weixin.qq.com/connect/oauth2/authorize?'+
+					'appid='+$rootScope.WXINFO.appid+
+					'&redirect_uri='+encodeURIComponent(window.location.href.split('#')[0])+
+					// '&redirect_uri='+encodeURIComponent('http://yunwan2.3322.org:57099/shopping/index.html#/productDetail/100030')+
+					'&response_type=code'+
+					'&scope=snsapi_base'+
+					'#wechat_redirect';
+					// console.log(getCodeUrl)
+					window.location.href=getCodeUrl
+			}else{
+				var getOpenIdUrl='https://api.weixin.qq.com/sns/oauth2/access_token?'+
+					'appid='+$rootScope.WXINFO.appid+
+					'&secret='+secret+
+					'&code='+CODE+
+					'&grant_type=authorization_code'
+				$http.get(getOpenIdUrl)
+				.success(function(data){
+					// {
+					// "access_token":"ACCESS_TOKEN",
+					// "expires_in":7200,
+					// "refresh_token":"REFRESH_TOKEN",
+					// "openid":"OPENID",
+					// "scope":"SCOPE",
+					// "unionid": "o6_bmasdasdsad6_2sgVt7hMZOPfL"
+					// }
+					$rootScope.OPENID=data.openid;
+					scallback(data)
+				})
+				.error(function(data){
+					ecallback(data)
+				});
+			}
+	// http://yunwan2.3322.org:57099/shopping/index.html?gid=123&did=123&code=011bdd7db4b36877a9015cb276a1a72n&state=
+	// var CODE='011bdd7db4b36877a9015cb276a1a72n'
+
+	};
+})
 
 
 ;

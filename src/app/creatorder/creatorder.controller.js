@@ -253,6 +253,16 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		'buyer_memo':''
 	}
 
+
+/*
+支付
+cc.com?gid=333#/did/123
+
+cc.com?gid=333&did=123&
+code=00177a72afbef088d656bb480b90625p
+
+*/
+
 	$scope.submitOrder = function(){
 			pay(1,49815344003486000,function(data){
 				alert('支付成功');
