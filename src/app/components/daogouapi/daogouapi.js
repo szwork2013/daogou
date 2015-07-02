@@ -212,7 +212,7 @@ angular.module('daogou')
 		/*
 		绑定用户的openid
 		*/
-		bindOpenid:bindOpenid
+		bindOpenid:bindOpenid,
 	};
 
 	return daogouAPI;
@@ -228,7 +228,7 @@ angular.module('daogou')
 			}
 			url=url.slice(0,url.length-1);
 		}
-        console.log(["apiurl",url]);
+        // console.log(["apiurl",url]);
 		return url;
 	}
 
@@ -238,7 +238,9 @@ angular.module('daogou')
 			scallback(data, status, headers, config);
 		})
 		.error(function(data, status, headers, config){
-			ecallback(data, status, headers, config);
+			if(ecallback){
+				ecallback(data, status, headers, config);
+			}
 		});
 	}
 

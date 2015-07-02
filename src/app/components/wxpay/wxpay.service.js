@@ -1,8 +1,13 @@
 'use strict';
 
 angular.module('daogou')
-.factory('wxconfig', function(daogouAPI, WXcountConfigInfo) {
-	return function wxconfig(brandId, callback) {
+/*
+微信JSSDK config
+获取公众号信息
+拼接好config信息传入回调函数
+*/
+.factory('WXconfig', function(daogouAPI, WXcountConfigInfo) {
+	return function WXconfig(brandId, callback) {
 
 		daogouAPI.WXgetAppid(brandId, function(wxdata) {
 			console.log(['微信公众号信息 成功', wxdata]);
@@ -16,68 +21,161 @@ angular.module('daogou')
 	};
 })
 
-.factory('WXnonceStr', function(){
-	return function WXnonceStr(){
-		return Math.random().toString(36).substr(2, 15);
-	}
-})
+/*
+微信支付
+有openid直接调用支付
+没有openid获取openID
+*/
+.factory('WXpay', function($rootScope,daogouAPI,WXJSSDKPay,WXgetOpenid) {
+	return function WXpay(brandId,tid,callback) {
 
-.factory('WXtimestamp', function(){
-	return function WXtimestamp(){
-		return parseInt(new Date().getTime() / 1000) + '';
-	}
-})
+		weixinpay();
 
-.factory('WXconfigSpellstring', function(){
-	return function WXconfigSpellstring(args){
-		/*
-		拼接规则 请看如下地址  搜索“附录1”
-		http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
-		*/
-		//排序
-		var keys = Object.keys(args);
-		keys = keys.sort();
-		var newArgs = {};
-		//小写
-		keys.forEach(function(key) {
-			newArgs[key.toLowerCase()] = args[key];
-		});
-		//拼接
-		var string = '';
-		for (var k in newArgs) {
-			string += '&' + k + '=' + newArgs[k];
+		function weixinpay(){
+			daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
+				console.log(['tradesPay成功', data])
+				WXJSSDKPay(data.pre_pay_no,callback)//微信支付新接口
+			},function(data){
+				//下单失败说明用户没有openid 用此方法让用户获得openid
+				WXgetOpenid(tid,function(data){
+					// alert('wxpay.service.js:158 获取openid成功'+JSON.stringify(data))
+					//取到openid后再进行支付
+					weixinpay()
+				},function(data){
+					// alert('wxpay.service.js:162 获取openid失败，支付失败'+JSON.stringify(data))
+				})
+			});
+			
 		}
-		string = string.substr(1);
-		return string;
+
 	};
 })
 
-.factory('WXpaySpellstring', function(){
-	return function WXpaySpellstring(args){
-		/*
-		拼接规则 请看如下地址  搜索“附录1”
-		http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
-		*/
-		//排序
-		var keys = Object.keys(args);
-		keys = keys.sort();
-		var newArgs = {};
-		//小写
-		keys.forEach(function(key) {
-			newArgs[key] = args[key];
+
+/*
+JSSDK-微信支付
+WXJSSDKPay(callback);
+支付完成执行传入的回调函数
+*/
+.factory('WXJSSDKPay', function($rootScope,WXnonceStr,WXtimestamp,WXpaySpellstring,MD5){
+	return function WXJSSDKPay(prepay_id,callback){
+
+		var timestamp = WXtimestamp();
+
+		var nonceStr = WXnonceStr();
+
+		var paySignData = {
+			appId: $rootScope.WXINFO.appid,
+			timeStamp: timestamp,
+			nonceStr: nonceStr,
+			package: 'prepay_id=' + prepay_id,
+			signType: 'MD5',
+		};
+		//paySign  拼接字符串
+		var paySignString = WXpaySpellstring(paySignData);
+		//paySign  sha1签名
+		var paySign = MD5(paySignString + '&key=' + $rootScope.WXINFO.mch_key).toUpperCase();
+
+		//微信支付新接口
+		wx.chooseWXPay({
+			// appId: $rootScope.WXINFO.appid,
+			timestamp: timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+			nonceStr: nonceStr, // 支付签名随机串，不长于 32 位
+			package: 'prepay_id=' + prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+			signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+			paySign: paySign, // 支付签名
+			success: function(res) {
+				alert(JSON.stringify(res))
+				callback(res);
+			}
 		});
-		//拼接
-		var string = '';
-		for (var k in newArgs) {
-			string += '&' + k + '=' + newArgs[k];
-		}
-		string = string.substr(1);
-		return string;
+		
+		//微信支付老接口
+		// 	if (typeof WeixinJSBridge == 'undefined') {
+		// 		if (document.addEventListener) {
+		// 			document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+		// 		} else if (document.attachEvent) {
+		// 			document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+		// 			document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+		// 		}
+		// 	} else {
+		// 		onBridgeReady();
+		// 	}
+
+		// 	function onBridgeReady() {
+		// 		WeixinJSBridge.invoke(
+		// 			'getBrandWCPayRequest',
+		// 			{paySign:paySign},
+		// 			function(res) {
+		// 				if (res.err_msg == 'get_brand_wcpay_request:ok') {
+		// 					alert('支付成功')
+		// 				} else {
+		// 					alert('支付失败')
+		// 				}
+		// 			}
+		// 		);
+		// 	}
+
 	};
 })
 
+/*
+获取openid
+并将openid绑定给用户
+执行回调
+*/
+.factory('WXgetOpenid', function($rootScope,getRequest,daogouAPI){
+	return function WXgetOpenid(tid,scallback,ecallback){
+
+			var code=getRequest('code');
+			// http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html#.E7.AC.AC.E4.B8.80.E6.AD.A5.EF.BC.9A.E7.94.A8.E6.88.B7.E5.90.8C.E6.84.8F.E6.8E.88.E6.9D.83.EF.BC.8C.E8.8E.B7.E5.8F.96code
+			//没有code去取code
+			if(!code){
+					// '&redirect_uri='+encodeURIComponent('http://yunwan2.3322.org:57099/shopping/index.html#/productDetail/100030')+
+				var getCodeUrl='https://open.weixin.qq.com/connect/oauth2/authorize?'+
+					'appid='+$rootScope.WXINFO.appid+
+					'&redirect_uri='+encodeURIComponent(window.location.href.split('#')[0]+'&tid='+tid)+
+					'&response_type=code'+
+					'&scope=snsapi_base'+
+					'#wechat_redirect';
+					console.log(getCodeUrl)
+					window.location.href=getCodeUrl
+			}else{
+				//有code就去获取openid
+				daogouAPI.getOpenid({
+					code:code,
+					brand_id:$rootScope.BRANDID
+				},function(openiddata){
+					// alert('wxpay.service.js:296 获取成功'+JSON.stringify(openiddata));
+					// alert('$rootScope.BRANDID'+$rootScope.BRANDID)
+					// alert('$rootScope.USERINFO.id'+$rootScope.USERINFO.id)
+					// alert('openiddata.openid'+openiddata.openid)
+					//绑定openis
+					daogouAPI.bindOpenid({
+						brand_id:$rootScope.BRANDID,
+						user_id:$rootScope.USERINFO.id,
+						wx_open_id:openiddata.openid
+					},function(data){
+						// alert('wxpay.service.js:303  获取成功'+JSON.stringify(data));
+						scallback(data);
+					},function(data){
+						// alert('wxpay.service.js:307 绑定openid失败'+JSON.stringify(data));
+						ecallback(data);
+					})
+				},function(data){
+					ecallback(data)
+				});
+			}
+
+	};
+})
+
+/*
+拼接config信息
+传入相关参数
+返回拼接好的 微信config信息
+*/
 .factory('WXcountConfigInfo', function(sha1,WXnonceStr,WXtimestamp,WXconfigSpellstring) {
-
 
 	return function WXcountconfiginfo(appid, jsapi_ticket) {
 
@@ -106,208 +204,75 @@ angular.module('daogou')
 		};
 
 		return configinfo;
-
-
-		// function spellstring(args) {
-		// 	/*
-		// 	拼接规则 请看如下地址  搜索“附录1”
-		// 	http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
-		// 	*/
-		// 	//排序
-		// 	var keys = Object.keys(args);
-		// 	keys = keys.sort();
-		// 	var newArgs = {};
-		// 	//小写
-		// 	keys.forEach(function(key) {
-		// 		newArgs[key.toLowerCase()] = args[key];
-		// 	});
-		// 	//拼接
-		// 	var string = '';
-		// 	for (var k in newArgs) {
-		// 		string += '&' + k + '=' + newArgs[k];
-		// 	}
-		// 	string = string.substr(1);
-		// 	return string;
-		// };
-	};
-})
-
-
-
-.factory('WXpay', function($rootScope,daogouAPI,WXnonceStr,WXtimestamp,WXpaySpellstring,MD5,WXgetOpenid) {
-	return function WXpay(brandId,tid,callback) {
-		// 'https://open.weixin.qq.com/connect/oauth2/authorize?
-		// appid=wx1b83843264997d6b&
-		// redirect_uri=http://yunwan2.3322.org:57093/wechat/auth/callback&
-		// response_type=code&
-		// scope=snsapi_base&
-		// state=YnJhbmRfaWQ9MSZ0PWRlbW8mdXNlcl9pZD00JnRpZD0xMjM=
-		// #wechat_redirect'
-
-		weixinpay();
-
-
-		function weixinpay(){
-			daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
-				console.log(['tradesPay成功', data])
-				wxpay2(data)//微信支付新接口
-				// wxpay1(data)//微信支付老接口
-			},function(data){
-				//下单失败说明用户没有openid 用此方法让用户获得openid
-				WXgetOpenid(brandId,tid,function(data){
-					//取到openid后再进行支付
-					weixinpay()
-				},function(data){
-					alert('wxpay.service.js:159 获取openid失败，支付失败，')
-				})
-			});
-			
-		}
-
-
-
-
-
-
-		//微信支付新接口
-		function wxpay2(data){
-			// alert(JSON.stringify(data));
-
-			var timestamp = WXtimestamp();
-
-			var nonceStr = WXnonceStr();
-
-			var paySignData = {
-				appId: $rootScope.WXINFO.appid,
-				timeStamp: timestamp,
-				nonceStr: nonceStr,
-				package: 'prepay_id=' + data.pre_pay_no,
-				signType: 'MD5',
-			};
-			console.log(paySignData)
-			
-			//paySign  拼接字符串
-			var paySignString = WXpaySpellstring(paySignData);
-			// console.log(paySignString)
-			//paySign  sha1签名
-			var paySign = MD5(paySignString + '&key=' + $rootScope.WXINFO.mch_key).toUpperCase();
-			// console.log(paySign)
-			// var paySignString="appId="+paySignData.appId + "&nonceStr="+paySignData.nonceStr + "&package="+paySignData.package+"&signType=MD5&timeStamp=" + paySignData.timeStamp + "&key="+$rootScope.WXINFO.mch_key;
-			// console.log(paySignString)
-
-			// var paySign = MD5(paySignString);
-			// console.log(paySign)
-
-			wx.chooseWXPay({
-				// appId: $rootScope.WXINFO.appid,
-				timestamp: timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-				nonceStr: nonceStr, // 支付签名随机串，不长于 32 位
-				package: 'prepay_id=' + data.pre_pay_no, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-				signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-				paySign: paySign, // 支付签名
-				success: function(res) {
-					// 支付成功后的回调函数
-					callback(res);
-				}
-			});
-		}
-
-		//微信支付老接口
-		// function wxpay1(data) {
-		// 	if (typeof WeixinJSBridge == 'undefined') {
-		// 		if (document.addEventListener) {
-		// 			document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-		// 		} else if (document.attachEvent) {
-		// 			document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-		// 			document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-		// 		}
-		// 	} else {
-		// 		onBridgeReady();
-		// 	}
-
-		// 	var timestamp = WXtimestamp();
-
-		// 	var nonceStr = WXnonceStr();
-
-		// 	var paySignData = {
-		// 		appId: $rootScope.WXINFO.appid,
-		// 		timestamp: timestamp,
-		// 		nonceStr: nonceStr,
-		// 		package: 'prepay_id=' + data.pre_pay_no,
-		// 		signType: 'MD5',
-		// 	};
-		// 	var paySignString = WXconfigSpellstring(paySignData);
-		// 	var paySign = MD5(paySignString + '&key=' + $rootScope.WXINFO.mch_key).toUpperCase();
-		// 	paySignData.paySign=paySign;
-
-
-		// 	function onBridgeReady() {
-		// 		// var time = Date.now();
-		// 		// var payid = 'wx2015060315253068388eef800437987255';
-		// 		// var key = 'shuyunwdg20150603qwertyuiopasdfg';
-		// 		// var stringA = 'appId=wx1b83843264997d6b&nonceStr=pay.demo&package=prepay_id=' + payid + '&signType=MD5&timeStamp=' + time;
-		// 		WeixinJSBridge.invoke(
-		// 			'getBrandWCPayRequest',
-		// 			paySignData,
-		// 			function(res) {
-		// 				alert(JSON.stringify(res))
-		// 				if (res.err_msg == 'get_brand_wcpay_request:ok') {
-		// 					alert('支付成功')
-		// 				} else {
-		// 					alert('支付失败')
-		// 				}
-		// 			}
-		// 		);
-		// 	}
-		// }
-
-
-
 	};
 })
 /*
-	获取openid
-	并将openid绑定给用户
-	执行回调
+微信JSSDK config随机字符串小工具
 */
-.factory('WXgetOpenid', function($rootScope,getRequest,daogouAPI){
-	return function WXgetOpenid(brandid,tid,scallback,ecallback){
+.factory('WXnonceStr', function(){
+	return function WXnonceStr(){
+		return Math.random().toString(36).substr(2, 15);
+	}
+})
+/*
+微信JSSDK config 时间戳小工具
+*/
+.factory('WXtimestamp', function(){
+	return function WXtimestamp(){
+		return parseInt(new Date().getTime() / 1000) + '';
+	}
+})
 
-			var code=getRequest('code');
-			// http://mp.weixin.qq.com/wiki/17/c0f37d5704f0b64713d5d2c37b468d75.html#.E7.AC.AC.E4.B8.80.E6.AD.A5.EF.BC.9A.E7.94.A8.E6.88.B7.E5.90.8C.E6.84.8F.E6.8E.88.E6.9D.83.EF.BC.8C.E8.8E.B7.E5.8F.96code
-			//没有code去取code
-			if(!code){
-				var getCodeUrl='https://open.weixin.qq.com/connect/oauth2/authorize?'+
-					'appid='+$rootScope.WXINFO.appid+
-					'&redirect_uri='+encodeURIComponent(window.location.href.split('#')[0])+'&tid='+tid
-					// '&redirect_uri='+encodeURIComponent('http://yunwan2.3322.org:57099/shopping/index.html#/productDetail/100030')+
-					'&response_type=code'+
-					'&scope=snsapi_base'+
-					'#wechat_redirect';
-					// console.log(getCodeUrl)
-					window.location.href=getCodeUrl
-			}else{
-				//有code就去获取openid
-				daogouAPI.getOpenid({
-					code:code,
-					brand_id:brandid
-				},function(openiddata){
-					//绑定openis
-					daogouAPI.bindOpenid({
-						brand_id:brandid,
-						user_id:$rootScope.USERINFO.id,
-						wx_open_id:openiddata.openid
-					},function(data){
-						scallback(data);
-					},function(data){
-						console.log('绑定openid失败');
-						ecallback(data);
-					})
-				},function(data){
-					ecallback(data)
-				});
-			}
-
+/*
+微信JSSDK config拼接字符串小工具
+*/
+.factory('WXconfigSpellstring', function(){
+	return function WXconfigSpellstring(args){
+		/*
+		拼接规则 请看如下地址  搜索“附录1”
+		http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+		*/
+		//排序
+		var keys = Object.keys(args);
+		keys = keys.sort();
+		var newArgs = {};
+		//小写
+		keys.forEach(function(key) {
+			newArgs[key.toLowerCase()] = args[key];
+		});
+		//拼接
+		var string = '';
+		for (var k in newArgs) {
+			string += '&' + k + '=' + newArgs[k];
+		}
+		string = string.substr(1);
+		return string;
+	};
+})
+/*
+微信支付 拼接字符串小工具
+*/
+.factory('WXpaySpellstring', function(){
+	return function WXpaySpellstring(args){
+		/*
+		拼接规则 请看如下地址  搜索“附录1”
+		http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+		*/
+		//排序
+		var keys = Object.keys(args);
+		keys = keys.sort();
+		var newArgs = {};
+		//小写
+		keys.forEach(function(key) {
+			newArgs[key] = args[key];
+		});
+		//拼接
+		var string = '';
+		for (var k in newArgs) {
+			string += '&' + k + '=' + newArgs[k];
+		}
+		string = string.substr(1);
+		return string;
 	};
 })
 ;

@@ -120,20 +120,29 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 
 	var URLPort = URLPort();
 
-
 	//判断是否登录
-	daogouAPI.isLogin(function(data) {
+	if(typeof $rootScope.USERINFO!=="undefined"){
 		//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
 		console.log(['用户已登录,获得当前登录用户账号', data]);
 		//登录后的UI样式设置
 		userIsLoginSetUI();
-
-	}, function(data) {
+	}else{
 		//如果未登录,显示登录框，进行登录
-		console.log(['用户未登录,没获得当前登录用户账号', data]);
 		$scope.loginhandle = false; //未登录让 登录模块不隐藏
 		$scope.alladdress = true; //让地址模隐藏
-	});
+	}
+	// daogouAPI.isLogin(function(data) {
+	// 	//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
+	// 	console.log(['用户已登录,获得当前登录用户账号', data]);
+	// 	//登录后的UI样式设置
+	// 	userIsLoginSetUI();
+
+	// }, function(data) {
+	// 	//如果未登录,显示登录框，进行登录
+	// 	console.log(['用户未登录,没获得当前登录用户账号', data]);
+	// 	$scope.loginhandle = false; //未登录让 登录模块不隐藏
+	// 	$scope.alladdress = true; //让地址模隐藏
+	// });
 
 
 	$scope.loginsuccess=function(data){

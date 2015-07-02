@@ -2,7 +2,7 @@
 
 var order = angular.module('order',['ionic']);
 order.controller('orderDetailCtrl',
-function($scope,$log,$http,$state,$stateParams,URLPort,daogouAPI,WXpay){
+function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort,daogouAPI,WXpay){
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
 	//这个切换其实是2个页面 不是页面内切换的
@@ -121,7 +121,11 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 
 	//立即调用微信支付
 	if($rootScope.PAYNOW){
-
+			WXpay($rootScope.BRANDID,$stateParams.tid,function(data){
+				alert('支付成功');
+				alert(JSON.stringify(data));
+			});
+		
 	}
 
 })
@@ -137,11 +141,15 @@ $scope.refundfunc = function(tid,oid){
 
 
 
-$scope.payThisOrder=function(){	
-	WXpay($scope.orderDetailData.brand_id,$stateParams.tid,function(data){
+
+$scope.payThisOrder=function(){
+
+	WXpay($rootScope.BRANDID,$stateParams.tid,function(data){
 		alert('支付成功');
 		alert(JSON.stringify(data));
 	});
+
+
 }
 
 

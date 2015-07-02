@@ -17,12 +17,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	$rootScope.productOrders=[];
 
 
-	//检测是否登陆，获得当前登录账号
-	daogouAPI.isLogin(function(data){
-		console.log(["获得当前登录账号，用户数据",data]);
-	},function(data){
-
-	})
 
 	$http.get(URLPort+"/items/"+$stateParams.detailId)
 	// $http.get(URLPort+"/items/100003")

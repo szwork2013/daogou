@@ -119,7 +119,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 	if(getRequest('code')&&getRequest('tid')){
 		$urlRouterProvider.otherwise('orderDetail/'+getRequest('tid'));
 	}else{
-		$urlRouterProvider.otherwise('productDetail/100030');
+		$urlRouterProvider.otherwise('productDetail/100059');
 	}
 	// $urlRouterProvider.otherwise('productDetail');
 
@@ -134,7 +134,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 	}
 
 })
-.controller('configCtrl', function($rootScope,$scope,$location,wxconfig,getRequest,WXgetOpenid) {
+.controller('configCtrl', function($rootScope,$scope,$location,WXconfig,getRequest,WXgetOpenid,daogouAPI) {
 
 // /shopping/index.html?guider_id=123124&share=false#/productDetail/100030
 // 导购ID：123124
@@ -156,16 +156,18 @@ $rootScope.BRANDID=parseInt(getRequest('brand_id'));
 //是app访问还是微信访问   true是微信  false是app
 $rootScope.ISWX=(getRequest('share')==='true'?true:false);
 //为true时进入订单详情后直接调用支付
-$rootScope.PAYNOW=getRequest('code')?false:true;
+$rootScope.PAYNOW=getRequest('code')?true:false;
+
+daogouAPI.isLogin()
 
 console.log(window.location)
 	
 	//微信注册
-	wxconfig($rootScope.BRANDID, function(configdata) {
+	WXconfig($rootScope.BRANDID, function(configdata) {
 		console.log(['微信config', configdata]);
 		//微信 JSSDK 注册
 		wx.config({
-			debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 			appId: configdata.appId, // 必填，公众号的唯一标识
 			timestamp: configdata.timestamp, // 必填，生成签名的时间戳
 			nonceStr: configdata.nonceStr, // 必填，生成签名的随机串
@@ -207,6 +209,7 @@ console.log(window.location)
 					'openCard'
 				] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
 		});
+
 
 	});
 
