@@ -21,9 +21,61 @@ angular.module('daogou')
 				username:'15026590036',
 				password:'123456'
 			};
+
+			//关闭登录框
+			$scope.loginClose = function(){
+				$scope.login = false;
+				if(typeof($scope.timer)==="number"){
+					clearInterval($scope.timer);
+				}
+			}
+
+
+
+			function getverificationcode(telenum){
+				var templatetext=encodeURIComponent("lily商务女装：验证码：%s,请勿将验证码透露给任何人");
+
+				daogouAPI.verificationcode({
+					codeTypes:"MOBILE",
+					account:telenum,
+					template:templatetext
+				},function(data, status, headers, config){
+					console.log(["获取验证码成功",data]);
+				},function(data, status, headers, config){
+					console.log(["获取验证码失败",data]);
+				});
+
+				// $http.post(URLPort+"/accounts/verification-code?codeType=MOBILE&account="+telenum+"&template="+templatetext)
+				// .success(function(data){
+					
+				// })
+				// .error(function(data){
+					
+				// })
+			}
+			
 			//获取验证码
 			$scope.verify=function(){
 				$(".yanzhengma").addClass("clickdown");
+				$(".yanzhengma").attr({"disabled":"disabled"});
+				var remainTime = 10;
+				$(".yanzhengma").text("重新获取验证码(10s)");
+				$scope.timer = setInterval(function(){
+					 remainTime--;
+					 console.log(["$scope.timer",$scope.timer]);
+					 $(".yanzhengma").addClass("clickdown");
+					 $(".yanzhengma").attr({"disabled":"disabled"});
+					 $(".yanzhengma").text("重新获取验证码("+remainTime+"s)");
+					 setTimeout(function(){
+					 	if(remainTime===0){
+					 		clearInterval($scope.timer);
+					 		$(".yanzhengma").removeClass("clickdown");
+					 		$(".yanzhengma").text("获取验证码");
+					 		$(".yanzhengma").removeAttr("disabled");
+					 	}
+					 },2000);
+					 
+				},1000);
 				//判断是否注册用户  非注册用户需帮用户注册
 				daogouAPI.isRegistered($scope.logindate.username,function(data){
 					console.log(["U乃注册用户",data]);
@@ -48,17 +100,8 @@ angular.module('daogou')
 				//通过手机号码获取验证码
 				getverificationcode($scope.logindate.username);
 			};
-
-			function getverificationcode(telenum){
-				var templatetext=encodeURIComponent("lily商务女装：验证码：%s");
-				$http.post(URLPort+"/accounts/verification-code?codeType=MOBILE&account="+telenum+"&template="+templatetext)
-				.success(function(data){
-					console.log(["获取验证码成功",data]);
-				})
-				.error(function(data){
-					console.log(["获取验证码失败",data]);
-				})
-			}
+			
+			
 
 			//登录
 			$scope.submit = function() {

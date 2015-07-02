@@ -75,7 +75,7 @@
 					<span class="suanBtn del" ng-click="delNum()">
 						<i class="iconfont icon-jian"></i>
 					</span>
-					<input class="suanBtn num" ng-model="productDetailData.buynum"/>
+					<input class="suanBtn num" ng-model="productDetailData.buynum" ng-blur="checkblank()" ng-change="checknum()"/>
 					<span class="suanBtn add" ng-click="addNum()">
 						<i class="iconfont icon-jia"></i>
 					</span>
@@ -87,7 +87,7 @@
 	</div>
 	<!-- 登录模块 -->
 	<!-- {{login}} -->
-    <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;"   ng-show="login" loginsuccess="loginsuccess" loginerror="loginerror"></div>
+    <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;"  ng-show="login" loginsuccess="loginsuccess" loginerror="loginerror"></div>
 <!-- <div style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;"  ng-show="login">
 	<div class="pay-way">
 	    <div class="total-cost backfff border-tp height80">

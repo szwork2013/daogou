@@ -4,6 +4,7 @@ var createOrder=angular.module('createOrder',['ionic']);
 createOrder.controller('creatorderCtrl',
 function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay){
 	$log.debug('creatorderCtrl');
+	$scope.login = false;//处理登录框的一点样式问题，背景为白色
 	// $scope.buytitle = $stateParams.title;
 	// $scope.buyprice = $stateParams.price;
 	// $scope.buyskudetail = $stateParams.skudetail;
