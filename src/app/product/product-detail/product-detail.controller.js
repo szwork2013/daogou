@@ -241,7 +241,12 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	
 	$scope.goToOrder = function(){
 		console.log(["$scope.productDetailData.brand_id111",$scope.productDetailData.brand_id])
-		console.log($scope.productDetailData)
+		console.log(['需要传递的data数值',$scope.productDetailData]);
+		$scope.productOrder.buynum=$scope.productOrder.num;
+		$scope.productOrder.title=$scope.productDetailData.title;
+		$scope.productOrder.freight=$scope.productDetailData.freight;
+		$scope.productOrder.price=$scope.productDetailData.price;
+		$scope.productOrder.picUrlArr=$scope.productDetailData.picUrlArr;
 
 		$rootScope.productOrders.push($scope.productOrder);
 		// $rootScope.productOrders.push($scope.productOrder);

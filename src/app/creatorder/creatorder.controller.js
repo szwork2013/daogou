@@ -11,7 +11,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	// $scope.buynum = $stateParams.num;
 	// $scope.buyfreight = $stateParams.freight;
 	// $scope.totalprice = $stateParams.price*$stateParams.num;
-
+	console.log(['传递过来的的data数值',$rootScope.productOrders])
 	//没有订单数据返回首页
 	if(typeof $rootScope.productOrders==='undefined' || typeof $rootScope.productOrders[0]==='undefined'){
 		$state.go('guide');
@@ -22,13 +22,25 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	$scope.brand_id=$rootScope.BRANDID;
 
 	console.log(['aa',$rootScope.productOrders])
+	$scope.totalprice=0;
+	for (var i in $rootScope.productOrders) {
+		console.log([i,$rootScope.productOrders[i]])
+		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].num
+	};
 	//总价格
 	$scope.totalprice=0;
 	for (var i in $rootScope.productOrders) {
 		console.log([i,$rootScope.productOrders[i]])
-		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].buynum
+		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].num
 	};
-	console.log(['$scope.totalprice',$scope.totalprice])
+	console.log(['$scope.totalprice',$scope.totalprice]);
+	//总运费
+	$scope.buyfreight=0;
+	for (var i in $rootScope.productOrders) {
+		console.log([i,$rootScope.productOrders[i]])
+		$scope.buyfreight+=$rootScope.productOrders[i].freight
+	};
+	console.log(['$scope.buyfreight',$scope.buyfreight])
 
 
 	$scope.totalcost = $scope.totalprice + parseFloat($scope.buyfreight);
