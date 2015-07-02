@@ -1,7 +1,7 @@
 <ion-view view-title="我的订单">
     <ion-content class="createorder-content">
       <div class="statusWrap" ng-repeat="item in receiverAddressDate">
-          <div class="shop-address">
+          <div class="shop-address" ng-click="selectAddress(item.id)">
              <div>
                  <span class="name">{{item.name}} </span>
                  <span class="call">{{item.mobile}} </span>

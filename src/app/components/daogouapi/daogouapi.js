@@ -130,7 +130,10 @@ angular.module('daogou')
 		设置默认取货门店		
 		*/
 		defaultstore:defaultstore,
-
+		/*
+		获取用户取货可选时间范围		
+		*/
+		fetchTime:fetchTime,
 		/*
 		user获取用户信息
 		*/
@@ -203,6 +206,10 @@ angular.module('daogou')
 		获取验证码		
 		*/
 		verificationcode:verificationcode,
+		/*
+		根据地区代码查询下属地区	
+		*/
+		codegetarea:codegetarea,
 	};
 
 	return daogouAPI;
@@ -429,8 +436,19 @@ angular.module('daogou')
 		var action='/brands/'+dataobj.brand_id+'/users/'+dataobj.user_id+'/stores/'+dataobj.store_id+'/store-fetch/default';
 		var data='';
 
-		daogouAPI.patch(daogouAPI.apiurl(action,data),scallback,ecallback);
+		daogouAPI.patch(action,data,scallback,ecallback);
 	}
+
+	function fetchTime (dataobj,scallback,ecallback) {
+
+		var action='/brands/'+dataobj.brand_id+'/users/'+dataobj.user_id+'/stores/'+dataobj.store_id+'/store-fetch/time-range';
+		var data={
+			tid:dataobj.store_id
+		};
+
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+	
 	
 
 
@@ -592,19 +610,20 @@ angular.module('daogou')
 
 
 	function verificationcode(dataobj,scallback,ecallback){
-         console.log("get vertify code !!!!!!!!!!!!!!!");
 		var action='/accounts/verification-code';
 		var data={
 			codeType:dataobj.codeTypes,
 			account:dataobj.account,
 			template:dataobj.template
 		};
- 		console.log(["action",action]);
- 		console.log(["data",data]);
 		daogouAPI.post(daogouAPI.apiurl(action,data),'',scallback,ecallback);
 	}
 
-	
+	function codegetarea(dataobj,scallback,ecallback){
+		var action='/area-code/'+dataobj.areacode+'/children';
+		var data='';
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
 
 });
 

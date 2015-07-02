@@ -10,10 +10,12 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	// $scope.buyskudetail = $stateParams.skudetail;
 	// $scope.buyskuid = $stateParams.skuid;
 	// $scope.buynum = $stateParams.num;
-	// $scope.buyfreight = $stateParams.freight;
-	// $scope.totalprice = $stateParams.price*$stateParams.num;
+	$scope.buyfreight = $rootScope.productOrders[0].freight;
+	$scope.totalprice = $rootScope.productOrders[0].price*$rootScope.productOrders[0].num;
 
 	//没有订单数据返回首页
+	console.log(["$rootScope.productOrders",$rootScope.productOrders]);
+
 	if(typeof $rootScope.productOrders==='undefined' || typeof $rootScope.productOrders[0]==='undefined'){
 		$state.go('productDetail');
 		return;
@@ -44,78 +46,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	$scope.allbuyeraddress = true;
 	$scope.shopaddress = true;
 
-
-	$scope.postway = function(){
-		$scope.allbuyeraddress = true;
-		$scope.shopaddress = false;
-	}
-	$scope.shopway = function(){
-		$scope.allbuyeraddress = false;
-		$scope.shopaddress = true;
-		 if (window.navigator.geolocation) {
-            // var options = {
-            //      enableHighAccuracy: true,
-            //  };
-             console.log('浏览器支持html5来获取地理位置信息')
-             window.navigator.geolocation.getCurrentPosition(handleSuccess, handleError,{timeout:2000});
-         } else {
-              console.log('浏览器不支持html5来获取地理位置信息');
-         }
-
-	   	function handleSuccess(position){
-           // 获取到当前位置经纬度  本例中是chrome浏览器取到的是google地图中的经纬度
-           var lng = position.coords.longitude;
-           var lat = position.coords.latitude;
-           console.log(['geolocation lng',lng]);
-           console.log(['geolocation lat',lat]);
-	     }
-		           
-       function handleError(error){
-       	console.log('geolocation error')
-       
-       }
-
-      daogouAPI.shopAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
-      		user_id:$rootScope.USERINFO.id,
-      		longitude:121.399411,
-      		latitude:31.168323
-      	},function(data, status, headers, config){
-      		console.log(['查询门店列表成功',data]);
-      		$scope.shopaddressData = data;
-      		var flag = false;
-      		var defaultIndex = 0;
-      		for(var i in $scope.shopaddressData){
-      			if($scope.shopaddressData[i].is_default===1){
-      				flag = true;//如果有默认地址 flag为true
-      				defaultIndex = i;
-      			}
-      		}
-      		if(flag === true){//有默认地址
-      			console.log('有默认地址');
-      			$scope.minDistance=$scope.shopaddressData[defaultIndex];
-      		}else{//没有默认地址
-      			console.log('无有默认地址');
-      			var minIndex = 0;
-      			for(var i=0;i<data.length-1;i++){
-      				if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
-      					minIndex = i+1;
-      				}
-      			}
-      			$scope.minDistance = data[minIndex]; 
-      		}
-      		
-      	    
-      	},function(data, status, headers, config){
-      		console.log(['查询门店列表失败',data]);
-      	});
-
-	}
-
-
-	
-
 	var URLPort = URLPort();
-
 
 	//判断是否登录
 	daogouAPI.isLogin(function(data) {
@@ -141,6 +72,90 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		console.log(['登录失败回调',data])
 
 	};
+
+
+
+
+
+	$scope.postway = function(){
+		$scope.allbuyeraddress = true;
+		$scope.shopaddress = false;
+	}
+	$scope.shopway = function(){
+		$scope.allbuyeraddress = false;
+		$scope.shopaddress = true;
+
+
+		// var x=document.getElementById("demo");
+		$scope.getLocation = function(){
+			  if (navigator.geolocation)
+			    {
+			    navigator.geolocation.getCurrentPosition(showPosition);
+			    var timer = setInterval(function(){
+				    	$scope.lng = 121.399411;
+				    	$scope.lat = 31.168323;
+	    			  	daogouAPI.shopAddress('/brands/'+$rootScope.productOrders[0].brand_id+'/stores/store-fetch',{
+	    					user_id:$rootScope.USERINFO.id,
+	    					longitude:$scope.lng,
+	    					latitude:$scope.lat
+	    					// longitude:121.412195,
+	    					// latitude:31.204672
+	    				},function(data, status, headers, config){
+	    					console.log(['查询门店列表成功',data]);
+	    					$scope.shopaddressData = data;
+	    					var flag = false;
+	    					var defaultIndex = 0;
+	    					for(var i in $scope.shopaddressData){
+	    						if($scope.shopaddressData[i].is_default===1){
+	    							flag = true;//如果有默认地址 flag为true
+	    							defaultIndex = i;
+	    						}
+	    					}
+	    					if(flag === true){//有默认地址
+	    						console.log('有默认地址');
+	    						$scope.minDistance=$scope.shopaddressData[defaultIndex];
+	    					}else{//没有默认地址
+	    						console.log('无有默认地址');
+	    						var minIndex = 0;
+	    						for(var i=0;i<data.length-1;i++){
+	    							if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+	    								minIndex = i+1;
+	    							}
+	    						}
+	    						$scope.minDistance = data[minIndex]; 
+	    					}
+	    					
+	    					   daogouAPI.fetchTime({
+		    					   	brand_id:$rootScope.productOrders[0].brand_id,
+		    					   	user_id:$rootScope.USERINFO.id,
+		    					   	store_id:$scope.minDistance.id
+	    						 },function(data, status, headers, config){
+	    					 		$scope.fetchTimeData = data;
+	    					 		console.log(['获取用户取货可选时间范围成功',data]);
+	    					 	 },function(data, status, headers, config){
+	    					 		console.log(['获取用户取货可选时间范围失败',data]);
+	    						 });
+
+	    				    clearInterval(timer);
+	    				},function(data, status, headers, config){
+	    					console.log(['查询门店列表失败',data]);
+	    				});
+			    	},500)
+			      	
+			    }else{
+			    	x.innerHTML="Geolocation is not supported by this browser.";
+			    }
+		}
+
+		function showPosition(position){
+		  // x.innerHTML="Latitude: " + position.coords.latitude + 
+		  // "<br />Longitude: " + position.coords.longitude;	
+		  $scope.lng = position.coords.longitude;
+		  $scope.lat = position.coords.latitude;
+		}
+
+	    $scope.getLocation();
+	}
 
 	$scope.getAddresses = function(){
 
@@ -175,7 +190,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		})
 		.success(function(data){
 			console.log(['增加新地址成功',data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
-			$scope.defaultAddressdata = data;
+			$rootScope.defaultAddressdata = data;
 			$scope.loginhandle = true;
 			$scope.alladdress = false;
 			$scope.shopaddress = false;
@@ -250,6 +265,11 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		})
    }
 
+
+
+
+
+
 	$scope.buyerMessage ={
 		'buyer_memo':''
 	}
@@ -273,16 +293,16 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 			'buyer_memo': $scope.buyerMessage.buyer_memo,
 			'pay_type': 'WEIXIN',
 			'shipping_type': 'express',
-			'receiver_state': $scope.defaultAddressdata.state,
-			'receiver_state_code': $scope.defaultAddressdata.state_code,
-			'receiver_city': $scope.defaultAddressdata.city,
-			'receiver_city_code': $scope.defaultAddressdata.city_code,
-			'receiver_district': $scope.defaultAddressdata.district,
-			'receiver_district_code': $scope.defaultAddressdata.district_cod,
-			'receiver_address': $scope.defaultAddressdata.address,
-			'receiver_name': $scope.defaultAddressdata.name,
-			'receiver_zip': $scope.defaultAddressdata.zip,
-			'receiver_mobile': $scope.defaultAddressdata.mobile,
+			'receiver_state': $rootScope.defaultAddressdata.state,
+			'receiver_state_code': $rootScope.defaultAddressdata.state_code,
+			'receiver_city': $rootScope.defaultAddressdata.city,
+			'receiver_city_code': $rootScope.defaultAddressdata.city_code,
+			'receiver_district': $rootScope.defaultAddressdata.district,
+			'receiver_district_code': $rootScope.defaultAddressdata.district_cod,
+			'receiver_address': $rootScope.defaultAddressdata.address,
+			'receiver_name': $rootScope.defaultAddressdata.name,
+			'receiver_zip': $rootScope.defaultAddressdata.zip,
+			'receiver_mobile': $rootScope.defaultAddressdata.mobile,
 			// 'fetch_name': '西门庆',
 			// 'fetch_store_id': '145',
 			// 'fetch_store_name': '老西门店',
@@ -335,7 +355,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		// })
 	}
 	$scope.goGoodsShop = function(){//门店地址列表页面
-		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$stateParams.brandid});
+		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$rootScope.productOrders[0].brand_id,'lng':$scope.lng,'lat':$scope.lat});
 	}
 	$scope.changeReceiveInfoFunc = function(){//收货人地址列表页面
 		console.log(['userid',$rootScope.USERINFO.id]);
@@ -367,7 +387,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 						$scope.weixinpay = false;
 						for (var i in data) { //选出默认收货地址
 							if (data[i].is_default === 1) {
-								$scope.defaultAddressdata = data[i];
+								$rootScope.defaultAddressdata = data[i];
 							}
 						}
 
@@ -401,10 +421,14 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 })
 .controller('goodsShopCtrl',['$scope','$log','$http','daogouAPI','$stateParams',function($scope,$log,$http,daogouAPI,$stateParams){
 	$log.debug('goodsShopCtrl');
+	$stateParams.lng = 121.399411;
+	$stateParams.lat = 31.168323;
 	daogouAPI.shopAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
 		user_id:$stateParams.userid,
-		longitude:121.399411,
-		latitude:31.168323
+		// longitude:121.399411,
+		// latitude:31.168323
+		longitude:$stateParams.lng,
+		latitude:$stateParams.lat
 	},function(data, status, headers, config){
 		console.log(['查询门店列表成功',data]);
 		$scope.shopaddressData = data;
@@ -436,7 +460,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 
 	
 }])
-.controller('changeReceiveInfoCtrl',['$scope','$log','$http','URLPort','$stateParams','daogouAPI','$state',function($scope,$log,$http,URLPort,$stateParams,daogouAPI,$state){
+.controller('changeReceiveInfoCtrl',['$scope','$log','$http','URLPort','$stateParams','daogouAPI','$state','$rootScope',function($scope,$log,$http,URLPort,$stateParams,daogouAPI,$state,$rootScope){
 	$log.debug('changeReceiveInfoCtrl');
 	var URLPort = URLPort();
 	
@@ -449,7 +473,27 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 				console.log(['获取用户收货地址列表失败', data]);
 			})
 
-
+	 $scope.selectAddress = function(id){
+	 		$rootScope.selectedAddressId = id;
+	 		if(typeof($rootScope.selectedAddressId)==="undefined"){//不是选择地址
+	 			console.log(["不是选择地址情况"]);
+	 		}else{//是选择地址哪种情况
+	 			console.log(["是选择地址情况",$rootScope.selectedAddressId]);
+	 			$http.get(URLPort + '/users/' + $rootScope.USERINFO.id + '/shipping-addresses')
+	 				.success(function(data) {
+	 					for (var i in data) { //选出默认收货地址
+	 						if (data[i].id === $rootScope.selectedAddressId){
+	 							$rootScope.defaultAddressdata = data[i];
+	 						}
+	 					}
+	 				})
+	 				.error(function(data) {
+	 					console.log(['当前用户没有收货地址，请填写第一个收货地址', data]);
+	 				})
+	 			
+	 		}
+	 		$state.go('creatorder');
+	 }
 	  $scope.setDefaultAddress = function(addressId,index){
             console.log(['addressId',addressId]);
             daogouAPI.defaultAddress({
@@ -519,25 +563,65 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	 		address_id:$stateParams.addressid
 	 	},function(data, status, headers, config){
 	 		console.log(['获取要修改收货地址成功',data]);
+	 		$scope.editData = data;
 	 		$scope.newAddressInput.name = data.name;
 	 		$scope.newAddressInput.mobile = data.mobile;
 	 		$scope.newAddressInput.address = data.address;
 	 		$scope.newAddressInput.zip = data.zip;
-	 		$scope.newAddressInput.provinceInfo.name = data.state;
-	 		$scope.newAddressInput.provinceInfo.code = data.state_code;
-	 		$scope.newAddressInput.cityInfo.name = data.city;
-	 		$scope.newAddressInput.cityInfo.code = data.city_code;
-	 		$scope.newAddressInput.districtInfo.name = data.district;
-	 		$scope.newAddressInput.districtInfo.code = data.district_code;
+	 		// $scope.newAddressInput.provinceInfo.name = data.state;
+	 		// $scope.newAddressInput.provinceInfo.code = data.state_code;
+	 		// $scope.newAddressInput.cityInfo.name = data.city;
+	 		// $scope.newAddressInput.cityInfo.code = data.city_code;
+	 		// $scope.newAddressInput.districtInfo.name = data.district;
+	 		// $scope.newAddressInput.districtInfo.code = data.district_code;
 	 		$scope.newAddressInput.defaultAddress =data.is_default;
+ 			 //根据选择的省查询市
+	    	daogouAPI.codegetarea({
+	    		areacode:$scope.editData.state_code
+	    	},function(data, status, headers, config){
+	    		console.log(['查询省下市成功',data]);
+	    		for(var i in data){//编辑地址的时候显示原来的地址
+	    			if(data[i].code === $scope.editData.city_code){
+	    				$scope.newAddressInput.cityInfo = data[i];
+	    			}
+	    		}
+	    		$scope.citiesdata = data;
+	    	},function(data, status, headers, config){
+	    		console.log(['查询省下市失败',data]);
+	    	});
+ 			 //根据选择的市查询地区
+		 	daogouAPI.codegetarea({
+		 		areacode:$scope.editData.city_code
+		 	},function(data, status, headers, config){
+		 		console.log(['查询市下地区成功',data]);
+		 		for(var i in data){//编辑地址的时候显示原来的地址
+		 			if(data[i].code === $scope.editData.district_code){
+		 				$scope.newAddressInput.districtInfo = data[i];
+		 			}
+		 		}
+		 		$scope.districtsdata = data;
+		 	},function(data, status, headers, config){
+		 		console.log(['查询市下地区失败',data]);
+		 	});
+ 			
 	 	},function(data, status, headers, config){
 	 		console.log(['获取要修改收货地址失败',data]);
 	 	});
 	 }
+
 	 
 	 daogouAPI.searchProvinces({
 	 },function(data, status, headers, config){
 	 	$scope.provincesdata = data;
+	 	if(typeof($scope.editData) === "undefined"){//添加地址
+	 		console.log(["typeof($scope.editData)",typeof($scope.editData)]);
+	 	}else{
+	 		for(var i in data){//编辑地址的时候显示原来的地址
+	 			if(data[i].code === $scope.editData.state_code){
+	 				$scope.newAddressInput.provinceInfo = data[i];
+	 			}
+	 		}
+	 	}
 	 	console.log(['查询省份成功',data]);
 	 },function(data, status, headers, config){
 	 	console.log(['查询省份失败',data]);
@@ -545,9 +629,22 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 
 	 //根据选择的省查询市
 	 $scope.provinceSelect = function(dataobj){
-	    console.log(['selectpinyin',dataobj.pinyin]);
-    	daogouAPI.provinceSelect({
-    		pinyin:dataobj.pinyin
+	    console.log(['selectcode',dataobj.code]);
+	    if(typeof($scope.editData) === "undefined"){//添加地址
+	    	;
+	    }else{
+	    	if(dataobj.code===$scope.editData.state_code){
+	    		;
+	    	}else{
+	    		$("#editCity").text("-- 请选择市 --");
+	    		$scope.newAddressInput.cityInfo = {};
+	    		$("#editDistrict").text("-- 请选择区、县 --");
+	    		$scope.newAddressInput.districtInfo= {};
+	    	}
+	    }
+	    
+    	daogouAPI.codegetarea({
+    		areacode:dataobj.code
     	},function(data, status, headers, config){
     		console.log(['查询省下市成功',data]);
     		$scope.citiesdata = data;
@@ -557,12 +654,18 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	 }
 
 	 //根据选择的市查询地区
-	 $scope.citySelect = function(dataobj1,dataobj2){
-	 	console.log(['selectpinyin1',dataobj1.pinyin]);
-	 	console.log(['selectpinyin2',dataobj2.pinyin]);
-	 	daogouAPI.citySelect({
-	 		pinyin1:dataobj1.pinyin,
-	 		pinyin2:dataobj2.pinyin,
+	 $scope.citySelect = function(dataobj){
+	 	if(typeof($scope.editData) === "undefined"){//添加地址
+	 	}else{
+	 		if(dataobj.code===$scope.editData.city_code){
+	 			;
+	 		}else{
+	 			$("#editDistrict").text("-- 请选择区、县 --");
+	 			$scope.newAddressInput.districtInfo= {};
+	 		}
+	 	}
+	 	daogouAPI.codegetarea({
+	 		areacode:dataobj.code
 	 	},function(data, status, headers, config){
 	 		console.log(['查询市下地区成功',data]);
 	 		$scope.districtsdata = data;

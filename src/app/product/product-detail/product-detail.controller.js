@@ -454,9 +454,8 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 			console.log(['登录失败回调',data])
 
 		};
-
 			
-		// }
+		
 
 		//测试地理位置 经纬度
 		// var x=document.getElementById("demo");
