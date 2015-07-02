@@ -9,6 +9,11 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
     $scope.bringGuiderIds = 145;
 	$scope.login = false;//是否显示登录页面
 	//创建订单页的 订单数据
+	$scope.productOrder={
+		num:0,
+		bring_guider_id:$rootScope.GUIDID,
+		sku_id:''
+	}
 	$rootScope.productOrders=[];
 
 
@@ -25,7 +30,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	.success(function(data){
 		console.log(['获得商品详情成功',data]);
 		$scope.productDetailData = data;
-		$scope.productDetailData.buynum = 0;//买家购买数
 		$scope.productDetailData.realquantity = 0;//剩余库存数量
 		$scope.productDetailData.picUrlArr =  $scope.productDetailData.pic_url.split(',');//轮播图片url获取
 		console.log(["$scope.productDetailData.picUrlArr",$scope.productDetailData.picUrlArr]);
@@ -71,7 +75,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 			}
 		}
 
-		$scope.productDetailData.buynum = $scope.productDetailData.realquantity;
 	})
 	.error(function(data){
 		console.log(['获得商品详情失败',data]);
@@ -138,18 +141,18 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 //点击+ - 增减商品数
 	$scope.delNum = function(num){
 		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
-		console.log(["$scope.productDetailData.buynum",$scope.productDetailData.buynum]);
-		if($scope.productDetailData.buynum>1){
+		console.log(["$scope.productOrder.num",$scope.productOrder.num]);
+		if($scope.productOrder.num>1){
 			$scope.productDetailData.realquantity++;
-			$scope.productDetailData.buynum--;
+			$scope.productOrder.num--;
 		}
 	}
 	$scope.addNum = function(num){
 		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
-		console.log(["$scope.productDetailData.buynum",$scope.productDetailData.buynum]);
+		console.log(["$scope.productOrder.num",$scope.productOrder.num]);
 		if($scope.productDetailData.realquantity>0){
 			$scope.productDetailData.realquantity--;
-			$scope.productDetailData.buynum++;
+			$scope.productOrder.num++;
 		}
 	}
 //选择产品规格，显示是否有剩余
@@ -215,8 +218,8 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 					}
 					if(strSku===strInput){
 						$scope.productDetailData.realquantity = $scope.productDetailData.skus[id].real_quantity;
-						$scope.productDetailData.skuid = $scope.productDetailData.skus[id].sku_id;
-						$scope.productDetailData.buynum = 0;
+						$scope.productOrder.sku_id = $scope.productDetailData.skus[id].sku_id;
+						$scope.productOrder.num = 1;
 						$scope.productDetailData.skudetail = "";
 						var skuArray = $scope.productDetailData.skus[id].properties.split(";");
 						for (var ff in skuArray){
@@ -239,14 +242,17 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	$scope.goToOrder = function(){
 		console.log(["$scope.productDetailData.brand_id111",$scope.productDetailData.brand_id])
 		console.log($scope.productDetailData)
-		$rootScope.productOrders.push($scope.productDetailData);
+
+		$rootScope.productOrders.push($scope.productOrder);
+		// $rootScope.productOrders.push($scope.productOrder);
+
 		$state.go("creatorder")
 		// $state.go("creatorder",{
 		// 	title:$scope.productDetailData.title,
 		// 	price:$scope.productDetailData.price,
 		// 	skudetail:$scope.productDetailData.skudetail,
-		// 	skuid:$scope.productDetailData.skuid,
-		// 	num:$scope.productDetailData.buynum,
+		// 	skuid:$scope.productOrder.sku_id,
+		// 	num:$scope.productOrder.num,
 		// 	freight:$scope.productDetailData.freight,
 		// 	brandid:$scope.productDetailData.brand_id
 		// });
@@ -272,8 +278,8 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 
 			$http.post(URLPort+"/users/"+$rootScope.USERINFO.id+"/shopping-carts",{
 				"user_id":$rootScope.USERINFO.id,
-				"sku_id" : $scope.productDetailData.skuid,
-				"num": $scope.productDetailData.buynum,
+				"sku_id" : $scope.productOrder.sku_id,
+				"num": $scope.productOrder.num,
 				"bring_guider_id" : bringGuiderId
             })
             .success(function(data){

@@ -203,6 +203,16 @@ angular.module('daogou')
 		获取验证码		
 		*/
 		verificationcode:verificationcode,
+
+		/*
+		取openid
+		*/
+		getOpenid:getOpenid,
+
+		/*
+		绑定用户的openid
+		*/
+		bindOpenid:bindOpenid
 	};
 
 	return daogouAPI;
@@ -605,7 +615,24 @@ angular.module('daogou')
 		daogouAPI.post(daogouAPI.apiurl(action,data),'',scallback,ecallback);
 	}
 
-	
+	function getOpenid(dataobj,scallback,ecallback){
+		var action='/weixin/page-access-token';
+		var data={
+			code:dataobj.code,
+			brand_id:dataobj.brand_id,
+		};
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	function bindOpenid(dataobj,scallback,ecallback){
+		var action='/users/bind/weixin';
+		var data={
+			brand_id:dataobj.brand_id,
+			user_id:dataobj.user_id,
+			wx_open_id:dataobj.wx_open_id
+		};
+		daogouAPI.post(action,data,scallback,ecallback);
+	}
 
 });
 

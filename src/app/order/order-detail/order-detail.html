@@ -118,7 +118,9 @@
       <ion-footer-bar align-title="left" class="footer" ng-show="cancelpayOrder">
         <ul class="list footerul">
               <li class="item item-checkbox footerli">
-                <button class="delcount backred colorfff" ui-sref="payWay">立即付款</button>
+                <button class="delcount backred colorfff" 
+                ng-click="payThisOrder()" >立即付款</button>
+                <!-- ui-sref="payWay" -->
                 <button class="delcount" ui-sref="orderList">取消订单</button>
                 
               </li>

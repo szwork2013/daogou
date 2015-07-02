@@ -110,17 +110,28 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 			controller: 'newAddressCtrl'
 		})
 		.state('guide', {
-			url: '/guide/:guideid/:brandid',
+			url: '/guide/:brandid',
 			templateUrl: 'app/guide/guide.html',
 			controller: 'guideCtrl'
 		});
 
-	$urlRouterProvider.otherwise('productDetail/100030');
+	//取code肯定是在支付流程
+	if(getRequest('code')&&getRequest('tid')){
+		$urlRouterProvider.otherwise('orderDetail/'+getRequest('tid'));
+	}else{
+		$urlRouterProvider.otherwise('productDetail/100030');
+	}
 	// $urlRouterProvider.otherwise('productDetail');
 
 	// $urlRouterProvider.otherwise('/login');
 
 	//http://codepen.io/ahsx/pen/mDcEd
+
+ 	function getRequest(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		var r = window.location.search.substr(1).match(reg);
+		if (r !== null) return unescape(r[2]); return null;
+	}
 
 })
 .controller('configCtrl', function($rootScope,$scope,$location,wxconfig,getRequest,WXgetOpenid) {
@@ -137,15 +148,20 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 	scope=snsapi_base&
 	state=123#wechat_redirect
 	*/
+
 //导购id
-$rootScope.GUIDID=getRequest('guider_id');
-//app访问
+$rootScope.GUIDID=parseInt(getRequest('guider_id'));
+//brand_id
+$rootScope.BRANDID=parseInt(getRequest('brand_id'));
+//是app访问还是微信访问   true是微信  false是app
 $rootScope.ISWX=(getRequest('share')==='true'?true:false);
+//为true时进入订单详情后直接调用支付
+$rootScope.PAYNOW=getRequest('code')?false:true;
 
 console.log(window.location)
 	
 	//微信注册
-	wxconfig(1, function(configdata) {
+	wxconfig($rootScope.BRANDID, function(configdata) {
 		console.log(['微信config', configdata]);
 		//微信 JSSDK 注册
 		wx.config({
