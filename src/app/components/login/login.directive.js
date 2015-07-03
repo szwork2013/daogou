@@ -58,8 +58,8 @@ angular.module('daogou')
 			$scope.verify=function(){
 				$(".yanzhengma").addClass("clickdown");
 				$(".yanzhengma").attr({"disabled":"disabled"});
-				var remainTime = 10;
-				$(".yanzhengma").text("重新获取验证码(10s)");
+				var remainTime = 60;
+				$(".yanzhengma").text("重新获取验证码(60s)");
 				$scope.timer = setInterval(function(){
 					 remainTime--;
 					 console.log(["$scope.timer",$scope.timer]);

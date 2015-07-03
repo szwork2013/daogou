@@ -236,6 +236,12 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 		    					   	store_id:$scope.minDistance.id
 	    						 },function(data, status, headers, config){
 	    					 		$scope.fetchTimeData = data;
+	    					 		$scope.fetchdayData = [];
+	    					 		$scope.fetchhourData = [];
+	    					 		for(var i in $scope.fetchTimeData){
+	    					 			$scope.fetchdayData.push($scope.fetchTimeData[i].day);
+	    					 		}
+	    					 		console.log(["$scope.fetchdayData",$scope.fetchdayData]);
 	    					 		console.log(['获取用户取货可选时间范围成功',data]);
 	    					 	 },function(data, status, headers, config){
 	    					 		console.log(['获取用户取货可选时间范围失败',data]);
@@ -261,6 +267,12 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 
 	    $scope.getLocation();
 	}
+	$scope.dayselecthour = function(day){
+		console.log(["fetchday",day]);
+	}
+
+
+
 
 	$scope.getAddresses = function(){
 
