@@ -143,11 +143,56 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	}
 	$scope.addNum = function(num){
 		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
-		console.log(["$scope.productOrder.num",$scope.productOrder.num]);
-		if($scope.productDetailData.realquantity>0){
-			$scope.productDetailData.realquantity--;
-			$scope.productOrder.num++;
+// <<<<<<< HEAD
+// 		console.log(["$scope.productOrder.num",$scope.productOrder.num]);
+// 		if($scope.productDetailData.realquantity>0){
+// 			$scope.productDetailData.realquantity--;
+// 			$scope.productOrder.num++;
+// 		}
+// =======
+		console.log(["$scope.productDetailData.buynum",$scope.productDetailData.buynum]);
+		if($scope.productDetailData.buynum<$scope.productDetailData.realquantity){
+			$scope.productDetailData.buynum++;
+		}else{
+			// alert("您所填写的商品数量超过库存!");
+			var mypopup=$ionicPopup.show({
+				title: "立即购买出错",
+				template: "您所填写的商品数量超过库存",
+				buttons: [{
+					text: "确定",
+					type: "button-energized",
+				}]
+			});
 		}
+	}
+	$scope.checkblank = function(){
+		if($scope.productDetailData.buynum<1){
+			$scope.productDetailData.buynum=1;
+		}
+	} 
+	$scope.checknum = function(){
+		if($scope.productDetailData.buynum>$scope.productDetailData.realquantity){
+				// alert("您所填写的商品数量超过库存!");
+				var mypopup=$ionicPopup.show({
+					title: "立即购买出错",
+					template: "您所填写的商品数量超过库存",
+					buttons: [{
+						text: "确定",
+						type: "button-energized",
+					}]
+				});
+		}
+		
+		if($scope.productDetailData.buynum<1){
+			if($scope.productDetailData.buynum===""){
+				console.log(["$scope.productDetailData.buynum blankblankblankblank",$scope.productDetailData.buynum]);
+			}else{
+				$scope.productDetailData.buynum=1;
+			}
+			
+		}
+
+// >>>>>>> 
 	}
 //选择产品规格，显示是否有剩余
     $scope.checkSku = function(name,index){//name传递过来input的规格如 M L, index传递过来的规格项目名称 如尺码 颜色
@@ -234,18 +279,41 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
     }
 	
 	$scope.goToOrder = function(){
+
 		console.log(["$scope.productDetailData.brand_id111",$scope.productDetailData.brand_id])
 		console.log(['需要传递的data数值',$scope.productDetailData]);
-		$scope.productOrder.buynum=$scope.productOrder.num;
-		$scope.productOrder.title=$scope.productDetailData.title;
-		$scope.productOrder.freight=$scope.productDetailData.freight;
-		$scope.productOrder.price=$scope.productDetailData.price;
-		$scope.productOrder.picUrlArr=$scope.productDetailData.picUrlArr;
+		console.log(["$scope.remain",$scope.remain]);
+		if($scope.remain === true){
+			console.log(["$scope.productDetailData.brand_id111",$scope.productDetailData.brand_id])
+			console.log($scope.productDetailData);
+			// $rootScope.productOrders.push($scope.productDetailData);
+			$scope.productOrder.buynum=$scope.productOrder.num;
+			$scope.productOrder.title=$scope.productDetailData.title;
+			$scope.productOrder.freight=$scope.productDetailData.freight;
+			$scope.productOrder.price=$scope.productDetailData.price;
+			$scope.productOrder.picUrlArr=$scope.productDetailData.picUrlArr;
 
-		$rootScope.productOrders.push($scope.productOrder);
-		// $rootScope.productOrders.push($scope.productOrder);
+			$rootScope.productOrders.push($scope.productOrder);
+			// $rootScope.productOrders.push($scope.productOrder);
 
-		$state.go("creatorder")
+			$state.go("creatorder");
+			
+		}else{
+			// alert("请选择你要的商品信息");
+			var mypopup=$ionicPopup.show({
+				title: "立即购买出错",
+				template: "请选择你要的商品信息",
+				buttons: [{
+					text: "确定",
+					type: "button-energized",
+				}]
+			});
+		}
+		
+
+		
+		
+
 		// $state.go("creatorder",{
 		// 	title:$scope.productDetailData.title,
 		// 	price:$scope.productDetailData.price,
