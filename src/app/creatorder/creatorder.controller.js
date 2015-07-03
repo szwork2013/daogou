@@ -16,10 +16,10 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 // =======
 	// $scope.buyfreight = $stateParams.freight;
 	// $scope.totalprice = $stateParams.price*$stateParams.num;
-	console.log(['传递过来的的data数值',$rootScope.productOrders])
+	console.log(['传递过来的的data数值yyyyyyy',$rootScope.productOrders])
 // >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
 	//没有订单数据返回首页
-	console.log(["$rootScope.productOrders",$rootScope.productOrders]);
+	console.log(["$rootScope.productOrdersyyyyyyyyy",$rootScope.productOrders]);
 
 	if(typeof $rootScope.productOrders==='undefined' || typeof $rootScope.productOrders[0]==='undefined'){
 		$state.go('guide');
@@ -398,7 +398,7 @@ code=00177a72afbef088d656bb480b90625p
 			{
 			'buyer_user_id': $rootScope.USERINFO.id,
 			'bring_guider_id': 12,
-			'brand_id': parseInt($scope.brand_id),
+			'brand_id': parseInt($rootScope.productOrders[0].brand_id),
 			'buyer_memo': $scope.buyerMessage.buyer_memo,
 			'pay_type': 'WEIXIN',
 			'shipping_type': 'express',
