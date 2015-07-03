@@ -6,10 +6,15 @@
          <div class="iconfont icon-guanbi2 close2"></div>
          <input class="input-address-info" placeholder="手机号码" ng-model="newAddressInput.mobile"/>
          <div class="input-address-info">
-              <select id="loc_province"  ng-model="newAddressInput.provinceInfo" ng-options="province.name for province in provincesdata" ng-change="provinceSelect(newAddressInput.provinceInfo)">
+              <select id="loc_province"  ng-model="newAddressInput.provinceInfo" ng-options="province.name for province in provincesdata" ng-change="provinceSelect(newAddressInput.provinceInfo)" ng-keydown="provinceDefault(newAddressInput.provinceInfo)">
+               <option id="editProvince" value="">-- 请选择省份 --</option>
               </select>
-              <select id="loc_city" ng-model="newAddressInput.cityInfo" ng-options="city.name for city in citiesdata" ng-change="citySelect(newAddressInput.provinceInfo,newAddressInput.cityInfo)">市</select>
-              <select id="loc_town" ng-model="newAddressInput.districtInfo" ng-options="district.name for district in districtsdata">区、县</select>
+              <select id="loc_city" ng-model="newAddressInput.cityInfo" ng-options="city.name for city in citiesdata" ng-change="citySelect(newAddressInput.cityInfo)">
+                <option id="editCity" value="">-- 请选择市 --</option>
+              </select>
+              <select id="loc_town" ng-model="newAddressInput.districtInfo" ng-options="district.name for district in districtsdata">
+                 <option id="editDistrict" value="">-- 请选择区、县 --</option>
+              </select>
               <input type="hidden" name="location_id" />
          </div>
            

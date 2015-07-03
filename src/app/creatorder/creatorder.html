@@ -7,7 +7,11 @@
                  <label class="checkbox disnone">
                    <input type="checkbox" ng-model="choose">
                  </label>
+<!-- <<<<<<< HEAD
+                <img ng-src="{{order.pic_url}}" class="product-img">
+======= -->
                 <img ng-src="{{order.picUrlArr[0]}}" class="product-img">
+<!-- >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177 -->
                 <div class="paramenters">
                     <div class="name">{{order.title}}</div>
                     <div class="paras">{{order.skudetail}}</div>
@@ -62,9 +66,14 @@
                   <input class="input-address-info" placeholder="手机号码" ng-model="firstAddressInput.mobile"/>
                   <div class="input-address-info">
                        <select id="loc_province"  ng-model="firstAddressInput.provinceInfo" ng-options="province.name for province in provincesdata" ng-change="provinceSelect(firstAddressInput.provinceInfo)">
+                       <option id="editProvince" value="">-- 请选择省份 --</option>
                        </select>
-                       <select id="loc_city" ng-model="firstAddressInput.cityInfo" ng-options="city.name for city in citiesdata" ng-change="citySelect(firstAddressInput.provinceInfo,firstAddressInput.cityInfo)">市</select>
-                       <select id="loc_town" ng-model="firstAddressInput.districtInfo" ng-options="district.name for district in districtsdata">区、县</select>
+                       <select id="loc_city" ng-model="firstAddressInput.cityInfo" ng-options="city.name for city in citiesdata" ng-change="citySelect(firstAddressInput.provinceInfo,firstAddressInput.cityInfo)">
+                         <option id="editCity" value="">-- 请选择市 --</option>
+                       </select>
+                       <select id="loc_town" ng-model="firstAddressInput.districtInfo" ng-options="district.name for district in districtsdata">
+                         <option id="editDistrict" value="">-- 请选择区、县 --</option>
+                       </select>
                        <input type="hidden" name="location_id" />
                   </div>
                   <input class="input-address-info" placeholder="详细地址" ng-model="firstAddressInput.address"/>
@@ -89,12 +98,13 @@
           <!-- 实体店地址 -->
           <div class="addressInfo remarkpadding" ng-class="{disnone:allbuyeraddress}">
               <div>
-                  <span class="floatL width85">{{minDistance.name}}，021-54347586  </span>
+                  <span class="floatL width85">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}}  </span>
                   <span class="colorBlue floatR font13" ng-click="goGoodsShop()">修改</span>
                   <div class="clearBoth"></div>
               </div>
               <div>
                   <span class="font13 floatL width85">{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</span>
+                 <!--  <p id="demo">点击这个按钮，获得您的坐标：</p> -->
                   <span class="font13 colorRed floatR">{{minDistance.distance}}km</span>
                   <div class="clearBoth"></div>
               </div>
