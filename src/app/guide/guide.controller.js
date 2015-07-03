@@ -19,7 +19,7 @@ function($rootScope,$scope,$log,$http,$state,$stateParams,daogouAPI,URLPort){
 	var pagesize = 5;
 	var guiderId = $rootScope.GUIDID;
 	// var guiderId = 145;
-	var brandId = $stateParams.brandid;
+	var brandId = $rootScope.BRANDID;
 	// var brandId = 1;
 	$scope.hasMoreOrder = true;
 
