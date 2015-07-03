@@ -105,11 +105,12 @@ angular.module('daogou')
 
 			//登录
 			$scope.submit = function() {
+
 				// $http.post(URLPort+"/login?username="+$scope.mainData.telenum+"&password="+$scope.mainData.verificationCode)
 				daogouAPI.login($scope.logindate,function(data){
 					console.log(['登录 成功',data]);
 					//获取account信息
-					daogouAPI.isLogin(function(accountdata) {
+					daogouAPI.isAccountLogin(function(accountdata) {
 						console.log(['accountinfo 成功',accountdata]);
 						// 获取用户信息
 						daogouAPI.getUserInfo({username: $scope.logindate.username}, function(userinfo) {
@@ -123,6 +124,7 @@ angular.module('daogou')
 								console.log(['添加用户信息 成功',userinfo])
 								//添加用户信息成功 启用回调函数并传入userinfo
 								successcallback(userinfo)
+								
 							},function(data){
 								console.log(['添加用户信息 失败',data])
 								errorcallback(data)

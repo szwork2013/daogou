@@ -459,7 +459,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 
 		$scope.loginsuccess=function(data){
 			console.log(['登录成功回调',data])
-			
 			$scope.login = false; //是否显示登录页面
 
 		};
