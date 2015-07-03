@@ -146,7 +146,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	//判断是否登录
 	if(typeof $rootScope.USERINFO!=="undefined"){
 		//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
-		console.log(['用户已登录,获得当前登录用户账号', data]);
+		console.log(['用户已登录,获得当前登录用户账号']);
 		//登录后的UI样式设置
 		userIsLoginSetUI();
 	}else{
@@ -537,7 +537,7 @@ code=00177a72afbef088d656bb480b90625p
 
 
 })
-.controller('goodsShopCtrl',['$scope','$log','$http','daogouAPI','$stateParams',function($scope,$log,$http,daogouAPI,$stateParams){
+.controller('goodsShopCtrl',['$rootScope','$scope','$log','$http','daogouAPI','$stateParams',function($rootScope,$scope,$log,$http,daogouAPI,$stateParams){
 	$log.debug('goodsShopCtrl');
 // <<<<<<< HEAD
 	$stateParams.lng = 121.399411;
@@ -564,7 +564,7 @@ code=00177a72afbef088d656bb480b90625p
 	$scope.defaultstorefunc = function(store_id,index){
 		console.log('123');
 		daogouAPI.defaultstore({
-			brand_id:$scope.brand_id,
+			brand_id:$stateParams.brandid,
 			user_id:$rootScope.USERINFO.id,
 			store_id:store_id
 		},function(data, status, headers, config){
@@ -660,7 +660,7 @@ code=00177a72afbef088d656bb480b90625p
 	
 	
 }])
-.controller('newAddressCtrl',['$scope','$log','$http','daogouAPI','$stateParams','$state',function($scope,$log,$http,daogouAPI,$stateParams,$state){
+.controller('newAddressCtrl',['$rootScope','$scope','$log','$http','daogouAPI','$stateParams','$state',function($rootScope,$scope,$log,$http,daogouAPI,$stateParams,$state){
 	$log.debug('newAddressCtrl');
 	//新增用户收货地址信息
 	 $scope.newAddressInput = {

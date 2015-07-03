@@ -1,7 +1,7 @@
 'use strict';
 
 var product = angular.module('product',['ionic']);
-product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort,daogouAPI){
+product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort,daogouAPI,$ionicPopup){
 	// $rootScope.URLPort = "http://yunwan2.3322.org:57095";
 	var URLPort = URLPort();
 	//导购id会传进来的
@@ -10,7 +10,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	$scope.login = false;//是否显示登录页面
 	//创建订单页的 订单数据
 	$scope.productOrder={
-		num:0,
+		num:1,
 		bring_guider_id:$rootScope.GUIDID,
 		sku_id:''
 	}
@@ -133,15 +133,14 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		$(".chooseProductInfoWarp").hide();
 	}
 //点击+ - 增减商品数
-	$scope.delNum = function(num){
+	$scope.delNum = function(){
 		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
 		console.log(["$scope.productOrder.num",$scope.productOrder.num]);
 		if($scope.productOrder.num>1){
-			$scope.productDetailData.realquantity++;
 			$scope.productOrder.num--;
 		}
 	}
-	$scope.addNum = function(num){
+	$scope.addNum = function(){
 		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
 // <<<<<<< HEAD
 // 		console.log(["$scope.productOrder.num",$scope.productOrder.num]);
@@ -150,9 +149,9 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 // 			$scope.productOrder.num++;
 // 		}
 // =======
-		console.log(["$scope.productDetailData.buynum",$scope.productDetailData.buynum]);
-		if($scope.productDetailData.buynum<$scope.productDetailData.realquantity){
-			$scope.productDetailData.buynum++;
+		console.log(["$scope.productOrder.num",$scope.productOrder.num]);
+		if($scope.productOrder.num<$scope.productDetailData.realquantity){
+			$scope.productOrder.num++;
 		}else{
 			// alert("您所填写的商品数量超过库存!");
 			var mypopup=$ionicPopup.show({
@@ -166,12 +165,12 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		}
 	}
 	$scope.checkblank = function(){
-		if($scope.productDetailData.buynum<1){
-			$scope.productDetailData.buynum=1;
+		if($scope.productOrder.num<1){
+			$scope.productOrder.num=1;
 		}
 	} 
 	$scope.checknum = function(){
-		if($scope.productDetailData.buynum>$scope.productDetailData.realquantity){
+		if($scope.productOrder.num>$scope.productDetailData.realquantity){
 				// alert("您所填写的商品数量超过库存!");
 				var mypopup=$ionicPopup.show({
 					title: "立即购买出错",
@@ -183,11 +182,11 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 				});
 		}
 		
-		if($scope.productDetailData.buynum<1){
-			if($scope.productDetailData.buynum===""){
-				console.log(["$scope.productDetailData.buynum blankblankblankblank",$scope.productDetailData.buynum]);
+		if($scope.productOrder.num<1){
+			if($scope.productOrder.num===""){
+				console.log(["$scope.productOrder.num blankblankblankblank",$scope.productOrder.num]);
 			}else{
-				$scope.productDetailData.buynum=1;
+				$scope.productOrder.num=1;
 			}
 			
 		}
@@ -235,18 +234,18 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
     			
     		}
 
-            var remain = true;//所有的都选中，在sku.properties中找到和所选中条件相同的,特出现存量
+            $scope.remain = true;//所有的都选中，在sku.properties中找到和所选中条件相同的,特出现存量
             var strInput = "";
     		for(var nn in $scope.productDetailData.specification){
     			console.log("numnum"+$("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val());
     			if($("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val()==="undefined"){
-    				remain = false;
+    				$scope.remain = false;
     			}else{
     				strInput +=$("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val();
     			}
     			console.log("strInput:"+strInput);
     		}
-    		if(remain){	
+    		if($scope.remain){	
 				
 				for(var id in $scope.productDetailData.skus){//sku个数
 					var strSku ="";
@@ -292,6 +291,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 			$scope.productOrder.freight=$scope.productDetailData.freight;
 			$scope.productOrder.price=$scope.productDetailData.price;
 			$scope.productOrder.picUrlArr=$scope.productDetailData.picUrlArr;
+			$scope.productOrder.brand_id=$scope.productDetailData.brand_id;
 
 			$rootScope.productOrders.push($scope.productOrder);
 			// $rootScope.productOrders.push($scope.productOrder);
