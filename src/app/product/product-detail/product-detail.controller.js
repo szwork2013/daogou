@@ -157,7 +157,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 			// alert("您所填写的商品数量超过库存!");
 			var mypopup=$ionicPopup.show({
 				title: "立即购买出错",
-				template: "您所填写的商品数量超过库存!",
+				template: "您所填写的商品数量超过库存",
 				buttons: [{
 					text: "确定",
 					type: "button-energized",
@@ -175,7 +175,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 				// alert("您所填写的商品数量超过库存!");
 				var mypopup=$ionicPopup.show({
 					title: "立即购买出错",
-					template: "您所填写的商品数量超过库存!",
+					template: "您所填写的商品数量超过库存",
 					buttons: [{
 						text: "确定",
 						type: "button-energized",
@@ -293,7 +293,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 			// alert("请选择你要的商品信息");
 			var mypopup=$ionicPopup.show({
 				title: "立即购买出错",
-				template: "请选择你要的商品信息!",
+				template: "请选择你要的商品信息",
 				buttons: [{
 					text: "确定",
 					type: "button-energized",
