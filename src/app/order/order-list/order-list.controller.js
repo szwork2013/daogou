@@ -1,135 +1,145 @@
 'use strict';
 
-var order = angular.module('orderList',['ionic']);
-order.controller('orderListCtrl',['$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state','$stateParams','$rootScope',function($scope,$log,$http,URLPort,daogouAPI,$state,$stateParams,$rootScope){
+var order = angular.module('orderList', ['ionic']);
+order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state', '$stateParams', '$rootScope', function ($scope, $log, $http, URLPort, daogouAPI, $state, $stateParams, $rootScope) {
 
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
-	//这个切换其实是2个页面 不是页面内切换的
-	//一个是购物车页cart   应该是订单列表  order → order-list
+  //这个切换其实是2个页面 不是页面内切换的
+  //一个是购物车页cart   应该是订单列表  order → order-list
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
-var URLPort = URLPort();
+  var URLPort = URLPort();
+  $scope.curUserID = $stateParams.userid;
+  $scope.productListData = [];
+  var pageindex = 1;
+  var pagesize = 5;
+  $scope.hasMoreOrder = true;
+  function getOrderListFunc() {
+    daogouAPI.getOrderList("/trades/users/" + $scope.curUserID, {
+      page: pageindex,
+      per_page: pagesize,
+      show_orders: true
+    }, function (data, status, headers, config) {
+      console.log(["查询消费者的订单列表成功", data]);
+      console.log(["hasMoreOrder", $scope.hasMoreOrder]);
+      console.log(["pageindex", pageindex]);
+      $scope.brandid = data[0].brand_id;
+      angular.forEach(data, function (item, index) {
+        switch (item.status) {
+          case "WAIT_BUYER_PAY":
+            item.statusCN = "等待买家付款";
+            break;
+          case 'SELLER_CONSIGNED_PART':
+            item.statusCN = "卖家部分发货";
+            break;
+          case 'WAIT_SELLER_SEND_GOODS':
+            item.statusCN = '等待卖家发货';
+            break;
+          case 'WAIT_BUYER_CONFIRM_GOODS':
+            item.statusCN = '等待买家确认收货';
+            break;
+          case 'WAIT_BUYER_FETCH_GOODS':
+            item.statusCN = '等待买家取货';
+            break;
+          case 'TRADE_FINISHED':
+            item.statusCN = '交易成功';
+            break;
+          case 'TRADE_CLOSED_BY_SYSTEM':
+            item.statusCN = '系统自动关闭交易';
+            break;
+          case 'TRADE_CLOSED_BY_SELLER':
+            item.statusCN = '卖家关闭交易';
+            break;
+          case 'TRADE_CLOSED_BY_BUYER':
+            item.statusCN = '买家关闭交易';
+            break;
+          case 'TRADE_CLOSED_BY_SPLIT':
+            item.statusCN = '订单被拆分后关闭交易';
+            break;
+          default:
+            return '等待买家付款';
+        }
 
-// $http.get(URLPort+"/trades/users/18?page=1&per_page=10&show_orders=true")
-// .success(function(data){
-// 	console.log(["查询消费者的订单列表成功",data]);
-// 	$scope.productListData = data;
-// 	for(var i in $scope.productListData){
-// 		if($scope.productListData[i].status==="WAIT_BUYER_PAY"){
-// 			$scope.productListData[i].statusCN = "待付款";
-// 		}
-// 	}
-// })
-// .error(function(data){
-// 	console.log(["查询消费者的订单列表失败",data]);
-// })
+        item.leftTime = $scope.MillisecondToDate(new Date(item.pay_end_time).getTime() - new Date(item.out_pay_end_time).getTime());
+        angular.forEach(item.orders, function (itemOrder, index) {
+          itemOrder.pics = itemOrder.pic_path.indexOf(",") > 0 ? itemOrder.pic_path.split(",") :[itemOrder.pic_path] ;
+        });
+      });
+      $scope.productListData = $scope.productListData.concat(data);
+      console.log(["data.length", data.length])
+      if (data.length >= pagesize) {
+        pageindex++;
+        console.log(["pageindex+++++++", pageindex])
+      } else {
+        $scope.hasMoreOrder = false;
+        console.log(["hasMoreOrder", $scope.hasMoreOrder])
+      }
+      $scope.$broadcast('scroll.infiniteScrollComplete');
 
-$scope.curUserID = $stateParams.userid;
-$scope.productListData = [];
-var pageindex = 1;
-var pagesize = 5;
-$scope.hasMoreOrder = true;
-function getOrderListFunc(){
-	daogouAPI.getOrderList("/trades/users/"+$scope.curUserID,{
-		page:pageindex,
-		per_page:pagesize,
-		show_orders:true
-	},function(data, status, headers, config){
-		console.log(["查询消费者的订单列表成功",data]);
-		console.log(["hasMoreOrder",$scope.hasMoreOrder]);
-		console.log(["pageindex",pageindex]);
-		$scope.brandid = data[0].brand_id;
-		for(var i in data){
-			data[i].testnummmmmmmmmm = parseInt((pageindex-1)*pagesize) + parseInt(i)+1 ; //测试后期删掉
-	 		if(data[i].status==="WAIT_BUYER_PAY"){
-				data[i].statusCN = "待付款";
-			}else if(data[i].status==="SELLER_CONSIGNED_PART"){
-				data[i].statusCN = "卖家部分发货";
-			}else if(data[i].status==="WAIT_SELLER_SEND_GOODS"){
-				data[i].statusCN = "待发货";
-			}else if(data[i].status==="WAIT_BUYER_CONFIRM_GOODS"){
-				data[i].statusCN = "待签收";
-			}else if(data[i].status==="WAIT_BUYER_FETCH_GOODS"){
-				data[i].statusCN = "待取货";
-			}else if(data[i].status==="TRADE_FINISHED"){
-				data[i].statusCN = "已完成";
-			}else if(data[i].status==="TRADE_CLOSED_BY_SYSTEM"){
-				data[i].statusCN = "系统自动关闭交易";
-			}else if(data[i].status==="TRADE_CLOSED_BY_SELLER"){
-				data[i].statusCN = "卖家关闭交易";
-			}else if(data[i].status==="TRADE_CLOSED_BY_BUYER"){
-				data[i].statusCN = "买家关闭交易";
-			}else if(data[i].status==="TRADE_CLOSED_BY_SPLIT"){
-				data[i].statusCN = "订单被拆分后关闭交易";
-			}
-	    }
+    }, function (data, status, headers, config) {
+      console.log(["查询消费者的订单列表失败", data]);
+    });
+  }
 
-		$scope.productListData = $scope.productListData.concat(data);
-		
-	    console.log(["data.length",data.length])
-	    if(data.length>=pagesize){
-	    	pageindex++;
-	    	console.log(["pageindex+++++++",pageindex])
-	    }else{
-	    	$scope.hasMoreOrder = false;
-	    	console.log(["hasMoreOrder",$scope.hasMoreOrder])
-	    }
-	   
-	    $scope.$broadcast('scroll.infiniteScrollComplete');
-	    
-	},function(data, status, headers, config){
-		console.log(["查询消费者的订单列表失败",data]);
-	});
-}
+  getOrderListFunc();
 
-getOrderListFunc();
+  /**
+   * 把毫秒转换为 xx小时xx分钟xx秒的通用方法
+   * @param msd
+   * @returns {number}
+   * @constructor
+   */
+  $scope.MillisecondToDate = function (msd) {
+    var ss = 1000;
+    var mi = ss * 60;
+    var hh = mi * 60;
+    var dd = hh * 24;
+    var day = parseInt(msd / dd);
+    var hour = parseInt((msd - day * dd) / hh) + day * 24;
+    var hour2 = parseInt((msd - day * dd) / hh);
+    var minute = parseInt((msd - day * dd - hour2 * hh) / mi);
+    var second = parseInt((msd - day * dd - hour2 * hh - minute * mi) / ss);
+    var strHour = hour;
+    var strMinute = minute < 10 ? '0' + minute : minute;
+    var strSecond = second < 10 ? '0' + second : second;
+    return "剩余" + strHour + "小时" + strMinute + "分钟" + strSecond + "秒";
+  };
 
+  /**
+   * 加载更多
+   */
+  $scope.loadMoreData = function () {
+    getOrderListFunc();
+  };
+  /**
+   * 监测广播，加载更多
+   */
+  $scope.$on('$stateChangeSuccess', function () {
+    if (pageindex > 2) {
+      $scope.loadMoreData();
+    }
+  });
 
-$scope.refreshproductList = function(){
-	console.log(["refreshproductList"]);
-}
+  /**
+   * 订单详细信息
+   * @param tid
+   */
+  $scope.orderDetail = function (tid) {
+    $state.go("orderDetail", {tid: tid});
+  };
 
-$scope.loadMoreData = function(){
-	console.log(["loadMoreData"]);
-	getOrderListFunc();
-}
-
-$scope.$on('$stateChangeSuccess', function() {
-	 if(pageindex>2){
-   		$scope.loadMoreData();
-   	 }
- });
+  /**
+   * 购物车订单列表切换
+   */
+  $scope.goCart = function () {
+    console.log(["goCart userid", $stateParams.userid]);
+    console.log(["goCart brandid", $scope.brandid]);
+    $state.go("cart", {"userid": $stateParams.userid, "brandid": $scope.brandid});
+  };
 
 
-$scope.orderDetail = function(tid){
-	    $state.go("orderDetail",{tid:tid});
-}
 
-//购物车 订单列表切换
-$scope.goCart = function(){
-	console.log(["goCart userid",$stateParams.userid]);
-	console.log(["goCart brandid",$scope.brandid]);
-    $state.go("cart",{"userid": $stateParams.userid,"brandid":$scope.brandid});
-}
-
-
-//点击+ - 增减商品数
-	$scope.delNum = function(cls){
-		var n = parseInt($("."+cls+"").val());
-		$log.debug(n)
-		n--;
-		n=n<0?0:n;
-		$("."+cls+"").val(n);
-	}
-	$scope.addNum = function(cls){
-		var n = parseInt($("."+cls+"").val());
-		$log.debug(n)
-		n++;
-		$("."+cls+"").val(n);
-	}
-
-    $scope.choose = false;
-    $log.debug(['choooose',$scope.choose])
-
+  $scope.choose = false;
+  $log.debug(['choooose', $scope.choose])
 
 }]);
