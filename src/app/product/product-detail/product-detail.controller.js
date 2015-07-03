@@ -1,7 +1,7 @@
 'use strict';
 
 var product = angular.module('product',['ionic']);
-product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort,daogouAPI,$ionicPopup){
+product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort,daogouAPI){
 	// $rootScope.URLPort = "http://yunwan2.3322.org:57095";
 	var URLPort = URLPort();
 	//导购id会传进来的
@@ -9,15 +9,14 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
     $scope.bringGuiderIds = 145;
 	$scope.login = false;//是否显示登录页面
 	//创建订单页的 订单数据
+	$scope.productOrder={
+		num:0,
+		bring_guider_id:$rootScope.GUIDID,
+		sku_id:''
+	}
 	$rootScope.productOrders=[];
 
 
-	//检测是否登陆，获得当前登录账号
-	daogouAPI.isLogin(function(data){
-		console.log(["获得当前登录账号，用户数据",data]);
-	},function(data){
-
-	})
 
 	$http.get(URLPort+"/items/"+$stateParams.detailId)
 	// $http.get(URLPort+"/items/100003")
@@ -25,7 +24,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	.success(function(data){
 		console.log(['获得商品详情成功',data]);
 		$scope.productDetailData = data;
-		$scope.productDetailData.buynum = 1;//买家购买数
 		$scope.productDetailData.realquantity = 0;//剩余库存数量
 		$scope.productDetailData.picUrlArr =  $scope.productDetailData.pic_url.split(',');//轮播图片url获取
 		console.log(["$scope.productDetailData.picUrlArr",$scope.productDetailData.picUrlArr]);
@@ -36,44 +34,41 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		$log.debug(['$scope.productDetailData',$scope.productDetailData.skus]);
 		
 		console.log(["$scope.productDetailData.skus.length",$scope.productDetailData.skus.length])
-
-		// if($scope.productDetailData.skus.length>0){
-				var propertyArr = $scope.productDetailData.skus[0].properties.split(';');//propertyArr.length规格种类
-				$scope.productDetailData.specification = [];//$scope上添加的存放规格种类以及内容的数组。
-				for(var idx in propertyArr){
-					$scope.productDetailData.specification[idx] = {};
-					$scope.productDetailData.specification[idx].key = "";//idx规格种类个数，//.key每个规格名//.val每个规格的值
-					$scope.productDetailData.specification[idx].val = "";
-				}
-
-				for(var id in $scope.productDetailData.skus){//sku个数
-					var flag = true;
-					var propertyArr = $scope.productDetailData.skus[id].properties.split(';');//propertyArr.length参数种类
-					$scope.productDetailData.realquantity += $scope.productDetailData.skus[id].real_quantity;//累加所有商品数量
-					for(var tz in propertyArr){//一个规格种类一个规格种类来
-						var paraArr = propertyArr[tz].split(':');//取每个规格的规格名和规格值
-						var iarray = $scope.productDetailData.specification[tz].val.split(" ");
-						var ilength=iarray.length-1;
-						for(var i=0; i<ilength;i++){//检测新加入的规格值是否已经存在，如果存在则不加入，避免重复
-							if(iarray[i] === paraArr[paraArr.length-1]){//paraArr[paraArr.length-1]要加入的参数，
-		                         flag = false;
-							}
-						}
-						if(flag){
-							$scope.productDetailData.specification[tz].val += paraArr[paraArr.length-1]+" ";//规格值
-							$log.debug(['$scope.productDetailData.specification',$scope.productDetailData.specification]);
-						}else{
-							flag = true;//当取同一个sku时，后面的规格需要把flag置为true
-						}
-					
-						$scope.productDetailData.specification[tz].array = $scope.productDetailData.specification[tz].val.split(" ");
-						$scope.productDetailData.specification[tz].array.splice($scope.productDetailData.specification[tz].array.length-1,1);
-						$scope.productDetailData.specification[tz].key = paraArr[paraArr.length-2];//规格名
-						
+		var propertyArr = $scope.productDetailData.skus[0].properties.split(';');//propertyArr.length规格种类
+			$scope.productDetailData.specification = [];//$scope上添加的存放规格种类以及内容的数组。
+			for(var idx in propertyArr){
+				$scope.productDetailData.specification[idx] = {};
+				$scope.productDetailData.specification[idx].key = "";//idx规格种类个数，//.key每个规格名//.val每个规格的值
+				$scope.productDetailData.specification[idx].val = "";
+		}
+		
+		for(var id in $scope.productDetailData.skus){//sku个数
+			var flag = true;
+			var propertyArr = $scope.productDetailData.skus[id].properties.split(';');//propertyArr.length参数种类
+			$scope.productDetailData.realquantity += $scope.productDetailData.skus[id].real_quantity;//累加所有商品数量
+			for(var tz in propertyArr){//一个规格种类一个规格种类来
+				var paraArr = propertyArr[tz].split(':');//取每个规格的规格名和规格值
+				var iarray = $scope.productDetailData.specification[tz].val.split(" ");
+				var ilength=iarray.length-1;
+				for(var i=0; i<ilength;i++){//检测新加入的规格值是否已经存在，如果存在则不加入，避免重复
+					if(iarray[i] === paraArr[paraArr.length-1]){//paraArr[paraArr.length-1]要加入的参数，
+                         flag = false;
 					}
 				}
-		// }
-		// $scope.productDetailData.buynum = $scope.productDetailData.realquantity;
+				if(flag){
+					$scope.productDetailData.specification[tz].val += paraArr[paraArr.length-1]+" ";//规格值
+					$log.debug(['$scope.productDetailData.specification',$scope.productDetailData.specification]);
+				}else{
+					flag = true;//当取同一个sku时，后面的规格需要把flag置为true
+				}
+			
+				$scope.productDetailData.specification[tz].array = $scope.productDetailData.specification[tz].val.split(" ");
+				$scope.productDetailData.specification[tz].array.splice($scope.productDetailData.specification[tz].array.length-1,1);
+				$scope.productDetailData.specification[tz].key = paraArr[paraArr.length-2];//规格名
+				
+			}
+		}
+
 	})
 	.error(function(data){
 		console.log(['获得商品详情失败',data]);
@@ -86,34 +81,32 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	function propertyMenu(){
 		$(".mengban").show();
 		$(".chooseProductInfoWarp").show();
-		if($scope.productDetailData.skus.length>0){//如果有产品规格
-			for(var ii in $scope.productDetailData.specification){
-				console.log($scope.productDetailData.specification[ii].array);
-				for(var cc in $scope.productDetailData.specification[ii].array){
-					var total = 0;
-					console.log($scope.productDetailData.specification[ii].array[cc]);
-					for(var dd in $scope.productDetailData.skus){
-						if($scope.productDetailData.skus[dd].properties.indexOf($scope.productDetailData.specification[ii].array[cc])>0){
-							//检测商品每个skus 是否包含 规格值，如果包含查其库存，库存总量为0 则不可选
-							console.log("real_quantity:"+$scope.productDetailData.skus[dd].real_quantity);
-							total += parseInt($scope.productDetailData.skus[dd].real_quantity);
-							console.log("total:"+total);
+		for(var ii in $scope.productDetailData.specification){
+			console.log($scope.productDetailData.specification[ii].array);
+			for(var cc in $scope.productDetailData.specification[ii].array){
+				var total = 0;
+				console.log($scope.productDetailData.specification[ii].array[cc]);
+				for(var dd in $scope.productDetailData.skus){
+					if($scope.productDetailData.skus[dd].properties.indexOf($scope.productDetailData.specification[ii].array[cc])>0){
+						//检测商品每个skus 是否包含 规格值，如果包含查其库存，库存总量为0 则不可选
+						console.log("real_quantity:"+$scope.productDetailData.skus[dd].real_quantity);
+						total += parseInt($scope.productDetailData.skus[dd].real_quantity);
+						console.log("total:"+total);
+					}
+				}
+				if(total === 0){
+					$("input").each(function(){
+						if($(this).val()===$scope.productDetailData.specification[ii].array[cc]){
+							console.log("youyouyou");
+							console.log("$(this).val():"+$(this).val());
+							console.log($scope.productDetailData.specification[ii].array[cc]);
+							$(this).attr({"disabled":"disabled"});
+							$(this).next().addClass("invalid");
 						}
-					}
-					if(total === 0){
-						$("input").each(function(){
-							if($(this).val()===$scope.productDetailData.specification[ii].array[cc]){
-								console.log("youyouyou");
-								console.log("$(this).val():"+$(this).val());
-								console.log($scope.productDetailData.specification[ii].array[cc]);
-								$(this).attr({"disabled":"disabled"});
-								$(this).next().addClass("invalid");
-							}
-						})
-					}
+					})
+				}
 
-				}   
-			}
+			}   
 		}
 	}
 //当点击购物车时让设置goCart 和 goOrder 的参数使参数面板的下一步 跳转到购物车还是生成订单
@@ -140,173 +133,125 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		$(".chooseProductInfoWarp").hide();
 	}
 //点击+ - 增减商品数
-	$scope.delNum = function(){
+	$scope.delNum = function(num){
 		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
-		console.log(["$scope.productDetailData.buynum",$scope.productDetailData.buynum]);
-		if($scope.productDetailData.buynum>1){
-			$scope.productDetailData.buynum--;
-		}
-
-	}
-	$scope.addNum = function(){
-		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
-		console.log(["$scope.productDetailData.buynum",$scope.productDetailData.buynum]);
-		if($scope.productDetailData.buynum<$scope.productDetailData.realquantity){
-			$scope.productDetailData.buynum++;
-		}else{
-			// alert("您所填写的商品数量超过库存!");
-			var mypopup=$ionicPopup.show({
-				title: "立即购买出错",
-				template: "您所填写的商品数量超过库存!",
-				buttons: [{
-					text: "确定",
-					type: "button-energized",
-				}]
-			});
+		console.log(["$scope.productOrder.num",$scope.productOrder.num]);
+		if($scope.productOrder.num>1){
+			$scope.productDetailData.realquantity++;
+			$scope.productOrder.num--;
 		}
 	}
-	$scope.checkblank = function(){
-		if($scope.productDetailData.buynum<1){
-			$scope.productDetailData.buynum=1;
+	$scope.addNum = function(num){
+		console.log(["$scope.productDetailData.realquantity",$scope.productDetailData.realquantity]);
+		console.log(["$scope.productOrder.num",$scope.productOrder.num]);
+		if($scope.productDetailData.realquantity>0){
+			$scope.productDetailData.realquantity--;
+			$scope.productOrder.num++;
 		}
-	} 
-	$scope.checknum = function(){
-		if($scope.productDetailData.buynum>$scope.productDetailData.realquantity){
-				// alert("您所填写的商品数量超过库存!");
-				var mypopup=$ionicPopup.show({
-					title: "立即购买出错",
-					template: "您所填写的商品数量超过库存!",
-					buttons: [{
-						text: "确定",
-						type: "button-energized",
-					}]
-				});
-		}
-		
-		if($scope.productDetailData.buynum<1){
-			if($scope.productDetailData.buynum===""){
-				console.log(["$scope.productDetailData.buynum blankblankblankblank",$scope.productDetailData.buynum]);
-			}else{
-				$scope.productDetailData.buynum=1;
-			}
-			
-		}
-
 	}
 //选择产品规格，显示是否有剩余
     $scope.checkSku = function(name,index){//name传递过来input的规格如 M L, index传递过来的规格项目名称 如尺码 颜色
     	// console.log($("input[name="+name+"]:checked").val());
     	console.log("name:"+name);
     	console.log("index:"+index);
-    	// if($scope.productDetailData.skus.length>0){//如果有产品规格  不存在产品没有规格这种情况
-	    	for(var bb in $scope.productDetailData.specification){
-	    		if($scope.productDetailData.specification[bb].key===index){
-	    			for(var cc in $scope.productDetailData.specification){
-			    				if(bb!=cc){
-			    					console.log("cc:"+cc);
-			    					console.log($scope.productDetailData.specification[cc].array);
-			    					var key = $scope.productDetailData.specification[cc].key;
-			    						console.log("key:"+key);
-			    						$("input[name="+key+"]").removeAttr("disabled");
-			    						$("input[name="+key+"]").next().removeClass("invalid");
-			    					for(var dd in $scope.productDetailData.specification[cc].array){
-			    						var total = 0;
-			    						for(var ee in $scope.productDetailData.skus){//如果该sku里含有传递过来的name且含有其他参数值，查询器剩余数量？？？这儿好像有问题,暂时不支持3种规格，前面有选中的呢
-			    							if(($scope.productDetailData.skus[ee].properties.indexOf(name)>0)&&($scope.productDetailData.skus[ee].properties.indexOf($scope.productDetailData.specification[cc].array[dd])>0)){
-			    								total += parseInt($scope.productDetailData.skus[ee].real_quantity);
-			    							}
-			    						}
+    	for(var bb in $scope.productDetailData.specification){
+    		if($scope.productDetailData.specification[bb].key===index){
+    			for(var cc in $scope.productDetailData.specification){
+		    				if(bb!=cc){
+		    					console.log("cc:"+cc);
+		    					console.log($scope.productDetailData.specification[cc].array);
+		    					var key = $scope.productDetailData.specification[cc].key;
+		    						console.log("key:"+key);
+		    						$("input[name="+key+"]").removeAttr("disabled");
+		    						$("input[name="+key+"]").next().removeClass("invalid");
+		    					for(var dd in $scope.productDetailData.specification[cc].array){
+		    						var total = 0;
+		    						for(var ee in $scope.productDetailData.skus){//如果该sku里含有传递过来的name且含有其他参数值，查询器剩余数量？？？这儿好像有问题,暂时不支持3种规格，前面有选中的呢
+		    							if(($scope.productDetailData.skus[ee].properties.indexOf(name)>0)&&($scope.productDetailData.skus[ee].properties.indexOf($scope.productDetailData.specification[cc].array[dd])>0)){
+		    								total += parseInt($scope.productDetailData.skus[ee].real_quantity);
+		    							}
+		    						}
 
-			    						if(total === 0){
-			    								$("input").each(function(){
-			    									if($(this).val()===$scope.productDetailData.specification[cc].array[dd]){
-			    										console.log("youyouyou");
-			    										console.log("$(this).val():"+$(this).val());
-			    										console.log($scope.productDetailData.specification[cc].array[dd]);
-			    										$(this).attr({"disabled":"disabled"});
-			    										$(this).next().removeClass("ichoosed").addClass("invalid");
-			    									}
-			    								})
-			    						}
-			    					}
+		    						if(total === 0){
+		    								$("input").each(function(){
+		    									if($(this).val()===$scope.productDetailData.specification[cc].array[dd]){
+		    										console.log("youyouyou");
+		    										console.log("$(this).val():"+$(this).val());
+		    										console.log($scope.productDetailData.specification[cc].array[dd]);
+		    										$(this).attr({"disabled":"disabled"});
+		    										$(this).next().removeClass("ichoosed").addClass("invalid");
+		    									}
+		    								})
+		    						}
+		    					}
 
-	    						}
-	    			}
-	    			
-	    		}
+    						}
+    			}
+    			
+    		}
 
-	            $scope.remain = true;//所有的都选中，在sku.properties中找到和所选中条件相同的,特出现存量
-	            var strInput = "";
-	    		for(var nn in $scope.productDetailData.specification){
-	    			console.log("numnum:"+nn+":"+$("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val());
-	    			if($("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val()===undefined){
-	    				$scope.remain = false;
-	    			}else{
-	    				strInput +=$("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val();
-	    			}
-	    			console.log("strInput:"+strInput);
-	    		}
-	    		if($scope.remain){	
-					
-					for(var id in $scope.productDetailData.skus){//sku个数
-						var strSku ="";
-						var propertyArr = $scope.productDetailData.skus[id].properties.split(';');//propertyArr.length参数种类
-						for(var tz in propertyArr){
-							var paraArr = propertyArr[tz].split(':');//取参数名和参数值
-							strSku+=paraArr[paraArr.length-1];
-						}
-						if(strSku===strInput){
-							$scope.productDetailData.realquantity = $scope.productDetailData.skus[id].real_quantity;
-							$scope.productDetailData.skuid = $scope.productDetailData.skus[id].sku_id;
-							$scope.productDetailData.buynum = 1;
-							$scope.productDetailData.skudetail = "";
-							var skuArray = $scope.productDetailData.skus[id].properties.split(";");
-							for (var ff in skuArray){
-								var skuffArray = skuArray[ff].split(":");
-								$scope.productDetailData.skudetail += skuffArray[skuffArray.length-2]+":"+skuffArray[skuffArray.length-1]+";";
-							}
-							$scope.productDetailData.skudetail=$scope.productDetailData.skudetail.substring(0,$scope.productDetailData.skudetail.length-1);
-							console.log(["$scope.productDetailData.skudetail",$scope.productDetailData.skudetail]);
-
-						}
+            var remain = true;//所有的都选中，在sku.properties中找到和所选中条件相同的,特出现存量
+            var strInput = "";
+    		for(var nn in $scope.productDetailData.specification){
+    			console.log("numnum"+$("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val());
+    			if($("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val()==="undefined"){
+    				remain = false;
+    			}else{
+    				strInput +=$("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val();
+    			}
+    			console.log("strInput:"+strInput);
+    		}
+    		if(remain){	
+				
+				for(var id in $scope.productDetailData.skus){//sku个数
+					var strSku ="";
+					var propertyArr = $scope.productDetailData.skus[id].properties.split(';');//propertyArr.length参数种类
+					for(var tz in propertyArr){
+						var paraArr = propertyArr[tz].split(':');//取参数名和参数值
+						strSku+=paraArr[paraArr.length-1];
 					}
-						 
-					
-	    		}
-	    	}
+					if(strSku===strInput){
+						$scope.productDetailData.realquantity = $scope.productDetailData.skus[id].real_quantity;
+						$scope.productOrder.sku_id = $scope.productDetailData.skus[id].sku_id;
+						$scope.productOrder.num = 1;
+						$scope.productDetailData.skudetail = "";
+						var skuArray = $scope.productDetailData.skus[id].properties.split(";");
+						for (var ff in skuArray){
+							var skuffArray = skuArray[ff].split(":");
+							$scope.productDetailData.skudetail += skuffArray[skuffArray.length-2]+":"+skuffArray[skuffArray.length-1]+";";
+						}
+						$scope.productDetailData.skudetail=$scope.productDetailData.skudetail.substring(0,$scope.productDetailData.skudetail.length-1);
+						console.log(["$scope.productDetailData.skudetail",$scope.productDetailData.skudetail]);
 
-    	// }else{
-    	// 	$scope.remain = true;
-    	// }
-    
+					}
+				}
+					 
+				
+    		}
+    	}
+
 
     }
 	
 	$scope.goToOrder = function(){
-		console.log(["$scope.remain",$scope.remain]);
-		if($scope.remain === true){
-			console.log(["$scope.productDetailData.brand_id111",$scope.productDetailData.brand_id])
-			console.log($scope.productDetailData);
-			$rootScope.productOrders.push($scope.productDetailData);
-			$state.go("creatorder")
-		}else{
-			// alert("请选择你要的商品信息");
-			var mypopup=$ionicPopup.show({
-				title: "立即购买出错",
-				template: "请选择你要的商品信息!",
-				buttons: [{
-					text: "确定",
-					type: "button-energized",
-				}]
-			});
-		}
-		
+		console.log(["$scope.productDetailData.brand_id111",$scope.productDetailData.brand_id])
+		console.log(['需要传递的data数值',$scope.productDetailData]);
+		$scope.productOrder.buynum=$scope.productOrder.num;
+		$scope.productOrder.title=$scope.productDetailData.title;
+		$scope.productOrder.freight=$scope.productDetailData.freight;
+		$scope.productOrder.price=$scope.productDetailData.price;
+		$scope.productOrder.picUrlArr=$scope.productDetailData.picUrlArr;
+
+		$rootScope.productOrders.push($scope.productOrder);
+		// $rootScope.productOrders.push($scope.productOrder);
+
+		$state.go("creatorder")
 		// $state.go("creatorder",{
 		// 	title:$scope.productDetailData.title,
 		// 	price:$scope.productDetailData.price,
 		// 	skudetail:$scope.productDetailData.skudetail,
-		// 	skuid:$scope.productDetailData.skuid,
-		// 	num:$scope.productDetailData.buynum,
+		// 	skuid:$scope.productOrder.sku_id,
+		// 	num:$scope.productOrder.num,
 		// 	freight:$scope.productDetailData.freight,
 		// 	brandid:$scope.productDetailData.brand_id
 		// });
@@ -332,8 +277,8 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 
 			$http.post(URLPort+"/users/"+$rootScope.USERINFO.id+"/shopping-carts",{
 				"user_id":$rootScope.USERINFO.id,
-				"sku_id" : $scope.productDetailData.skuid,
-				"num": $scope.productDetailData.buynum,
+				"sku_id" : $scope.productOrder.sku_id,
+				"num": $scope.productOrder.num,
 				"bring_guider_id" : bringGuiderId
             })
             .success(function(data){
@@ -473,7 +418,8 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 		// }
 
 	 //    $scope.getLocation();
-	 
+
+
 })
 
 ;

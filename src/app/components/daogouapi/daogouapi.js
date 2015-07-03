@@ -206,10 +206,23 @@ angular.module('daogou')
 		获取验证码		
 		*/
 		verificationcode:verificationcode,
+
 		/*
 		根据地区代码查询下属地区	
 		*/
 		codegetarea:codegetarea,
+
+
+		/*
+		取openid
+		*/
+		getOpenid:getOpenid,
+
+		/*
+		绑定用户的openid
+		*/
+		bindOpenid:bindOpenid,
+
 	};
 
 	return daogouAPI;
@@ -225,7 +238,7 @@ angular.module('daogou')
 			}
 			url=url.slice(0,url.length-1);
 		}
-        console.log(["apiurl",url]);
+        // console.log(["apiurl",url]);
 		return url;
 	}
 
@@ -235,7 +248,9 @@ angular.module('daogou')
 			scallback(data, status, headers, config);
 		})
 		.error(function(data, status, headers, config){
-			ecallback(data, status, headers, config);
+			if(ecallback){
+				ecallback(data, status, headers, config);
+			}
 		});
 	}
 
@@ -553,7 +568,8 @@ angular.module('daogou')
 			$rootScope.WXINFO={
 				appid:wxdata.appid,
 				js_api_ticket:wxdata.js_api_ticket,
-				mch_key:wxdata.mch_key
+				mch_key:wxdata.mch_key,
+				secret:wxdata.secret
 			}
 			scallback(wxdata)
 		},ecallback);
@@ -619,11 +635,32 @@ angular.module('daogou')
 		daogouAPI.post(daogouAPI.apiurl(action,data),'',scallback,ecallback);
 	}
 
+
 	function codegetarea(dataobj,scallback,ecallback){
 		var action='/area-code/'+dataobj.areacode+'/children';
 		var data='';
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
+
+	function getOpenid(dataobj,scallback,ecallback){
+		var action='/weixin/page-access-token';
+		var data={
+			code:dataobj.code,
+			brand_id:dataobj.brand_id,
+		};
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	function bindOpenid(dataobj,scallback,ecallback){
+		var action='/users/bind/weixin';
+		var data={
+			brand_id:dataobj.brand_id,
+			user_id:dataobj.user_id,
+			wx_open_id:dataobj.wx_open_id
+		};
+		daogouAPI.post(action,data,scallback,ecallback);
+	}
+
 
 });
 

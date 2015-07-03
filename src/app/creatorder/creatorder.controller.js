@@ -2,35 +2,57 @@
 
 var createOrder=angular.module('createOrder',['ionic']);
 createOrder.controller('creatorderCtrl',
-function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay){
+function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpay){
 	$log.debug('creatorderCtrl');
-	$scope.login = false;//处理登录框的一点样式问题，背景为白色
 	// $scope.buytitle = $stateParams.title;
 	// $scope.buyprice = $stateParams.price;
 	// $scope.buyskudetail = $stateParams.skudetail;
 	// $scope.buyskuid = $stateParams.skuid;
 	// $scope.buynum = $stateParams.num;
-	$scope.buyfreight = $rootScope.productOrders[0].freight;
-	$scope.totalprice = $rootScope.productOrders[0].price*$rootScope.productOrders[0].num;
+// <<<<<<< HEAD
+// 	$scope.buyfreight = $rootScope.productOrders[0].freight;
+// 	$scope.totalprice = $rootScope.productOrders[0].price*$rootScope.productOrders[0].num;
 
+// =======
+	// $scope.buyfreight = $stateParams.freight;
+	// $scope.totalprice = $stateParams.price*$stateParams.num;
+	console.log(['传递过来的的data数值',$rootScope.productOrders])
+// >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
 	//没有订单数据返回首页
 	console.log(["$rootScope.productOrders",$rootScope.productOrders]);
 
 	if(typeof $rootScope.productOrders==='undefined' || typeof $rootScope.productOrders[0]==='undefined'){
-		$state.go('productDetail');
+		$state.go('guide');
 		return;
 	}
+	
+	$scope.login = false;//处理登录框的一点样式问题，背景为白色
+	$scope.brand_id=$rootScope.BRANDID;
+
+	console.log(['aa',$rootScope.productOrders])
+	$scope.totalprice=0;
+	for (var i in $rootScope.productOrders) {
+		console.log([i,$rootScope.productOrders[i]])
+		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].num
+	};
 	//总价格
 	$scope.totalprice=0;
 	for (var i in $rootScope.productOrders) {
 		console.log([i,$rootScope.productOrders[i]])
-		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].buynum
+		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].num
 	};
-	console.log(['$scope.totalprice',$scope.totalprice])
+	console.log(['$scope.totalprice',$scope.totalprice]);
+	//总运费
+	$scope.buyfreight=0;
+	for (var i in $rootScope.productOrders) {
+		console.log([i,$rootScope.productOrders[i]])
+		$scope.buyfreight+=$rootScope.productOrders[i].freight
+	};
+	console.log(['$scope.buyfreight',$scope.buyfreight])
 
 
 	$scope.totalcost = $scope.totalprice + parseFloat($scope.buyfreight);
-	console.log(['$stateParams.title',$stateParams.title])
+
 
 	$scope.mainData = {
 		telenum : '',
@@ -46,21 +68,104 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	$scope.allbuyeraddress = true;
 	$scope.shopaddress = true;
 
+// <<<<<<< HEAD
+// =======
+
+// 	$scope.postway = function(){
+// 		$scope.allbuyeraddress = true;
+// 		$scope.shopaddress = false;
+// 	}
+// 	$scope.shopway = function(){
+// 		$scope.allbuyeraddress = false;
+// 		$scope.shopaddress = true;
+// 		 if (window.navigator.geolocation) {
+//             // var options = {
+//             //      enableHighAccuracy: true,
+//             //  };
+//              console.log('浏览器支持html5来获取地理位置信息')
+//              window.navigator.geolocation.getCurrentPosition(handleSuccess, handleError,{timeout:2000});
+//          } else {
+//               console.log('浏览器不支持html5来获取地理位置信息');
+//          }
+
+// 	   	function handleSuccess(position){
+//            // 获取到当前位置经纬度  本例中是chrome浏览器取到的是google地图中的经纬度
+//            var lng = position.coords.longitude;
+//            var lat = position.coords.latitude;
+//            console.log(['geolocation lng',lng]);
+//            console.log(['geolocation lat',lat]);
+// 	     }
+		           
+//        function handleError(error){
+//        	console.log('geolocation error')
+       
+//        }
+
+//       daogouAPI.shopAddress('/brands/'+$scope.brand_id+'/stores/store-fetch',{
+//       		user_id:$rootScope.USERINFO.id,
+//       		longitude:121.399411,
+//       		latitude:31.168323
+//       	},function(data, status, headers, config){
+//       		console.log(['查询门店列表成功',data]);
+//       		$scope.shopaddressData = data;
+//       		var flag = false;
+//       		var defaultIndex = 0;
+//       		for(var i in $scope.shopaddressData){
+//       			if($scope.shopaddressData[i].is_default===1){
+//       				flag = true;//如果有默认地址 flag为true
+//       				defaultIndex = i;
+//       			}
+//       		}
+//       		if(flag === true){//有默认地址
+//       			console.log('有默认地址');
+//       			$scope.minDistance=$scope.shopaddressData[defaultIndex];
+//       		}else{//没有默认地址
+//       			console.log('无有默认地址');
+//       			var minIndex = 0;
+//       			for(var i=0;i<data.length-1;i++){
+//       				if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+//       					minIndex = i+1;
+//       				}
+//       			}
+//       			$scope.minDistance = data[minIndex]; 
+//       		}
+      		
+      	    
+//       	},function(data, status, headers, config){
+//       		console.log(['查询门店列表失败',data]);
+//       	});
+
+// 	}
+
+
+	
+
+// >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
 	var URLPort = URLPort();
 
 	//判断是否登录
-	daogouAPI.isLogin(function(data) {
+	if(typeof $rootScope.USERINFO!=="undefined"){
 		//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
 		console.log(['用户已登录,获得当前登录用户账号', data]);
 		//登录后的UI样式设置
 		userIsLoginSetUI();
-
-	}, function(data) {
+	}else{
 		//如果未登录,显示登录框，进行登录
-		console.log(['用户未登录,没获得当前登录用户账号', data]);
 		$scope.loginhandle = false; //未登录让 登录模块不隐藏
 		$scope.alladdress = true; //让地址模隐藏
-	});
+	}
+	// daogouAPI.isLogin(function(data) {
+	// 	//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
+	// 	console.log(['用户已登录,获得当前登录用户账号', data]);
+	// 	//登录后的UI样式设置
+	// 	userIsLoginSetUI();
+
+	// }, function(data) {
+	// 	//如果未登录,显示登录框，进行登录
+	// 	console.log(['用户未登录,没获得当前登录用户账号', data]);
+	// 	$scope.loginhandle = false; //未登录让 登录模块不隐藏
+	// 	$scope.alladdress = true; //让地址模隐藏
+	// });
 
 
 	$scope.loginsuccess=function(data){
@@ -274,22 +379,26 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		'buyer_memo':''
 	}
 
-	$scope.submitOrder = function(){
-			pay(1,49815344003486000,function(data){
-				alert('支付成功');
-				alert(JSON.stringify(data));
-			});
 
-			return;
+/*
+支付
+cc.com?gid=333#/did/123
+
+cc.com?gid=333&did=123&
+code=00177a72afbef088d656bb480b90625p
+
+*/
+
+	$scope.submitOrder = function(){
 
 		console.log('提交订单');
-		console.log(['$stateParams.brandid',$stateParams.brandid]);
-
+		console.log(['$scope.brand_id',$scope.brand_id]);
+		//支付按钮先创建订单再支付
 		$http.post(URLPort+'/trades',
 			{
 			'buyer_user_id': $rootScope.USERINFO.id,
 			'bring_guider_id': 12,
-			'brand_id': parseInt($stateParams.brandid),
+			'brand_id': parseInt($scope.brand_id),
 			'buyer_memo': $scope.buyerMessage.buyer_memo,
 			'pay_type': 'WEIXIN',
 			'shipping_type': 'express',
@@ -315,20 +424,25 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 			// 'fetch_address': '中华路555号',
 			// 'fetch_subscribe_begin_time': '2015-05-14T11:00:50+0800',
 			// 'fetch_subscribe_end_time': '2015-05-14T13:00:50+0800',
-			'orders': [
-			     {
-			         'sku_id': $stateParams.skuid,
-			         'num': parseInt($stateParams.num),
-			         'bring_guider_id': 12
-			     }
-			 ]
+			'orders':$rootScope.productOrders 
+			// [
+			//      {
+			//          'sku_id': $stateParams.skuid,
+			//          'num': parseInt($stateParams.num),
+			//          'bring_guider_id': 12
+			//      }
+			//  ]
 			}
 		)
-		.success(function(data){
-			console.log(['提交订单成功',data]);
+		.success(function(orderdata){
+			console.log(['提交订单成功',orderdata]);
 
-			$state.go('orderDetail',{tid:data.tid})
-			// tid: '18615519548506000'
+			//创建订单成功调用微信支付
+			WXpay($scope.brand_id,orderdata.tid,function(data){
+				alert('支付成功');
+				alert(JSON.stringify(data));
+				$state.go('orderDetail',{tid:orderdata.tid})
+			});			
 
 		})
 		.error(function(data){
@@ -355,7 +469,11 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		// })
 	}
 	$scope.goGoodsShop = function(){//门店地址列表页面
+// <<<<<<< HEAD
 		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$rootScope.productOrders[0].brand_id,'lng':$scope.lng,'lat':$scope.lat});
+// =======
+// 		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$scope.brand_id});
+// >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
 	}
 	$scope.changeReceiveInfoFunc = function(){//收货人地址列表页面
 		console.log(['userid',$rootScope.USERINFO.id]);
@@ -421,6 +539,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 })
 .controller('goodsShopCtrl',['$scope','$log','$http','daogouAPI','$stateParams',function($scope,$log,$http,daogouAPI,$stateParams){
 	$log.debug('goodsShopCtrl');
+// <<<<<<< HEAD
 	$stateParams.lng = 121.399411;
 	$stateParams.lat = 31.168323;
 	daogouAPI.shopAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
@@ -429,6 +548,12 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		// latitude:31.168323
 		longitude:$stateParams.lng,
 		latitude:$stateParams.lat
+// =======
+// 	daogouAPI.shopAddress('/brands/'+$scope.brand_id+'/stores/store-fetch',{
+// 		user_id:$rootScope.USERINFO.id,
+// 		longitude:121.399411,
+// 		latitude:31.168323
+// >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
 	},function(data, status, headers, config){
 		console.log(['查询门店列表成功',data]);
 		$scope.shopaddressData = data;
@@ -439,8 +564,8 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	$scope.defaultstorefunc = function(store_id,index){
 		console.log('123');
 		daogouAPI.defaultstore({
-			brand_id:$stateParams.brandid,
-			user_id:$stateParams.userid,
+			brand_id:$scope.brand_id,
+			user_id:$rootScope.USERINFO.id,
 			store_id:store_id
 		},function(data, status, headers, config){
 			for(var i in $scope.shopaddressData){
@@ -464,7 +589,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	$log.debug('changeReceiveInfoCtrl');
 	var URLPort = URLPort();
 	
-		$http.get(URLPort + '/users/' + $stateParams.userid + '/shipping-addresses')
+		$http.get(URLPort + '/users/' + $rootScope.USERINFO.id + '/shipping-addresses')
 			.success(function(data) {
 				$scope.receiverAddressDate = data; 
 				console.log(['获取用户收货地址列表成功', data]);
@@ -497,7 +622,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	  $scope.setDefaultAddress = function(addressId,index){
             console.log(['addressId',addressId]);
             daogouAPI.defaultAddress({
-            	user_id:$stateParams.userid,
+            	user_id:$rootScope.USERINFO.id,
             	address_id:addressId
             },function(data, status, headers, config){
             	for(var i in $scope.receiverAddressDate){
@@ -514,7 +639,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 
 	  $scope.deleteAddressFunc = function(addressId,index){
 		  	daogouAPI.deleteAddress({
-		  		user_id:$stateParams.userid,
+		  		user_id:$rootScope.USERINFO.id,
 		  		address_id:addressId
 		  	},function(data, status, headers, config){
 		  		console.log(['删除收货地址成功',data]);
@@ -525,12 +650,12 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	  }
 
 	  $scope.editAddressFunc = function(addressId){
-	  	     $state.go('newAddress',{userid:$stateParams.userid,addressid:addressId});
+	  	     $state.go('newAddress',{userid:$rootScope.USERINFO.id,addressid:addressId});
 	  }
 
 	  $scope.gonewAddress = function(){
-	  	console.log(["$stateParams.userid",$stateParams.userid])
-	  		$state.go('newAddress',{userid:$stateParams.userid});
+	  	console.log(["$rootScope.USERINFO.id",$rootScope.USERINFO.id])
+	  		$state.go('newAddress',{userid:$rootScope.USERINFO.id});
 	  }
 	
 	
@@ -559,7 +684,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	 	console.log("添加新地址");
 	 }else{
 	 	daogouAPI.getAddress({
-	 		user_id:$stateParams.userid,
+	 		user_id:$rootScope.USERINFO.id,
 	 		address_id:$stateParams.addressid
 	 	},function(data, status, headers, config){
 	 		console.log(['获取要修改收货地址成功',data]);
@@ -678,7 +803,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 	 	console.log(['$scope.newAddressInput', $scope.newAddressInput]);
 	 	if($stateParams.addressid === ""){
 		 		daogouAPI.addAddress({
-		 			user_id: $stateParams.userid,
+		 			user_id: $rootScope.USERINFO.id,
 		 			name: $scope.newAddressInput.name,
 		 			state: $scope.newAddressInput.provinceInfo.name,
 		 			state_code: $scope.newAddressInput.provinceInfo.code,
@@ -693,14 +818,14 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		 		},function(data, status, headers, config){
 		 			console.log(['增加新地址成功',data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
 		 			$scope.defaultAddressdata = data;
-		 			$state.go('changeReceiveInfo',{'userid':$stateParams.userid});
+		 			$state.go('changeReceiveInfo',{'userid':$rootScope.USERINFO.id});
 		 		},function(data, status, headers, config){
 		 			console.log(['增加新地址失败',data]);//弹出失败提示 停在原页
 		 		});
 	 	}else{
 		 		daogouAPI.editAddress({
 		 			id:$stateParams.addressid,
-		 			user_id: $stateParams.userid,
+		 			user_id: $rootScope.USERINFO.id,
 		 			name: $scope.newAddressInput.name,
 		 			state: $scope.newAddressInput.provinceInfo.name,
 		 			state_code: $scope.newAddressInput.provinceInfo.code,
@@ -715,7 +840,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,pay)
 		 		},function(data, status, headers, config){
 		 			console.log(['修改地址成功',data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
 		 			$scope.defaultAddressdata = data;
-		 			$state.go('changeReceiveInfo',{'userid':$stateParams.userid});
+		 			$state.go('changeReceiveInfo',{'userid':$rootScope.USERINFO.id});
 		 		},function(data, status, headers, config){
 		 			console.log(['修改地址失败',data]);//弹出失败提示 停在原页
 		 		});

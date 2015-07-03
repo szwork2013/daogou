@@ -26,8 +26,8 @@ app.use(cookieParser());
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '../')));
 app.use(function(req, res, next) {
-
-	if (req.originalUrl === '/' || req.originalUrl === '/index.html') {
+	var mainurl=req.originalUrl.split('?')
+	if (mainurl[0] === '/' || mainurl[0] === '/index.html') {
 		var indexoption = {
 			url: "http://" + req.headers.host + "/.tmp/serve/index.html",
 			method: req.method,

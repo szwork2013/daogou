@@ -1,8 +1,8 @@
 'use strict';
 
 var order = angular.module('order',['ionic']);
-order.controller('orderDetailCtrl',['$scope', '$log', '$http','URLPort', 'daogouAPI', '$state', '$stateParams',function($scope,$log,$http,URLPort,daogouAPI,$state,$stateParams){
-
+order.controller('orderDetailCtrl',
+function($rootScope,$scope,$log,$http,$state,$stateParams,URLPort,daogouAPI,WXpay){
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
 	//这个切换其实是2个页面 不是页面内切换的
@@ -22,6 +22,8 @@ $scope.cancelpayOrder = false;//取消订单，立即付款
 $scope.cancelOrder = false;//取消订单
 $scope.refund = false;//商品列表上的退款按钮
 $scope.refunding = false;//商品列表上的退款中按钮
+
+
 $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 .success(function(data){
 	console.log(["获取订单详情成功",data]);
@@ -114,9 +116,17 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 		})
 	}
 	
-
-
 	$scope.orderDetailData = data;
+
+
+	//立即调用微信支付
+	if($rootScope.PAYNOW){
+			WXpay($rootScope.BRANDID,$stateParams.tid,function(data){
+				alert('支付成功');
+				alert(JSON.stringify(data));
+			});
+		
+	}
 
 })
 .error(function(data){
@@ -131,4 +141,34 @@ $scope.refundfunc = function(tid,oid){
 
 
 
-}]);
+
+$scope.payThisOrder=function(){
+
+	WXpay($rootScope.BRANDID,$stateParams.tid,function(data){
+		alert('支付成功');
+		alert(JSON.stringify(data));
+	});
+
+
+}
+
+
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

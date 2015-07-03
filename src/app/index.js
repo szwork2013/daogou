@@ -40,6 +40,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 	$stateProvider
 		.state('productDetail', {
 			url: '/productDetail/:detailId',
+			// url: '/productDetail',
 			templateUrl: 'app/product/product-detail/product-detail.html',
 			controller: 'productDetailCtrl'
 		})
@@ -109,19 +110,35 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 			controller: 'newAddressCtrl'
 		})
 		.state('guide', {
-			url: '/guide/:guideid/:brandid',
+			url: '/guide/:brandid',
 			templateUrl: 'app/guide/guide.html',
 			controller: 'guideCtrl'
 		});
 
-	$urlRouterProvider.otherwise('productDetail/100030');
+	//取code肯定是在支付流程
+	if(getRequest('code')&&getRequest('tid')){
+		$urlRouterProvider.otherwise('orderDetail/'+getRequest('tid'));
+	}else{
+		$urlRouterProvider.otherwise('productDetail/100059');
+	}
+	// $urlRouterProvider.otherwise('productDetail');
 
 	// $urlRouterProvider.otherwise('/login');
 
 	//http://codepen.io/ahsx/pen/mDcEd
 
+ 	function getRequest(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+		var r = window.location.search.substr(1).match(reg);
+		if (r !== null) return unescape(r[2]); return null;
+	}
+
 })
-.controller('configCtrl', function($rootScope,$scope, wxconfig, pay) {
+.controller('configCtrl', function($rootScope,$scope,$location,WXconfig,getRequest,WXgetOpenid,daogouAPI) {
+
+// /shopping/index.html?guider_id=123124&share=false#/productDetail/100030
+// 导购ID：123124
+// 是否为消费者打开页面：share=true：消费者打开，share=false：导购打开
 
 	/*
 	https://open.weixin.qq.com/connect/oauth2/authorize?
@@ -130,27 +147,27 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 	&response_type=code&
 	scope=snsapi_base&
 	state=123#wechat_redirect
-	
 	*/
 
+//导购id
+$rootScope.GUIDID=parseInt(getRequest('guider_id'));
+//brand_id
+$rootScope.BRANDID=parseInt(getRequest('brand_id'));
+//是app访问还是微信访问   true是微信  false是app
+$rootScope.ISWX=(getRequest('share')==='true'?true:false);
+//为true时进入订单详情后直接调用支付
+$rootScope.PAYNOW=getRequest('code')?true:false;
 
+daogouAPI.isLogin()
 
-	wxconfig(1, function(configdata) {
+console.log(window.location)
+	
+	//微信注册
+	WXconfig($rootScope.BRANDID, function(configdata) {
 		console.log(['微信config', configdata]);
-		
-
-
-// 		var url='https://open.weixin.qq.com/connect/oauth2/authorize?'+
-// 			'appid='+$rootScope.WXINFO.appid+
-// 			'&redirect_uri='+encodeURIComponent(window.location.href)+
-// 			'&response_type=code'+
-// 			'&scope=snsapi_base'+
-// 			'#wechat_redirect';
-// console.log(url)
-
-
+		//微信 JSSDK 注册
 		wx.config({
-			debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+			debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 			appId: configdata.appId, // 必填，公众号的唯一标识
 			timestamp: configdata.timestamp, // 必填，生成签名的时间戳
 			nonceStr: configdata.nonceStr, // 必填，生成签名的随机串
@@ -195,7 +212,6 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 
 
 	});
-
 
 })
 
