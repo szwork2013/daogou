@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-.directive('floatCenter',  function($rootScope){
+.directive('floatCenter',  function($rootScope,daogouAPI){
 	// Runs during compile
 	return {
 		// name: '',

@@ -9,15 +9,10 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	// $scope.buyskudetail = $stateParams.skudetail;
 	// $scope.buyskuid = $stateParams.skuid;
 	// $scope.buynum = $stateParams.num;
-// <<<<<<< HEAD
-// 	$scope.buyfreight = $rootScope.productOrders[0].freight;
-// 	$scope.totalprice = $rootScope.productOrders[0].price*$rootScope.productOrders[0].num;
-
-// =======
 	// $scope.buyfreight = $stateParams.freight;
 	// $scope.totalprice = $stateParams.price*$stateParams.num;
 	console.log(['传递过来的的data数值yyyyyyy',$rootScope.productOrders])
-// >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
+
 	//没有订单数据返回首页
 	console.log(["$rootScope.productOrdersyyyyyyyyy",$rootScope.productOrders]);
 
@@ -27,7 +22,6 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	}
 	
 	$scope.login = false;//处理登录框的一点样式问题，背景为白色
-	$scope.brand_id=$rootScope.BRANDID;
 
 	console.log(['aa',$rootScope.productOrders])
 	$scope.totalprice=0;
@@ -65,19 +59,13 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 
    	$scope.buyeraddress = true;
    	$scope.firstBuyerAddress = true;
-	$scope.allbuyeraddress = true;
-	$scope.shopaddress = true;
-
-// <<<<<<< HEAD
-// =======
+	$scope.express = true;// true为快递上门   false为门店取货
 
 // 	$scope.postway = function(){
-// 		$scope.allbuyeraddress = true;
-// 		$scope.shopaddress = false;
+// 		$scope.express = true;
 // 	}
 // 	$scope.shopway = function(){
-// 		$scope.allbuyeraddress = false;
-// 		$scope.shopaddress = true;
+// 		$scope.express = false;
 // 		 if (window.navigator.geolocation) {
 //             // var options = {
 //             //      enableHighAccuracy: true,
@@ -101,7 +89,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
        
 //        }
 
-//       daogouAPI.shopAddress('/brands/'+$scope.brand_id+'/stores/store-fetch',{
+//       daogouAPI.shopAddress('/brands/'+$rootScope.BRANDID+'/stores/store-fetch',{
 //       		user_id:$rootScope.USERINFO.id,
 //       		longitude:121.399411,
 //       		latitude:31.168323
@@ -138,9 +126,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 // 	}
 
 
-	
 
-// >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
 	var URLPort = URLPort();
 
 	//判断是否登录
@@ -154,18 +140,6 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 		$scope.loginhandle = false; //未登录让 登录模块不隐藏
 		$scope.alladdress = true; //让地址模隐藏
 	}
-	// daogouAPI.isLogin(function(data) {
-	// 	//如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
-	// 	console.log(['用户已登录,获得当前登录用户账号', data]);
-	// 	//登录后的UI样式设置
-	// 	userIsLoginSetUI();
-
-	// }, function(data) {
-	// 	//如果未登录,显示登录框，进行登录
-	// 	console.log(['用户未登录,没获得当前登录用户账号', data]);
-	// 	$scope.loginhandle = false; //未登录让 登录模块不隐藏
-	// 	$scope.alladdress = true; //让地址模隐藏
-	// });
 
 
 	$scope.loginsuccess=function(data){
@@ -181,14 +155,11 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 
 
 
-
 	$scope.postway = function(){
-		$scope.allbuyeraddress = true;
-		$scope.shopaddress = false;
+		$scope.express = true;
 	}
 	$scope.shopway = function(){
-		$scope.allbuyeraddress = false;
-		$scope.shopaddress = true;
+		$scope.express = false;
 
 
 		// var x=document.getElementById("demo");
@@ -298,7 +269,6 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 			$rootScope.defaultAddressdata = data;
 			$scope.loginhandle = true;
 			$scope.alladdress = false;
-			$scope.shopaddress = false;
 			$scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
 			$scope.buyeraddress = false;
 			$scope.weixinpay = false;
@@ -349,8 +319,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 		.error(function(){
 			console.log('删除新地址失败');
 
-			$scope.shopaddress = false;//显示用户地址，隐藏实体店地址
-			$scope.allbuyeraddress = true;
+			$scope.express = true;
 
 			$scope.firstBuyerAddress = false;//隐藏选择地址模块，显示填写第一个地址模块
 			console.log(['$scope.firstBuyerAddress!!!!!!',$scope.firstBuyerAddress])
@@ -372,27 +341,16 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 
 
 
-
-
-
 	$scope.buyerMessage ={
 		'buyer_memo':''
 	}
 
 
-/*
-支付
-cc.com?gid=333#/did/123
-
-cc.com?gid=333&did=123&
-code=00177a72afbef088d656bb480b90625p
-
-*/
 
 	$scope.submitOrder = function(){
 
 		console.log('提交订单');
-		console.log(['$scope.brand_id',$scope.brand_id]);
+		console.log(['$rootScope.BRANDID',$rootScope.BRANDID]);
 		//支付按钮先创建订单再支付
 		$http.post(URLPort+'/trades',
 			{
@@ -401,7 +359,7 @@ code=00177a72afbef088d656bb480b90625p
 			'brand_id': parseInt($rootScope.productOrders[0].brand_id),
 			'buyer_memo': $scope.buyerMessage.buyer_memo,
 			'pay_type': 'WEIXIN',
-			'shipping_type': 'express',
+			'shipping_type': $scope.express?"EXPRESS":"FETCH",
 			'receiver_state': $rootScope.defaultAddressdata.state,
 			'receiver_state_code': $rootScope.defaultAddressdata.state_code,
 			'receiver_city': $rootScope.defaultAddressdata.city,
@@ -438,8 +396,8 @@ code=00177a72afbef088d656bb480b90625p
 			console.log(['提交订单成功',orderdata]);
 
 			//创建订单成功调用微信支付
-			WXpay($scope.brand_id,orderdata.tid,function(data){
-				alert('支付成功');
+			WXpay($rootScope.BRANDID,orderdata.tid,function(data){
+				// alert('支付成功');
 				alert(JSON.stringify(data));
 				$state.go('orderDetail',{tid:orderdata.tid})
 			});			
@@ -472,7 +430,7 @@ code=00177a72afbef088d656bb480b90625p
 // <<<<<<< HEAD
 		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$rootScope.productOrders[0].brand_id,'lng':$scope.lng,'lat':$scope.lat});
 // =======
-// 		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$scope.brand_id});
+// 		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$rootScope.BRANDID});
 // >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
 	}
 	$scope.changeReceiveInfoFunc = function(){//收货人地址列表页面
@@ -486,8 +444,7 @@ code=00177a72afbef088d656bb480b90625p
 	function userIsLoginSetUI(){
 		$scope.loginhandle = true; //已经登录让 登录模块隐藏
 		$scope.alladdress = false; //让地址模不隐藏
-		$scope.shopaddress = false; //默认显示用户地址，隐藏实体店地址
-		$scope.allbuyeraddress = true;
+		$scope.express = true;
 		$rootScope.USERINFO.id = $rootScope.USERINFO.id;
 		//查询用户的收获地址信息
 		checkoutAddress();
@@ -511,8 +468,7 @@ code=00177a72afbef088d656bb480b90625p
 
 					} else {
 						console.log(['当前用户没有收货地址，请填写第一个收货地址', data]);
-						$scope.shopaddress = false; //显示用户地址，隐藏实体店地址
-						$scope.allbuyeraddress = true;
+						$scope.express = true;
 						$scope.firstBuyerAddress = false; //隐藏选择地址模块，显示填写第一个地址模块
 						$scope.buyeraddress = true;
 						$scope.searchProvinces();
@@ -523,8 +479,7 @@ code=00177a72afbef088d656bb480b90625p
 				.error(function(data) {
 					console.log(['当前用户没有收货地址，请填写第一个收货地址', data]);
 
-					$scope.shopaddress = false; //显示用户地址，隐藏实体店地址
-					$scope.allbuyeraddress = true;
+					$scope.express = true;
 
 					$scope.firstBuyerAddress = false; //隐藏选择地址模块，显示填写第一个地址模块
 					$scope.buyeraddress = true;
@@ -549,7 +504,7 @@ code=00177a72afbef088d656bb480b90625p
 		longitude:$stateParams.lng,
 		latitude:$stateParams.lat
 // =======
-// 	daogouAPI.shopAddress('/brands/'+$scope.brand_id+'/stores/store-fetch',{
+// 	daogouAPI.shopAddress('/brands/'+$rootScope.BRANDID+'/stores/store-fetch',{
 // 		user_id:$rootScope.USERINFO.id,
 // 		longitude:121.399411,
 // 		latitude:31.168323

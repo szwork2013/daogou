@@ -1,12 +1,19 @@
 <ion-view view-title="宝贝详情" class="product-detail">
 	<ion-content>
 
-		<ion-slide-box on-slide-changed="slideHasChanged($index)" class="sliderbox" >
+<!-- 		<ion-slide-box on-slide-changed="slideHasChanged($index)" class="sliderbox" >
 			<ion-slide ng-repeat="picurl in productDetailData.picUrlArr">
 		    	<img class="sliderpic" ng-src="{{picurl}}">
 			</ion-slide>
 		</ion-slide-box>
-		
+ -->
+		<div class="wcontainer">
+			<div class="sliders" id="sliders">
+				<div  class="sliderlist" ng-repeat="picurl in productDetailData.picUrlArr">
+					<img ng-src="{{picurl}}" alt="">
+				</div>
+			</div>
+		</div>
 		<!-- <p id="demo">点击这个按钮，获得您的坐标：</p>
 		<button ng-click="getLocation()">试一下</button> -->
 		<!-- <p ng-repeat="params in productparam">参数:{{params.param}}</p>
@@ -37,14 +44,7 @@
 	</ion-content>
 	<!-- 悬浮点击打开个人中心、购物车、导购 -->
 	<div float-center></div>
-	<div class="bottombar">
-
-<!-- ============阅完可删除,若不删,留作纪念,我也不反对线=========== -->
-<!-- 此处有交互，点击购物车出现选择弹框 -->
-<!-- 选择 数量，款式颜色 -->
-<!-- 每个选项都有库存，这边显示的库存要 根据 选择项 实时计算的 -->
-<!-- ============阅完可删除,若不删,留作纪念,我也不反对线=========== -->
-		
+	<div class="bottombar ng-hide" ng-show="ISWX">
 		<div class="button button-light" ng-click="propertyShowCart()">加入购物车</div>
 		<div class="button button-assertive" ng-click="propertyShowOrder()">立即购买</div>
 	</div>
@@ -56,7 +56,7 @@
 			      <!-- <img class="productImg" src="assets/images/pic1.png"> -->
 			      <img class="productImg" ng-src="{{productDetailData.picUrlArr[0]}}">
 			      <h2>{{productDetailData.title}}</h2>
-			      <p>￥{{productDetailData.price}}</p>
+			      <p>￥{{productOrder.price}}</p>
 			      <div class="iconfont icon-guanbi close" ng-click="propertyClose()"></div>
 		    </div>
 		</div>
@@ -83,8 +83,8 @@
 				</div>
 				<div class="clearBoth"></div>
 		</div>
-		<div class="nextStep" ng-click="goToOrder()" ng-class="{disnone:goOrder}">下一步order</div>
-		<div class="nextStep" ng-click="goToCart()"  ng-class="{disnone:goCart}">下一步cart</div>
+		<div class="nextStep" ng-click="goToOrder()" ng-class="{disnone:goOrder}">下一步</div>
+		<div class="nextStep" ng-click="goToCart()"  ng-class="{disnone:goCart}">下一步</div>
 	</div>
 	<!-- 登录模块 -->
 	<!-- {{login}} -->

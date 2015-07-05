@@ -67,53 +67,7 @@
 		background: @commonRed;
 		z-index: 99;
 		}
-.daogou{
-	position: fixed;
-	bottom: 60px;
-	right: 10px;
-	width: 46px;
-	height: 46px;
-	// height: 180px;
-	color:#a3a3a3;
-	overflow: hidden;
-	background: #fefefe;
-	border-radius: 46px;
-	border:1px solid #efeeef;
-	.daogouImg1{
-		position: absolute;
-		left:2px;
-		bottom: 2px;
-		width: 40px;
-		height: 40px;
-		border-radius:40px;
-	}
-	.daogouImgWarp{
-		position: absolute;
-		left:2px;
-		bottom: 72px;
-		width: 40px;
-		height: 130px;
-		text-align: center;
-		.daogouImg2{
-			font-size: 22px;
-		}
-		.daogouImgTxt{
-			font-size: 10px;
-			margin:0 0 3px 0;
-		}
-		.redPointCart{
-			position: absolute;
-			right: 5px;
-			bottom: 41px;
-			width: 6px;
-			height: 6px;
-			border-radius:6px;
-			background: @commonRed;
-			z-index: 99;
-		}
-	}
-	
-}
+
 
 .des{
 	padding-bottom: 44px;
@@ -147,6 +101,28 @@
 	background: #000;
 	opacity: 0.7;
 }
+
+.wcontainer {
+	width: 100%;
+	height: auto;
+	.sliders {
+	width: 100%;
+	height: 100vw;
+	overflow: hidden;
+		.sliderlist{
+			width:100%;
+			height:100vw;
+			float:left;
+			img{
+				width:inherit;
+				height:inherit;
+			}
+		}
+	}
+}
+
+
+
 .chooseProductInfoWarp{
 	display: none;
 	position: absolute;

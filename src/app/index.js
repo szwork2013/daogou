@@ -33,8 +33,8 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
     // wxconfig();
 
     // $ionicConfigProvider.backButton.text("返回");
-    // $ionicConfigProvider.views.maxCache(0);
-    // $ionicConfigProvider.views.forwardCache(false);
+    $ionicConfigProvider.views.maxCache(0);
+    $ionicConfigProvider.views.forwardCache(false);
     // $ionicConfigProvider.templates.maxPrefetch(0);
 
     $stateProvider
@@ -116,12 +116,12 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
       });
 
     //取code肯定是在支付流程
-   /* if (getRequest('code') && getRequest('tid')) {
+    if (getRequest('code') && getRequest('tid')) {
       $urlRouterProvider.otherwise('orderDetail/' + getRequest('tid'));
     } else {
       $urlRouterProvider.otherwise('guide');
-    }*/
-    $urlRouterProvider.otherwise('productDetail/100039');
+    }
+    // $urlRouterProvider.otherwise('productDetail/100039');
    // http://localhost:3000/?guider_id=145&share=true&brand_id=1#/productDetail/100039
     // $urlRouterProvider.otherwise('/login');
 
@@ -159,14 +159,18 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
 //为true时进入订单详情后直接调用支付
     $rootScope.PAYNOW = getRequest('code') ? true : false;
 
+    $rootScope.GUIDINFO={};
+	daogouAPI.getGuidInfo(function(data){
+		$rootScope.GUIDINFO=data;
+	})
+
+
     daogouAPI.isLogin()
-    /*
-     此注释不要删除
+    /*===========此注释不要删除=============
      调用daogouAPI.isLogin()后
      会生成以下全局变量
      $rootScope.USERINFO.id          userid
      $rootScope.USERINFO.mobile          usermobile
-     此注释不要删除
      */
 
 

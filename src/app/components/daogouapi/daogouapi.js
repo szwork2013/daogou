@@ -222,7 +222,9 @@ angular.module('daogou')
 		绑定用户的openid
 		*/
 		bindOpenid:bindOpenid,
-
+		
+		/*获取导购详情*/
+		getGuidInfo:getGuidInfo,
 	};
 
 	return daogouAPI;
@@ -476,7 +478,9 @@ angular.module('daogou')
 				id:data.id,
 				mobile:data.mobile
 			};
-			scallback(data);
+			if(scallback){
+				scallback(data);
+			}
 		},ecallback);
 	}
 
@@ -661,6 +665,12 @@ angular.module('daogou')
 		daogouAPI.post(action,data,scallback,ecallback);
 	}
 
+	function getGuidInfo(scallback,ecallback){
+		var action="/brands/"+$rootScope.BRANDID+"/guiders/"+$rootScope.GUIDID+"/details";
+		var data='';
+
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
 
 });
 

@@ -16,26 +16,38 @@ function($rootScope,$scope,$log,$http,$state,$stateParams,daogouAPI,URLPort){
 	var URLPort = URLPort();
 	$scope.daogouProductListData = [];
 	var pageindex = 1;
-	var pagesize = 5;
+	var pagesize = 8;
 	var guiderId = $rootScope.GUIDID;
 	// var guiderId = 145;
 	var brandId = $rootScope.BRANDID;
 	// var brandId = 1;
 	$scope.hasMoreOrder = true;
 
-	$http.get(URLPort+"/brands/"+brandId+"/guiders/"+guiderId+"/details")
-	.success(function(data){
-		console.log(["获取导购信息成功",data]);
-		if(data.full_name.length>10){
-			console.log("超长");
-			data.full_name = data.full_name.substring(0,7);
-			data.full_name +="...";
-		}
-		$scope.guiderData = data;
-	})
-	.error(function(data){
-		console.log(["获取导购信息失败",data])
-	})
+	// daogouAPI.getGuidInfo(function(data){
+	// 	console.log(["获取导购信息成功",data]);
+	// 	if(data.full_name.length>10){
+	// 		console.log("超长");
+	// 		data.full_name = data.full_name.substring(0,7);
+	// 		data.full_name +="...";
+	// 	}
+	// 	$scope.guiderData = data;
+	// },function(data){
+	// 	console.log(["获取导购信息失败",data])
+	// })
+
+	// $http.get(URLPort+"/brands/"+brandId+"/guiders/"+guiderId+"/details")
+	// .success(function(data){
+	// 	console.log(["获取导购信息成功",data]);
+	// 	if(data.full_name.length>10){
+	// 		console.log("超长");
+	// 		data.full_name = data.full_name.substring(0,7);
+	// 		data.full_name +="...";
+	// 	}
+	// 	$scope.guiderData = data;
+	// })
+	// .error(function(data){
+	// 	console.log(["获取导购信息失败",data])
+	// })
 
 	$http.get(URLPort+"/brands/"+brandId)
 	.success(function(data){
@@ -58,6 +70,12 @@ function($rootScope,$scope,$log,$http,$state,$stateParams,daogouAPI,URLPort){
 			console.log(["查询导购商品列表成功",data]);
 			console.log(["hasMoreOrder",$scope.hasMoreOrder])
 			console.log(["pageindex",pageindex]);
+			
+			for (var i in data) {
+				data[i].pic=data[i].pic_url.split(',')[0];
+			};
+
+
 			$scope.daogouProductListData = $scope.daogouProductListData.concat(data);
 			
 		    console.log(["data.length",data.length])

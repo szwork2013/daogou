@@ -58,7 +58,7 @@ angular.module('daogou')
 			$scope.verify=function(){
 				$(".yanzhengma").addClass("clickdown");
 				$(".yanzhengma").attr({"disabled":"disabled"});
-				var remainTime = 10;
+				var remainTime = 60;
 				$(".yanzhengma").text("重新获取验证码(10s)");
 				$scope.timer = setInterval(function(){
 					 remainTime--;
@@ -142,6 +142,7 @@ angular.module('daogou')
 
 			function successcallback(data){
 				var getter=$parse(iAttrs.loginsuccess);
+				console.log($scope);
 				var loginsuccess=getter($scope);
 				loginsuccess(data);
 			}

@@ -22,7 +22,7 @@
         }
       ],
       "jQuery": {
-        "key": "jquery2"
+        "key": "zepto"
       },
       "resource": {
         "key": "none",

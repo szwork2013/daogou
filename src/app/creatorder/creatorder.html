@@ -7,11 +7,9 @@
                  <label class="checkbox disnone">
                    <input type="checkbox" ng-model="choose">
                  </label>
-<!-- <<<<<<< HEAD
-                <img ng-src="{{order.pic_url}}" class="product-img">
-======= -->
+
                 <img ng-src="{{order.picUrlArr[0]}}" class="product-img">
-<!-- >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177 -->
+
                 <div class="paramenters">
                     <div class="name">{{order.title}}</div>
                     <div class="paras">{{order.skudetail}}</div>
@@ -51,14 +49,14 @@
        <div class="statusWrap" ng-class="{disnone:alladdress}">
           <span class="pickupway">取货方式</span>
           <div>
-              <div class="pickupways" ng-class="{pickwayselect:allbuyeraddress}" ng-click="postway()">快递到家</div>
-              <div class="pickupways" ng-class="{pickwayselect:shopaddress}" ng-click="shopway()">门店自取</div>
+              <div class="pickupways" ng-class="{pickwayselect:express}" ng-click="postway()">快递到家</div>
+              <div class="pickupways" ng-class="{pickwayselect:!express}" ng-click="shopway()">门店自取</div>
               <div class="clearBoth"></div>
           </div>
 
           <!--收货人地址-->
           <!-- <div ng-class="{disnone:0}"> -->
-           <div ng-class="{disnone:shopaddress}">
+           <div ng-class="{disnone:!express}">
              <!-- 第一次写收货地址 -->
               <div ng-class="{disnone:firstBuyerAddress}">
                <!-- <div ng-class="{disnone:0}"> -->
@@ -96,7 +94,7 @@
 
 
           <!-- 实体店地址 -->
-          <div class="addressInfo remarkpadding" ng-class="{disnone:allbuyeraddress}">
+          <div class="addressInfo remarkpadding" ng-class="{disnone:express}">
               <div>
                   <span class="floatL width85">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}}  </span>
                   <span class="colorBlue floatR font13" ng-click="goGoodsShop()">修改</span>
@@ -109,7 +107,7 @@
                   <div class="clearBoth"></div>
               </div>
           </div>
-          <div class="order-time" ng-class="{disnone:allbuyeraddress}">
+          <div class="order-time" ng-class="{disnone:express}">
                 预约取货时间（营业时间 10：00-20：00）
                 <div class="select-time">
                   3月20日 16:00
