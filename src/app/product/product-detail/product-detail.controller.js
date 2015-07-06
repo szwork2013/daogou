@@ -12,7 +12,8 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	$scope.productOrder={
 		num:1,
 		bring_guider_id:$rootScope.GUIDID,
-		sku_id:''
+		sku_id:'',
+		price:0
 	}
 	$rootScope.productOrders=[];
 
@@ -22,12 +23,25 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 	// $http.get(URLPort+"/items/100003")
 	// $http.get("assets/testdata/product-detail.json")
 	.success(function(data){
+
+		setTimeout(function(){
+				$("#sliders").touchSlider({
+					animatetime:300,
+					automatic:!0,
+					timeinterval:4e3,
+					sliderpoint:!0,
+					sliderpointwidth:8,
+					sliderpointcolor:"#fa9d00"
+				});
+			},200);
+
 		console.log(['获得商品详情成功',data]);
 		$scope.productDetailData = data;
 		$scope.productDetailData.realquantity = 0;//剩余库存数量
 		$scope.productDetailData.picUrlArr =  $scope.productDetailData.pic_url.split(',');//轮播图片url获取
-		console.log(["$scope.productDetailData.picUrlArr",$scope.productDetailData.picUrlArr]);
 
+		$scope.productOrder.price=$scope.productDetailData.price;//初始化商品价格
+		console.log(["$scope.productDetailData.picUrlArr",$scope.productDetailData.picUrlArr]);
 		//$scope.productDetailData.content = $scope.productDetailData.content.substring(6,$scope.productDetailData.content.length-7);//content中间内容获取
 
 
@@ -257,6 +271,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 					if(strSku===strInput){
 						$scope.productDetailData.realquantity = $scope.productDetailData.skus[id].real_quantity;
 						$scope.productOrder.sku_id = $scope.productDetailData.skus[id].sku_id;
+						$scope.productOrder.price = $scope.productDetailData.skus[id].price;
 						$scope.productOrder.num = 1;
 						$scope.productDetailData.skudetail = "";
 						var skuArray = $scope.productDetailData.skus[id].properties.split(";");
@@ -289,7 +304,6 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
 			$scope.productOrder.buynum=$scope.productOrder.num;
 			$scope.productOrder.title=$scope.productDetailData.title;
 			$scope.productOrder.freight=$scope.productDetailData.freight;
-			$scope.productOrder.price=$scope.productDetailData.price;
 			$scope.productOrder.picUrlArr=$scope.productDetailData.picUrlArr;
 			$scope.productOrder.brand_id=$scope.productDetailData.brand_id;
 

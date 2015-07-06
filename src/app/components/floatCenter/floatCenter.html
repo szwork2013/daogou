@@ -1,6 +1,6 @@
-<div class="redPoint"></div>
-<div class="daogou">
-	<img class="daogouImg1" src="assets/images/daogou1.png" ng-click="showmenu()">
+<div class="daogou ng-hide" ng-show="ISWX">
+	<div class="redPoint"></div>
+	<img class="daogouImg1" ng-src="{{GUIDINFO.avatar}}" ng-click="showmenu()">
 	<div class="daogouImgWarp">
 		<div class="iconfont icon-wo daogouImg2" ui-sref="orderList({userid:USERINFO.id})"></div>
 		<span class="daogouImgTxt" ui-sref="orderList({userid:USERINFO.id})">个人中心</span>
