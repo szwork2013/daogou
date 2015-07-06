@@ -225,6 +225,12 @@ angular.module('daogou')
 		
 		/*获取导购详情*/
 		getGuidInfo:getGuidInfo,
+
+		/*获取物流信息*/
+		logistics:logistics,
+
+		/*上传文件*/
+		uploadfile:uploadfile,
 	};
 
 	return daogouAPI;
@@ -671,6 +677,27 @@ angular.module('daogou')
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
+
+	
+	function logistics(dataobj,scallback,ecallback) {
+		var action='/logistics';
+		var data={
+			express_company_code: dataobj.express_company,
+			express_no: dataobj.express_no
+		};
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	
+
+	function uploadfile(dataobj,scallback,ecallback) {
+		var action='/attachments/file/upload';
+		var data={
+			zip: typeof dataobj.zip === 'string' ? dataobj.zip : small,
+		};
+		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
 
 });
 
