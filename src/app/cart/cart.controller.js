@@ -8,24 +8,30 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
 	//这个切换其实是2个页面 不是页面内切换的
 	//一个是购物车页cart   应该是订单列表  order → order-list
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
-
-   
-
-
+    //先检测是否登录，若登陆了则获取用户信息，未登录进入登录界面
+    daogouAPI.isLogin(
+        function(data){
+            console.log("我是order登录检查登录了")
+            console.log(data)
+            //获取订单信息
+            cartProductListFunc();
+        }
+        ,function(data){
+            console.log("我是order登录检查没登录")
+            $scope.login=true;
+        }
+    );
+    //检测登录结束
+    //获取购物车信息开始
     var URLPort = URLPort();
-
     $scope.cartProductListData = [];
     var pageindex = 1;
     var pagesize = 5;
     $scope.hasMoreOrder = true;
-    var userid = $stateParams.userid;
-    var brandid = $stateParams.brandid;
-    console.log(["userid",userid]);
-    console.log(["brandid",brandid]);
 	function cartProductListFunc(){
 		daogouAPI.shopcart({
-			userid:userid,
-			brand_id:brandid,
+			userid:$rootScope.USERINFO.id,
+			brand_id:$rootScope.BRANDID,
 			page:pageindex,
 			per_page:pagesize
 		},function(data, status, headers, config){
@@ -74,15 +80,23 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
 		    	$scope.hasMoreOrder = false;
 		    	console.log(["hasMoreOrder",$scope.hasMoreOrder])
 		    }
-		   
 		    $scope.$broadcast('scroll.infiniteScrollComplete');
-		    
 		},function(data, status, headers, config){
 			console.log(["查询导购商品列表失败",data]);
 		});
 	}
+    //回调登录开始
+    $scope.loginsuccess=function(data){
+      console.log(["cart的回调", data]);
+      $(".redPoint").show();
+      $scope.login=false;
+      //获取订单信息
+      cartProductListFunc();
+    }
+    $scope.loginerror=function(data){
 
-	cartProductListFunc();
+    }
+    //回调登录结束
 
 	$scope.loadMoreData = function(){
 		console.log(["loadMoreData"]);
@@ -95,7 +109,7 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
 	   	 }
 	 });
 
-	$http.get(URLPort+"/brands/"+brandid)
+	$http.get(URLPort+"/brands/"+$rootScope.BRANDID)
 	.success(function(data){
 		console.log(["获取品牌信息成功",data]);
 		$scope.brandData = data;
@@ -211,13 +225,10 @@ cart.controller('cartCtrl',['$scope', '$log', '$http','$state','URLPort','$state
     	$scope.edithandle = true;
     	$scope.finishhandle = false;
     }
-
-
-
     //购物车 订单列表切换
     $scope.goOrderList = function(){
-        console.log(["goOrderList  $stateParams.userid",$stateParams.userid]);
-        $state.go("orderList",{"userid": $stateParams.userid});
+        console.log(["goOrderList  $rootScope.USERINFO.id",$rootScope.USERINFO.id]);
+        $state.go("orderList",{"userid": $rootScope.USERINFO.id});
     }
     
 }]);

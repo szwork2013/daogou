@@ -8,14 +8,30 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
   //这个切换其实是2个页面 不是页面内切换的
   //一个是购物车页cart   应该是订单列表  order → order-list
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
+  daogouAPI.isLogin(function(data){
+    console.log("我是order登录检查登录了")
+    console.log(data)
+
+    //获取订单信息
+    getOrderListFunc();
+
+  },function(data){
+    console.log("我是order登录检查没登录")
+    $scope.login=true;
+  });
   var URLPort = URLPort();
-  $scope.curUserID = $stateParams.userid;
+
+
   $scope.productListData = [];
   var pageindex = 1;
   var pagesize = 5;
   $scope.hasMoreOrder = true;
+
+
+
+
   function getOrderListFunc() {
-    daogouAPI.getOrderList("/trades/users/" + $scope.curUserID, {
+    daogouAPI.getOrderList("/trades/users/" + $rootScope.USERINFO.id, {
       page: pageindex,
       per_page: pagesize,
       show_orders: true
@@ -23,7 +39,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
       console.log(["查询消费者的订单列表成功", data]);
       console.log(["hasMoreOrder", $scope.hasMoreOrder]);
       console.log(["pageindex", pageindex]);
-      $scope.brandid = data[0].brand_id;
+      $rootScope.BRANDID = data[0].brand_id;
       angular.forEach(data, function (item, index) {
         switch (item.status) {
           case "WAIT_BUYER_PAY":
@@ -81,7 +97,20 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
     });
   }
 
-  getOrderListFunc();
+
+
+  $scope.loginsuccess=function(data){
+      console.log(["order的回调", data]);
+      $scope.login=false;
+      $(".redPoint").show();
+      //获取订单信息
+      getOrderListFunc();
+  }
+  $scope.loginerror=function(data){
+
+  }
+
+
 
   /**
    * 把毫秒转换为 xx小时xx分钟xx秒的通用方法
@@ -132,9 +161,9 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
    * 购物车订单列表切换
    */
   $scope.goCart = function () {
-    console.log(["goCart userid", $stateParams.userid]);
-    console.log(["goCart brandid", $scope.brandid]);
-    $state.go("cart", {"userid": $stateParams.userid, "brandid": $scope.brandid});
+    console.log(["goCart userid", $rootScope.USERINFO.id]);
+    console.log(["goCart brandid", $rootScope.BRANDID]);
+    $state.go("cart", {"userid": $rootScope.USERINFO.id, "brandid": $rootScope.BRANDID});
   };
 
 

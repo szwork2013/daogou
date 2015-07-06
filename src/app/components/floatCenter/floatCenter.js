@@ -32,7 +32,7 @@ angular.module('daogou')
 				$(".redPoint").show();
 			},function(){
 				$(".redPoint").hide();
-				$scope.login = true;
+				// $scope.login = true;
 
 			})
 			if(parseInt($(".daogou").css("height"))<100){
@@ -42,22 +42,22 @@ angular.module('daogou')
 			}
 		}
 
-		$scope.loginsuccess=function(data){
-			console.log(['float成功回调',data]);
-			//回调成功检测用户信息是否登录
-			daogouAPI.isLogin(function(){
-				$(".redPoint").show();
-			},function(){
-				$(".redPoint").hide();
+		// $scope.loginsuccess=function(data){
+		// 	console.log(['float成功回调',data]);
+		// 	//回调成功检测用户信息是否登录
+		// 	daogouAPI.isLogin(function(){
+		// 		$(".redPoint").show();
+		// 	},function(){
+		// 		$(".redPoint").hide();
 
-			})
-			$scope.login = false; //是否显示登录页面
+		// 	})
+		// 	$scope.login = false; //是否显示登录页面
 
-		};
-		$scope.loginerror=function(data){
-			console.log(['float失败回调',data])
+		// };
+		// $scope.loginerror=function(data){
+		// 	console.log(['float失败回调',data])
 
-		};
+		// };
 		}
 	};
 })
