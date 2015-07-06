@@ -330,7 +330,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 				'receiver_city': $rootScope.defaultAddressdata.city,
 				'receiver_city_code': $rootScope.defaultAddressdata.city_code,
 				'receiver_district': $rootScope.defaultAddressdata.district,
-				'receiver_district_code': $rootScope.defaultAddressdata.district_cod,
+				'receiver_district_code': $rootScope.defaultAddressdata.district_code,
 				'receiver_address': $rootScope.defaultAddressdata.address,
 				'receiver_name': $rootScope.defaultAddressdata.name,
 				'receiver_zip': $rootScope.defaultAddressdata.zip,
