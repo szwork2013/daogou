@@ -59,7 +59,7 @@ angular.module('daogou')
 				$(".yanzhengma").addClass("clickdown");
 				$(".yanzhengma").attr({"disabled":"disabled"});
 				var remainTime = 60;
-				$(".yanzhengma").text("重新获取验证码(10s)");
+				$(".yanzhengma").text("重新获取验证码(60s)");
 				$scope.timer = setInterval(function(){
 					 remainTime--;
 					 console.log(["$scope.timer",$scope.timer]);
