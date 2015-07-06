@@ -252,7 +252,7 @@ product.controller('productDetailCtrl',function($rootScope,$scope,$log,$http,$st
             var strInput = "";
     		for(var nn in $scope.productDetailData.specification){
     			console.log("numnum"+$("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val());
-    			if($("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val()==="undefined"){
+    			if($("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val()===undefined){
     				$scope.remain = false;
     			}else{
     				strInput +=$("input[name="+$scope.productDetailData.specification[nn].key+"]:checked").val();

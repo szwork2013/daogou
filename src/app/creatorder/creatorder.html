@@ -110,19 +110,16 @@
           <div class="order-time" ng-class="{disnone:express}">
                 预约取货时间（营业时间 10：00-20：00）
                 <div class="select-time">
-                  3月20日 16:00
-                   <label for="timeselect" class="select-label floatR"> 
-                      <i class="iconfont icon-jiantouleft rotate180 floatR"></i>
-                   </label>
-                   <select  id="timeselect" class="novisible">
-                       <option value="1">5:00</option>
-                       <option value="2">6:00</option>
-                       <option value="3">7:00</option>
-                       <option value="4">8:00</option>
-                       <option value="5">9:00</option>
-                       <option value="6">10:00</option>
-                       <option value="7">12:00</option>
-                   </select>
+                <select id="fetch_day"  ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData" ng-change="dayselecthour(fetchTime.fetchday)">
+                <option value="">-- 请选择日期 --</option>
+                </select>
+                <select id="fetch_hour"  ng-model="fetchTime.fetchhour" ng-options="fetchhour for fetchhour in fetchhourData">
+                <option value="">-- 请选择时间 --</option>
+                </select>
+
+
+
+
                 </div>
           </div>
           <!-- 实体店地址 -->

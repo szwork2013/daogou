@@ -61,71 +61,6 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
    	$scope.firstBuyerAddress = true;
 	$scope.express = true;// true为快递上门   false为门店取货
 
-// 	$scope.postway = function(){
-// 		$scope.express = true;
-// 	}
-// 	$scope.shopway = function(){
-// 		$scope.express = false;
-// 		 if (window.navigator.geolocation) {
-//             // var options = {
-//             //      enableHighAccuracy: true,
-//             //  };
-//              console.log('浏览器支持html5来获取地理位置信息')
-//              window.navigator.geolocation.getCurrentPosition(handleSuccess, handleError,{timeout:2000});
-//          } else {
-//               console.log('浏览器不支持html5来获取地理位置信息');
-//          }
-
-// 	   	function handleSuccess(position){
-//            // 获取到当前位置经纬度  本例中是chrome浏览器取到的是google地图中的经纬度
-//            var lng = position.coords.longitude;
-//            var lat = position.coords.latitude;
-//            console.log(['geolocation lng',lng]);
-//            console.log(['geolocation lat',lat]);
-// 	     }
-		           
-//        function handleError(error){
-//        	console.log('geolocation error')
-       
-//        }
-
-//       daogouAPI.shopAddress('/brands/'+$rootScope.BRANDID+'/stores/store-fetch',{
-//       		user_id:$rootScope.USERINFO.id,
-//       		longitude:121.399411,
-//       		latitude:31.168323
-//       	},function(data, status, headers, config){
-//       		console.log(['查询门店列表成功',data]);
-//       		$scope.shopaddressData = data;
-//       		var flag = false;
-//       		var defaultIndex = 0;
-//       		for(var i in $scope.shopaddressData){
-//       			if($scope.shopaddressData[i].is_default===1){
-//       				flag = true;//如果有默认地址 flag为true
-//       				defaultIndex = i;
-//       			}
-//       		}
-//       		if(flag === true){//有默认地址
-//       			console.log('有默认地址');
-//       			$scope.minDistance=$scope.shopaddressData[defaultIndex];
-//       		}else{//没有默认地址
-//       			console.log('无有默认地址');
-//       			var minIndex = 0;
-//       			for(var i=0;i<data.length-1;i++){
-//       				if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
-//       					minIndex = i+1;
-//       				}
-//       			}
-//       			$scope.minDistance = data[minIndex]; 
-//       		}
-      		
-      	    
-//       	},function(data, status, headers, config){
-//       		console.log(['查询门店列表失败',data]);
-//       	});
-
-// 	}
-
-
 
 	var URLPort = URLPort();
 
@@ -189,7 +124,8 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	    					}
 	    					if(flag === true){//有默认地址
 	    						console.log('有默认地址');
-	    						$scope.minDistance=$scope.shopaddressData[defaultIndex];
+	    						$rootScope.minDistance=$scope.shopaddressData[defaultIndex];
+	    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
 	    					}else{//没有默认地址
 	    						console.log('无有默认地址');
 	    						var minIndex = 0;
@@ -198,15 +134,33 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	    								minIndex = i+1;
 	    							}
 	    						}
-	    						$scope.minDistance = data[minIndex]; 
+	    						$rootScope.minDistance = data[minIndex]; 
+	    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
 	    					}
 	    					
+
+	    					//获取门店取货时间
+	    						$scope.fetchTime = {};
+								$scope.fetchTime.fetchday = "";
+								$scope.fetchTime.fetchhour = "";
 	    					   daogouAPI.fetchTime({
 		    					   	brand_id:$rootScope.productOrders[0].brand_id,
 		    					   	user_id:$rootScope.USERINFO.id,
-		    					   	store_id:$scope.minDistance.id
+		    					   	store_id:$rootScope.minDistance.id
 	    						 },function(data, status, headers, config){
 	    					 		$scope.fetchTimeData = data;
+	    					 		$scope.fetchdayData = [];
+	    					 		$scope.fetchhourData = [];
+	    					 		for(var i in $scope.fetchTimeData){
+	    					 			$scope.fetchdayData[i] = {};
+	    					 		}
+
+	    					 		for(var i in $scope.fetchTimeData){
+	    					 			// $scope.fetchdayData.push($scope.fetchTimeData[i].day);
+	    					 			$scope.fetchdayData[i].index = i;
+	    					 			$scope.fetchdayData[i].day = $scope.fetchTimeData[i].day;
+	    					 		}
+	    					 		console.log(["$scope.fetchdayData",$scope.fetchdayData]);
 	    					 		console.log(['获取用户取货可选时间范围成功',data]);
 	    					 	 },function(data, status, headers, config){
 	    					 		console.log(['获取用户取货可选时间范围失败',data]);
@@ -232,6 +186,15 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 
 	    $scope.getLocation();
 	}
+	$scope.dayselecthour = function(day){
+		console.log(["$scope.fetchTime.fetchday",day]);
+		$scope.fetchhourData = $scope.fetchTimeData[parseInt(day.index)].times;
+		console.log(["$scope.fetchhourData",$scope.fetchhourData]);
+		console.log(["$scope.fetchTime.fetchhour"])
+	}
+
+
+
 
 	$scope.getAddresses = function(){
 
@@ -352,61 +315,84 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 		console.log('提交订单');
 		console.log(['$rootScope.BRANDID',$rootScope.BRANDID]);
 		//支付按钮先创建订单再支付
-		$http.post(URLPort+'/trades',
-			{
-			'buyer_user_id': $rootScope.USERINFO.id,
-			'bring_guider_id': 12,
-			'brand_id': parseInt($rootScope.productOrders[0].brand_id),
-			'buyer_memo': $scope.buyerMessage.buyer_memo,
-			'pay_type': 'WEIXIN',
-			'shipping_type': $scope.express?"EXPRESS":"FETCH",
-			'receiver_state': $rootScope.defaultAddressdata.state,
-			'receiver_state_code': $rootScope.defaultAddressdata.state_code,
-			'receiver_city': $rootScope.defaultAddressdata.city,
-			'receiver_city_code': $rootScope.defaultAddressdata.city_code,
-			'receiver_district': $rootScope.defaultAddressdata.district,
-			'receiver_district_code': $rootScope.defaultAddressdata.district_cod,
-			'receiver_address': $rootScope.defaultAddressdata.address,
-			'receiver_name': $rootScope.defaultAddressdata.name,
-			'receiver_zip': $rootScope.defaultAddressdata.zip,
-			'receiver_mobile': $rootScope.defaultAddressdata.mobile,
-			// 'fetch_name': '西门庆',
-			// 'fetch_store_id': '145',
-			// 'fetch_store_name': '老西门店',
-			// 'fetch_state': '上海',
-			// 'fetch_state_code': '310000',
-			// 'fetch_city': '上海市',
-			// 'fetch_city_code': '310100',
-			// 'fetch_district': '黄浦区',
-			// 'fetch_district_code': '310101',
-			// 'fetch_address': '中华路555号',
-			// 'fetch_subscribe_begin_time': '2015-05-14T11:00:50+0800',
-			// 'fetch_subscribe_end_time': '2015-05-14T13:00:50+0800',
-			'orders':$rootScope.productOrders 
-			// [
-			//      {
-			//          'sku_id': $stateParams.skuid,
-			//          'num': parseInt($stateParams.num),
-			//          'bring_guider_id': 12
-			//      }
-			//  ]
-			}
-		)
-		.success(function(orderdata){
-			console.log(['提交订单成功',orderdata]);
+		if($scope.express===true){
+			//快递方式取货
+			$http.post(URLPort+'/trades',
+				{
+				'buyer_user_id': $rootScope.USERINFO.id,
+				'bring_guider_id': 12,
+				'brand_id': parseInt($rootScope.productOrders[0].brand_id),
+				'buyer_memo': $scope.buyerMessage.buyer_memo,
+				'pay_type': 'WEIXIN',
+				'shipping_type': $scope.express?"EXPRESS":"FETCH",
+				'receiver_state': $rootScope.defaultAddressdata.state,
+				'receiver_state_code': $rootScope.defaultAddressdata.state_code,
+				'receiver_city': $rootScope.defaultAddressdata.city,
+				'receiver_city_code': $rootScope.defaultAddressdata.city_code,
+				'receiver_district': $rootScope.defaultAddressdata.district,
+				'receiver_district_code': $rootScope.defaultAddressdata.district_cod,
+				'receiver_address': $rootScope.defaultAddressdata.address,
+				'receiver_name': $rootScope.defaultAddressdata.name,
+				'receiver_zip': $rootScope.defaultAddressdata.zip,
+				'receiver_mobile': $rootScope.defaultAddressdata.mobile,
+				'orders':$rootScope.productOrders 
+				}
+			)
+			.success(function(orderdata){
+				console.log(['提交订单成功',orderdata]);
+				//创建订单成功调用微信支付
+				WXpay($rootScope.BRANDID,orderdata.tid,function(data){
+					// alert('支付成功');
+					alert(JSON.stringify(data));
+					$state.go('orderDetail',{tid:orderdata.tid})
+				});			
+			})
+			.error(function(data){
+				console.log(['提交订单失败',data]);
+			})
 
-			//创建订单成功调用微信支付
-			WXpay($rootScope.BRANDID,orderdata.tid,function(data){
-				// alert('支付成功');
-				alert(JSON.stringify(data));
-				$state.go('orderDetail',{tid:orderdata.tid})
-			});			
+		}else{
+			//门店取货
+			$scope.fetchdayhour = $scope.fetchTime.fetchday.day+"T"+$scope.fetchTime.fetchhour+":00+0800";
+			console.log(["$scope.fetchdayhour",$scope.fetchdayhour]);
 
-		})
-		.error(function(data){
-			console.log(['提交订单失败',data]);
-		})
-
+			$http.post(URLPort+'/trades',
+				{
+				'buyer_user_id': $rootScope.USERINFO.id,
+				'bring_guider_id': 12,
+				'brand_id': parseInt($rootScope.productOrders[0].brand_id),
+				'buyer_memo': $scope.buyerMessage.buyer_memo,
+				'pay_type': 'WEIXIN',
+				'shipping_type': $scope.express?"EXPRESS":"FETCH",
+				'fetch_name': "",
+				'fetch_store_id': $rootScope.minDistance.id,
+				'fetch_store_name': $rootScope.minDistance.name,
+				'fetch_state': $rootScope.minDistance.state,
+				'fetch_state_code': $rootScope.minDistance.state_code,
+				'fetch_city': $rootScope.minDistance.city,
+				'fetch_city_code': $rootScope.minDistance.city_code,
+				'fetch_district': $rootScope.minDistance.district,
+				'fetch_district_code': $rootScope.minDistance.district_code,
+				'fetch_address': $rootScope.minDistance.address,
+				'fetch_subscribe_begin_time':$scope.fetchdayhour,
+				'fetch_subscribe_end_time': $scope.fetchdayhour,
+				'orders':$rootScope.productOrders 
+				}
+			)
+			.success(function(orderdata){
+				console.log(['提交订单成功',orderdata]);
+				//创建订单成功调用微信支付
+				WXpay($rootScope.BRANDID,orderdata.tid,function(data){
+					// alert('支付成功');
+					alert(JSON.stringify(data));
+					$state.go('orderDetail',{tid:orderdata.tid})
+				});			
+			})
+			.error(function(data){
+				console.log(['提交订单失败',data]);
+			})
+		}
+		
 	}
 
 
