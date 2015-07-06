@@ -45,17 +45,12 @@ angular.module('daogou')
 		$scope.loginsuccess=function(data){
 			console.log(['float成功回调',data]);
 			//回调成功检测用户信息是否登录
-			function checkuseinfo(){
-				if($rootScope.USERINFO === undefined){
-					console.log(["用户未登录,没获得当前登录用户账号"]);
-					//打开登录界面
-					// $scope.login = true;
-				}else{
-					//若有用户信息，显示小红点
-					$(".redPoint").show();
-				}
-			}
-		checkuseinfo();
+			daogouAPI.isLogin(function(){
+				$(".redPoint").show();
+			},function(){
+				$(".redPoint").hide();
+
+			})
 			$scope.login = false; //是否显示登录页面
 
 		};
