@@ -74,8 +74,12 @@
                    <div class="wuliu-img"></div>
                    <span class="wuliu-infos">
                          <span class="font15">物流信息</span><br/>
-                         <span class="colorGreen">已签收 签收人是XXX</span><br/>
-                         <span class="colorGreen">2015-04-13 11:40:23</span>
+                         <span>运单号：{{orderDetailData.express_no}}</span>
+                         <div ng-repeat="item in logisticsData">
+                            <span class="colorGreen">{{item.content}}</span><br/>
+                            <span class="colorGreen">{{item.created_at}}</span>
+                         </div>
+                        
                    </span>
                    <div class="clearBoth"></div>
               </div>

@@ -115,6 +115,18 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 			console.log(["获取导购信息失败",data])
 		})
 	}
+
+	if(data.express_no){
+		daogouAPI.logistics({
+			express_company:data.express_company,
+			express_no:data.express_no
+		},function(data, status, headers, config){
+			console.log(['获取物流信息成功',data]);
+			$scope.logisticsData = data;
+		},function(data, status, headers, config){
+			console.log(['获取物流信息失败',data]);
+		});
+	}
 	
 	$scope.orderDetailData = data;
 

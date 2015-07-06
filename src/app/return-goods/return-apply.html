@@ -2,6 +2,13 @@
 <ion-view view-title="退货申请">
       <ion-content class="apply-content">
           <div class="statusWrap border-bt0 backfff padding-bt20">
+                <div class="prompt-text">
+                    <select id="shipping_type"  ng-model="refundInputInfo.shipping_type" ng-options="shippingType.shipping_typeCN for shippingType in shippingData" ng-change="selectRefundway()">
+                     <option value="">-- 请选择退货渠道 --</option>
+                    </select>
+
+                </div>
+
                 <div class="shop">
                     <div class="shop-name countDel">退货商品</div>
                     <div class="clearBoth"></div>
@@ -23,29 +30,49 @@
                       </div>
                     </li>
                 </ul>
-                <div class="prompt-text">
-                    <div class="prompt">退货原因（必选）</div>
-                    <input class="text" ng-model="refundInputInfo.buyer_memo"/>
-                </div>
-                <div class="prompt-text">
-                    <div class="prompt">退货渠道（必选）</div>
-                    <!-- <input class="text"/> -->
-                   
-                    <select id="shippingType"  ng-model="refundInputInfo.shipping_type" ng-options="shippingType.shipping_typeCN for shippingType in shippingData" ng-change="provinceSelect(firstAddressInput.provinceInfo)">
-                    </select>
-                </div>
-                <div class="prompt-text">
+               
+                <div class="prompt-text" ng-show="expressway">
                     <div class="prompt">图片</div>
                     <img src="assets/images/addImg.png" id="img1" class="img" ng-click="uploadImg('img1')"/>
                     <img src="assets/images/addImg.png" id="img2" class="img"  ng-click="uploadImg('img2')"/>
                     <img src="assets/images/addImg.png" id="img3" class="img"  ng-click="uploadImg('img3')"/>
-                    {{picuel1}}
                 </div>
-               <!--  <div class="prompt-text">
-                    <div class="prompt">补充描述</div>
-                    <input class="text"/>
-                </div> -->
-                <div class="commonBtn backred" ng-click="goRefundState()">提交</div>
+
+                <div class="prompt-text" ng-show="expressway">
+                    <div class="prompt">退货原因（必选）</div>
+                    <input class="text" ng-model="refundInputInfo.buyer_memo"/>
+                </div>
+
+
+                <div class="return-item" ng-show="fetchway">
+                     <div class="addressInfo">
+                         <div class="prompt">请前往以下门店退货</div>
+                         <div>
+                             <span class="floatL width85">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}}  </span>
+                             <span class="colorBlue floatR font13" ng-click="goGoodsShop()">其他门店</span>
+                             <div class="clearBoth"></div>
+                         </div>
+                         <div>
+                             <span class="font13 floatL width85">{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</span>
+                             <span class="font13 colorRed floatR">{{minDistance.distance}}km</span>
+                             <div class="clearBoth"></div>
+                         </div>
+                    </div>
+                </div>
+
+                <div class="return-item" ng-show="fetchway">
+                    <div class="erweima-wrap">
+                       <img class="erweima floatL margin-r15" ng-src="{{refundData.refund_qrcode_url}}"/>
+                       <div class="floatL">
+                           <span>请在取货时向店员出示此码</span><br/>
+                           <span class="colorRed">切勿透露他人以防冒取</span>
+                       </div>
+                       <div class="clearBoth"></div>
+                    </div>
+                </div>
+
+
+                <div class="commonBtn backred" ng-click="submitRefund()" ng-show="expressway">提交</div>
           </div>
 
       </ion-content>

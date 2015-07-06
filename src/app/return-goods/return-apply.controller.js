@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('goodsReturn',['ionic'])
-.controller('returnApplyCtrl',['$scope','$log','$http','checklocalimg','$stateParams','URLPort','$state',function($scope,$log,$http,checklocalimg,$stateParams,URLPort,$state){
+.controller('returnApplyCtrl',['$rootScope','$scope','$log','$http','checklocalimg','$stateParams','URLPort','$state','daogouAPI',function($rootScope,$scope,$log,$http,checklocalimg,$stateParams,URLPort,$state,daogouAPI){
 	console.log(["$stateParams.oid",$stateParams.oid])
 	console.log(["$stateParams.tid",$stateParams.tid])
     var URLPort = URLPort();
@@ -19,18 +19,97 @@ angular.module('goodsReturn',['ionic'])
     .error(function(data){
     	console.log(["获取可退货商品失败",data])
     })
+    //快递方式退货和门店退货 模块色显示与隐藏
+    $scope.expressway = true;
+    $scope.fetchway = false;
 
     $scope.shippingData = [
-    	{"shipping_typeCN":"门店退货","shippingtype":"STORE"},
-    	{"shipping_typeCN":"快递","shippingtype":"EXPRESS"},
-    	{"shipping_typeCN":"直接退款","shippingtype":"IMMEDIATE"}
+    	{shipping_typeCN:"门店退货",shippingtype:"STORE"},
+    	{shipping_typeCN:"快递",shippingtype:"EXPRESS"},
+    	{shipping_typeCN:"直接退款",shippingtype:"IMMEDIATE"}
     ]
+    $scope.defaultShipping = {shipping_typeCN:"快递",shippingtype:"EXPRESS"};
     $scope.refundInputInfo = {
-    	"shipping_type":"",
-    	"buyer_memo": "",
-    	"prove_images": "http://brand-guide.b0.upaiyun.com/refund-qr-code/1434009839066_495203.jpg"
+    	shipping_type:$scope.defaultShipping,
+    	buyer_memo: "",
+    	prove_images: "http://brand-guide.b0.upaiyun.com/refund-qr-code/1434009839066_495203.jpg"
     }
-    
+
+  
+    $scope.selectRefundway = function(){
+    	console.log(["$scope.refundInputInfo.shipping_type",$scope.refundInputInfo.shipping_type]);
+        if($scope.refundInputInfo.shipping_type.shippingtype === "STORE"){
+        	$scope.expressway = false;
+    		$scope.fetchway = true;
+    			$scope.getLocation = function(){
+    				  if (navigator.geolocation)
+    				    {
+    				    navigator.geolocation.getCurrentPosition(showPosition);
+    				    var timer = setInterval(function(){
+    					    	$scope.lng = 121.399411;
+    					    	$scope.lat = 31.168323;
+    		    			  	daogouAPI.shopAddress('/brands/'+$scope.refundData.brand_id+'/stores/store-fetch',{
+    		    					user_id:$rootScope.USERINFO.id,
+    		    					longitude:$scope.lng,
+    		    					latitude:$scope.lat
+    		    					// longitude:121.412195,
+    		    					// latitude:31.204672
+    		    				},function(data, status, headers, config){
+    		    					console.log(['查询门店列表成功',data]);
+    		    					$scope.shopaddressData = data;
+    		    					var flag = false;
+    		    					var defaultIndex = 0;
+    		    					for(var i in $scope.shopaddressData){
+    		    						if($scope.shopaddressData[i].is_default===1){
+    		    							flag = true;//如果有默认地址 flag为true
+    		    							defaultIndex = i;
+    		    						}
+    		    					}
+    		    					if(flag === true){//有默认地址
+    		    						console.log('有默认地址');
+    		    						$rootScope.minDistance=$scope.shopaddressData[defaultIndex];
+    		    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+    		    					}else{//没有默认地址
+    		    						console.log('无有默认地址');
+    		    						var minIndex = 0;
+    		    						for(var i=0;i<data.length-1;i++){
+    		    							if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+    		    								minIndex = i+1;
+    		    							}
+    		    						}
+    		    						$rootScope.minDistance = data[minIndex]; 
+    		    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+    		    					}
+
+    		    				    clearInterval(timer);
+    		    				},function(data, status, headers, config){
+    		    					console.log(['查询门店列表失败',data]);
+    		    				});
+    				    	},500)
+    				      	
+    				    }else{
+    				    	x.innerHTML="Geolocation is not supported by this browser.";
+    				    }
+    			}
+
+    			function showPosition(position){
+    			  // x.innerHTML="Latitude: " + position.coords.latitude + 
+    			  // "<br />Longitude: " + position.coords.longitude;	
+    			  $scope.lng = position.coords.longitude;
+    			  $scope.lat = position.coords.latitude;
+    			}
+
+    		    $scope.getLocation();
+
+        }else if($scope.refundInputInfo.shipping_type.shippingtype === "EXPRESS"){
+        	$scope.expressway = true;
+        	$scope.fetchway = false;
+        }else{
+        	$scope.expressway = true;
+        	$scope.fetchway = false;
+        }
+    }
+   
   //通过点击选中圆圈选中
    $scope.changeCheck = function(index){
 	   	console.log(["indexindexindex",index])
@@ -40,8 +119,8 @@ angular.module('goodsReturn',['ionic'])
 	   		$scope.refundData.details[index].seleted = true;
 	   	}
    }
-
-    $scope.goRefundState = function(){
+ 
+    $scope.submitRefund = function(){
     	var detailsData = [];
     	var k = 0;
     	 for(var i in $scope.refundData.details){
@@ -82,21 +161,27 @@ angular.module('goodsReturn',['ionic'])
     		
     	})
     	.error(function(data){
-    		console.log(["提交退货成功",data])
+    		console.log(["提交退货失败",data])
     	})
  	// 	var fid="33914552763954000";
 		// $state.go("returnOrderDetail",{"id":fid})
     	
     }
 
-
-
-  
-
-
 	$scope.uploadImg =function(id){
 		checklocalimg(function(data){
+			console.log(["img   data.......:",data]);
+			console.log(["img   data.src.......:",data.src]);
 			$("#"+id+"").attr("src",data.src);
+
+			daogouAPI.uploadfile({
+				zip:"small"
+			},function(data, status, headers, config){
+				console.log(['上传文件成功',data]);
+				$scope.uploadfileData = data;
+			},function(data, status, headers, config){
+				console.log(['上传文件失败',data]);
+			});
 		})
 
 	}
