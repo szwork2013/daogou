@@ -387,7 +387,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 		}else{
 			//门店取货
 			$scope.shippingType = "FETCH";
-			$scope.fetchdayhour = $scope.fetchTime.fetchday.day+"T"+$scope.fetchTime.fetchhour;
+			$scope.fetchdayhour = $scope.fetchTime.fetchday.day+"T"+$scope.fetchTime.fetchhour+":00+0800";
 			console.log(["$scope.fetchdayhour",$scope.fetchdayhour]);
 		}
 		$http.post(URLPort+'/trades',
