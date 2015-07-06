@@ -58,22 +58,22 @@ angular.module('daogou')
 			$scope.verify=function(){
 				$(".yanzhengma").addClass("clickdown");
 				$(".yanzhengma").attr({"disabled":"disabled"});
-				var remainTime = 60;
-				$(".yanzhengma").text("重新获取验证码(60s)");
+				var remainTime = 10;
+				$(".yanzhengma").text("重新获取验证码(10s)");
 				$scope.timer = setInterval(function(){
 					 remainTime--;
 					 console.log(["$scope.timer",$scope.timer]);
 					 $(".yanzhengma").addClass("clickdown");
 					 $(".yanzhengma").attr({"disabled":"disabled"});
 					 $(".yanzhengma").text("重新获取验证码("+remainTime+"s)");
-					 setTimeout(function(){
-					 	if(remainTime===0){
+					 // setTimeout(function(){
+					 	if(remainTime<=0){
 					 		clearInterval($scope.timer);
 					 		$(".yanzhengma").removeClass("clickdown");
 					 		$(".yanzhengma").text("获取验证码");
 					 		$(".yanzhengma").removeAttr("disabled");
 					 	}
-					 },2000);
+					 // },1000);
 					 
 				},1000);
 				//判断是否注册用户  非注册用户需帮用户注册

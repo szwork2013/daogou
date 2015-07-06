@@ -218,7 +218,8 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	    					}
 	    					if(flag === true){//有默认地址
 	    						console.log('有默认地址');
-	    						$scope.minDistance=$scope.shopaddressData[defaultIndex];
+	    						$rootScope.minDistance=$scope.shopaddressData[defaultIndex];
+	    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
 	    					}else{//没有默认地址
 	    						console.log('无有默认地址');
 	    						var minIndex = 0;
@@ -227,19 +228,31 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	    								minIndex = i+1;
 	    							}
 	    						}
-	    						$scope.minDistance = data[minIndex]; 
+	    						$rootScope.minDistance = data[minIndex]; 
+	    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
 	    					}
 	    					
+
+	    					//获取门店取货时间
+	    						$scope.fetchTime = {};
+								$scope.fetchTime.fetchday = "";
+								$scope.fetchTime.fetchhour = "";
 	    					   daogouAPI.fetchTime({
 		    					   	brand_id:$rootScope.productOrders[0].brand_id,
 		    					   	user_id:$rootScope.USERINFO.id,
-		    					   	store_id:$scope.minDistance.id
+		    					   	store_id:$rootScope.minDistance.id
 	    						 },function(data, status, headers, config){
 	    					 		$scope.fetchTimeData = data;
 	    					 		$scope.fetchdayData = [];
 	    					 		$scope.fetchhourData = [];
 	    					 		for(var i in $scope.fetchTimeData){
-	    					 			$scope.fetchdayData.push($scope.fetchTimeData[i].day);
+	    					 			$scope.fetchdayData[i] = {};
+	    					 		}
+
+	    					 		for(var i in $scope.fetchTimeData){
+	    					 			// $scope.fetchdayData.push($scope.fetchTimeData[i].day);
+	    					 			$scope.fetchdayData[i].index = i;
+	    					 			$scope.fetchdayData[i].day = $scope.fetchTimeData[i].day;
 	    					 		}
 	    					 		console.log(["$scope.fetchdayData",$scope.fetchdayData]);
 	    					 		console.log(['获取用户取货可选时间范围成功',data]);
@@ -268,7 +281,10 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	    $scope.getLocation();
 	}
 	$scope.dayselecthour = function(day){
-		console.log(["fetchday",day]);
+		console.log(["$scope.fetchTime.fetchday",day]);
+		$scope.fetchhourData = $scope.fetchTimeData[parseInt(day.index)].times;
+		console.log(["$scope.fetchhourData",$scope.fetchhourData]);
+		console.log(["$scope.fetchTime.fetchhour"])
 	}
 
 
@@ -406,6 +422,16 @@ code=00177a72afbef088d656bb480b90625p
 		console.log('提交订单');
 		console.log(['$scope.brand_id',$scope.brand_id]);
 		//支付按钮先创建订单再支付
+
+		if($scope.allbuyeraddress===true){
+			//快递方式取货
+			$scope.shippingType = "EXPRESS";
+		}else{
+			//门店取货
+			$scope.shippingType = "FETCH";
+			$scope.fetchdayhour = $scope.fetchTime.fetchday.day+"T"+$scope.fetchTime.fetchhour;
+			console.log(["$scope.fetchdayhour",$scope.fetchdayhour]);
+		}
 		$http.post(URLPort+'/trades',
 			{
 			'buyer_user_id': $rootScope.USERINFO.id,
@@ -413,7 +439,7 @@ code=00177a72afbef088d656bb480b90625p
 			'brand_id': parseInt($rootScope.productOrders[0].brand_id),
 			'buyer_memo': $scope.buyerMessage.buyer_memo,
 			'pay_type': 'WEIXIN',
-			'shipping_type': 'express',
+			'shipping_type': $scope.shippingType,
 			'receiver_state': $rootScope.defaultAddressdata.state,
 			'receiver_state_code': $rootScope.defaultAddressdata.state_code,
 			'receiver_city': $rootScope.defaultAddressdata.city,
@@ -424,18 +450,18 @@ code=00177a72afbef088d656bb480b90625p
 			'receiver_name': $rootScope.defaultAddressdata.name,
 			'receiver_zip': $rootScope.defaultAddressdata.zip,
 			'receiver_mobile': $rootScope.defaultAddressdata.mobile,
-			// 'fetch_name': '西门庆',
-			// 'fetch_store_id': '145',
-			// 'fetch_store_name': '老西门店',
-			// 'fetch_state': '上海',
-			// 'fetch_state_code': '310000',
-			// 'fetch_city': '上海市',
-			// 'fetch_city_code': '310100',
-			// 'fetch_district': '黄浦区',
-			// 'fetch_district_code': '310101',
-			// 'fetch_address': '中华路555号',
-			// 'fetch_subscribe_begin_time': '2015-05-14T11:00:50+0800',
-			// 'fetch_subscribe_end_time': '2015-05-14T13:00:50+0800',
+			'fetch_name': "",
+			'fetch_store_id': $rootScope.minDistance.id,
+			'fetch_store_name': $rootScope.minDistance.name,
+			'fetch_state': $rootScope.minDistance.state,
+			'fetch_state_code': $rootScope.minDistance.state_code,
+			'fetch_city': $rootScope.minDistance.city,
+			'fetch_city_code': $rootScope.minDistance.city_code,
+			'fetch_district': $rootScope.minDistance.district,
+			'fetch_district_code': $rootScope.minDistance.district_code,
+			'fetch_address': $rootScope.minDistance.address,
+			'fetch_subscribe_begin_time':$scope.fetchdayhour,
+			'fetch_subscribe_end_time': $scope.fetchdayhour,
 			'orders':$rootScope.productOrders 
 			// [
 			//      {

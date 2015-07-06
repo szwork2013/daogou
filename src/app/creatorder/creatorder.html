@@ -125,10 +125,10 @@
                        <option value="6">10:00</option>
                        <option value="7">12:00</option>
                    </select> -->
-                <select id="fetch_day"  ng-model="fetchday" ng-options="fetchday for fetchday in fetchdayData" ng-change="dayselecthour(fetchday)">
+                <select id="fetch_day"  ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData" ng-change="dayselecthour(fetchTime.fetchday)">
                 <option value="">-- 请选择日期 --</option>
                 </select>
-                <select id="fetch_hour"  ng-model="fetchhour" ng-options="fetchhour forfetchhour in fetchhourData">
+                <select id="fetch_hour"  ng-model="fetchTime.fetchhour" ng-options="fetchhour for fetchhour in fetchhourData">
                 <option value="">-- 请选择时间 --</option>
                 </select>
 
