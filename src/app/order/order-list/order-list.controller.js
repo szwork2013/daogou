@@ -44,6 +44,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
             break;
           case 'WAIT_SELLER_SEND_GOODS':
             item.statusCN = '等待卖家发货';
+            item.leftTime = $scope.MillisecondToDate(new Date(item.pay_end_time).getTime() - new Date(item.out_pay_end_time).getTime());
             break;
           case 'WAIT_BUYER_CONFIRM_GOODS':
             item.statusCN = '等待买家确认收货';
@@ -68,9 +69,6 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
             break;
           default:
             return '等待买家付款';
-        }
-        if(item.pay_end_time!=undefined&&item.out_pay_end_time!=undefined){
-          item.leftTime = $scope.MillisecondToDate(new Date(item.pay_end_time).getTime() - new Date(item.out_pay_end_time).getTime());
         }
         angular.forEach(item.orders, function (itemOrder, index) {
           itemOrder.pics = itemOrder.pic_path.indexOf(",") > 0 ? itemOrder.pic_path.split(",") : [itemOrder.pic_path];
