@@ -368,8 +368,8 @@ angular.module('daogou')
 		var action=actionurl;
 		var data={
 			user_id: dataobj.user_id,
-			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
-			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
+			// page: typeof dataobj.page === 'number' ? dataobj.page : 1,
+			// per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
 		};
 		
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);

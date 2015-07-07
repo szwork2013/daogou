@@ -88,7 +88,7 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	};
 
 
-
+	
 	$scope.postway = function(){
 		$scope.express = true;
 	}
@@ -97,67 +97,170 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 		if($rootScope.selectedStoreId){//如果是选择门店地址
 			;
 		}else{
+			$rootScope.ListTwoStores = [];
 				// var x=document.getElementById("demo");
 				$scope.getLocation = function(){
 					  if (navigator.geolocation)
 					    {
-					    navigator.geolocation.getCurrentPosition(showPosition);
-					    var timer = setInterval(function(){
-						    	$scope.lng = 121.399411;
-						    	$scope.lat = 31.168323;
-			    			  	daogouAPI.shopAddressAll('/brands/'+$rootScope.productOrders[0].brand_id+'/stores/store-fetch',{
-			    					user_id:$rootScope.USERINFO.id,
-			    					longitude:$scope.lng,
-			    					latitude:$scope.lat
-			    					// longitude:121.412195,
-			    					// latitude:31.204672
-			    				},function(data, status, headers, config){
-			    					console.log(['查询门店列表成功',data]);
-			    					$scope.shopaddressData = data;
-			    					var flag = false;
-			    					var defaultIndex = 0;
-			    					for(var i in $scope.shopaddressData){
-			    						if($scope.shopaddressData[i].is_default===1){
-			    							flag = true;//如果有默认地址 flag为true
-			    							defaultIndex = i;
-			    						}
-			    					}
-			    					if(flag === true){//有默认地址
-			    						console.log('有默认地址');
-			    						$rootScope.minDistance=$scope.shopaddressData[defaultIndex];
-			    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
-			    					}else{//没有默认地址
-			    						console.log('无有默认地址');
-			    						var minIndex = 0;
-			    						for(var i=0;i<data.length-1;i++){
-			    							if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
-			    								minIndex = i+1;
-			    							}
-			    						}
-			    						$rootScope.minDistance = data[minIndex]; 
-			    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
-			    					}
-			    					
-			    					getFetchTime();//获得门店取货时间
-
-			    				    clearInterval(timer);
-			    				},function(data, status, headers, config){
-			    					console.log(['查询门店列表失败',data]);
-			    				});
-					    	},500)
-					      	
+					    navigator.geolocation.getCurrentPosition(showPosition,getError,getOptions);
+			    			
 					    }else{
 					    	x.innerHTML="Geolocation is not supported by this browser.";
 					    }
 				}//$scope.getLocation
 
+				var getOptions = {  
+				         //是否使用高精度设备，如GPS。默认是true  
+				         enableHighAccuracy:true,  
+				         //超时时间，单位毫秒，默认为0  
+				         timeout:5000,  
+				         //使用设置时间内的缓存数据，单位毫秒  
+				         //默认为0，即始终请求新数据  
+				         //如设为Infinity，则始终使用缓存数据  
+				         maximumAge:0  
+				    };  
 
+				//成功回调
 				function showPosition(position){
 				  // x.innerHTML="Latitude: " + position.coords.latitude + 
 				  // "<br />Longitude: " + position.coords.longitude;	
 				  $scope.lng = position.coords.longitude;
 				  $scope.lat = position.coords.latitude;
+				  console.log(["$scope.lng",$scope.lng]);
+				  console.log(["$scope.lat",$scope.lat]);
+				    daogouAPI.shopAddressAll('/brands/'+$rootScope.productOrders[0].brand_id+'/stores/store-fetch',{
+				  		user_id:$rootScope.USERINFO.id,
+				  		longitude:$scope.lng,
+				  		latitude:$scope.lat
+				  		// longitude:121.412195,
+				  		// latitude:31.204672
+				  	},function(data, status, headers, config){
+				  		console.log(['查询门店列表成功',data]);
+				  		$scope.shopaddressData = data;
+				  		var flag = false;
+				  		var defaultIndex = 0;
+				  		for(var i in $scope.shopaddressData){
+				  			if($scope.shopaddressData[i].is_default===1){
+				  				flag = true;//如果有默认地址 flag为true
+				  				defaultIndex = i;
+				  			}
+				  		}
+				  		if(flag === true){//有默认地址
+				  			console.log('有默认地址');
+				  			$rootScope.minDistance=$scope.shopaddressData[defaultIndex];
+				  			console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+				  			$rootScope.ListTwoStores[0] = $rootScope.minDistance;
+				  			$scope.shopaddressData.splice(defaultIndex,1);
+				  			var minIndex = 0;
+				  			for(var i=0;i<$scope.shopaddressData.length-1;i++){
+				  				if(parseFloat($scope.shopaddressData[i+1].distance)>parseFloat($scope.shopaddressData[i].distance)){
+				  					minIndex = i+1;
+				  				}
+				  			}
+				  			$rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
+				  		}else{//没有默认地址
+				  			console.log('无有默认地址');
+				  			var minIndex = 0;
+				  			for(var i=0;i<data.length-1;i++){
+				  				if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+				  					minIndex = i+1;
+				  				}
+				  			}
+				  			$rootScope.minDistance = data[minIndex]; 
+				  			$rootScope.ListTwoStores[0] = $rootScope.minDistance;
+				  			$scope.shopaddressData.splice(minIndex,1);
+				  			var minIndex = 0;
+				  			for(var i=0;i<$scope.shopaddressData.length-1;i++){
+				  				if(parseFloat($scope.shopaddressData[i+1].distance)>parseFloat($scope.shopaddressData[i].distance)){
+				  					minIndex = i+1;
+				  				}
+				  			}
+				  			$rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
+				  			console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+				  		}
+				  		
+				  		getFetchTime();//获得门店取货时间
+
+				  	    // clearInterval(timer);
+				  	},function(data, status, headers, config){
+				  		console.log(['查询门店列表失败',data]);
+				  	});
+
 				}
+				//失败回调  
+			    function getError(error){  
+			          // 执行失败的回调函数，会接受一个error对象作为参数  
+			          // error拥有一个code属性和三个常量属性TIMEOUT、PERMISSION_DENIED、POSITION_UNAVAILABLE  
+			          // 执行失败时，code属性会指向三个常量中的一个，从而指明错误原因  
+			          switch(error.code){  
+			               case error.TIMEOUT:  
+			                    console.log('超时');  
+			                    break;  
+			               case error.PERMISSION_DENIED:  
+			                    console.log('用户拒绝提供地理位置');
+			                    // alert('用户拒绝提供地理位置')
+			                      daogouAPI.shopAddressId('/brands/'+$rootScope.productOrders[0].brand_id+'/stores/store-fetch',{
+			                    		user_id:$rootScope.USERINFO.id
+			                    	},function(data, status, headers, config){
+			                    		console.log(['查询门店列表成功',data]);
+			                    		$scope.shopaddressData = data;
+			                    		var flag = false;
+			                    		var defaultIndex = 0;
+			                    		for(var i in $scope.shopaddressData){
+			                    			if($scope.shopaddressData[i].is_default===1){
+			                    				flag = true;//如果有默认地址 flag为true
+			                    				defaultIndex = i;
+			                    			}
+			                    		}
+			                    		if(flag === true){//有默认地址
+			                    			console.log('有默认地址');
+			                    			$rootScope.minDistance=$scope.shopaddressData[defaultIndex];
+			                    			console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+			                    			$rootScope.ListTwoStores[0] = $rootScope.minDistance;
+			                    			$scope.shopaddressData.splice(defaultIndex,1);
+			                    			var minIndex = 0;
+			                    			for(var i=0;i<$scope.shopaddressData.length-1;i++){
+			                    				if(parseFloat($scope.shopaddressData[i+1].distance)>parseFloat($scope.shopaddressData[i].distance)){
+			                    					minIndex = i+1;
+			                    				}
+			                    			}
+			                    			$rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
+			                    		}else{//没有默认地址
+			                    			console.log('无有默认地址');
+			                    			var minIndex = 0;
+			                    			for(var i=0;i<data.length-1;i++){
+			                    				if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+			                    					minIndex = i+1;
+			                    				}
+			                    			}
+			                    			$rootScope.minDistance = data[minIndex]; 
+			                    			console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+			                    			$rootScope.ListTwoStores[0] = $rootScope.minDistance;
+			                    			$scope.shopaddressData.splice(minIndex,1);
+			                    			var minIndex = 0;
+			                    			for(var i=0;i<$scope.shopaddressData.length-1;i++){
+			                    				if(parseFloat($scope.shopaddressData[i+1].distance)>parseFloat($scope.shopaddressData[i].distance)){
+			                    					minIndex = i+1;
+			                    				}
+			                    			}
+			                    			$rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
+			                    		}
+			                    		
+			                    		getFetchTime();//获得门店取货时间
+
+			                    	    // clearInterval(timer);
+			                    	},function(data, status, headers, config){
+			                    		console.log(['查询门店列表失败',data]);
+			                    	});
+			                    break;  
+			               case error.POSITION_UNAVAILABLE:  
+			                    console.log('地理位置不可用');  
+			                    break;  
+			               default:  
+			                    break;  
+			          }  
+			    }  
+
 
 			    $scope.getLocation();
 
@@ -415,7 +518,8 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	}
 
 	$scope.goGoodsShop = function(){//门店地址列表页面
-		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$rootScope.productOrders[0].brand_id,'lng':$scope.lng,'lat':$scope.lat,'refunds':0});
+		console.log(["$rootScope.ListTwoStores",$rootScope.ListTwoStores]);
+		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$rootScope.productOrders[0].brand_id,'refunds':0});
 	}
 	$scope.changeReceiveInfoFunc = function(){//收货人地址列表页面
 		console.log(['userid',$rootScope.USERINFO.id]);
@@ -493,54 +597,8 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 //门店列表
 .controller('goodsShopCtrl',['$rootScope','$scope','$log','$http','daogouAPI','$stateParams','$state',function($rootScope,$scope,$log,$http,daogouAPI,$stateParams,$state){
 	$log.debug('goodsShopCtrl');
-	$stateParams.lng = 121.399411;
-	$stateParams.lat = 31.168323;
-
 	$scope.shopaddressData = [];
-	var pageindex = 1;
-	var pagesize = 5;
-	$scope.hasMoreOrder = true; 
-	shopAddressList();
-
-	function shopAddressList(){
-		daogouAPI.shopAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
-			user_id:$stateParams.userid,
-			longitude:$stateParams.lng,
-			latitude:$stateParams.lat,
-			page: pageindex,
-			per_page: pagesize
-		},function(data, status, headers, config){
-			console.log(['查询门店列表成功',data]);
-			$scope.shopaddressData = $scope.shopaddressData.concat(data);
-
-			if (data.length >= pagesize) {
-			  pageindex++;
-			  console.log(["pageindex+++++++", pageindex])
-			} else {
-			  $scope.hasMoreOrder = false;
-			  console.log(["hasMoreOrder", $scope.hasMoreOrder])
-			}
-			$scope.$broadcast('scroll.infiniteScrollComplete');
-
-		},function(data, status, headers, config){
-			console.log(['查询门店列表失败',data]);
-		});
-	}
-	/**
-	 * 加载更多
-	 */
-	$scope.loadMoreData = function () {
-	  shopAddressList();
-	};
-	/**
-	 * 监测广播，加载更多
-	 */
-	$scope.$on('$stateChangeSuccess', function () {
-	  if (pageindex > 2) {
-	    $scope.loadMoreData();
-	  }
-	});
-
+	$scope.shopaddressData = $rootScope.ListTwoStores;
 	$scope.defaultstorefunc = function(store_id,index){
 		console.log(['store_id',store_id]);
 		daogouAPI.defaultstore({
@@ -591,8 +649,10 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 					}
 				}
 			}
-
-			if($stateParams.refunds === 1){
+			console.log(["$stateParams.refunds",$stateParams.refunds]);
+			if($stateParams.refunds === "1"){
+				console.log(["$rootScope.refundsTid",$rootScope.refundsTid])
+				console.log(["$rootScope.refundsOid",$rootScope.refundsOid])
 				$state.go('returnApply',{'tid':$rootScope.refundsTid,'oid':$rootScope.refundsOid});
 			}else{
 				$state.go('creatorder');
