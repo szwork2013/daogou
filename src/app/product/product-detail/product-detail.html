@@ -1,111 +1,97 @@
 <ion-view view-title="宝贝详情" class="product-detail">
-	<ion-content>
+  <ion-content>
 
-<!-- 		<ion-slide-box on-slide-changed="slideHasChanged($index)" class="sliderbox" >
-			<ion-slide ng-repeat="picurl in productDetailData.picUrlArr">
-		    	<img class="sliderpic" ng-src="{{picurl}}">
-			</ion-slide>
-		</ion-slide-box>
- -->
-		<div class="wcontainer">
-			<div class="sliders" id="sliders">
-				<div  class="sliderlist" ng-repeat="picurl in productDetailData.picUrlArr">
-					<img ng-src="{{picurl}}" alt="">
-				</div>
-			</div>
-		</div>
-		<!-- <p id="demo">点击这个按钮，获得您的坐标：</p>
-		<button ng-click="getLocation()">试一下</button> -->
-		<!-- <p ng-repeat="params in productparam">参数:{{params.param}}</p>
-		<p class="des">简介</p> -->
-		<div class="productInfo">
-			<div class="title">{{productDetailData.title}}</div>
-			<div class="price">{{productDetailData.price|currency:"￥":2}}</div>
-			<div ng-repeat = "item in productDetailData.specification">
-				<span class="graya3">{{item.key}}：</span><span>{{item.val}}</span>
-			</div>
-			<div>
-				<span class="graya3">剩余：</span><span>{{productDetailData.num}}</span>
-			</div>
-			<div>
-				<span class="graya3">运费：</span><span>{{productDetailData.freight|currency:"￥":2}}</span>
-			</div>
-			<div>
-				<span class="graya3">服务：</span><span>支持专卖店取货 </span>
-			</div>
-		</div>
-	    <div class="productPicWrap">
-	    	<!-- <img class="productPic" src="assets/images/pic1.png">
-	    	<img class="productPic" src="assets/images/pic1.png">
-	    	<img class="productPic" src="assets/images/pic1.png">
-	    	<div class="clearBoth"></div> -->
-	    	{{productDetailData.content}}
-	    </div>
-	</ion-content>
-	<!-- 悬浮点击打开个人中心、购物车、导购 -->
-	<div float-center></div>
-	<div class="bottombar ng-hide" ng-show="ISWX">
-		<div class="button button-light" ng-click="propertyShowCart()">加入购物车</div>
-		<div class="button button-assertive" ng-click="propertyShowOrder()">立即购买</div>
-	</div>
-	<div class="mengban"></div>
+    <div class="wcontainer">
+      <div class="sliders" id="sliders">
+        <div class="sliderlist" ng-repeat="picurl in productDetailData.picUrlArr">
+          <img ng-src="{{picurl}}" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="productInfo">
+      <div class="title">{{productDetailData.title}}</div>
+      <div class="price">{{productDetailData.price|currency:"￥":2}}</div>
+      <div ng-repeat="sku in productDetailData.usedSkus">
+        <span class="graya3">{{sku.name}}：</span><span>{{sku.skuValues}}</span>
+      </div>
+      <div>
+        <span class="graya3">剩余：</span><span>{{productDetailData.num}}</span>
+      </div>
+      <div>
+        <span class="graya3">运费：</span><span ng-if="productDetailData.freight_terms!='seller'">{{productDetailData.freight|currency:"￥":2}}</span>
+        <span ng-if="productDetailData.freight_terms=='seller'">卖家包邮</span>
+      </div>
+      <div>
+        <span class="graya3">服务：</span><span>支持专卖店取货 </span>
+      </div>
+    </div>
+    <div class="productPicWrap" ng-bind-html="productDetailData.content | to_trusted ">
+    </div>
+  </ion-content>
+  <!-- 悬浮点击打开个人中心、购物车、导购 -->
+  <div float-center></div>
+  <div class="bottombar ng-hide" ng-show="ISWX">
+    <div class="button button-light" ng-click="propertyShowCart()">加入购物车</div>
+    <div class="button button-assertive" ng-click="propertyShowOrder()">立即购买</div>
+  </div>
+  <div class="mengban" ng-click="propertyClose()"></div>
 
-	<div class="chooseProductInfoWarp">
-		<div class="list">
-		    <div class="item item-avatar">
-			      <!-- <img class="productImg" src="assets/images/pic1.png"> -->
-			      <img class="productImg" ng-src="{{productDetailData.picUrlArr[0]}}">
-			      <h2>{{productDetailData.title}}</h2>
-			      <p>￥{{productOrder.price}}</p>
-			      <div class="iconfont icon-guanbi close" ng-click="propertyClose()"></div>
-		    </div>
-		</div>
+  <div class="chooseProductInfoWarp">
+    <form name="form" novalidate class="form">
+      <div class="list">
+        <div class="item item-avatar">
+          <img class="productImg" ng-src="{{productDetailData.picUrlArr[0]}}">
 
-		<div class="chooses choosesnum" ng-repeat="item in productDetailData.specification">
-				<span class="chsTitle">{{item.key}}</span>
-				<span ng-repeat="para in item.array">
-					<input class="hideradio" type="radio" id="{{item.key}}{{$index}}" name="{{item.key}}" value="{{para}}" ng-click="checkSku(para,item.key)">
-					<label class="chsBtn" for="{{item.key}}{{$index}}">{{para}}</label>
+          <h2>{{productDetailData.title}}</h2>
+
+          <p>￥{{productDetailData.price}}</p>
+
+          <div class="iconfont icon-guanbi close" ng-click="propertyClose()"></div>
+        </div>
+      </div>
+
+      <div class="chooses choosesnum" ng-repeat="sku in productDetailData.usedSkus">
+        <span class="chsTitle">{{sku.name}}</span>
+				<span ng-repeat="skuValue in sku.values |filter: {is_selected:1 } ">
+					<input class="hideradio" type="radio" id="{{sku.p_id}}:{{skuValue.v_id}}:{{sku.name}}:{{skuValue.value}}"
+                 name="{{sku.p_id}}"
+                 ng-click="checkSku(sku,skuValue,$event)">
+					<label class="chsBtn"
+                 for="{{sku.p_id}}:{{skuValue.v_id}}:{{sku.name}}:{{skuValue.value}}">{{skuValue.value}}</label>
 				</span>
-		</div>
+      </div>
 
-		<div class="chooses">
-				<span class="chsTitle fl">数量</span>
-				<div class="addDelWrap">
-					<span class="font12">剩余：</span><span class="font12">{{productDetailData.realquantity}}&nbsp;&nbsp;</span>
+      <div class="chooses">
+        <span class="chsTitle fl">数量</span>
+
+        <div class="addDelWrap" ng-if="allSelected">
+          <span class="font12">剩余：</span><span class="font12">{{productOrder.real_quantity}}&nbsp;&nbsp;</span>
 					<span class="suanBtn del" ng-click="delNum()">
 						<i class="iconfont icon-jian"></i>
 					</span>
-					<input class="suanBtn num" ng-model="productOrder.num" ng-blur="checkblank()" ng-change="checknum()"/>
+          <input class="suanBtn num" ng-model="productOrder.num"
+                 onkeyup="if(this.value.length==1){this.value=this.value.replace(/[\D0]/g,'')}else{this.value=this.value.replace(/[^0-9]/g,'')}"
+                 onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[[\D0]/g,'')}else{this.value=this.value.replace(/[^0-9]/g,'')}"
+                 ng-change="checknum()"/>
 					<span class="suanBtn add" ng-click="addNum()">
 						<i class="iconfont icon-jia"></i>
 					</span>
-				</div>
-				<div class="clearBoth"></div>
-		</div>
-		<div class="nextStep" ng-click="goToOrder()" ng-class="{disnone:goOrder}">下一步</div>
-		<div class="nextStep" ng-click="goToCart()"  ng-class="{disnone:goCart}">下一步</div>
-	</div>
-	<!-- 登录模块 -->
-	<!-- {{login}} -->
-    <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;"  ng-show="login" loginsuccess="loginsuccess" loginerror="loginerror"></div>
-<!-- <div style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;"  ng-show="login">
-	<div class="pay-way">
-	    <div class="total-cost backfff border-tp height80">
-	      请验证您的手机
-	    </div>
-	    <div class="statusWrap">
-	        <div class="way-item">
-	             <input class="inputclass" placeholder="请输入手机号码" ng-model="mainData.telenum"/>
-	        </div>
-	        <div class="way-item posRelative">
-	             <input class="inputclass" placeholder="验证码"  ng-model="mainData.verificationCode"/>
-	             <div class="yanzhengma" ng-click="verify()">获取验证码</div>
-	        </div>
-	    </div>
-	    <div class="commonBtn backred marginBt0" ng-click="submit()">确认登录</div>
-	</div>
-</div> -->
+        </div>
+        <div class="clearBoth"></div>
+      </div>
+      <button type="button" ng-click="goToOrder()"
+              ng-class="{'disabled':!allSelected,disnone:goOrder}" class="nextStep"
+              ng-disabled="!allSelected">下一步
+      </button>
+      <button type="button" ng-click="goToCart()" ng-class="{'disabled':!allSelected,disnone:goCart}" class="nextStep"
+              ng-disabled="!allSelected">下一步
+      </button>
+    </form>
+  </div>
+  <!-- 登录模块 -->
+  <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;" ng-show="login"
+       loginsuccess="loginsuccess" loginerror="loginerror"></div>
+
 </ion-view>
 
 
