@@ -1,18 +1,21 @@
-<!-- 登录模块 -->	
+<!-- 登录模块 -->
 <div class="pay-way" ng-class="{'backfff':login}">
-	<div class="total-cost backfff border-tp">请验证您的手机
-		<div  ng-show="login" class="iconfont icon-guanbi closeLogin" ng-click="loginClose()"></div>
-	</div>
-	<div class="statusWrap">
-		<div class="way-item">
-			<input class="inputclass" placeholder="请输入手机号码" ng-model="logindate.username"/>	
-		</div>
-		<div class="way-item posRelative">
-			<input class="inputclass" placeholder="验证码"  ng-model="logindate.password"/>	
-			<button class="yanzhengma" ng-click="verify()">获取验证码</button>
+  <div class="total-cost backfff border-tp">请验证您的手机
+    <div ng-show="login" class="iconfont icon-guanbi closeLogin" ng-click="loginClose()"></div>
+  </div>
+  <div class="statusWrap">
+    <div class="way-item">
+      <input class="inputclass" placeholder="请输入手机号码" ng-model="logindate.username"
+             type="tel" placeholder="请输入手机号"
+             ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" required
+        />
+    </div>
+    <div class="way-item posRelative">
+      <input class="inputclass" placeholder="验证码" ng-model="logindate.password" required ng-pattern="/^[0-9]{6}$/"/>
+      <button class="yanzhengma" ng-click="verify()">获取验证码</button>
 
-		</div>
-	</div>
-	<div class="commonBtn backred" ng-click="submit()">确认登录</div>
+    </div>
+  </div>
+  <div class="commonBtn backred" ng-click="submit()">确认登录</div>
 </div>
-<!-- 登录模块 -->	
+<!-- 登录模块 -->

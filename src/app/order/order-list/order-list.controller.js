@@ -8,28 +8,23 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
   //这个切换其实是2个页面 不是页面内切换的
   //一个是购物车页cart   应该是订单列表  order → order-list
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
-  daogouAPI.isLogin(function(data){
+  daogouAPI.isLogin(function (data) {
     console.log("我是order登录检查登录了")
     console.log(data)
 
     //获取订单信息
     getOrderListFunc();
 
-  },function(data){
+  }, function (data) {
     console.log("我是order登录检查没登录")
-    $scope.login=true;
+    $scope.login = true;
   });
   var URLPort = URLPort();
-
-
   $scope.productListData = [];
   var pageindex = 1;
   var pagesize = 5;
-  $scope.hasMoreOrder = true; 
 
-
-
-
+  $scope.hasMoreOrder = true;
   function getOrderListFunc() {
     daogouAPI.getOrderList("/trades/users/" + $rootScope.USERINFO.id, {
       page: pageindex,
@@ -50,6 +45,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
             break;
           case 'WAIT_SELLER_SEND_GOODS':
             item.statusCN = '等待卖家发货';
+            item.leftTime = $scope.MillisecondToDate(new Date(item.pay_end_time).getTime() - new Date(item.out_pay_end_time).getTime());
             break;
           case 'WAIT_BUYER_CONFIRM_GOODS':
             item.statusCN = '等待买家确认收货';
@@ -75,10 +71,8 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
           default:
             return '等待买家付款';
         }
-
-        item.leftTime = $scope.MillisecondToDate(new Date(item.pay_end_time).getTime() - new Date(item.out_pay_end_time).getTime());
         angular.forEach(item.orders, function (itemOrder, index) {
-          itemOrder.pics = itemOrder.pic_path.indexOf(",") > 0 ? itemOrder.pic_path.split(",") :[itemOrder.pic_path] ;
+          itemOrder.pics = itemOrder.pic_path.indexOf(",") > 0 ? itemOrder.pic_path.split(",") : [itemOrder.pic_path];
         });
       });
       $scope.productListData = $scope.productListData.concat(data);
@@ -97,19 +91,16 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
     });
   }
 
-
-
-  $scope.loginsuccess=function(data){
-      console.log(["order的回调", data]);
-      $scope.login=false;
-      $(".redPoint").show();
-      //获取订单信息
-      getOrderListFunc();
+  $scope.loginsuccess = function (data) {
+    console.log(["order的回调", data]);
+    $scope.login = false;
+    $(".redPoint").show();
+    //获取订单信息
+    getOrderListFunc();
   }
-  $scope.loginerror=function(data){
+  $scope.loginerror = function (data) {
 
   }
-
 
 
   /**
@@ -165,7 +156,6 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
     console.log(["goCart brandid", $rootScope.BRANDID]);
     $state.go("cart", {"userid": $rootScope.USERINFO.id, "brandid": $rootScope.BRANDID});
   };
-
 
 
   $scope.choose = false;
