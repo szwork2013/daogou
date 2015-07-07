@@ -2,12 +2,21 @@
 
 var cart = angular.module('cart', ['ionic']);
 cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$stateParams', 'daogouAPI', '$rootScope', function ($scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, $rootScope) {
+  //检测登录开始
+  daogouAPI.isLogin(function (data) {
+    console.log(data)
+    //得到用户信息才获取购物车信息
+    cartProductListFunc();
+
+  }, function (data) {
+    //如果未检测到用户信息，则显示登录界面
+    $scope.login = true;
+  });
+  //检测登录结束
   var URLPort = URLPort();
   $scope.hasMoreOrder = true;
   var pageindex = 1;
   var pagesize = 5;
-  var userid = $stateParams.userid;
-  var brandid = $stateParams.brandid;
   //选中商品id集合
   $scope.ids = [];
   //购物车商品列表
@@ -26,8 +35,8 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
   function cartProductListFunc() {
     $scope.Allseleted = false;
     daogouAPI.shopcart({
-      userid: userid,
-      brand_id: brandid,
+      userid: $rootScope.USERINFO.id,
+      brand_id: $rootScope.BRANDID,
       page: pageindex,
       per_page: pagesize
     }, function (data, status, headers, config) {
@@ -58,10 +67,19 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       console.log(["查询导购商品列表失败", data]);
     });
   }
-  /**
-   * 默认加载
-   */
-  cartProductListFunc();
+  // 登录成功回调
+  $scope.loginsuccess = function (data) {
+    console.log(["order的回调", data]);
+    $scope.login = false;
+    $(".redPoint").show();
+    //获取订单信息
+    cartProductListFunc();
+  }
+  //登录失败回调
+  $scope.loginerror = function (data) {
+
+  }
+
   /**
    * 加载更多
    */
@@ -80,7 +98,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
   /**
    * 加载品牌信息
    */
-  $http.get(URLPort + "/brands/" + brandid)
+  $http.get(URLPort + "/brands/" + $rootScope.BRANDID)
     .success(function (data) {
       $scope.brandData = data;
     })
@@ -216,6 +234,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
    *   购物车 订单列表切换
    */
   $scope.goOrderList = function () {
-    $state.go("orderList", {"userid": $stateParams.userid});
+    $state.go("orderList", {"userid": $rootScope.USERINFO.id});
   }
 }])
