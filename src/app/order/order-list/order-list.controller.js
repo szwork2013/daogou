@@ -25,7 +25,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
   $scope.productListData = [];
   var pageindex = 1;
   var pagesize = 5;
-  $scope.hasMoreOrder = true;
+  $scope.hasMoreOrder = true; 
 
 
 

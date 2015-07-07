@@ -231,6 +231,15 @@ angular.module('daogou')
 
 		/*上传文件*/
 		uploadfile:uploadfile,
+
+		/*根据地区获得门店*/
+		storeAddress:storeAddress,
+
+	    /*根据经纬度获得所有的门店*/
+		shopAddressAll:shopAddressAll,
+
+		/*根据id获取门店*/
+		shopAddressId:shopAddressId,
 	};
 
 	return daogouAPI;
@@ -335,6 +344,44 @@ angular.module('daogou')
 			user_id: dataobj.user_id,
 			longitude: dataobj.longitude,
 			latitude: dataobj.latitude,
+			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
+			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
+		};
+		
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	function shopAddressAll(actionurl,dataobj,scallback,ecallback) {
+		var action=actionurl;
+		var data={
+			user_id: dataobj.user_id,
+			longitude: dataobj.longitude,
+			latitude: dataobj.latitude,
+			// page: typeof dataobj.page === 'number' ? dataobj.page : 1,
+			// per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
+		};
+		
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	function shopAddressId(actionurl,dataobj,scallback,ecallback) {
+		var action=actionurl;
+		var data={
+			user_id: dataobj.user_id,
+			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
+			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
+		};
+		
+		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
+	}
+
+	function storeAddress(actionurl,dataobj,scallback,ecallback) {
+		var action=actionurl;
+		var data={
+			user_id: dataobj.user_id,
+			state_code: dataobj.state_code,
+			city_code: dataobj.city_code,
+			district_code: dataobj.district_code,
 			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
 			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
 		};

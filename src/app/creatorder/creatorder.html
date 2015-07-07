@@ -86,7 +86,7 @@
                       <span class="colorBlue floatR font13" ng-click="changeReceiveInfoFunc()">修改</span>
                       <div class="clearBoth"></div>
                   </div>
-                  <span class="font13">[默认]&nbsp;{{defaultAddressdata.state}}&nbsp;{{defaultAddressdata.city}}&nbsp;{{defaultAddressdata.district}}&nbsp;{{defaultAddressdata.address}} </span>
+                  <span class="font13"><span ng-show="defaultAddressdata.is_default">[默认]&nbsp;</span>{{defaultAddressdata.state}}&nbsp;{{defaultAddressdata.city}}&nbsp;{{defaultAddressdata.district}}&nbsp;{{defaultAddressdata.address}} </span>
               </div>
              <!-- 已经有收货地址 -->
           </div>
@@ -101,8 +101,7 @@
                   <div class="clearBoth"></div>
               </div>
               <div>
-                  <span class="font13 floatL width85">{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</span>
-                 <!--  <p id="demo">点击这个按钮，获得您的坐标：</p> -->
+                  <span class="font13 floatL width85"><span ng-show="minDistance.is_default">[默认]&nbsp;</span>{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</span>
                   <span class="font13 colorRed floatR">{{minDistance.distance}}km</span>
                   <div class="clearBoth"></div>
               </div>

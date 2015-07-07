@@ -89,103 +89,111 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 
 
 
-
 	$scope.postway = function(){
 		$scope.express = true;
 	}
 	$scope.shopway = function(){
 		$scope.express = false;
+		if($rootScope.selectedStoreId){//如果是选择门店地址
+			;
+		}else{
+				// var x=document.getElementById("demo");
+				$scope.getLocation = function(){
+					  if (navigator.geolocation)
+					    {
+					    navigator.geolocation.getCurrentPosition(showPosition);
+					    var timer = setInterval(function(){
+						    	$scope.lng = 121.399411;
+						    	$scope.lat = 31.168323;
+			    			  	daogouAPI.shopAddressAll('/brands/'+$rootScope.productOrders[0].brand_id+'/stores/store-fetch',{
+			    					user_id:$rootScope.USERINFO.id,
+			    					longitude:$scope.lng,
+			    					latitude:$scope.lat
+			    					// longitude:121.412195,
+			    					// latitude:31.204672
+			    				},function(data, status, headers, config){
+			    					console.log(['查询门店列表成功',data]);
+			    					$scope.shopaddressData = data;
+			    					var flag = false;
+			    					var defaultIndex = 0;
+			    					for(var i in $scope.shopaddressData){
+			    						if($scope.shopaddressData[i].is_default===1){
+			    							flag = true;//如果有默认地址 flag为true
+			    							defaultIndex = i;
+			    						}
+			    					}
+			    					if(flag === true){//有默认地址
+			    						console.log('有默认地址');
+			    						$rootScope.minDistance=$scope.shopaddressData[defaultIndex];
+			    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+			    					}else{//没有默认地址
+			    						console.log('无有默认地址');
+			    						var minIndex = 0;
+			    						for(var i=0;i<data.length-1;i++){
+			    							if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+			    								minIndex = i+1;
+			    							}
+			    						}
+			    						$rootScope.minDistance = data[minIndex]; 
+			    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+			    					}
+			    					
+			    					getFetchTime();//获得门店取货时间
+
+			    				    clearInterval(timer);
+			    				},function(data, status, headers, config){
+			    					console.log(['查询门店列表失败',data]);
+			    				});
+					    	},500)
+					      	
+					    }else{
+					    	x.innerHTML="Geolocation is not supported by this browser.";
+					    }
+				}//$scope.getLocation
 
 
-		// var x=document.getElementById("demo");
-		$scope.getLocation = function(){
-			  if (navigator.geolocation)
-			    {
-			    navigator.geolocation.getCurrentPosition(showPosition);
-			    var timer = setInterval(function(){
-				    	$scope.lng = 121.399411;
-				    	$scope.lat = 31.168323;
-	    			  	daogouAPI.shopAddress('/brands/'+$rootScope.productOrders[0].brand_id+'/stores/store-fetch',{
-	    					user_id:$rootScope.USERINFO.id,
-	    					longitude:$scope.lng,
-	    					latitude:$scope.lat
-	    					// longitude:121.412195,
-	    					// latitude:31.204672
-	    				},function(data, status, headers, config){
-	    					console.log(['查询门店列表成功',data]);
-	    					$scope.shopaddressData = data;
-	    					var flag = false;
-	    					var defaultIndex = 0;
-	    					for(var i in $scope.shopaddressData){
-	    						if($scope.shopaddressData[i].is_default===1){
-	    							flag = true;//如果有默认地址 flag为true
-	    							defaultIndex = i;
-	    						}
-	    					}
-	    					if(flag === true){//有默认地址
-	    						console.log('有默认地址');
-	    						$rootScope.minDistance=$scope.shopaddressData[defaultIndex];
-	    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
-	    					}else{//没有默认地址
-	    						console.log('无有默认地址');
-	    						var minIndex = 0;
-	    						for(var i=0;i<data.length-1;i++){
-	    							if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
-	    								minIndex = i+1;
-	    							}
-	    						}
-	    						$rootScope.minDistance = data[minIndex]; 
-	    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
-	    					}
-	    					
+				function showPosition(position){
+				  // x.innerHTML="Latitude: " + position.coords.latitude + 
+				  // "<br />Longitude: " + position.coords.longitude;	
+				  $scope.lng = position.coords.longitude;
+				  $scope.lat = position.coords.latitude;
+				}
 
-	    					//获取门店取货时间
-	    						$scope.fetchTime = {};
-								$scope.fetchTime.fetchday = "";
-								$scope.fetchTime.fetchhour = "";
-	    					   daogouAPI.fetchTime({
-		    					   	brand_id:$rootScope.productOrders[0].brand_id,
-		    					   	user_id:$rootScope.USERINFO.id,
-		    					   	store_id:$rootScope.minDistance.id
-	    						 },function(data, status, headers, config){
-	    					 		$scope.fetchTimeData = data;
-	    					 		$scope.fetchdayData = [];
-	    					 		$scope.fetchhourData = [];
-	    					 		for(var i in $scope.fetchTimeData){
-	    					 			$scope.fetchdayData[i] = {};
-	    					 		}
+			    $scope.getLocation();
 
-	    					 		for(var i in $scope.fetchTimeData){
-	    					 			// $scope.fetchdayData.push($scope.fetchTimeData[i].day);
-	    					 			$scope.fetchdayData[i].index = i;
-	    					 			$scope.fetchdayData[i].day = $scope.fetchTimeData[i].day;
-	    					 		}
-	    					 		console.log(["$scope.fetchdayData",$scope.fetchdayData]);
-	    					 		console.log(['获取用户取货可选时间范围成功',data]);
-	    					 	 },function(data, status, headers, config){
-	    					 		console.log(['获取用户取货可选时间范围失败',data]);
-	    						 });
+		}//if($rootScope.selectedAddressId)
+		
+	}//shopway
 
-	    				    clearInterval(timer);
-	    				},function(data, status, headers, config){
-	    					console.log(['查询门店列表失败',data]);
-	    				});
-			    	},500)
-			      	
-			    }else{
-			    	x.innerHTML="Geolocation is not supported by this browser.";
-			    }
-		}
 
-		function showPosition(position){
-		  // x.innerHTML="Latitude: " + position.coords.latitude + 
-		  // "<br />Longitude: " + position.coords.longitude;	
-		  $scope.lng = position.coords.longitude;
-		  $scope.lat = position.coords.latitude;
-		}
+	//获取门店取货时间
+	$scope.fetchTime = {};
+	$scope.fetchTime.fetchday = "";
+	$scope.fetchTime.fetchhour = "";
+	function getFetchTime(){
+	   daogouAPI.fetchTime({
+		   	brand_id:$rootScope.productOrders[0].brand_id,
+		   	user_id:$rootScope.USERINFO.id,
+		   	store_id:$rootScope.minDistance.id
+		 },function(data, status, headers, config){
+	 		$scope.fetchTimeData = data;
+	 		$scope.fetchdayData = [];
+	 		$scope.fetchhourData = [];
+	 		for(var i in $scope.fetchTimeData){
+	 			$scope.fetchdayData[i] = {};
+	 		}
 
-	    $scope.getLocation();
+	 		for(var i in $scope.fetchTimeData){
+	 			$scope.fetchdayData[i].index = i;
+	 			$scope.fetchdayData[i].day = $scope.fetchTimeData[i].day;
+	 		}
+	 		console.log(["$scope.fetchdayData",$scope.fetchdayData]);
+	 		console.log(['获取用户取货可选时间范围成功',data]);
+	 	 },function(data, status, headers, config){
+	 		console.log(['获取用户取货可选时间范围失败',data]);
+		 });
 	}
+
 	$scope.dayselecthour = function(day){
 		console.log(["$scope.fetchTime.fetchday",day]);
 		$scope.fetchhourData = $scope.fetchTimeData[parseInt(day.index)].times;
@@ -404,20 +412,10 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 			console.log(['退出失败',data]);
 
 		})
-		// $http.get(URLPort+'/logout')
-		// .success(function(data){
-		// 	console.log(['退出成功',data])
-		// })
-		// .error(function(data){
-		// 	console.log(['退出失败',data]);
-		// })
 	}
+
 	$scope.goGoodsShop = function(){//门店地址列表页面
-// <<<<<<< HEAD
-		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$rootScope.productOrders[0].brand_id,'lng':$scope.lng,'lat':$scope.lat});
-// =======
-// 		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$rootScope.BRANDID});
-// >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
+		$state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$rootScope.productOrders[0].brand_id,'lng':$scope.lng,'lat':$scope.lat,'refunds':0});
 	}
 	$scope.changeReceiveInfoFunc = function(){//收货人地址列表页面
 		console.log(['userid',$rootScope.USERINFO.id]);
@@ -431,9 +429,22 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 		$scope.loginhandle = true; //已经登录让 登录模块隐藏
 		$scope.alladdress = false; //让地址模不隐藏
 		$scope.express = true;
+		if($rootScope.selectedStoreId){
+			$scope.express = false;
+			console.log("选择取货门店")
+			getFetchTime();//获得门店取货时间
+		}
 		$rootScope.USERINFO.id = $rootScope.USERINFO.id;
 		//查询用户的收获地址信息
-		checkoutAddress();
+		if($rootScope.selectedAddressId){
+             console.log("这是选择收货地址情况");
+             $scope.firstBuyerAddress = true; //隐藏填写第一个地址模块，显示选择地址模块
+             $scope.buyeraddress = false;
+             $scope.weixinpay = false;
+		}else{
+			checkoutAddress();
+		}
+		
 	}
 
 	function checkoutAddress(){
@@ -478,32 +489,60 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 
 
 })
-.controller('goodsShopCtrl',['$rootScope','$scope','$log','$http','daogouAPI','$stateParams',function($rootScope,$scope,$log,$http,daogouAPI,$stateParams){
+
+//门店列表
+.controller('goodsShopCtrl',['$rootScope','$scope','$log','$http','daogouAPI','$stateParams','$state',function($rootScope,$scope,$log,$http,daogouAPI,$stateParams,$state){
 	$log.debug('goodsShopCtrl');
-// <<<<<<< HEAD
 	$stateParams.lng = 121.399411;
 	$stateParams.lat = 31.168323;
-	daogouAPI.shopAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
-		user_id:$stateParams.userid,
-		// longitude:121.399411,
-		// latitude:31.168323
-		longitude:$stateParams.lng,
-		latitude:$stateParams.lat
-// =======
-// 	daogouAPI.shopAddress('/brands/'+$rootScope.BRANDID+'/stores/store-fetch',{
-// 		user_id:$rootScope.USERINFO.id,
-// 		longitude:121.399411,
-// 		latitude:31.168323
-// >>>>>>> 0b0ed0a79c8d260c32b245133f2081b8ff554177
-	},function(data, status, headers, config){
-		console.log(['查询门店列表成功',data]);
-		$scope.shopaddressData = data;
-	},function(data, status, headers, config){
-		console.log(['查询门店列表失败',data]);
+
+	$scope.shopaddressData = [];
+	var pageindex = 1;
+	var pagesize = 5;
+	$scope.hasMoreOrder = true; 
+	shopAddressList();
+
+	function shopAddressList(){
+		daogouAPI.shopAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
+			user_id:$stateParams.userid,
+			longitude:$stateParams.lng,
+			latitude:$stateParams.lat,
+			page: pageindex,
+			per_page: pagesize
+		},function(data, status, headers, config){
+			console.log(['查询门店列表成功',data]);
+			$scope.shopaddressData = $scope.shopaddressData.concat(data);
+
+			if (data.length >= pagesize) {
+			  pageindex++;
+			  console.log(["pageindex+++++++", pageindex])
+			} else {
+			  $scope.hasMoreOrder = false;
+			  console.log(["hasMoreOrder", $scope.hasMoreOrder])
+			}
+			$scope.$broadcast('scroll.infiniteScrollComplete');
+
+		},function(data, status, headers, config){
+			console.log(['查询门店列表失败',data]);
+		});
+	}
+	/**
+	 * 加载更多
+	 */
+	$scope.loadMoreData = function () {
+	  shopAddressList();
+	};
+	/**
+	 * 监测广播，加载更多
+	 */
+	$scope.$on('$stateChangeSuccess', function () {
+	  if (pageindex > 2) {
+	    $scope.loadMoreData();
+	  }
 	});
 
 	$scope.defaultstorefunc = function(store_id,index){
-		console.log('123');
+		console.log(['store_id',store_id]);
 		daogouAPI.defaultstore({
 			brand_id:$stateParams.brandid,
 			user_id:$rootScope.USERINFO.id,
@@ -511,8 +550,21 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 		},function(data, status, headers, config){
 			for(var i in $scope.shopaddressData){
 				$scope.shopaddressData[i].is_default = false;
+				if($scope.shopaddressData[i].id === store_id){
+					$scope.shopaddressData[index].is_default = true;
+				}
 			}
-			$scope.shopaddressData[index].is_default = true;
+			console.log(["$rootScope.storeAddressData",$rootScope.storeAddressData]);
+			if($rootScope.storeAddressData){
+				console.log(["$rootScope.storeAddressData",$rootScope.storeAddressData]);
+				for(var i in $rootScope.storeAddressData){
+					$rootScope.storeAddressData[i].is_default = false;
+					if($rootScope.storeAddressData[i].id === store_id){
+						$rootScope.storeAddressData[index].is_default = true;
+					}
+				}
+			}
+			
 			console.log(['设置默认取货门店成功',data]);
 		    
 		},function(data, status, headers, config){
@@ -520,8 +572,33 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 		});
 	}
 
+	//选择门店
+	$scope.selectStore = function(id){
+			$rootScope.selectedStoreId = id;
+			$rootScope.selectedAddressId = null;
+			console.log(["是选择门店情况",$rootScope.selectedAddressId]);
+			for(var i in $scope.shopaddressData){
+				if($scope.shopaddressData[i].id === id){
+					$rootScope.minDistance = $scope.shopaddressData[i];
+				}
+			}
+			console.log(["$rootScope.storeAddressData",$rootScope.storeAddressData]);
+			if($rootScope.storeAddressData){
+				console.log(["$rootScope.storeAddressData",$rootScope.storeAddressData]);
+				for(var i in $rootScope.storeAddressData){
+					if($rootScope.storeAddressData[i].id === id){
+						$rootScope.minDistance = $rootScope.storeAddressData[i];
+					}
+				}
+			}
 
-
+			if($stateParams.refunds === 1){
+				$state.go('returnApply',{'tid':$rootScope.refundsTid,'oid':$rootScope.refundsOid});
+			}else{
+				$state.go('creatorder');
+			}
+			
+	}
 
 
 	
@@ -539,7 +616,8 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 				console.log(['获取用户收货地址列表失败', data]);
 			})
 
-	 $scope.selectAddress = function(id){
+	  $scope.selectAddress = function(id){
+	 	    $rootScope.selectedStoreId = null;
 	 		$rootScope.selectedAddressId = id;
 	 		if(typeof($rootScope.selectedAddressId)==="undefined"){//不是选择地址
 	 			console.log(["不是选择地址情况"]);
