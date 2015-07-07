@@ -23,6 +23,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
   $scope.productListData = [];
   var pageindex = 1;
   var pagesize = 5;
+
   $scope.hasMoreOrder = true;
   function getOrderListFunc() {
     daogouAPI.getOrderList("/trades/users/" + $rootScope.USERINFO.id, {

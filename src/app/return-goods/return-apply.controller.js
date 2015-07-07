@@ -4,8 +4,15 @@ angular.module('goodsReturn',['ionic'])
 .controller('returnApplyCtrl',['$rootScope','$scope','$log','$http','checklocalimg','$stateParams','URLPort','$state','daogouAPI',function($rootScope,$scope,$log,$http,checklocalimg,$stateParams,URLPort,$state,daogouAPI){
 	console.log(["$stateParams.oid",$stateParams.oid])
 	console.log(["$stateParams.tid",$stateParams.tid])
+    if($stateParams.oid){
+        $rootScope.refundsOid = $stateParams.oid;
+    }
+    if($stateParams.tid){
+        $rootScope.refundsTid = $stateParams.tid;
+    }
+    
     var URLPort = URLPort();
-    $http.get(URLPort+"/trades/"+$stateParams.tid+"/refunds")
+    $http.get(URLPort+"/trades/"+$rootScope.refundsTid+"/refunds")
     .success(function(data){
     	console.log(["获取可退货商品成功",data]);
     	for(var i in data.details){
@@ -34,72 +41,84 @@ angular.module('goodsReturn',['ionic'])
     	buyer_memo: "",
     	prove_images: "http://brand-guide.b0.upaiyun.com/refund-qr-code/1434009839066_495203.jpg"
     }
-
+    if($rootScope.selectedStoreId){//如果是选择门店
+        $scope.expressway = false;
+        $scope.fetchway = true;
+    }
   
     $scope.selectRefundway = function(){
     	console.log(["$scope.refundInputInfo.shipping_type",$scope.refundInputInfo.shipping_type]);
         if($scope.refundInputInfo.shipping_type.shippingtype === "STORE"){
         	$scope.expressway = false;
     		$scope.fetchway = true;
-    			$scope.getLocation = function(){
-    				  if (navigator.geolocation)
-    				    {
-    				    navigator.geolocation.getCurrentPosition(showPosition);
-    				    var timer = setInterval(function(){
-    					    	$scope.lng = 121.399411;
-    					    	$scope.lat = 31.168323;
-    		    			  	daogouAPI.shopAddress('/brands/'+$scope.refundData.brand_id+'/stores/store-fetch',{
-    		    					user_id:$rootScope.USERINFO.id,
-    		    					longitude:$scope.lng,
-    		    					latitude:$scope.lat
-    		    					// longitude:121.412195,
-    		    					// latitude:31.204672
-    		    				},function(data, status, headers, config){
-    		    					console.log(['查询门店列表成功',data]);
-    		    					$scope.shopaddressData = data;
-    		    					var flag = false;
-    		    					var defaultIndex = 0;
-    		    					for(var i in $scope.shopaddressData){
-    		    						if($scope.shopaddressData[i].is_default===1){
-    		    							flag = true;//如果有默认地址 flag为true
-    		    							defaultIndex = i;
-    		    						}
-    		    					}
-    		    					if(flag === true){//有默认地址
-    		    						console.log('有默认地址');
-    		    						$rootScope.minDistance=$scope.shopaddressData[defaultIndex];
-    		    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
-    		    					}else{//没有默认地址
-    		    						console.log('无有默认地址');
-    		    						var minIndex = 0;
-    		    						for(var i=0;i<data.length-1;i++){
-    		    							if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
-    		    								minIndex = i+1;
-    		    							}
-    		    						}
-    		    						$rootScope.minDistance = data[minIndex]; 
-    		    						console.log(["$rootScope.minDistance",$rootScope.minDistance]);
-    		    					}
+    			if($rootScope.selectedStoreId){//如果是选择门店地址
+                    ;
+                }else{
+                        // var x=document.getElementById("demo");
+                        $scope.getLocation = function(){
+                              if (navigator.geolocation)
+                                {
+                                navigator.geolocation.getCurrentPosition(showPosition);
+                                var timer = setInterval(function(){
+                                        $scope.lng = 121.399411;
+                                        $scope.lat = 31.168323;
+                                        daogouAPI.shopAddressAll('/brands/'+$scope.refundData.brand_id+'/stores/store-fetch',{
+                                            user_id:$rootScope.USERINFO.id,
+                                            longitude:$scope.lng,
+                                            latitude:$scope.lat
+                                            // longitude:121.412195,
+                                            // latitude:31.204672
+                                        },function(data, status, headers, config){
+                                            console.log(['查询门店列表成功',data]);
+                                            $scope.shopaddressData = data;
+                                            var flag = false;
+                                            var defaultIndex = 0;
+                                            for(var i in $scope.shopaddressData){
+                                                if($scope.shopaddressData[i].is_default===1){
+                                                    flag = true;//如果有默认地址 flag为true
+                                                    defaultIndex = i;
+                                                }
+                                            }
+                                            if(flag === true){//有默认地址
+                                                console.log('有默认地址');
+                                                $rootScope.minDistance=$scope.shopaddressData[defaultIndex];
+                                                console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+                                            }else{//没有默认地址
+                                                console.log('无有默认地址');
+                                                var minIndex = 0;
+                                                for(var i=0;i<data.length-1;i++){
+                                                    if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+                                                        minIndex = i+1;
+                                                    }
+                                                }
+                                                $rootScope.minDistance = data[minIndex]; 
+                                                console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+                                            }
+                                            
+                                            
 
-    		    				    clearInterval(timer);
-    		    				},function(data, status, headers, config){
-    		    					console.log(['查询门店列表失败',data]);
-    		    				});
-    				    	},500)
-    				      	
-    				    }else{
-    				    	x.innerHTML="Geolocation is not supported by this browser.";
-    				    }
-    			}
+                                            clearInterval(timer);
+                                        },function(data, status, headers, config){
+                                            console.log(['查询门店列表失败',data]);
+                                        });
+                                    },500)
+                                    
+                                }else{
+                                    x.innerHTML="Geolocation is not supported by this browser.";
+                                }
+                        }//$scope.getLocation
 
-    			function showPosition(position){
-    			  // x.innerHTML="Latitude: " + position.coords.latitude + 
-    			  // "<br />Longitude: " + position.coords.longitude;	
-    			  $scope.lng = position.coords.longitude;
-    			  $scope.lat = position.coords.latitude;
-    			}
 
-    		    $scope.getLocation();
+                        function showPosition(position){
+                          // x.innerHTML="Latitude: " + position.coords.latitude + 
+                          // "<br />Longitude: " + position.coords.longitude;   
+                          $scope.lng = position.coords.longitude;
+                          $scope.lat = position.coords.latitude;
+                        }
+
+                        $scope.getLocation();
+
+                }//if($rootScope.selectedAddressId)
 
         }else if($scope.refundInputInfo.shipping_type.shippingtype === "EXPRESS"){
         	$scope.expressway = true;
@@ -110,6 +129,10 @@ angular.module('goodsReturn',['ionic'])
         }
     }
    
+
+   $scope.goGoodsShop = function(){//门店地址列表页面
+    $state.go('goodsShop',{'userid':$rootScope.USERINFO.id,'brandid':$scope.refundData.brand_id,'lng':$scope.lng,'lat':$scope.lat,'refunds':1});
+   }
   //通过点击选中圆圈选中
    $scope.changeCheck = function(index){
 	   	console.log(["indexindexindex",index])
@@ -145,7 +168,7 @@ angular.module('goodsReturn',['ionic'])
 
     	 console.log(["picUrls",picUrls]);
     	$http.post(URLPort+"/refunds",{
-    		"tid": $stateParams.tid,
+    		"tid": $rootScope.refundsTid,
     		"shipping_type": $scope.refundInputInfo.shipping_type.shippingtype,
     		"buyer_user_id": 4,
     		"brand_id":$scope.refundData.brand_id,
