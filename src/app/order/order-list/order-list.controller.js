@@ -8,9 +8,10 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
       $rootScope.USERINFO = data;
       getOrderListFunc();
     }, function (data) {
-      //如果未检测到用户信息，则显示登录界面
       $scope.login = true;
     });
+  } else {
+    getOrderListFunc();
   }
   var URLPort = URLPort();
   $scope.productListData = [];

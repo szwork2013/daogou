@@ -8,11 +8,12 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         $rootScope.USERINFO = data;
         cartProductListFunc();
       }, function (data) {
-        //如果未检测到用户信息，则显示登录界面
         $scope.login = true;
       });
     }
-
+    else {
+      cartProductListFunc();
+    }
     var URLPort = URLPort();
     $scope.hasMoreOrder = true;
     var pageindex = 1;
