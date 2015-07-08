@@ -24,7 +24,7 @@
     <div class="statusWrap backf8" ng-repeat="item in productListData">
       <div class="status backf8">
         <div class="status-name countDel" ng-class="{success:item.statusCN==='交易成功'}">{{item.statusCN}}</div>
-        <div class="edit">
+        <div class="edit" ng-if="item.status==='WAIT_BUYER_PAY'||item.status==='WAIT_BUYER_FETCH_GOODS'">
           <i class="iconfont icon-shijian"></i>
          {{item.leftTime}}
         </div>

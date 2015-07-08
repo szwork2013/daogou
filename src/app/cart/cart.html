@@ -31,7 +31,7 @@
 
       <ul class="list">
         <li class="item item-checkbox product-item" ng-repeat="item in cartProductListData">
-          <i class="iconfont icon-gou bggou font24 selected-img" ng-if="finishhandle"
+          <i class="iconfont icon-gou bggou font24 selected-img"
              ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck(item)"></i>
           <img ng-src="{{item.pics[0]}}" class="product-img">
 
@@ -47,7 +47,7 @@
 
           <div class="countNumCount" ng-show="finishhandle">
             <img src="assets/images/del.png" class="countImg" ng-click="delNum(item)">
-            <input class="num" ng-model="item.tempNum"/>
+            <input class="num" ng-model="item.num"/>
             <img src="assets/images/add.png" class="countImg" ng-click="addNum(item)">
           </div>
           <div class="countNum" ng-show="edithandle">X{{item.num}}</div>
@@ -68,6 +68,8 @@
   <ion-footer-bar align-title="left" class="footer" ng-show="edithandle">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
+        <i class="iconfont icon-gou bggou font24 selected-img All"
+           ng-class="{'graygou':!Allseleted,'greengou':Allseleted}" ng-click="changeAll()"></i>
         <button class="goAccount" ng-click="checkCartProduct()">结算({{totalNum}})</button>
         <span class="totalPrice">{{totalFee | currency:"￥":2}}</span>
         <span class="total">合计：</span>
@@ -81,10 +83,10 @@
       <li class="item item-checkbox footerli">
         <i class="iconfont icon-gou bggou font24 selected-img All"
            ng-class="{'graygou':!Allseleted,'greengou':Allseleted}" ng-click="changeAll()"></i>
-        <button class="goAccount" ng-click="deleteCartProduct()" ng-class="{'disabled':totalNumDelete==0}"
-                ng-disabled="totalNumDelete==0">删除({{totalNumDelete}})
+        <button class="goAccount" ng-click="deleteCartProduct()" ng-class="{'disabled':totalNum==0}"
+                ng-disabled="totalNum==0">删除({{totalNum}})
         </button>
-        <span class="totalPrice">{{totalFeeDelete | currency:"￥":2}}</span>
+        <span class="totalPrice">{{totalFee | currency:"￥":2}}</span>
         <span class="total">合计：</span>
       </li>
     </ul>

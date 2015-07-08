@@ -3,22 +3,15 @@
 var order = angular.module('orderList', ['ionic']);
 order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state', '$stateParams', '$rootScope', function ($scope, $log, $http, URLPort, daogouAPI, $state, $stateParams, $rootScope) {
 
-
-//==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
-  //这个切换其实是2个页面 不是页面内切换的
-  //一个是购物车页cart   应该是订单列表  order → order-list
-//==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
-  daogouAPI.isLogin(function (data) {
-    console.log("我是order登录检查登录了")
-    console.log(data)
-
-    //获取订单信息
-    getOrderListFunc();
-
-  }, function (data) {
-    console.log("我是order登录检查没登录")
-    $scope.login = true;
-  });
+  if ($rootScope.USERINFO == null) {
+    daogouAPI.isLogin(function (data) {
+      $rootScope.USERINFO = data;
+      getOrderListFunc();
+    }, function (data) {
+      //如果未检测到用户信息，则显示登录界面
+      $scope.login = true;
+    });
+  }
   var URLPort = URLPort();
   $scope.productListData = [];
   var pageindex = 1;
@@ -31,27 +24,30 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
       per_page: pagesize,
       show_orders: true
     }, function (data, status, headers, config) {
-      console.log(["查询消费者的订单列表成功", data]);
-      console.log(["hasMoreOrder", $scope.hasMoreOrder]);
-      console.log(["pageindex", pageindex]);
       $rootScope.BRANDID = data[0].brand_id;
       angular.forEach(data, function (item, index) {
         switch (item.status) {
           case "WAIT_BUYER_PAY":
-            item.statusCN = "等待买家付款";
+            var created_at = new Date(item.created_at);
+            var newDate = new Date(created_at.setDate(created_at.getDate() + 3));
+            item.leftTime = $scope.MillisecondToDate(newDate.getTime() - new Date().getTime());
+            item.statusCN = "待付款";
             break;
           case 'SELLER_CONSIGNED_PART':
             item.statusCN = "卖家部分发货";
             break;
           case 'WAIT_SELLER_SEND_GOODS':
-            item.statusCN = '等待卖家发货';
-            item.leftTime = $scope.MillisecondToDate(new Date(item.pay_end_time).getTime() - new Date(item.out_pay_end_time).getTime());
+            item.statusCN = '待发货';
             break;
           case 'WAIT_BUYER_CONFIRM_GOODS':
-            item.statusCN = '等待买家确认收货';
+            item.statusCN = '待确认收货';
             break;
           case 'WAIT_BUYER_FETCH_GOODS':
-            item.statusCN = '等待买家取货';
+            item.leftTime = $scope.MillisecondToDate(new Date(item.fetch_subscribe_begin_time).getTime() - new Date().getTime());
+            if (item.leftTime.indexOf("-") > 0) {
+              item.leftTime = "剩余0时0分0秒";
+            }
+            item.statusCN = '待取货';
             break;
           case 'TRADE_FINISHED':
             item.statusCN = '交易成功';
@@ -124,6 +120,80 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
     var strSecond = second < 10 ? '0' + second : second;
     return "剩余" + strHour + "小时" + strMinute + "分钟" + strSecond + "秒";
   };
+  /**
+   * 时间-添加
+   * @param interval
+   * @param number
+   * @returns {Date}
+   */
+  Date.prototype.add = function (interval, number) {
+    /*
+     *   功能:实现VBScript的DateAdd功能.
+     *   参数:interval,字符串表达式，表示要添加的时间间隔.
+     *   参数:number,数值表达式，表示要添加的时间间隔的个数.
+     *   参数:date,时间对象.
+     *   返回:新的时间对象.
+     *   var   now   =   new   Date();
+     *   var   newDate   =   DateAdd("d",5,now);
+     *---------------   DateAdd(interval,number,date)   -----------------
+     */
+    switch (interval) {
+      case "y"   :
+      {
+        this.setFullYear(this.getFullYear() + number);
+
+        break;
+      }
+      case "q"   :
+      {
+        this.setMonth(this.getMonth() + number * 3);
+
+        break;
+      }
+      case "m"   :
+      {
+        this.setMonth(this.getMonth() + number);
+
+        break;
+      }
+      case "w"   :
+      {
+        this.setDate(this.getDate() + number * 7);
+
+        break;
+      }
+      case "d"   :
+      {
+        this.setDate(this.getDate() + number);
+
+        break;
+      }
+      case "h"   :
+      {
+        this.setHours(this.getHours() + number);
+
+        break;
+      }
+      case "M"   :
+      {
+        this.setMinutes(date.getMinutes() + number);
+
+        break;
+      }
+      case "s"   :
+      {
+        this.setSeconds(date.getSeconds() + number);
+
+        break;
+      }
+      default   :
+      {
+        this.setDate(d.getDate() + number);
+        break;
+      }
+    }
+    return this;
+  };
 
   /**
    * 加载更多
@@ -152,13 +222,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
    * 购物车订单列表切换
    */
   $scope.goCart = function () {
-    console.log(["goCart userid", $rootScope.USERINFO.id]);
-    console.log(["goCart brandid", $rootScope.BRANDID]);
     $state.go("cart", {"userid": $rootScope.USERINFO.id, "brandid": $rootScope.BRANDID});
   };
-
-
-  $scope.choose = false;
-  $log.debug(['choooose', $scope.choose])
 
 }]);
