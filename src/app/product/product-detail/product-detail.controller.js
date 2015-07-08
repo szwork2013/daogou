@@ -196,7 +196,7 @@ product.controller('productDetailCtrl',
       $scope.productOrder.freight = $scope.productDetailData.freight;
       $scope.productOrder.picUrlArr = $scope.productDetailData.picUrlArr;
       $scope.productOrder.brand_id = $rootScope.BRANDID;
-      window.sessionStorage.setItem("productOrders",  JSON.stringify($scope.productOrder));
+      window.sessionStorage.setItem("productOrders",  JSON.stringify([$scope.productOrder]));
 
       $state.go("creatorder");
     };

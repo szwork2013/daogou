@@ -15,7 +15,7 @@ createOrder.controller('creatorderCtrl',
     $scope.totalprice = 0;
     $scope.buyfreight = 0;
     angular.forEach($scope.productOrders, function (item, index) {
-      item.bring_guider_id = $rootScope.GUIDID;
+       item.bring_guider_id = $rootScope.GUIDID;
       $scope.totalprice += item.price * item.num;
       $scope.buyfreight += item.freight
     });
