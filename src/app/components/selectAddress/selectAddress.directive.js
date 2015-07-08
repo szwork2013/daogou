@@ -159,12 +159,40 @@ angular.module('daogou')
 
 			var pageindex = 1;
 		 	var pagesize = 5;
-		 	$rootScope.storeAddressData = [];
 		 	$scope.hasMoreOrder = false; 
 			$scope.getStoresList = function(){
+				$rootScope.storeAddressData = [];
 				console.log("要加载改地区的门店啦");
 				if(($scope.newAddressInput.provinceInfo.code!="")&&($scope.newAddressInput.cityInfo.code!="")&&($scope.newAddressInput.districtInfo.code!="")){
 					$scope.hasMoreOrder = true;
+					daogouAPI.storeAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
+						user_id:$stateParams.userid,
+						state_code:$scope.newAddressInput.provinceInfo.code,
+						city_code:$scope.newAddressInput.cityInfo.code,
+						district_code:$scope.newAddressInput.districtInfo.code,
+						page: pageindex,
+						per_page: pagesize
+					},function(data, status, headers, config){
+						console.log(['查询门店列表成功',data]);
+						$rootScope.storeAddressData = $rootScope.storeAddressData.concat(data);
+						if (data.length >= pagesize) {
+						  pageindex++;
+						  console.log(["pageindex+++++++", pageindex]);
+						} else {
+						  $scope.hasMoreOrder = false;
+						  console.log(["hasMoreOrder", $scope.hasMoreOrder]);
+						}
+						$scope.$broadcast('scroll.infiniteScrollComplete');
+					},function(data, status, headers, config){
+						console.log(['查询门店列表失败',data]);
+					});
+				}
+				
+			}
+
+			$scope.getStoresListMore = function(){
+				console.log("又要加载改地区的门店啦");
+				if(($scope.newAddressInput.provinceInfo.code!="")&&($scope.newAddressInput.cityInfo.code!="")&&($scope.newAddressInput.districtInfo.code!="")){
 					daogouAPI.storeAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
 						user_id:$stateParams.userid,
 						state_code:$scope.newAddressInput.provinceInfo.code,
@@ -195,11 +223,11 @@ angular.module('daogou')
 			 */
 			$scope.loadMoreData = function () {
 				if(($scope.newAddressInput.provinceInfo.code!="")&&($scope.newAddressInput.cityInfo.code!="")&&($scope.newAddressInput.districtInfo.code!="")){
-			  		$scope.getStoresList();
+			  		$scope.getStoresListMore();
 			  	}
 			};
 			/**
-			 * 监测广播，加载更多
+			 * 监测广播，加载更多 
 			 */
 			$scope.$on('$stateChangeSuccess', function () {
 			  if (pageindex > 2) {
