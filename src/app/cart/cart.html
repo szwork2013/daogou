@@ -45,9 +45,9 @@
           </div>
           <span class="price">{{item.price | currency:"￥":2}}</span>
 
-          <div class="countNumCount" ng-show="finishhandle&&item.seleted">
+          <div class="countNumCount" ng-show="finishhandle">
             <img src="assets/images/del.png" class="countImg" ng-click="delNum(item)">
-            <input class="num" ng-model="item.num"/>
+            <input class="num" ng-model="item.tempNum"/>
             <img src="assets/images/add.png" class="countImg" ng-click="addNum(item)">
           </div>
           <div class="countNum" ng-show="edithandle">X{{item.num}}</div>
@@ -68,27 +68,21 @@
   <ion-footer-bar align-title="left" class="footer" ng-show="edithandle">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
-        <!-- <label class="checkbox disnone">
-          <input type="checkbox">
-        </label> -->
-
         <button class="goAccount" ng-click="checkCartProduct()">结算({{totalNum}})</button>
         <span class="totalPrice">{{totalFee | currency:"￥":2}}</span>
         <span class="total">合计：</span>
       </li>
     </ul>
   </ion-footer-bar>
-  <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;"  ng-show="login" loginsuccess="loginsuccess" loginerror="loginerror"></div>
+  <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;" ng-show="login"
+       loginsuccess="loginsuccess" loginerror="loginerror"></div>
   <ion-footer-bar align-title="left" class="footer" ng-show="finishhandle">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
-        <!-- <label class="checkbox disnone">
-          <input type="checkbox">
-        </label> -->
         <i class="iconfont icon-gou bggou font24 selected-img All"
            ng-class="{'graygou':!Allseleted,'greengou':Allseleted}" ng-click="changeAll()"></i>
-        <button class="goAccount" ng-click="deleteCartProduct()">删除({{totalNum}})</button>
-        <span class="totalPrice">{{totalFee | currency:"￥":2}}</span>
+        <button class="goAccount" ng-click="deleteCartProduct()">删除({{totalNumDelete}})</button>
+        <span class="totalPrice">{{totalFeeDelete | currency:"￥":2}}</span>
         <span class="total">合计：</span>
       </li>
     </ul>

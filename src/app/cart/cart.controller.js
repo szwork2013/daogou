@@ -29,22 +29,33 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
   $scope.totalNum = 0;
   //合计价格
   $scope.totalFee = 0;
+  //购物车中选中商品总量
+  $scope.totalNumDelete = 0;
+  //合计价格
+  $scope.totalFeeDelete = 0;
+  $scope.Allseleted = false;
+
   /**
    * 获取购物车列表
    */
   function cartProductListFunc() {
-    $scope.Allseleted = false;
+
     daogouAPI.shopcart({
       userid: $rootScope.USERINFO.id,
       brand_id: $rootScope.BRANDID,
       page: pageindex,
       per_page: pagesize
     }, function (data, status, headers, config) {
+      $scope.totalNumDelete = 0;
+      $scope.totalFeeDelete = 0;
+      $scope.Allseleted = false;
       angular.forEach(data, function (item, index) {
         item.seleted = false;
         item.pics = item.pic_path.indexOf(",") > 0 ? item.pic_path.split(",") : [item.pic_path];
         item.specification = [];
-        item.item = 1;
+        item.tempNum = item.num;
+        $scope.totalNum += item.num;
+        $scope.totalFee += item.price * item.num;
         var cartArr = item.sku_properties_name.split(';');//cartArr.length参数种类
         for (var tz in cartArr) {//一个规格种类一个规格种类来
           var cartendArr = cartArr[tz].split(':');//取每个规格的规格名和规格值
@@ -60,13 +71,12 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         pageindex++;
       } else {
         $scope.hasMoreOrder = false;
-        console.log(["hasMoreOrder", $scope.hasMoreOrder])
       }
       $scope.$broadcast('scroll.infiniteScrollComplete');
     }, function (data, status, headers, config) {
-      console.log(["查询导购商品列表失败", data]);
     });
   }
+
   // 登录成功回调
   $scope.loginsuccess = function (data) {
     console.log(["order的回调", data]);
@@ -108,6 +118,12 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
    * 左上角点击编辑显示删除
    */
   $scope.edit = function () {
+    $scope.Allseleted = false;
+    angular.forEach($scope.cartProductListData, function (item, index) {
+      item.seleted = false;
+    });
+    $scope.totalNumDelete = 0;
+    $scope.totalFeeDelete = 0;
     $scope.edithandle = false;
     $scope.finishhandle = true;
   };
@@ -115,20 +131,30 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
    * 左上角点击完成显示结算
    */
   $scope.finish = function () {
+    $scope.Allseleted = false;
+    angular.forEach($scope.cartProductListData, function (item, index) {
+      item.seleted = false;
+    });
+    $scope.totalNumDelete = 0;
+    $scope.totalFeeDelete = 0;
+    $scope.AllSelected = false;
     $scope.edithandle = true;
     $scope.finishhandle = false;
+
   };
   /**
    * 点击-减商品数
    * @param index
    */
   $scope.delNum = function (item) {
-    if (item.num > 1) {
-      $scope.ids.splice($.inArray(item.id, $scope.ids), 1);
-      $scope.totalNum--;
-      $scope.totalFee -= parseFloat(item.total_fee);
-      item.num--;
-      item.num = item.num > 0 ? item.num : 0;
+    if (item.tempNum > 1) {
+      item.tempNum--;
+      if (item.seleted) {
+        $scope.ids.splice($.inArray(item.id, $scope.ids), 1);
+        $scope.totalNumDelete--;
+        $scope.totalFeeDelete -= parseFloat(item.total_fee);
+      }
+
     } else {
       alert("不能再少了")
     }
@@ -138,42 +164,38 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
    * @param index
    */
   $scope.addNum = function (item) {
-    item.num++;
-    $scope.totalNum++;
-    $scope.totalFee += parseFloat(item.total_fee);
-    if ($.inArray(item.id, $scope.ids) < 0) {
-      $scope.ids.push(item.id);
-    }
-    item.seleted = true;
-    var isAll = true;
-    $scope.cartProductListData.filter(function (item) {
-      if (!item.seleted) {
-        isAll = false;
+    if (item.tempNum < item.num) {
+      item.tempNum++;
+      if (item.seleted) {
+        if ($.inArray(item.id, $scope.ids) < 0) {
+          $scope.ids.push(item.id);
+        }
+        $scope.totalNumDelete++;
+        $scope.totalFeeDelete += parseFloat(item.total_fee);
       }
-    });
-    $scope.Allseleted = isAll;
+    } else {
+      alert("不能再多了")
+    }
   };
 
   /**
    *   通过点击选中圆圈选中
    */
   $scope.changeCheck = function (item) {
-    var num = item.num;
+    var num = item.tempNum;
     item.seleted = !item.seleted;
-    item.num = 1;
     if (item.seleted) {
-      $scope.totalFee += parseFloat(item.total_fee) * num;
-      $scope.totalNum += num;
+      $scope.totalFeeDelete += parseFloat(item.total_fee) * num;
+      $scope.totalNumDelete += num;
       if ($.inArray(item.id, $scope.ids) < 0) {
         $scope.ids.push(item.id);
       }
     }
     else {
-      $scope.totalNum -= num;
-      $scope.totalFee -= parseFloat(item.total_fee) * num;
+      $scope.totalNumDelete -= num;
+      $scope.totalFeeDelete -= parseFloat(item.total_fee) * num;
       $scope.ids.splice($.inArray(item.id, $scope.ids), 1);
     }
-    console.log($scope.ids);
     var isAll = true;
     $scope.cartProductListData.filter(function (item) {
       if (!item.seleted) {
@@ -188,20 +210,20 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
   $scope.Allseleted = false;
   $scope.changeAll = function () {
     $scope.Allseleted = !$scope.Allseleted;
-    $scope.totalFee = 0;
-    $scope.totalNum = 0;
+    $scope.totalFeeDelete = 0;
+    $scope.totalNumDelete = 0;
     $scope.ids = [];
     angular.forEach($scope.cartProductListData, function (item, index) {
         item.seleted = $scope.Allseleted;
         if ($scope.Allseleted) {
-          if (item.num > 0 && item.seleted) {
-            $scope.totalFee += parseFloat(item.total_fee);
-            $scope.totalNum += item.num;
+          if (item.seleted) {
+            $scope.totalFeeDelete += parseFloat(item.total_fee);
+            $scope.totalNumDelete += item.tempNum;
             $scope.ids.push(item.id);
           }
         }
         else {
-          item.num = 1;
+          item.tempNum = item.num;
         }
       }
     )
@@ -212,13 +234,15 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
    */
   $scope.deleteCartProduct = function () {
     daogouAPI.deleteCartProduct({
-      userid: userid,
+      userid: $rootScope.USERINFO.id,
       ids: $scope.ids.join(",")
     }, function (data, status, headers, config) {
       $scope.cartProductListData = [];
       pageindex = 1;
       pagesize = 5;
       $scope.hasMoreOrder = true;
+      $scope.totalNum = 0;
+      $scope.totalFee = 0;
       cartProductListFunc();
     }, function (data, status, headers, config) {
       console.log(["删除购物车商品失败", data]);
