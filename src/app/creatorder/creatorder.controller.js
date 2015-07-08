@@ -11,10 +11,10 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	// $scope.buynum = $stateParams.num;
 	// $scope.buyfreight = $stateParams.freight;
 	// $scope.totalprice = $stateParams.price*$stateParams.num;
-	console.log(['传递过来的的data数值yyyyyyy',$rootScope.productOrders])
+	console.log(['传递过来的的data数值',$rootScope.productOrders])
 
 	//没有订单数据返回首页
-	console.log(["$rootScope.productOrdersyyyyyyyyy",$rootScope.productOrders]);
+	console.log(["$rootScope.productOrders",$rootScope.productOrders]);
 
 	if(typeof $rootScope.productOrders==='undefined' || typeof $rootScope.productOrders[0]==='undefined'){
 		$state.go('guide');
@@ -24,10 +24,9 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 	$scope.login = false;//处理登录框的一点样式问题，背景为白色
 
 	console.log(['aa',$rootScope.productOrders])
-	$scope.totalprice=0;
+	//新增一个导购id属性
 	for (var i in $rootScope.productOrders) {
-		console.log([i,$rootScope.productOrders[i]])
-		$scope.totalprice+=$rootScope.productOrders[i].price*$rootScope.productOrders[i].num
+		$rootScope.productOrders[i].bring_guider_id = $rootScope.GUIDID;
 	};
 	//总价格
 	$scope.totalprice=0;
@@ -324,7 +323,6 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 
 
 	$scope.submitOrder = function(){
-
 		console.log('提交订单');
 		console.log(['$rootScope.BRANDID',$rootScope.BRANDID]);
 		console.log(['$rootScope.GUIDID',$rootScope.GUIDID]);
@@ -369,7 +367,6 @@ function($rootScope,$scope,$log,$http,$state,URLPort,$stateParams,daogouAPI,WXpa
 			//门店取货
 			$scope.fetchdayhour = $scope.fetchTime.fetchday.day+"T"+$scope.fetchTime.fetchhour+":00+0800";
 			console.log(["$scope.fetchdayhour",$scope.fetchdayhour]);
-
 			$http.post(URLPort+'/trades',
 				{
 				'buyer_user_id': $rootScope.USERINFO.id,
