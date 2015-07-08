@@ -3,15 +3,18 @@
 var cart = angular.module('cart', ['ionic']);
 cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$stateParams', 'daogouAPI', '$rootScope', "$ionicPopup",
   function ($scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, $rootScope, $ionicPopup) {
-    if ($rootScope.USERINFO == null) {
+    var userInfo = window.sessionStorage.getItem("USERINFO");
+    if (userInfo == null) {
       daogouAPI.isLogin(function (data) {
-        $rootScope.USERINFO = data;
+        $scope.USERINFO = data;
+        window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
         cartProductListFunc();
       }, function (data) {
         $scope.login = true;
       });
     }
     else {
+      $scope.USERINFO = JSON.parse(userInfo);
       cartProductListFunc();
     }
     var URLPort = URLPort();
@@ -37,7 +40,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      */
     function cartProductListFunc() {
       daogouAPI.shopcart({
-        userid: $rootScope.USERINFO.id,
+        userid: $scope.USERINFO.id,
         brand_id: $rootScope.BRANDID,
         page: pageindex,
         per_page: pagesize
@@ -72,7 +75,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
 
     // 登录成功回调
     $scope.loginsuccess = function (data) {
-      console.log(["order的回调", data]);
       $scope.login = false;
       $(".redPoint").show();
       //获取订单信息
@@ -87,7 +89,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      * 加载更多
      */
     $scope.loadMoreData = function () {
-      console.log(["loadMoreData"]);
       cartProductListFunc();
     };
     /**
@@ -223,7 +224,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      */
     $scope.deleteCartProduct = function () {
       daogouAPI.deleteCartProduct({
-          userid: $rootScope.USERINFO.id,
+          userid: $scope.USERINFO.id,
           ids: $scope.ids.join(",")
         }, function (data, status, headers, config) {
           $scope.cartProductListData = [];
@@ -241,13 +242,25 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      * 结算商品
      */
     $scope.checkCartProduct = function () {
-
+      $rootScope.productOrders = [];
+      angular.forEach($scope.cartProductListData, function (item, index) {
+        if ($.inArray(item.id, $scope.ids) >= 0) {
+          var newItem = {};
+          newItem.price = item.price;
+          newItem.num = item.num;
+          newItem.title = item.title;
+          newItem.freight = item.freight;
+          newItem.picUrlArr = item.pics;
+          newItem.brand_id = $rootScope.BRANDID;
+          $rootScope.productOrders.push(newItem);
+        }
+      });
       $state.go("creatorder");
     };
     /**
      *   购物车 订单列表切换
      */
     $scope.goOrderList = function () {
-      $state.go("orderList", {"userid": $rootScope.USERINFO.id});
+      $state.go("orderList", {"userid": $scope.USERINFO.id});
     }
   }]);

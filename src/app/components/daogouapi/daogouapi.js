@@ -5,9 +5,9 @@ angular.module('daogou')
 	// 正式接口
 
 	var ROOT_URL='http://yunwan2.3322.org:57099';
-	
+
 	ROOT_URL = URLPort();
-	// 测试接口	
+	// 测试接口
 	// ROOT_URL='';
 
 	var daogouAPI={
@@ -44,7 +44,7 @@ angular.module('daogou')
 		*/
 		put:put,
 		/*
-		/*  
+		/*
 		查询消费者的订单列表
 		getOrderList(actionurl,dataobj,scallback,ecallback)
 		actionurl 接口
@@ -53,7 +53,7 @@ angular.module('daogou')
 		ecallback 失败的回调函数 {function} [必填]
 		*/
 		getOrderList:getOrderList,
-		
+
 		/*
 		daogouProductList(actionurl,dataobj,scallback,ecallback)
 		*/
@@ -61,10 +61,10 @@ angular.module('daogou')
 
 		/*
 		hopAddress(actionurl,dataobj,scallback,ecallback)
-		*/		
+		*/
 		shopAddress:shopAddress,
 
-		/*  
+		/*
 		提交退货信息
 		submitRefundInfo(actionurl,dataobj,scallback,ecallback)
 		actionurl 接口
@@ -73,7 +73,7 @@ angular.module('daogou')
 		ecallback 失败的回调函数 {function} [必填]
 		*/
 		submitRefundInfo:submitRefundInfo,
-		
+
 		// /accounts/current 类似于这种请求地址，没有？。。。后面的参数也不带 {}
 		// getshortUrl(url,callback,callbackerror)
 		getshortUrl:getshortUrl,
@@ -112,7 +112,7 @@ angular.module('daogou')
 		registerInfo:registerInfo,
 
 		/*
-		检测用户是否存在		
+		检测用户是否存在
 		*/
 		isRegistered:isRegistered,
 
@@ -127,11 +127,11 @@ angular.module('daogou')
 		isAccountLogin:isAccountLogin,
 
 		/*
-		设置默认取货门店		
+		设置默认取货门店
 		*/
 		defaultstore:defaultstore,
 		/*
-		获取用户取货可选时间范围		
+		获取用户取货可选时间范围
 		*/
 		fetchTime:fetchTime,
 		/*
@@ -183,7 +183,7 @@ angular.module('daogou')
 		WXgetAppid:WXgetAppid,
 
 		/*
-		设置默认收货地址		
+		设置默认收货地址
 		*/
 		defaultAddress:defaultAddress,
 
@@ -191,24 +191,24 @@ angular.module('daogou')
 		/*支付接口*/
 		tradesPay:tradesPay,
 		/*
-		删除收货地址		
+		删除收货地址
 		*/
 		deleteAddress:deleteAddress,
 		/*
-		获取收货地址		
+		获取收货地址
 		*/
 		getAddress:getAddress,
 		/*
-		修改收货地址		
+		修改收货地址
 		*/
 		editAddress:editAddress,
 		/*
-		获取验证码		
+		获取验证码
 		*/
 		verificationcode:verificationcode,
 
 		/*
-		根据地区代码查询下属地区	
+		根据地区代码查询下属地区
 		*/
 		codegetarea:codegetarea,
 
@@ -222,7 +222,7 @@ angular.module('daogou')
 		绑定用户的openid
 		*/
 		bindOpenid:bindOpenid,
-		
+
 		/*获取导购详情*/
 		getGuidInfo:getGuidInfo,
 
@@ -321,7 +321,7 @@ angular.module('daogou')
 			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5,
 			show_orders: typeof dataobj.show_orders === 'boolean' ? dataobj.show_orders : false
 		};
-		
+
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
@@ -334,7 +334,7 @@ angular.module('daogou')
 			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
 			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
 		};
-		
+
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
@@ -347,7 +347,7 @@ angular.module('daogou')
 			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
 			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
 		};
-		
+
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
@@ -360,7 +360,7 @@ angular.module('daogou')
 			// page: typeof dataobj.page === 'number' ? dataobj.page : 1,
 			// per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
 		};
-		
+
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
@@ -371,7 +371,7 @@ angular.module('daogou')
 			// page: typeof dataobj.page === 'number' ? dataobj.page : 1,
 			// per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
 		};
-		
+
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
@@ -385,7 +385,7 @@ angular.module('daogou')
 			page: typeof dataobj.page === 'number' ? dataobj.page : 1,
 			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5
 		};
-		
+
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
@@ -397,7 +397,7 @@ angular.module('daogou')
 			per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5,
 			show_orders: typeof dataobj.show_orders === 'boolean' ? dataobj.show_orders : false
 		};
-		
+
 		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
@@ -490,7 +490,7 @@ angular.module('daogou')
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
-	
+
 	function deleteCartProduct (dataobj,scallback,ecallback) {
 
 		var action='/users/'+dataobj.userid+'/shopping-carts';
@@ -518,20 +518,16 @@ angular.module('daogou')
 
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
-	
-	
+
+
 
 
 	function getUserInfo(dataobj,scallback,ecallback){
 		var action='/users/mobiles/'+dataobj.username;
 		var data='';
 		daogouAPI.get(daogouAPI.apiurl(action,data),function(data){
-			//设置 rootScope.USERINFO
-			$rootScope.USERINFO = {
-				id:data.id,
-				mobile:data.mobile
-			};
-			if(scallback){
+      window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
+      if(scallback){
 				scallback(data);
 			}
 		},ecallback);
@@ -639,7 +635,7 @@ angular.module('daogou')
 
 		daogouAPI.patch(action,data,scallback,ecallback);
 	}
-	
+
 	function tradesPay(dataobj,scallback,ecallback){
 		var action='/trades/'+dataobj.tid+'/buyer-pay';
 		var data={
@@ -725,7 +721,7 @@ angular.module('daogou')
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
-	
+
 	function logistics(dataobj,scallback,ecallback) {
 		var action='/logistics';
 		var data={
@@ -735,7 +731,7 @@ angular.module('daogou')
 		daogouAPI.get(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
-	
+
 
 	function uploadfile(dataobj,scallback,ecallback) {
 		var action='/attachments/file/upload';

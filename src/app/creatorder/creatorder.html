@@ -1,139 +1,151 @@
+<ion-view view-title="确认订单">
+  <ion-content class="createorder-content">
+    <div class="statusWrap">
+      <ul class="list marginbt0">
+        <li class="item item-checkbox product-item" ng-repeat="order in productOrders">
+          <label class="checkbox disnone">
+            <input type="checkbox" ng-model="choose">
+          </label>
+          <img ng-src="{{order.picUrlArr[0]}}" class="product-img">
 
-<ion-view view-title="我的订单">
-    <ion-content class="createorder-content">
-      <div class="statusWrap">
-          <ul class="list marginbt0">
-              <li class="item item-checkbox product-item"  ng-repeat="order in productOrders">
-                 <label class="checkbox disnone">
-                   <input type="checkbox" ng-model="choose">
-                 </label>
-
-                <img ng-src="{{order.picUrlArr[0]}}" class="product-img">
-
-                <div class="paramenters">
-                    <div class="name">{{order.title}}</div>
-                    <div class="paras">{{order.skudetail}}</div>
-                </div>
-                <span class="price">{{order.price|currency:"￥":2}}</span>
-                <div class="countNum">X{{order.buynum}}
-                </div>
-              </li>
-          </ul>
-          <div class="perAccount">
-            <div class="account"><span class="heji">商品总价：</span></div>
-            <div class="time">{{totalprice|currency:"￥":2}}</div>
-            <div class="clearBoth"></div>
+          <div class="paramenters">
+            <div class="name">{{order.title}}</div>
+            <div class="paras">{{order.skudetail}}</div>
           </div>
+          <span class="price">{{order.price|currency:"￥":2}}</span>
+
+          <div class="countNum">X{{order.num}}
+          </div>
+        </li>
+      </ul>
+      <div class="perAccount">
+        <div class="account"><span class="heji">商品总价：</span></div>
+        <div class="time">{{totalprice|currency:"￥":2}}</div>
+        <div class="clearBoth"></div>
       </div>
+    </div>
+    <div class="statusWrap remarkpadding">
+      <div class="costwrap">
+        <span class="costname">运费</span>
+        <span class="costvalue">{{buyfreight|currency:"￥":2}}</span>
 
-      <div class="statusWrap remarkpadding">
-          <div class="costwrap">
-              <span class="costname">运费</span>
-              <span class="costvalue">{{buyfreight|currency:"￥":2}}</span>
-              <div class="clearBoth"></div>
-          </div>
-           <div class="costwrap">
-              <span class="costname">实付</span>
-              <span class="costvalue commonRed">{{totalcost|currency:"￥":2}}</span>
-              <div class="clearBoth"></div>
-          </div>
-          <textarea class="remark" placeholder="订单备注" ng-model="buyerMessage.buyer_memo"></textarea>
+        <div class="clearBoth"></div>
       </div>
+      <div class="costwrap">
+        <span class="costname">实付</span>
+        <span class="costvalue commonRed">{{totalcost|currency:"￥":2}}</span>
 
-<!-- 登录模块 -->
+        <div class="clearBoth"></div>
+      </div>
+      <textarea class="remark" placeholder="订单备注" ng-model="buyerMessage.buyer_memo"></textarea>
+    </div>
+
+    <!-- 登录模块 -->
     <div login ng-class="{disnone:loginhandle}" loginsuccess="loginsuccess" loginerror="loginerror"></div>
 
 
-<!-- 各种地址模块 -->
-       <!-- <div class="statusWrap" ng-class="{disnone:0}"> -->
-       <div class="statusWrap" ng-class="{disnone:alladdress}">
-          <span class="pickupway">取货方式</span>
-          <div>
-              <div class="pickupways" ng-class="{pickwayselect:express}" ng-click="postway()">快递到家</div>
-              <div class="pickupways" ng-class="{pickwayselect:!express}" ng-click="shopway()">门店自取</div>
-              <div class="clearBoth"></div>
-          </div>
+    <!-- 各种地址模块 -->
+    <!-- <div class="statusWrap" ng-class="{disnone:0}"> -->
+    <div class="statusWrap" ng-class="{disnone:alladdress}">
+      <span class="pickupway">取货方式</span>
 
-          <!--收货人地址-->
-          <!-- <div ng-class="{disnone:0}"> -->
-           <div ng-class="{disnone:!express}">
-             <!-- 第一次写收货地址 -->
-              <div ng-class="{disnone:firstBuyerAddress}">
-               <!-- <div ng-class="{disnone:0}"> -->
-                  <input class="input-address-info" placeholder="收货人姓名" ng-model="firstAddressInput.name"/>
-                  <input class="input-address-info" placeholder="手机号码" ng-model="firstAddressInput.mobile"/>
-                  <div class="input-address-info">
-                       <select id="loc_province"  ng-model="firstAddressInput.provinceInfo" ng-options="province.name for province in provincesdata" ng-change="provinceSelect(firstAddressInput.provinceInfo)">
-                       <option id="editProvince" value="">-- 请选择省份 --</option>
-                       </select>
-                       <select id="loc_city" ng-model="firstAddressInput.cityInfo" ng-options="city.name for city in citiesdata" ng-change="citySelect(firstAddressInput.provinceInfo,firstAddressInput.cityInfo)">
-                         <option id="editCity" value="">-- 请选择市 --</option>
-                       </select>
-                       <select id="loc_town" ng-model="firstAddressInput.districtInfo" ng-options="district.name for district in districtsdata">
-                         <option id="editDistrict" value="">-- 请选择区、县 --</option>
-                       </select>
-                       <input type="hidden" name="location_id" />
-                  </div>
-                  <input class="input-address-info" placeholder="详细地址" ng-model="firstAddressInput.address"/>
-                  <input class="input-address-info border-bt0" placeholder="邮编" ng-model="firstAddressInput.zip"/>
-              </div>
-            <!-- 第一次写收货地址 -->
-              
-              <!-- 已经有收货地址 -->
-              <div class="addressInfo remarkpadding" ng-class="{disnone:buyeraddress}">
-                  <div>
-                      <span class="floatL">{{defaultAddressdata.name}}，{{defaultAddressdata.mobile}} </span>
-                      <span class="colorBlue floatR font13" ng-click="changeReceiveInfoFunc()">修改</span>
-                      <div class="clearBoth"></div>
-                  </div>
-                  <span class="font13"><span ng-show="defaultAddressdata.is_default">[默认]&nbsp;</span>{{defaultAddressdata.state}}&nbsp;{{defaultAddressdata.city}}&nbsp;{{defaultAddressdata.district}}&nbsp;{{defaultAddressdata.address}} </span>
-              </div>
-             <!-- 已经有收货地址 -->
-          </div>
-           <!--收货人地址-->
-
-
-          <!-- 实体店地址 -->
-          <div class="addressInfo remarkpadding" ng-class="{disnone:express}">
-              <div>
-                  <span class="floatL width85">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}}  </span>
-                  <span class="colorBlue floatR font13" ng-click="goGoodsShop()">修改</span>
-                  <div class="clearBoth"></div>
-              </div>
-              <div>
-                  <span class="font13 floatL width85"><span ng-show="minDistance.is_default">[默认]&nbsp;</span>{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</span>
-                  <span class="font13 colorRed floatR">{{minDistance.distance}}km</span>
-                  <div class="clearBoth"></div>
-              </div>
-          </div>
-          <div class="order-time" ng-class="{disnone:express}">
-                预约取货时间（营业时间 10：00-20：00）
-                <div class="select-time">
-                <select id="fetch_day"  ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData" ng-change="dayselecthour(fetchTime.fetchday)">
-                <option value="">-- 请选择日期 --</option>
-                </select>
-                <select id="fetch_hour"  ng-model="fetchTime.fetchhour" ng-options="fetchhour for fetchhour in fetchhourData">
-                <option value="">-- 请选择时间 --</option>
-                </select>
-
-
-
-
-                </div>
-          </div>
-          <!-- 实体店地址 -->
+      <div>
+        <div class="pickupways" ng-class="{pickwayselect:express}" ng-click="postway()">快递到家</div>
+        <div class="pickupways" ng-class="{pickwayselect:!express}" ng-click="shopway()">门店自取</div>
+        <div class="clearBoth"></div>
       </div>
-<!-- 各种地址模块 -->
+
+      <!--收货人地址-->
+      <div ng-class="{disnone:!express}">
+        <!-- 第一次写收货地址 -->
+        <div ng-class="{disnone:firstBuyerAddress}">
+          <input class="input-address-info" placeholder="收货人姓名" ng-model="firstAddressInput.name"/>
+          <input class="input-address-info" placeholder="手机号码" ng-model="firstAddressInput.mobile"/>
+
+          <div class="input-address-info">
+            <select id="loc_province" ng-model="firstAddressInput.provinceInfo"
+                    ng-options="province.name for province in provincesdata"
+                    ng-change="provinceSelect(firstAddressInput.provinceInfo)">
+              <option id="editProvince" value="">-- 请选择省份 --</option>
+            </select>
+            <select id="loc_city" ng-model="firstAddressInput.cityInfo" ng-options="city.name for city in citiesdata"
+                    ng-change="citySelect(firstAddressInput.provinceInfo,firstAddressInput.cityInfo)">
+              <option id="editCity" value="">-- 请选择市 --</option>
+            </select>
+            <select id="loc_town" ng-model="firstAddressInput.districtInfo"
+                    ng-options="district.name for district in districtsdata">
+              <option id="editDistrict" value="">-- 请选择区、县 --</option>
+            </select>
+            <input type="hidden" name="location_id"/>
+          </div>
+          <input class="input-address-info" placeholder="详细地址" ng-model="firstAddressInput.address"/>
+          <input class="input-address-info border-bt0" placeholder="邮编" ng-model="firstAddressInput.zip"/>
+        </div>
+        <!-- 第一次写收货地址 -->
+
+        <!-- 已经有收货地址 -->
+        <div class="addressInfo remarkpadding" ng-class="{disnone:buyeraddress}">
+          <div>
+            <span class="floatL">{{defaultAddressdata.name}}，{{defaultAddressdata.mobile}} </span>
+            <span class="colorBlue floatR font13" ng-click="changeReceiveInfoFunc()">修改</span>
+
+            <div class="clearBoth"></div>
+          </div>
+          <span class="font13"><span ng-show="defaultAddressdata.is_default">[默认]&nbsp;</span>{{defaultAddressdata.state}}&nbsp;{{defaultAddressdata.city}}&nbsp;{{defaultAddressdata.district}}&nbsp;{{defaultAddressdata.address}} </span>
+        </div>
+        <!-- 已经有收货地址 -->
+      </div>
+      <!--收货人地址-->
 
 
-      <div class="commonBtn" ng-class="{disnone:weixinpay}" ng-click="submitOrder()">微信支付</div>
-      <div class="commonBtn backred" ng-class="{disnone:firstBuyerAddress}" ng-click="addAddress(1)">保存地址</div>
-      <!-- <div class="commonBtn backred" ng-click="submit2()">确认登录成功后获取user信息2</div> -->
-      <!-- <div class="commonBtn backred" ng-click="logout()">确认退出</div> -->
+      <!-- 实体店地址 -->
+      <div class="addressInfo remarkpadding" ng-class="{disnone:express}">
+        <div>
+          <span class="floatL width85">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}}  </span>
+          <span class="colorBlue floatR font13" ng-click="goGoodsShop()">修改</span>
 
-      <!-- <div class="commonBtn backred"  ng-click="addAddress()">保存地址模拟</div> -->
-      <!-- <div class="commonBtn backred"  ng-click="deleteAddress()">删除地址模拟</div> -->
-    
-      <!-- <div class="commonBtn backred"  ng-click="searchProvinces()">查询省份模拟</div> -->
-    </ion-content>
+          <div class="clearBoth"></div>
+        </div>
+        <div>
+          <span class="font13 floatL width85"><span ng-show="minDistance.is_default">[默认]&nbsp;</span>{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</span>
+          <span class="font13 colorRed floatR">{{minDistance.distance}}km</span>
+
+          <div class="clearBoth"></div>
+        </div>
+      </div>
+      <div class="order-time" ng-class="{disnone:express}">
+        预约取货时间（营业时间 10：00-20：00）
+        <div class="select-time">
+          <select id="fetch_day" ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData"
+                  ng-change="dayselecthour(fetchTime.fetchday)">
+            <option value="">-- 请选择日期 --</option>
+          </select>
+          <select id="fetch_hour" ng-model="fetchTime.fetchhour" ng-options="fetchhour for fetchhour in fetchhourData">
+            <option value="">-- 请选择时间 --</option>
+          </select>
+
+
+        </div>
+      </div>
+      <!-- 实体店地址 -->
+    </div>
+    <!-- 各种地址模块 -->
+
+
+    <div class="commonBtn" ng-class="{disnone:weixinpay}" ng-click="submitOrder()">微信支付</div>
+    <div class="commonBtn backred" ng-class="{disnone:firstBuyerAddress}" ng-click="addAddress(1)">保存地址</div>
+
+
+
+
+
+
+    <!-- <div class="commonBtn backred" ng-click="submit2()">确认登录成功后获取user信息2</div> -->
+    <!-- <div class="commonBtn backred" ng-click="logout()">确认退出</div> -->
+
+    <!-- <div class="commonBtn backred"  ng-click="addAddress()">保存地址模拟</div> -->
+    <!-- <div class="commonBtn backred"  ng-click="deleteAddress()">删除地址模拟</div> -->
+
+    <!-- <div class="commonBtn backred"  ng-click="searchProvinces()">查询省份模拟</div> -->
+  </ion-content>
 </ion-view>
