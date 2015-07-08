@@ -3,14 +3,18 @@
 var createOrder = angular.module('createOrder', ['ionic']);
 createOrder.controller('creatorderCtrl',
   function ($rootScope, $scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, WXpay, getLocation) {
-    if (typeof $rootScope.productOrders === 'undefined' || typeof $rootScope.productOrders[0] === 'undefined') {
+    var productOrders = window.sessionStorage.getItem("productOrders");
+
+    if (productOrders == null) {
       $state.go('orderList');
-      return;
+    } else {
+      $scope.productOrders = JSON.parse(productOrders);
     }
+
     var URLPort = URLPort();
     $scope.totalprice = 0;
     $scope.buyfreight = 0;
-    angular.forEach($rootScope.productOrders, function (item, index) {
+    angular.forEach($scope.productOrders, function (item, index) {
       item.bring_guider_id = $rootScope.GUIDID;
       $scope.totalprice += item.price * item.num;
       $scope.buyfreight += item.freight
@@ -65,7 +69,7 @@ createOrder.controller('creatorderCtrl',
       } else {
         $rootScope.ListTwoStores = [];
         getLocation(function (lng, lat) {
-          daogouAPI.shopAddressAll('/brands/' + $rootScope.productOrders[0].brand_id + '/stores/store-fetch', {
+          daogouAPI.shopAddressAll('/brands/' + $scope.productOrders[0].brand_id + '/stores/store-fetch', {
             user_id: $scope.USERID,
             longitude: lng,
             latitude: lat
@@ -75,7 +79,7 @@ createOrder.controller('creatorderCtrl',
           }, function (data, status, headers, config) {
           });
         }, function () {
-          daogouAPI.shopAddressId('/brands/' + $rootScope.productOrders[0].brand_id + '/stores/store-fetch', {
+          daogouAPI.shopAddressId('/brands/' + $scope.productOrders[0].brand_id + '/stores/store-fetch', {
             user_id: $scope.USERID
           }, function (data, status, headers, config) {
             getTwoStore(data);
@@ -135,7 +139,7 @@ createOrder.controller('creatorderCtrl',
     $scope.fetchTime.fetchhour = "";
     function getFetchTime() {
       daogouAPI.fetchTime({
-        brand_id: $rootScope.productOrders[0].brand_id,
+        brand_id: $scope.productOrders[0].brand_id,
         user_id: $scope.USERID,
         store_id: $rootScope.minDistance.id
       }, function (data, status, headers, config) {
@@ -265,7 +269,7 @@ createOrder.controller('creatorderCtrl',
           {
             'buyer_user_id': $scope.USERID,
             'bring_guider_id': $rootScope.GUIDID,
-            'brand_id': parseInt($rootScope.productOrders[0].brand_id),
+            'brand_id': parseInt($scope.productOrders[0].brand_id),
             'buyer_memo': $scope.buyerMessage.buyer_memo,
             'pay_type': 'WEIXIN',
             'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
@@ -279,7 +283,7 @@ createOrder.controller('creatorderCtrl',
             'receiver_name': $rootScope.defaultAddressdata.name,
             'receiver_zip': $rootScope.defaultAddressdata.zip,
             'receiver_mobile': $rootScope.defaultAddressdata.mobile,
-            'orders': $rootScope.productOrders
+            'orders': $scope.productOrders
           }
         )
           .success(function (orderdata) {
@@ -302,7 +306,7 @@ createOrder.controller('creatorderCtrl',
           {
             'buyer_user_id': $scope.USERID,
             'bring_guider_id': $rootScope.GUIDID,
-            'brand_id': parseInt($rootScope.productOrders[0].brand_id),
+            'brand_id': parseInt($scope.productOrders[0].brand_id),
             'buyer_memo': $scope.buyerMessage.buyer_memo,
             'pay_type': 'WEIXIN',
             'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
@@ -318,7 +322,7 @@ createOrder.controller('creatorderCtrl',
             'fetch_address': $rootScope.minDistance.address,
             'fetch_subscribe_begin_time': $scope.fetchdayhour,
             'fetch_subscribe_end_time': $scope.fetchdayhour,
-            'orders': $rootScope.productOrders
+            'orders': $scope.productOrders
           }
         )
           .success(function (orderdata) {
@@ -352,7 +356,7 @@ createOrder.controller('creatorderCtrl',
       console.log(["$rootScope.ListTwoStores", $rootScope.ListTwoStores]);
       $state.go('goodsShop', {
         'userid': $scope.USERID,
-        'brandid': $rootScope.productOrders[0].brand_id,
+        'brandid': $scope.productOrders[0].brand_id,
         'refunds': 0
       });
     }

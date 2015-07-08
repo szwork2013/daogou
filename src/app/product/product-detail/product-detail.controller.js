@@ -9,7 +9,8 @@ product.controller('productDetailCtrl',
     $scope.productOrder = {
       bring_guider_id: $rootScope.GUIDID
     };
-    $rootScope.productOrders = [];
+    window.sessionStorage.removeItem("productOrders");
+
     //skus是否都选择
     $scope.allSelected = false;
     /**
@@ -157,8 +158,6 @@ product.controller('productDetailCtrl',
     };
 
 
-
-
     /**
      * 当点击购物车时让设置goCart 和 goOrder 的参数使参数面板的下一步 跳转到购物车还是生成订单
      */
@@ -197,7 +196,8 @@ product.controller('productDetailCtrl',
       $scope.productOrder.freight = $scope.productDetailData.freight;
       $scope.productOrder.picUrlArr = $scope.productDetailData.picUrlArr;
       $scope.productOrder.brand_id = $rootScope.BRANDID;
-      $rootScope.productOrders.push($scope.productOrder);
+      window.sessionStorage.setItem("productOrders",  JSON.stringify($scope.productOrder));
+
       $state.go("creatorder");
     };
 

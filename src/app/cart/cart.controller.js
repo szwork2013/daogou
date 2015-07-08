@@ -242,7 +242,8 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      * 结算商品
      */
     $scope.checkCartProduct = function () {
-      $rootScope.productOrders = [];
+      var productOrders = [];
+      window.sessionStorage.removeItem("productOrders");
       angular.forEach($scope.cartProductListData, function (item, index) {
         if ($.inArray(item.id, $scope.ids) >= 0) {
           var newItem = {};
@@ -252,9 +253,10 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
           newItem.freight = item.freight;
           newItem.picUrlArr = item.pics;
           newItem.brand_id = $rootScope.BRANDID;
-          $rootScope.productOrders.push(newItem);
+          productOrders.push(newItem);
         }
       });
+      window.sessionStorage.setItem("productOrders",  JSON.stringify(productOrders));
       $state.go("creatorder");
     };
     /**
