@@ -160,60 +160,45 @@ angular.module('daogou')
 			var pageindex = 1;
 		 	var pagesize = 5;
 		 	$scope.hasMoreOrder = false; 
+		 	//加载门店
+		 	function getStores(){
+		 		daogouAPI.storeAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
+		 			user_id:$stateParams.userid,
+		 			state_code:$scope.newAddressInput.provinceInfo.code,
+		 			city_code:$scope.newAddressInput.cityInfo.code,
+		 			district_code:$scope.newAddressInput.districtInfo.code,
+		 			page: pageindex,
+		 			per_page: pagesize
+		 		},function(data, status, headers, config){
+		 			console.log(['查询门店列表成功',data]);
+		 			$rootScope.storeAddressData = $rootScope.storeAddressData.concat(data);
+		 			if (data.length >= pagesize) {
+		 			  pageindex++;
+		 			  console.log(["pageindex+++++++", pageindex]);
+		 			} else {
+		 			  $scope.hasMoreOrder = false;
+		 			  console.log(["hasMoreOrder", $scope.hasMoreOrder]);
+		 			}
+		 			$scope.$broadcast('scroll.infiniteScrollComplete');
+		 		},function(data, status, headers, config){
+		 			console.log(['查询门店列表失败',data]);
+		 		});
+		 	}
+		 	//选择地区后清空门店列表再加载
 			$scope.getStoresList = function(){
 				$rootScope.storeAddressData = [];
 				console.log("要加载改地区的门店啦");
 				if(($scope.newAddressInput.provinceInfo.code!="")&&($scope.newAddressInput.cityInfo.code!="")&&($scope.newAddressInput.districtInfo.code!="")){
 					$scope.hasMoreOrder = true;
-					daogouAPI.storeAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
-						user_id:$stateParams.userid,
-						state_code:$scope.newAddressInput.provinceInfo.code,
-						city_code:$scope.newAddressInput.cityInfo.code,
-						district_code:$scope.newAddressInput.districtInfo.code,
-						page: pageindex,
-						per_page: pagesize
-					},function(data, status, headers, config){
-						console.log(['查询门店列表成功',data]);
-						$rootScope.storeAddressData = $rootScope.storeAddressData.concat(data);
-						if (data.length >= pagesize) {
-						  pageindex++;
-						  console.log(["pageindex+++++++", pageindex]);
-						} else {
-						  $scope.hasMoreOrder = false;
-						  console.log(["hasMoreOrder", $scope.hasMoreOrder]);
-						}
-						$scope.$broadcast('scroll.infiniteScrollComplete');
-					},function(data, status, headers, config){
-						console.log(['查询门店列表失败',data]);
-					});
+					 getStores();
 				}
 				
 			}
-
+			//加载更多
 			$scope.getStoresListMore = function(){
 				console.log("又要加载改地区的门店啦");
 				if(($scope.newAddressInput.provinceInfo.code!="")&&($scope.newAddressInput.cityInfo.code!="")&&($scope.newAddressInput.districtInfo.code!="")){
-					daogouAPI.storeAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
-						user_id:$stateParams.userid,
-						state_code:$scope.newAddressInput.provinceInfo.code,
-						city_code:$scope.newAddressInput.cityInfo.code,
-						district_code:$scope.newAddressInput.districtInfo.code,
-						page: pageindex,
-						per_page: pagesize
-					},function(data, status, headers, config){
-						console.log(['查询门店列表成功',data]);
-						$rootScope.storeAddressData = $rootScope.storeAddressData.concat(data);
-						if (data.length >= pagesize) {
-						  pageindex++;
-						  console.log(["pageindex+++++++", pageindex])
-						} else {
-						  $scope.hasMoreOrder = false;
-						  console.log(["hasMoreOrder", $scope.hasMoreOrder])
-						}
-						$scope.$broadcast('scroll.infiniteScrollComplete');
-					},function(data, status, headers, config){
-						console.log(['查询门店列表失败',data]);
-					});
+					 getStores();
 				}
 				
 			}
