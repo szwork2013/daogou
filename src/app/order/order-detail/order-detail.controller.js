@@ -27,6 +27,7 @@ $scope.refunding = false;//商品列表上的退款中按钮
 $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 .success(function(data){
 	console.log(["获取订单详情成功",data]);
+
 	if(data.pay_type === "WEIXIN"){
 		data.pay_typeCN = "微信支付";
 	}else if(data.pay_type === "ALIPAY"){
@@ -129,7 +130,7 @@ $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 	}
 	
 	$scope.orderDetailData = data;
-
+	daogouAPI.formatSku($scope.orderDetailData.orders);
 
 	//立即调用微信支付
 	if($rootScope.PAYNOW){

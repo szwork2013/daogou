@@ -240,6 +240,10 @@ angular.module('daogou')
 
 		/*根据id获取门店*/
 		shopAddressId:shopAddressId,
+		/*产品规格格式化*/
+		formatSku:formatSku,
+		/*产品规格格式化*/
+		formatSkuP:formatSkuP,
 	};
 
 	return daogouAPI;
@@ -741,7 +745,40 @@ angular.module('daogou')
 		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
-	
+
+	function formatSku(dataArr){
+	    for(var i in dataArr){
+	      var skuString="";
+	      console.log(["dataArr[i].sku_properties_name",dataArr[i].sku_properties_name]);
+	      var skuArr = [];
+	      skuArr = dataArr[i].sku_properties_name.split(";");
+	      for (var j in skuArr){
+	        var proArr = [];
+	         proArr = skuArr[j].split(":");
+	         console.log(["proArr",proArr]);
+	         skuString += proArr[proArr.length-2]+":"+proArr[proArr.length-1]+";";
+	      }
+	      dataArr[i].sku_properties_name = skuString.substring(0,skuString.length-1);
+	      
+	    }
+	}
+
+	function formatSkuP(dataArr){
+	    for(var i in dataArr){
+	      var skuString="";
+	      console.log(["dataArr[i].properties",dataArr[i].properties]);
+	      var skuArr = [];
+	      skuArr = dataArr[i].properties.split(";");
+	      for (var j in skuArr){
+	        var proArr = [];
+	         proArr = skuArr[j].split(":");
+	         console.log(["proArr",proArr]);
+	         skuString += proArr[proArr.length-2]+":"+proArr[proArr.length-1]+";";
+	      }
+	      dataArr[i].properties = skuString.substring(0,skuString.length-1);
+	      
+	    }
+	}
 
 
 });

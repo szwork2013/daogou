@@ -62,6 +62,8 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
             item.specification[tz].key = cartendArr[cartendArr.length - 2];//规格名
           }
         });
+        console.log(["获取购物车商品列表成功",data]);
+        daogouAPI.formatSku(data);
         $scope.cartProductListData = $scope.cartProductListData.concat(data);
         if (data.length >= pagesize) {
           pageindex++;
@@ -252,6 +254,8 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
           newItem.title = item.title;
           newItem.freight = item.freight;
           newItem.picUrlArr = item.pics;
+          newItem.properties = item.sku_properties_name;
+          newItem.sku_id = item.sku_id;
           newItem.brand_id = $rootScope.BRANDID;
           productOrders.push(newItem);
         }

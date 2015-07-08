@@ -30,21 +30,7 @@ angular.module('goodsReturn', ['ionic'])
     		data.details[i].seleted = false;
     	}
     	$scope.refundData = data;
-      
-      for(var i in $scope.refundData.details){
-        var skuString="";
-        console.log(["$scope.refundData.details[i].sku_properties_name",$scope.refundData.details[i].sku_properties_name]);
-        var skuArr = [];
-        skuArr = $scope.refundData.details[i].sku_properties_name.split(";");
-        for (var j in skuArr){
-          var proArr = [];
-           proArr = skuArr[j].split(":");
-           console.log(["proArr",proArr]);
-           skuString += proArr[proArr.length-2]+":"+proArr[proArr.length-1]+";";
-        }
-        $scope.refundData.details[i].sku_properties_name = skuString;
-        
-      }
+      daogouAPI.formatSku($scope.refundData.details);
 
     })
     .error(function(data){

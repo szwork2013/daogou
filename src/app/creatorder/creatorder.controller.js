@@ -14,6 +14,9 @@ createOrder.controller('creatorderCtrl',
     var URLPort = URLPort();
     $scope.totalprice = 0;
     $scope.buyfreight = 0;
+    console.log(["$scope.productOrders",$scope.productOrders]);
+    daogouAPI.formatSkuP($scope.productOrders);
+    // daogouAPI.formatSku($scope.productOrders);
     angular.forEach($scope.productOrders, function (item, index) {
        item.bring_guider_id = $rootScope.GUIDID;
       $scope.totalprice += item.price * item.num;

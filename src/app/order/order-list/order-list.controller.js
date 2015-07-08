@@ -85,6 +85,10 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
           itemOrder.pics = itemOrder.pic_path.indexOf(",") > 0 ? itemOrder.pic_path.split(",") : [itemOrder.pic_path];
         });
       });
+      console.log(["获取订单列表成功",data]);
+      for(var i in data){
+        daogouAPI.formatSku(data[i].orders);
+      }
       $scope.productListData = $scope.productListData.concat(data);
       console.log(["data.length", data.length])
       if (data.length >= pagesize) {
