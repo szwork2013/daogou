@@ -3,15 +3,18 @@
 var cart = angular.module('cart', ['ionic']);
 cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$stateParams', 'daogouAPI', '$rootScope', "$ionicPopup",
   function ($scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, $rootScope, $ionicPopup) {
-    if ($rootScope.USERINFO == null) {
+    var userInfo = window.sessionStorage.getItem("USERINFO");
+    if (userInfo == null) {
       daogouAPI.isLogin(function (data) {
-        $rootScope.USERINFO = data;
+        $scope.USERINFO = data;
+        window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
         cartProductListFunc();
       }, function (data) {
         $scope.login = true;
       });
     }
     else {
+      $scope.USERINFO = JSON.parse(userInfo);
       cartProductListFunc();
     }
     var URLPort = URLPort();
@@ -37,7 +40,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      */
     function cartProductListFunc() {
       daogouAPI.shopcart({
-        userid: $rootScope.USERINFO.id,
+        userid: $scope.USERINFO.id,
         brand_id: $rootScope.BRANDID,
         page: pageindex,
         per_page: pagesize
@@ -221,7 +224,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      */
     $scope.deleteCartProduct = function () {
       daogouAPI.deleteCartProduct({
-          userid: $rootScope.USERINFO.id,
+          userid: $scope.USERINFO.id,
           ids: $scope.ids.join(",")
         }, function (data, status, headers, config) {
           $scope.cartProductListData = [];
@@ -258,6 +261,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      *   购物车 订单列表切换
      */
     $scope.goOrderList = function () {
-      $state.go("orderList", {"userid": $rootScope.USERINFO.id});
+      $state.go("orderList", {"userid": $scope.USERINFO.id});
     }
   }]);

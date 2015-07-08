@@ -27,17 +27,20 @@ createOrder.controller('creatorderCtrl',
     // true为快递上门   false为门店取货
     $scope.express = true;
 
-    //判断是否登录
-    if (typeof $rootScope.USERINFO !== "undefined") {
-      //如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
-      //登录后的UI样式设置
-      userIsLoginSetUI();
-    } else {
+
+    var userInfo = window.sessionStorage.getItem("USERINFO");
+    if (userInfo == null) {
       //如果未登录,显示登录框，进行登录
       $scope.loginhandle = false; //未登录让 登录模块不隐藏
       $scope.alladdress = true; //让地址模隐藏
     }
-
+    else {
+      $scope.USERINFO = JSON.parse(userInfo);
+      $scope.USERID = $scope.USERINFO.id;
+      //如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
+      //登录后的UI样式设置
+      userIsLoginSetUI();
+    }
 
     $scope.loginsuccess = function (data) {
       //登录后的UI样式设置
@@ -63,7 +66,7 @@ createOrder.controller('creatorderCtrl',
         $rootScope.ListTwoStores = [];
         getLocation(function (lng, lat) {
           daogouAPI.shopAddressAll('/brands/' + $rootScope.productOrders[0].brand_id + '/stores/store-fetch', {
-            user_id: $rootScope.USERINFO.id,
+            user_id: $scope.USERID,
             longitude: lng,
             latitude: lat
           }, function (data, status, headers, config) {
@@ -73,7 +76,7 @@ createOrder.controller('creatorderCtrl',
           });
         }, function () {
           daogouAPI.shopAddressId('/brands/' + $rootScope.productOrders[0].brand_id + '/stores/store-fetch', {
-            user_id: $rootScope.USERINFO.id
+            user_id: $scope.USERID
           }, function (data, status, headers, config) {
             getTwoStore(data);
             getFetchTime();//获得门店取货时间
@@ -133,7 +136,7 @@ createOrder.controller('creatorderCtrl',
     function getFetchTime() {
       daogouAPI.fetchTime({
         brand_id: $rootScope.productOrders[0].brand_id,
-        user_id: $rootScope.USERINFO.id,
+        user_id: $scope.USERID,
         store_id: $rootScope.minDistance.id
       }, function (data, status, headers, config) {
         $scope.fetchTimeData = data;
@@ -172,8 +175,8 @@ createOrder.controller('creatorderCtrl',
 
     $scope.addAddress = function (defaultAddress) {
 
-      $http.post(URLPort + '/users/' + $rootScope.USERINFO.id + '/shipping-addresses', {
-        'user_id': $rootScope.USERINFO.id,
+      $http.post(URLPort + '/users/' + $scope.USERID + '/shipping-addresses', {
+        'user_id': $scope.USERID,
         'name': $scope.firstAddressInput.name,
         'state': $scope.firstAddressInput.provinceInfo.name,
         'state_code': $scope.firstAddressInput.provinceInfo.code,
@@ -220,7 +223,7 @@ createOrder.controller('creatorderCtrl',
 
 
     $scope.deleteAddress = function () {
-      $http.delete(URLPort + '/users/' + $rootScope.USERINFO.id + '/shipping-addresses/18')
+      $http.delete(URLPort + '/users/' + $scope.USERID + '/shipping-addresses/18')
         .success(function () {
           console.log('删除地址成功');
           $scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
@@ -260,7 +263,7 @@ createOrder.controller('creatorderCtrl',
         //快递方式取货
         $http.post(URLPort + '/trades',
           {
-            'buyer_user_id': $rootScope.USERINFO.id,
+            'buyer_user_id': $scope.USERID,
             'bring_guider_id': $rootScope.GUIDID,
             'brand_id': parseInt($rootScope.productOrders[0].brand_id),
             'buyer_memo': $scope.buyerMessage.buyer_memo,
@@ -297,7 +300,7 @@ createOrder.controller('creatorderCtrl',
         console.log(["$scope.fetchdayhour", $scope.fetchdayhour]);
         $http.post(URLPort + '/trades',
           {
-            'buyer_user_id': $rootScope.USERINFO.id,
+            'buyer_user_id': $scope.USERID,
             'bring_guider_id': $rootScope.GUIDID,
             'brand_id': parseInt($rootScope.productOrders[0].brand_id),
             'buyer_memo': $scope.buyerMessage.buyer_memo,
@@ -348,14 +351,14 @@ createOrder.controller('creatorderCtrl',
     $scope.goGoodsShop = function () {//门店地址列表页面
       console.log(["$rootScope.ListTwoStores", $rootScope.ListTwoStores]);
       $state.go('goodsShop', {
-        'userid': $rootScope.USERINFO.id,
+        'userid': $scope.USERID,
         'brandid': $rootScope.productOrders[0].brand_id,
         'refunds': 0
       });
     }
     $scope.changeReceiveInfoFunc = function () {//收货人地址列表页面
-      console.log(['userid', $rootScope.USERINFO.id]);
-      $state.go('changeReceiveInfo', {'userid': $rootScope.USERINFO.id});
+      console.log(['userid', $scope.USERID]);
+      $state.go('changeReceiveInfo', {'userid': $scope.USERID});
     }
 
 
@@ -368,7 +371,7 @@ createOrder.controller('creatorderCtrl',
         console.log("选择取货门店")
         getFetchTime();//获得门店取货时间
       }
-      $rootScope.USERINFO.id = $rootScope.USERINFO.id;
+      $scope.USERID = $scope.USERID;
       //查询用户的收获地址信息
       if ($rootScope.selectedAddressId) {
         console.log("这是选择收货地址情况");
@@ -383,7 +386,7 @@ createOrder.controller('creatorderCtrl',
 
     function checkoutAddress() {
 
-      $http.get(URLPort + '/users/' + $rootScope.USERINFO.id + '/shipping-addresses')
+      $http.get(URLPort + '/users/' + $scope.USERID + '/shipping-addresses')
         .success(function (data) {
 
           if (data.length > 0) {
@@ -432,7 +435,7 @@ createOrder.controller('creatorderCtrl',
       console.log(['store_id', store_id]);
       daogouAPI.defaultstore({
         brand_id: $stateParams.brandid,
-        user_id: $rootScope.USERINFO.id,
+        user_id: $scope.USERID,
         store_id: store_id
       }, function (data, status, headers, config) {
         for (var i in $scope.shopaddressData) {
@@ -495,7 +498,7 @@ createOrder.controller('creatorderCtrl',
     $log.debug('changeReceiveInfoCtrl');
     var URLPort = URLPort();
 
-    $http.get(URLPort + '/users/' + $rootScope.USERINFO.id + '/shipping-addresses')
+    $http.get(URLPort + '/users/' + $scope.USERID + '/shipping-addresses')
       .success(function (data) {
         $scope.receiverAddressDate = data;
         console.log(['获取用户收货地址列表成功', data]);
@@ -511,7 +514,7 @@ createOrder.controller('creatorderCtrl',
         console.log(["不是选择地址情况"]);
       } else {//是选择地址哪种情况
         console.log(["是选择地址情况", $rootScope.selectedAddressId]);
-        $http.get(URLPort + '/users/' + $rootScope.USERINFO.id + '/shipping-addresses')
+        $http.get(URLPort + '/users/' + $scope.USERID + '/shipping-addresses')
           .success(function (data) {
             for (var i in data) { //选出默认收货地址
               if (data[i].id === $rootScope.selectedAddressId) {
@@ -529,7 +532,7 @@ createOrder.controller('creatorderCtrl',
     $scope.setDefaultAddress = function (addressId, index) {
       console.log(['addressId', addressId]);
       daogouAPI.defaultAddress({
-        user_id: $rootScope.USERINFO.id,
+        user_id: $scope.USERID,
         address_id: addressId
       }, function (data, status, headers, config) {
         for (var i in $scope.receiverAddressDate) {
@@ -546,7 +549,7 @@ createOrder.controller('creatorderCtrl',
 
     $scope.deleteAddressFunc = function (addressId, index) {
       daogouAPI.deleteAddress({
-        user_id: $rootScope.USERINFO.id,
+        user_id: $scope.USERID,
         address_id: addressId
       }, function (data, status, headers, config) {
         console.log(['删除收货地址成功', data]);
@@ -557,12 +560,11 @@ createOrder.controller('creatorderCtrl',
     }
 
     $scope.editAddressFunc = function (addressId) {
-      $state.go('newAddress', {userid: $rootScope.USERINFO.id, addressid: addressId});
+      $state.go('newAddress', {userid: $scope.USERID, addressid: addressId});
     }
 
     $scope.gonewAddress = function () {
-      console.log(["$rootScope.USERINFO.id", $rootScope.USERINFO.id])
-      $state.go('newAddress', {userid: $rootScope.USERINFO.id});
+      $state.go('newAddress', {userid: $scope.USERID});
     }
 
 
@@ -591,7 +593,7 @@ createOrder.controller('creatorderCtrl',
       console.log("添加新地址");
     } else {
       daogouAPI.getAddress({
-        user_id: $rootScope.USERINFO.id,
+        user_id: $scope.USERID,
         address_id: $stateParams.addressid
       }, function (data, status, headers, config) {
         console.log(['获取要修改收货地址成功', data]);
@@ -709,7 +711,7 @@ createOrder.controller('creatorderCtrl',
       console.log(['$scope.newAddressInput', $scope.newAddressInput]);
       if ($stateParams.addressid === "") {
         daogouAPI.addAddress({
-          user_id: $rootScope.USERINFO.id,
+          user_id: $scope.USERID,
           name: $scope.newAddressInput.name,
           state: $scope.newAddressInput.provinceInfo.name,
           state_code: $scope.newAddressInput.provinceInfo.code,
@@ -724,14 +726,14 @@ createOrder.controller('creatorderCtrl',
         }, function (data, status, headers, config) {
           console.log(['增加新地址成功', data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
           $scope.defaultAddressdata = data;
-          $state.go('changeReceiveInfo', {'userid': $rootScope.USERINFO.id});
+          $state.go('changeReceiveInfo', {'userid': $scope.USERID});
         }, function (data, status, headers, config) {
           console.log(['增加新地址失败', data]);//弹出失败提示 停在原页
         });
       } else {
         daogouAPI.editAddress({
           id: $stateParams.addressid,
-          user_id: $rootScope.USERINFO.id,
+          user_id: $scope.USERID,
           name: $scope.newAddressInput.name,
           state: $scope.newAddressInput.provinceInfo.name,
           state_code: $scope.newAddressInput.provinceInfo.code,
@@ -746,7 +748,7 @@ createOrder.controller('creatorderCtrl',
         }, function (data, status, headers, config) {
           console.log(['修改地址成功', data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
           $scope.defaultAddressdata = data;
-          $state.go('changeReceiveInfo', {'userid': $rootScope.USERINFO.id});
+          $state.go('changeReceiveInfo', {'userid': $scope.USERID});
         }, function (data, status, headers, config) {
           console.log(['修改地址失败', data]);//弹出失败提示 停在原页
         });

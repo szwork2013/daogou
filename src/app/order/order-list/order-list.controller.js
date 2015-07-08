@@ -3,16 +3,25 @@
 var order = angular.module('orderList', ['ionic']);
 order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state', '$stateParams', '$rootScope', function ($scope, $log, $http, URLPort, daogouAPI, $state, $stateParams, $rootScope) {
 
-  if ($rootScope.USERINFO == null) {
+
+  var userInfo = window.sessionStorage.getItem("USERINFO");
+  if (userInfo == null) {
     daogouAPI.isLogin(function (data) {
-      $rootScope.USERINFO = data;
+      $scope.USERINFO = data;
+      window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
       getOrderListFunc();
+
     }, function (data) {
       $scope.login = true;
     });
-  } else {
+  }
+  else {
+    $scope.USERINFO = JSON.parse(userInfo);
     getOrderListFunc();
   }
+
+
+
   var URLPort = URLPort();
   $scope.productListData = [];
   var pageindex = 1;
@@ -20,7 +29,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
 
   $scope.hasMoreOrder = true;
   function getOrderListFunc() {
-    daogouAPI.getOrderList("/trades/users/" + $rootScope.USERINFO.id, {
+    daogouAPI.getOrderList("/trades/users/" + $scope.USERINFO.id, {
       page: pageindex,
       per_page: pagesize,
       show_orders: true
@@ -223,7 +232,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
    * 购物车订单列表切换
    */
   $scope.goCart = function () {
-    $state.go("cart", {"userid": $rootScope.USERINFO.id, "brandid": $rootScope.BRANDID});
+    $state.go("cart", {"userid": $scope.USERINFO.id, "brandid": $rootScope.BRANDID});
   };
 
 }]);

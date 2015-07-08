@@ -45,7 +45,7 @@ angular.module('daogou')
 					// alert('wxpay.service.js:162 获取openid失败，支付失败'+JSON.stringify(data))
 				})
 			});
-			
+
 		}
 
 	};
@@ -89,7 +89,7 @@ WXJSSDKPay(callback);
 				callback(res);
 			}
 		});
-		
+
 		//微信支付老接口
 		// 	if (typeof WeixinJSBridge == 'undefined') {
 		// 		if (document.addEventListener) {
@@ -146,14 +146,12 @@ WXJSSDKPay(callback);
 					code:code,
 					brand_id:$rootScope.BRANDID
 				},function(openiddata){
-					// alert('wxpay.service.js:296 获取成功'+JSON.stringify(openiddata));
-					// alert('$rootScope.BRANDID'+$rootScope.BRANDID)
-					// alert('$rootScope.USERINFO.id'+$rootScope.USERINFO.id)
-					// alert('openiddata.openid'+openiddata.openid)
+          var userInfo = window.sessionStorage.getItem("USERINFO");
+          $scope.USERINFO = JSON.parse(userInfo);
 					//绑定openis
 					daogouAPI.bindOpenid({
 						brand_id:$rootScope.BRANDID,
-						user_id:$rootScope.USERINFO.id,
+						user_id:$scope.USERINFO.id,
 						wx_open_id:openiddata.openid
 					},function(data){
 						// alert('wxpay.service.js:303  获取成功'+JSON.stringify(data));

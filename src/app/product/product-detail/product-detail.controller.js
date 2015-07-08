@@ -155,15 +155,27 @@ product.controller('productDetailCtrl',
 
       }
     };
+
+
+
+
     /**
      * 当点击购物车时让设置goCart 和 goOrder 的参数使参数面板的下一步 跳转到购物车还是生成订单
      */
     $scope.propertyShowCart = function () {
-      if ($rootScope.USERINFO === undefined) {
+
+
+      var userInfo = window.sessionStorage.getItem("USERINFO");
+      if (userInfo == null) {
         $scope.login = true;
-      } else {
-        propertyMenu();
       }
+      else {
+        $scope.USERINFO = JSON.parse(userInfo);
+        $scope.USERID = $scope.USERINFO.id;
+        propertyMenu();
+
+      }
+
       $scope.goCart = false;
       $scope.goOrder = true;
     }
@@ -193,8 +205,8 @@ product.controller('productDetailCtrl',
      * 去我的购物车
      */
     $scope.goToCart = function () {
-      $http.post(URLPort + "/users/" + $rootScope.USERINFO.id + "/shopping-carts", {
-        "user_id": $rootScope.USERINFO.id,
+      $http.post(URLPort + "/users/" + $scope.USERID + "/shopping-carts", {
+        "user_id": $scope.USERID,
         "sku_id": $scope.productOrder.sku_id,
         "num": $scope.productOrder.num,
         "bring_guider_id": $rootScope.GUIDID
@@ -202,7 +214,7 @@ product.controller('productDetailCtrl',
         .success(function (data) {
           $scope.login = false;//是否显示登录页面
           $scope.propertyClose();
-          $state.go("cart", {"userid": $rootScope.USERINFO.id, "brandid": $rootScope.BRANDID});
+          $state.go("cart", {"userid": $scope.USERID, "brandid": $rootScope.BRANDID});
         })
         .error(function (data) {
         })

@@ -39,8 +39,10 @@ angular.module('daogou')
 			if($stateParams.addressid === ""){
 				 	console.log("添加新地址");
 			}else if(typeof($stateParams.addressid)==="number"){
-				 	daogouAPI.getAddress({
-				 		user_id:$rootScope.USERINFO.id,
+        var userInfo = window.sessionStorage.getItem("USERINFO");
+        $scope.USERINFO = JSON.parse(userInfo);
+        daogouAPI.getAddress({
+				 		user_id:$scope.USERINFO.id,
 				 		address_id:$stateParams.addressid
 				 	},function(data, status, headers, config){
 				 		console.log(['获取要修改收货地址成功',data]);
@@ -78,13 +80,13 @@ angular.module('daogou')
 					 	},function(data, status, headers, config){
 					 		console.log(['查询市下地区失败',data]);
 					 	});
-			 			
+
 				 	},function(data, status, headers, config){
 				 		console.log(['获取要修改收货地址失败',data]);
 				 	});
 			}
 
-					 
+
 			 daogouAPI.searchProvinces({
 			 },function(data, status, headers, config){
 			 	$scope.provincesdata = data;
@@ -118,7 +120,7 @@ angular.module('daogou')
 			    		$scope.newAddressInput.districtInfo= {};
 			    	}
 			    }
-					    
+
 		    	daogouAPI.codegetarea({
 		    		areacode:dataobj.code
 		    	},function(data, status, headers, config){
@@ -159,7 +161,7 @@ angular.module('daogou')
 
 			var pageindex = 1;
 		 	var pagesize = 5;
-		 	$scope.hasMoreOrder = false; 
+		 	$scope.hasMoreOrder = false;
 		 	//加载门店
 		 	function getStores(){
 		 		daogouAPI.storeAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
@@ -192,7 +194,7 @@ angular.module('daogou')
 					$scope.hasMoreOrder = true;
 					 getStores();
 				}
-				
+
 			}
 			//加载更多
 			$scope.getStoresListMore = function(){
@@ -200,7 +202,7 @@ angular.module('daogou')
 				if(($scope.newAddressInput.provinceInfo.code!="")&&($scope.newAddressInput.cityInfo.code!="")&&($scope.newAddressInput.districtInfo.code!="")){
 					 getStores();
 				}
-				
+
 			}
 
 			/**
@@ -212,7 +214,7 @@ angular.module('daogou')
 			  	}
 			};
 			/**
-			 * 监测广播，加载更多 
+			 * 监测广播，加载更多
 			 */
 			$scope.$on('$stateChangeSuccess', function () {
 			  if (pageindex > 2) {
