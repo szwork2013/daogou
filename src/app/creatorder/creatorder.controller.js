@@ -24,7 +24,8 @@ createOrder.controller('creatorderCtrl',
     $scope.alladdress = true;//初始让地址模块隐藏
     $scope.buyeraddress = true;
     $scope.firstBuyerAddress = true;
-    $scope.express = true;// true为快递上门   false为门店取货
+    // true为快递上门   false为门店取货
+    $scope.express = true;
 
     //判断是否登录
     if (typeof $rootScope.USERINFO !== "undefined") {
@@ -45,15 +46,19 @@ createOrder.controller('creatorderCtrl',
     $scope.loginerror = function (data) {
 
     };
-
-
+    /**
+     * 快递到家
+     */
     $scope.postway = function () {
       $scope.express = true;
     }
+    /**
+     * 门店自取
+     */
     $scope.shopway = function () {
       $scope.express = false;
       if ($rootScope.selectedStoreId) {//如果是选择门店地址
-        ;
+
       } else {
         $rootScope.ListTwoStores = [];
         getLocation(function (lng, lat) {
@@ -194,13 +199,11 @@ createOrder.controller('creatorderCtrl',
     }
     //根据选择的省查询市
     $scope.provinceSelect = function (dataobj) {
-
       $http.get(URLPort + '/provinces/' + dataobj.pinyin + '/cities')
         .success(function (data) {
           $scope.citiesdata = data;
         })
         .error(function (data) {
-
         })
     }
 

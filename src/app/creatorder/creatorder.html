@@ -6,7 +6,6 @@
           <label class="checkbox disnone">
             <input type="checkbox" ng-model="choose">
           </label>
-
           <img ng-src="{{order.picUrlArr[0]}}" class="product-img">
 
           <div class="paramenters">
@@ -25,7 +24,6 @@
         <div class="clearBoth"></div>
       </div>
     </div>
-
     <div class="statusWrap remarkpadding">
       <div class="costwrap">
         <span class="costname">运费</span>
@@ -58,11 +56,9 @@
       </div>
 
       <!--收货人地址-->
-      <!-- <div ng-class="{disnone:0}"> -->
       <div ng-class="{disnone:!express}">
         <!-- 第一次写收货地址 -->
         <div ng-class="{disnone:firstBuyerAddress}">
-          <!-- <div ng-class="{disnone:0}"> -->
           <input class="input-address-info" placeholder="收货人姓名" ng-model="firstAddressInput.name"/>
           <input class="input-address-info" placeholder="手机号码" ng-model="firstAddressInput.mobile"/>
 
@@ -138,6 +134,12 @@
 
     <div class="commonBtn" ng-class="{disnone:weixinpay}" ng-click="submitOrder()">微信支付</div>
     <div class="commonBtn backred" ng-class="{disnone:firstBuyerAddress}" ng-click="addAddress(1)">保存地址</div>
+
+
+
+
+
+
     <!-- <div class="commonBtn backred" ng-click="submit2()">确认登录成功后获取user信息2</div> -->
     <!-- <div class="commonBtn backred" ng-click="logout()">确认退出</div> -->
 
