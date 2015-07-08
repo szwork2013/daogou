@@ -81,7 +81,9 @@
       <li class="item item-checkbox footerli">
         <i class="iconfont icon-gou bggou font24 selected-img All"
            ng-class="{'graygou':!Allseleted,'greengou':Allseleted}" ng-click="changeAll()"></i>
-        <button class="goAccount" ng-click="deleteCartProduct()">删除({{totalNumDelete}})</button>
+        <button class="goAccount" ng-click="deleteCartProduct()" ng-class="{'disabled':totalNumDelete==0}"
+                ng-disabled="totalNumDelete==0">删除({{totalNumDelete}})
+        </button>
         <span class="totalPrice">{{totalFeeDelete | currency:"￥":2}}</span>
         <span class="total">合计：</span>
       </li>

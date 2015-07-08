@@ -1,7 +1,8 @@
 'use strict';
 
 var cart = angular.module('cart', ['ionic']);
-cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$stateParams', 'daogouAPI', '$rootScope', function ($scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, $rootScope) {
+cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$stateParams', 'daogouAPI', '$rootScope',"$ionicPopup",
+  function ($scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, $rootScope,$ionicPopup) {
   //检测登录开始
   daogouAPI.isLogin(function (data) {
     console.log(data)
@@ -156,7 +157,14 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       }
 
     } else {
-      alert("不能再少了")
+      var mypopup = $ionicPopup.show({
+        title: "提示",
+        template: "不能再少了",
+        buttons: [{
+          text: "确定",
+          type: "button-energized"
+        }]
+      });
     }
   };
   /**
@@ -174,7 +182,14 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         $scope.totalFeeDelete += parseFloat(item.total_fee);
       }
     } else {
-      alert("不能再多了")
+      var mypopup = $ionicPopup.show({
+        title: "提示",
+        template: "不能再多了",
+        buttons: [{
+          text: "确定",
+          type: "button-energized"
+        }]
+      });
     }
   };
 
