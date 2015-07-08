@@ -745,6 +745,8 @@ angular.module('daogou')
 		daogouAPI.post(daogouAPI.apiurl(action,data),scallback,ecallback);
 	}
 
+	
+
 
 });
 
