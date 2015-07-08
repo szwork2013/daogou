@@ -21,7 +21,6 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
   }
 
 
-
   var URLPort = URLPort();
   $scope.productListData = [];
   var pageindex = 1;
@@ -41,7 +40,12 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
             var created_at = new Date(item.created_at);
             var newDate = new Date(created_at.setDate(created_at.getDate() + 3));
             item.leftTime = $scope.MillisecondToDate(newDate.getTime() - new Date().getTime());
-            item.statusCN = "待付款";
+            if (item.leftTime.indexOf("-") > 0) {
+              item.statusCN = "已关闭";
+              item.leftTime = "hide";
+            } else {
+              item.statusCN = "待付款";
+            }
             break;
           case 'SELLER_CONSIGNED_PART':
             item.statusCN = "卖家部分发货";
@@ -55,7 +59,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
           case 'WAIT_BUYER_FETCH_GOODS':
             item.leftTime = $scope.MillisecondToDate(new Date(item.fetch_subscribe_begin_time).getTime() - new Date().getTime());
             if (item.leftTime.indexOf("-") > 0) {
-              item.leftTime = "已过期";
+              item.leftTime = "hide";
             }
             item.statusCN = '待取货';
             break;

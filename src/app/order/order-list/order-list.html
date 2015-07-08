@@ -24,9 +24,10 @@
     <div class="statusWrap backf8" ng-repeat="item in productListData">
       <div class="status backf8">
         <div class="status-name countDel" ng-class="{success:item.statusCN==='交易成功'}">{{item.statusCN}}</div>
-        <div class="edit" ng-if="item.status==='WAIT_BUYER_PAY'||item.status==='WAIT_BUYER_FETCH_GOODS'">
-          <i class="iconfont icon-shijian" ng-if="item.status==='WAIT_BUYER_PAY'"></i>
-         {{item.leftTime}}
+        <div class="edit"
+             ng-if="item.status==='WAIT_BUYER_PAY'||item.status==='WAIT_BUYER_FETCH_GOODS'&&item.leftTime!='hide'">
+          <i class="iconfont icon-shijian"></i>
+          {{item.leftTime}}
         </div>
         <div class="clearBoth"></div>
       </div>
@@ -63,7 +64,8 @@
       >
     </ion-infinite-scroll>
   </ion-content>
-  <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;"  ng-show="login" loginsuccess="loginsuccess" loginerror="loginerror"></div>
+  <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;" ng-show="login"
+       loginsuccess="loginsuccess" loginerror="loginerror"></div>
   <!--   这个切换其实是2个页面 不是页面内切换的
     一个是购物车页cart   应该是订单列表 order → order-list -->
 
