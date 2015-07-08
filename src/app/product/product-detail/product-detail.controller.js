@@ -180,7 +180,7 @@ product.controller('productDetailCtrl',
      * 去我的订单
      */
     $scope.goToOrder = function () {
-      $scope.productOrder.buynum = $scope.productOrder.num;
+      $scope.productOrder.num = $scope.productOrder.num;
       $scope.productOrder.title = $scope.productDetailData.title;
       $scope.productOrder.freight = $scope.productDetailData.freight;
       $scope.productOrder.picUrlArr = $scope.productDetailData.picUrlArr;

@@ -25,7 +25,7 @@
       <div class="status backf8">
         <div class="status-name countDel" ng-class="{success:item.statusCN==='交易成功'}">{{item.statusCN}}</div>
         <div class="edit" ng-if="item.status==='WAIT_BUYER_PAY'||item.status==='WAIT_BUYER_FETCH_GOODS'">
-          <i class="iconfont icon-shijian"></i>
+          <i class="iconfont icon-shijian" ng-if="item.status==='WAIT_BUYER_PAY'"></i>
          {{item.leftTime}}
         </div>
         <div class="clearBoth"></div>

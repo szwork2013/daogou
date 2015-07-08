@@ -72,7 +72,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
 
     // 登录成功回调
     $scope.loginsuccess = function (data) {
-      console.log(["order的回调", data]);
       $scope.login = false;
       $(".redPoint").show();
       //获取订单信息
@@ -87,7 +86,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      * 加载更多
      */
     $scope.loadMoreData = function () {
-      console.log(["loadMoreData"]);
       cartProductListFunc();
     };
     /**
@@ -241,7 +239,19 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      * 结算商品
      */
     $scope.checkCartProduct = function () {
-
+      $rootScope.productOrders = [];
+      angular.forEach($scope.cartProductListData, function (item, index) {
+        if ($.inArray(item.id, $scope.ids) >= 0) {
+          var newItem = {};
+          newItem.price = item.price;
+          newItem.num = item.num;
+          newItem.title = item.title;
+          newItem.freight = item.freight;
+          newItem.picUrlArr = item.pics;
+          newItem.brand_id = $rootScope.BRANDID;
+          $rootScope.productOrders.push(newItem);
+        }
+      });
       $state.go("creatorder");
     };
     /**

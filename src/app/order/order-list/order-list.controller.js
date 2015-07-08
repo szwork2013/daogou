@@ -46,7 +46,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
           case 'WAIT_BUYER_FETCH_GOODS':
             item.leftTime = $scope.MillisecondToDate(new Date(item.fetch_subscribe_begin_time).getTime() - new Date().getTime());
             if (item.leftTime.indexOf("-") > 0) {
-              item.leftTime = "剩余0时0分0秒";
+              item.leftTime = "已过期";
             }
             item.statusCN = '待取货';
             break;
