@@ -149,63 +149,64 @@ angular.module('goodsReturn',['ionic'])
                                    case error.PERMISSION_DENIED:  
                                         console.log('用户拒绝提供地理位置');
                                         // alert('用户拒绝提供地理位置')
-                                          daogouAPI.shopAddressId('/brands/'+$scope.refundData.brand_id+'/stores/store-fetch',{
-                                                user_id:$rootScope.USERINFO.id
-                                            },function(data, status, headers, config){
-                                                console.log(['无经纬度查询门店列表成功',data]);
-                                                $scope.shopaddressData = data;
-                                                var flag = false;
-                                                var defaultIndex = 0;
-                                                for(var i in $scope.shopaddressData){
-                                                    if($scope.shopaddressData[i].is_default===1){
-                                                        flag = true;//如果有默认地址 flag为true
-                                                        defaultIndex = i;
-                                                    }
-                                                }
-                                                if(flag === true){//有默认地址
-                                                    console.log('有默认地址');
-                                                    $rootScope.minDistance=$scope.shopaddressData[defaultIndex];
-                                                    console.log(["$rootScope.minDistance",$rootScope.minDistance]);
-                                                    $rootScope.ListTwoStores[0] = $rootScope.minDistance;
-                                                    $scope.shopaddressData.splice(defaultIndex,1);
-                                                    var minIndex = 0;
-                                                    for(var i=0;i<$scope.shopaddressData.length-1;i++){
-                                                        if(parseFloat($scope.shopaddressData[i+1].distance)>parseFloat($scope.shopaddressData[i].distance)){
-                                                            minIndex = i+1;
-                                                        }
-                                                    }
-                                                    $rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
-                                                }else{//没有默认地址
-                                                    console.log('无有默认地址');
-                                                    var minIndex = 0;
-                                                    for(var i=0;i<data.length-1;i++){
-                                                        if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
-                                                            minIndex = i+1;
-                                                        }
-                                                    }
-                                                    $rootScope.minDistance = data[minIndex]; 
-                                                    console.log(["$rootScope.minDistance",$rootScope.minDistance]);
-                                                    $rootScope.ListTwoStores[0] = $rootScope.minDistance;
-                                                    $scope.shopaddressData.splice(minIndex,1);
-                                                    var minIndex = 0;
-                                                    for(var i=0;i<$scope.shopaddressData.length-1;i++){
-                                                        if(parseFloat($scope.shopaddressData[i+1].distance)>parseFloat($scope.shopaddressData[i].distance)){
-                                                            minIndex = i+1;
-                                                        }
-                                                    }
-                                                    $rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
-                                                }
-                                
-                                            },function(data, status, headers, config){
-                                                console.log(['无经纬度查询门店列表失败',data]);
-                                            });
                                         break;  
                                    case error.POSITION_UNAVAILABLE:  
                                         console.log('地理位置不可用');  
                                         break;  
                                    default:  
                                         break;  
-                              }  
+                              }
+
+                              daogouAPI.shopAddressId('/brands/'+$scope.refundData.brand_id+'/stores/store-fetch',{
+                                    user_id:$rootScope.USERINFO.id
+                                },function(data, status, headers, config){
+                                    console.log(['无经纬度查询门店列表成功',data]);
+                                    $scope.shopaddressData = data;
+                                    var flag = false;
+                                    var defaultIndex = 0;
+                                    for(var i in $scope.shopaddressData){
+                                        if($scope.shopaddressData[i].is_default===1){
+                                            flag = true;//如果有默认地址 flag为true
+                                            defaultIndex = i;
+                                        }
+                                    }
+                                    if(flag === true){//有默认地址
+                                        console.log('有默认地址');
+                                        $rootScope.minDistance=$scope.shopaddressData[defaultIndex];
+                                        console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+                                        $rootScope.ListTwoStores[0] = $rootScope.minDistance;
+                                        $scope.shopaddressData.splice(defaultIndex,1);
+                                        var minIndex = 0;
+                                        for(var i=0;i<$scope.shopaddressData.length-1;i++){
+                                            if(parseFloat($scope.shopaddressData[i+1].distance)>parseFloat($scope.shopaddressData[i].distance)){
+                                                minIndex = i+1;
+                                            }
+                                        }
+                                        $rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
+                                    }else{//没有默认地址
+                                        console.log('无有默认地址');
+                                        var minIndex = 0;
+                                        for(var i=0;i<data.length-1;i++){
+                                            if(parseFloat(data[i+1].distance)>parseFloat(data[i].distance)){
+                                                minIndex = i+1;
+                                            }
+                                        }
+                                        $rootScope.minDistance = data[minIndex]; 
+                                        console.log(["$rootScope.minDistance",$rootScope.minDistance]);
+                                        $rootScope.ListTwoStores[0] = $rootScope.minDistance;
+                                        $scope.shopaddressData.splice(minIndex,1);
+                                        var minIndex = 0;
+                                        for(var i=0;i<$scope.shopaddressData.length-1;i++){
+                                            if(parseFloat($scope.shopaddressData[i+1].distance)>parseFloat($scope.shopaddressData[i].distance)){
+                                                minIndex = i+1;
+                                            }
+                                        }
+                                        $rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
+                                    }
+                              
+                                },function(data, status, headers, config){
+                                    console.log(['无经纬度查询门店列表失败',data]);
+                                });  
                         }  
 
                         $scope.getLocation();

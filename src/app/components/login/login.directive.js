@@ -18,8 +18,8 @@ angular.module('daogou')
       // compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
       link: function ($scope, iElm, iAttrs, controller) {
         $scope.logindate = {
-          username: '15026590036',
-          password: '123456'
+          username: '',
+          password: ''
         };
 
         //关闭登录框
