@@ -55,6 +55,7 @@ angular.module('daogou')
 
         //获取验证码
         $scope.verify = function () {
+
           $(".yanzhengma").addClass("clickdown");
           $(".yanzhengma").attr({"disabled": "disabled"});
           var remainTime = 60;

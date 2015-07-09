@@ -5,6 +5,7 @@ product.controller('productDetailCtrl',
   function ($rootScope, $scope, $log, $http, $state, $stateParams, URLPort, daogouAPI, $ionicPopup) {
     var URLPort = URLPort();
     $scope.login = false;//是否显示登录页面
+
     //创建订单页的 订单数据
     $scope.productOrder = {
       bring_guider_id: $rootScope.GUIDID
@@ -167,6 +168,8 @@ product.controller('productDetailCtrl',
       var userInfo = window.sessionStorage.getItem("USERINFO");
       if (userInfo == null) {
         $scope.login = true;
+        $(".mengban").show();
+
       }
       else {
         $scope.USERINFO = JSON.parse(userInfo);
