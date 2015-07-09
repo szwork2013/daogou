@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-.controller('changeReceiveInfoCtrl', ['$scope', '$log', '$http', 'URLPort', '$stateParams', 'daogouAPI', '$state', '$rootScope', function ($scope, $log, $http, URLPort, $stateParams, daogouAPI, $state, $rootScope) {
+.controller('changeReceiveInfoCtrl', ['$ionicPopup','$scope', '$log', '$http', 'URLPort', '$stateParams', 'daogouAPI', '$state', '$rootScope', function ($ionicPopup,$scope, $log, $http, URLPort, $stateParams, daogouAPI, $state, $rootScope) {
     $log.debug('changeReceiveInfoCtrl');
     var URLPort = URLPort();
     var userInfo = window.sessionStorage.getItem("USERINFO");
@@ -59,15 +59,30 @@ angular.module('daogou')
 
 
     $scope.deleteAddressFunc = function (addressId, index) {
-      daogouAPI.deleteAddress({
-        user_id: $scope.USERID,
-        address_id: addressId
-      }, function (data, status, headers, config) {
-        console.log(['删除收货地址成功', data]);
-        $scope.receiverAddressDate.splice(index, 1);
-      }, function (data, status, headers, config) {
-        console.log(['删除收货地址失败', data]);
-      });
+        var confirmPopup = $ionicPopup.confirm({
+        title: '您确定删除此地址吗?',
+        // template: '确定删除地址吗?',
+        cancelText: '取消', // String (default: 'Cancel'). The text of the Cancel button.
+        cancelType: 'button-default', // String (default: 'button-default'). The type of the Cancel button.
+        okText: '确定', // String (default: 'OK'). The text of the OK button.
+        okType: 'button-assertive', // String (default: 'button-positive'). The type of the OK button.
+     });
+     confirmPopup.then(function(res) {
+       if(res) {
+          daogouAPI.deleteAddress({
+            user_id: $scope.USERID,
+            address_id: addressId
+          }, function (data, status, headers, config) {
+            console.log(['删除收货地址成功', data]);
+            $scope.receiverAddressDate.splice(index, 1);
+          }, function (data, status, headers, config) {
+            console.log(['删除收货地址失败', data]);
+          });
+           console.log('确定删除');
+       } else {
+          console.log('取消删除');
+       }
+     });
     }
 
     $scope.editAddressFunc = function (addressId) {
