@@ -62,7 +62,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
             item.specification[tz].key = cartendArr[cartendArr.length - 2];//规格名
           }
         });
-        console.log(["获取购物车商品列表成功",data]);
+        console.log(["获取购物车商品列表成功", data]);
         daogouAPI.formatSku(data);
         $scope.cartProductListData = $scope.cartProductListData.concat(data);
         if (data.length >= pagesize) {
@@ -124,7 +124,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       $scope.edithandle = true;
       $scope.finishhandle = false;
       //提交一下修改的数量
-      
+
     };
     /**
      * 点击-减商品数
@@ -173,7 +173,15 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         });
       }
     };
-
+    /**
+     * 商品详情
+     * @param id
+     */
+    $scope.goDetail = function (id) {
+      if ($scope.edithandle) {
+        $state.go("productDetail",{detailId:id});
+      }
+    };
     /**
      *   通过点击选中圆圈选中
      */
@@ -262,7 +270,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
           productOrders.push(newItem);
         }
       });
-      window.sessionStorage.setItem("productOrders",  JSON.stringify(productOrders));
+      window.sessionStorage.setItem("productOrders", JSON.stringify(productOrders));
       $state.go("creatorder");
     };
     /**
