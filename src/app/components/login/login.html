@@ -33,9 +33,8 @@
         <button class="yanzhengma yanzhengmared" ng-click="verify()"  ng-disabled="myForm.username.$invalid" ng-class="{'disabledGray':myForm.username.$invalid}" >获取验证码</button>
       </div>
     </div>
-    <div type="submit" ng-class="{'disabled':myForm.$invalid}" class="commonBtn backred"
-         ng-disabled="myForm.$invalid"
-      >确认登录
-    </div>
+    <label for="submitbtn" ng-class="{'disabled':myForm.$invalid}" class="commonBtn backred">确认登录</label>
+    <input type="submit" class="hidesubmitbtn" id="submitbtn" ng-disabled="myForm.$invalid">
+  </form>
 </div>
 <!-- 登录模块 -->
