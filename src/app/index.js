@@ -86,12 +86,12 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
       })
       .state('goodsShop', {
         url: '/goodsShop/:userid/:brandid/:refunds',
-        templateUrl: 'app/creatorder/goods-shop.html',
+        templateUrl: 'app/creatorder/goods-shop/goods-shop.html',
         controller: 'goodsShopCtrl'
       })
       .state('changeReceiveInfo', {
         url: '/changeReceiveInfo/:userid',
-        templateUrl: 'app/creatorder/change-receive-info.html',
+        templateUrl: 'app/creatorder/change-receive-info/change-receive-info.html',
         controller: 'changeReceiveInfoCtrl'
       })
       .state('payWay', {
@@ -106,7 +106,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
       })
       .state('newAddress', {
         url: '/newAddress/:userid/:addressid',
-        templateUrl: 'app/creatorder/new-address.html',
+        templateUrl: 'app/creatorder/new-address/new-address.html',
         controller: 'newAddressCtrl'
       })
       .state('guide', {
