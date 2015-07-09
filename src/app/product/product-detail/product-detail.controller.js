@@ -69,7 +69,8 @@ product.controller('productDetailCtrl',
      *关闭选取商品SKU
      */
     $scope.propertyClose = function () {
-      $(".mengban,.chooseProductInfoWarp").hide();
+      $(".mengban,.chooseProductInfoWarp ").hide();
+      $scope.login=false;
     };
     /**
      * 选择产品规格，显示是否有剩余
