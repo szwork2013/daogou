@@ -25,6 +25,8 @@ angular.module('daogou')
         //关闭登录框
         $scope.loginClose = function () {
           $scope.login = false;
+          $(".mengban").hide();
+
           if (typeof($scope.timer) === "number") {
             clearInterval($scope.timer);
           }
@@ -55,6 +57,7 @@ angular.module('daogou')
 
         //获取验证码
         $scope.verify = function () {
+
           $(".yanzhengma").addClass("clickdown");
           $(".yanzhengma").attr({"disabled": "disabled"});
           var remainTime = 60;
