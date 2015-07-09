@@ -123,6 +123,8 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
     $scope.finish = function () {
       $scope.edithandle = true;
       $scope.finishhandle = false;
+      //提交一下修改的数量
+      
     };
     /**
      * 点击-减商品数
@@ -133,7 +135,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         item.num--;
         if (item.seleted) {
           $scope.ids.splice($.inArray(item.id, $scope.ids), 1);
-          $scope.totalFee -= parseFloat(item.total_fee);
+          $scope.totalFee -= parseFloat(item.price);
         }
 
       } else {
@@ -158,7 +160,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
           if ($.inArray(item.id, $scope.ids) < 0) {
             $scope.ids.push(item.id);
           }
-          $scope.totalFee += parseFloat(item.total_fee);
+          $scope.totalFee += parseFloat(item.price);
         }
       } else {
         var mypopup = $ionicPopup.show({
@@ -186,14 +188,14 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       $scope.Allseleted = isAll;
 
       if (item.seleted) {
-        $scope.totalFee += parseFloat(item.total_fee) * item.num;
+        $scope.totalFee += parseFloat(item.price) * item.num;
         $scope.totalNum++;
         if ($.inArray(item.id, $scope.ids) < 0) {
           $scope.ids.push(item.id);
         }
       }
       else {
-        $scope.totalFee -= parseFloat(item.total_fee) * item.num;
+        $scope.totalFee -= parseFloat(item.price) * item.num;
         $scope.totalNum--;
         $scope.ids.splice($.inArray(item.id, $scope.ids), 1);
       }
