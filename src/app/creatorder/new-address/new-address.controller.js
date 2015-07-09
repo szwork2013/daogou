@@ -25,7 +25,22 @@ angular.module('daogou')
     $scope.newAddressInput.districtInfo.code = "";
     console.log(["$stateParams.addressid", $stateParams.addressid]);
 
-
+    $scope.clearName = function(){
+      console.log(["清空你"]);
+      $scope.newAddressInput.name = "";
+    }
+    $scope.clearMobile = function(){
+      console.log(["清空你"]);
+      $scope.newAddressInput.mobile = "";
+    }
+    $scope.clearAddress = function(){
+      console.log(["清空你"]);
+      $scope.newAddressInput.address = "";
+    }
+    $scope.clearZip = function(){
+      console.log(["清空你"]);
+      $scope.newAddressInput.zip = "";
+    }
     
     if ($stateParams.addressid === "") {
       console.log("添加新地址");
