@@ -133,7 +133,7 @@ createOrder.controller('creatorderCtrl',
         }
         $rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
       }
-
+        console.log(["$rootScope.ListTwoStores",$rootScope.ListTwoStores]);
     }
 
     //获取门店取货时间
