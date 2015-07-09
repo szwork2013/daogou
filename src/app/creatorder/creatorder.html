@@ -114,7 +114,7 @@
         </div>
       </div>
       <div class="order-time" ng-class="{disnone:express}">
-        预约取货时间（营业时间 10：00-20：00）
+        预约取货时间（营业时间 {{minDistance.business_begin_time}}-{{minDistance.business_end_time}}）
         <div class="select-time">
           <select id="fetch_day" ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData"
                   ng-change="dayselecthour(fetchTime.fetchday)">

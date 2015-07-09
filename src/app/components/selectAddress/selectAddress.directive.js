@@ -219,6 +219,7 @@ angular.module('daogou')
 		 			}
 		 			$scope.$broadcast('scroll.infiniteScrollComplete');
 		 		},function(data, status, headers, config){
+		 			 $scope.hasMoreOrder = false;
 		 			console.log(['查询门店列表失败',data]);
 		 		});
 		 	}
