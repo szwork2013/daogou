@@ -1,271 +1,242 @@
-.marginbt0 {
-  margin-bottom: 0px !important;
+.marginbt0{
+	margin-bottom: 0px !important;
+}
+.remarkpadding{
+		padding:15px 15px 10px 15px;
+	}
+.createorder-content{
+	padding-top:15px;
+	background:#efefef;
+	color: @gray3a;
+}
+.statusWrap{
+	border-top: 1px solid @grayddd;
+	border-bottom: 1px solid @grayddd;
+	margin-bottom: 10px;
+	background: #ffffff;
+}
+.commonRed{
+	color:@commonRed !important;
+}
+.perAccount{
+		height: 45px;
+		border-top: 1px solid @grayddd;
+		padding:0 15px 0 0px;
+		margin-left:10px;
+		background: @whitefff;
+		.account{
+			float:left;
+			height:45px;
+			line-height: 45px;
+			text-indent: 5px;
+			color:@commonRed;
+			font-size:14px;
+			.heji{
+				color:@graya3;
+				font-size:13px;
+			}
+		}
+		.time{
+			float:right;
+			height:45px;
+			line-height: 45px;
+			text-align: center;
+			color:@gray3a;
+			font-size:14px;
+		}
 }
 
-.remarkpadding {
-  padding: 15px 15px 10px 15px;
+.costwrap{
+	width:100%;
+	.costname{
+		font-size: 12px;
+		color:@graya3;
+		float:left;
+	}
+	.costvalue{
+		font-size: 13px;
+		color:@gray3a;
+		float:right;
+	}
 }
-
-.createorder-content {
-  padding-top: 15px;
-  background: #efefef;
-  color: @gray3a;
+.remark{
+	background: #efefef;
+	border-radius: 4px;
+	width:100%;
+	height: 35px;
+	padding:10px 10px 0 10px;
+	margin-top:10px;
+	color:#c1c1c1;
 }
-
-.statusWrap {
-  border-top: 1px solid @grayddd;
-  border-bottom: 1px solid @grayddd;
-  margin-bottom: 10px;
-  background: #ffffff;
+.pickupway{
+	height: 30px;
+	line-height: 30px;
+	padding-left:15px;
+	font-size: 12px;
+	color:@gray3a;
 }
-
-.commonRed {
-  color: @commonRed !important;
+.pickupways{
+	display: inline-block;
+	width: 50%;
+	height:35px;
+	line-height:35px;
+	font-size: 15px;
+	border-top:1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	float: left;
+	background: #f8f8f8;
+	color:#8f8f8f;
+	text-align: center;
 }
-
-.perAccount {
-  height: 45px;
-  border-top: 1px solid @grayddd;
-  padding: 0 15px 0 0px;
-  margin-left: 10px;
-  background: @whitefff;
-  .account {
-    float: left;
-    height: 45px;
-    line-height: 45px;
-    text-indent: 5px;
-    color: @commonRed;
-    font-size: 14px;
-    .heji {
-      color: @graya3;
-      font-size: 13px;
-    }
-  }
-  .time {
-    float: right;
-    height: 45px;
-    line-height: 45px;
-    text-align: center;
-    color: @gray3a;
-    font-size: 14px;
-  }
+.pickwayselect{
+	background: #bdbdbd;
+	color:#fff;
 }
-
-.disabled {
-  background-color: #f19191 !important;
+.addressInfo{
 }
-
-.yanzhengma {
-  position: absolute;
-  height: 26px;
-  // width: 76px;
-  padding: 0 5px;
-  border-radius: 4px;
-  top: 8px;
-  right: 15px;
-  font-size: 13px;
-  text-align: center;
-  line-height: 26px;
-  background: #fff !important;
-}
-
-.yanzhengmared {
-  border: 1px solid #f35253;
-  color: #f35253;
-}
-
-.disabledGray {
-  border: 1px solid #aaa;
-color:#aaa
-}
-
-.costwrap {
-  width: 100%;
-  .costname {
-    font-size: 12px;
-    color: @graya3;
-    float: left;
-  }
-  .costvalue {
-    font-size: 13px;
-    color: @gray3a;
-    float: right;
-  }
-}
-
-.remark {
-  background: #efefef;
-  border-radius: 4px;
-  width: 100%;
-  height: 35px;
-  padding: 10px 10px 0 10px;
-  margin-top: 10px;
-  color: #c1c1c1;
-}
-
-.pickupway {
-  height: 30px;
-  line-height: 30px;
-  padding-left: 15px;
-  font-size: 12px;
-  color: @gray3a;
-}
-
-.pickupways {
-  display: inline-block;
-  width: 50%;
-  height: 35px;
-  line-height: 35px;
-  font-size: 15px;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  float: left;
-  background: #f8f8f8;
-  color: #8f8f8f;
-  text-align: center;
-}
-
-.pickwayselect {
-  background: #bdbdbd;
-  color: #fff;
-}
-
-.addressInfo {
-}
-
-.commonBtn {
-  width: 90%;
-  height: 45px;
-  margin: 20px auto;
-  background: #47b85b;
-  color: #fff;
-  border-radius: 4px;
-  line-height: 45px;
-  text-align: center;
-  font-size: 16px;
-}
-
-.shop-address {
-  padding: 15px;
-  color: #3a3a3a;
-  .name {
-    font-size: 15px;
-    float: left;
-  }
-  .call {
-    font-size: 15px;
-    float: right;
-  }
-  .time {
-
-  }
-  .address {
-    margin-top: 10px;
-    font-size: 13px;
-  }
+.commonBtn{
+	width: 90%;
+	height: 45px;
+	margin:20px auto;
+	background: #47b85b;
+	color:#fff;
+	border-radius: 4px;
+	line-height: 45px;
+	text-align: center;
+	font-size: 16px;
 
 }
+.shop-address{
+	padding:15px;
+	color:#3a3a3a;
+	.name{
+		font-size:15px;
+		float: left;
+	}
+	.call{
+		font-size:15px;
+		float: right;
+	}
+	.time{
 
-.default-shop {
-  margin-left: 15px;
-  border-top: 1px solid #ddd;
-  height: 45px;
-  line-height: 45px;
-  color: @graya3;
-  font-size: 13px;
-  .default {
-    float: left;
-    width: 33%;
-    text-align: left;
-  }
-  .edit {
-    float: left;
-    width: 33%;
-    text-align: center;
-  }
-  .delete {
-    float: left;
-    width: 30%;
-    text-align: right;
-  }
+	}
+	.address{
+		margin-top:10px;
+		font-size:13px;
+	}
+
+}
+.default-shop{
+	margin-left: 15px;
+	border-top:1px solid #ddd;
+	height: 45px;
+	line-height: 45px;
+	color:@graya3;
+	font-size: 13px;
+	.default{
+		float: left;
+		width: 33%;
+		text-align: left;
+	}
+	.edit{
+		float: left;
+		width: 33%;
+		text-align:center;
+	}
+	.delete{
+		float: left;
+		width: 30%;
+		text-align: right;
+	}
+}
+.input-address-info{
+	min-height: 43px;
+	width: 100%;
+	padding-right:15px;
+	line-height: 43px;
+	margin-left: 15px;
+	border:0px;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+}
+.close2{
+	position: absolute;
+	right:20px;
+	top:14px;
+	width: 15px;
+	height: 15px;
+	border-radius: 15px;
+	line-height: 15px;
+	text-align: center;
+	background: #d2d2d2;
+	color:#fff;
+	font-size: 10px;
+}
+.close2top2{
+	top:62px;
+}
+.close3top3{
+	top:auto;
+	bottom: 15px;
+}
+.close4top4{
+	top:auto;
+	bottom: 60px;
+}
+.order-time{
+	padding:15px;
+	border-top:1px solid #ddd;
+	.select-time{
+		  background: #efefef;
+		  border: 0px;
+		  border-radius: 4px;
+		  width: 100%;
+		  height: 35px;
+		  line-height: 35px;
+		  padding: 0 7px 0 0;
+		  color: #c1c1c1;
+		  margin-top:10px;
+		  text-align: center;
+		  .select-label{
+		  	display:inline-block;
+		  	width:50px;
+		  	padding-top:5px;
+		  }
+		  
+	}
+}
+.yanzhengma{
+	position: absolute;
+	height: 26px;
+	// width: 76px;
+	padding: 0 5px;
+	border-radius: 4px;
+	border: 1px solid #f35253;
+	top: 8px;
+	right: 15px;
+	font-size: 13px;
+	color: #f35253;
+	text-align: center;
+	line-height: 26px;
+	background: #fff !important;
+}
+.clickdown{
+	color: #aaa;
+	border:1px solid #aaa;
 }
 
-.input-address-info {
-  min-height: 43px;
-  width: 100%;
-  padding-right: 15px;
-  line-height: 43px;
-  margin-left: 15px;
-  border: 0px;
-  border-bottom: 1px solid #ddd;
-  background: #fff;
+.selectCity1{
+	height:35px;
+	line-height: 35px;
+	padding-left:15px;
+	padding-right: 15px;
 }
-
-.close2 {
-  position: absolute;
-  right: 20px;
-  top: 14px;
-  width: 15px;
-  height: 15px;
-  border-radius: 15px;
-  line-height: 15px;
-  text-align: center;
-  background: #d2d2d2;
-  color: #fff;
-  font-size: 10px;
+.selectCity2{
 }
-
-.close2top2 {
-  top: 62px;
-}
-
-.close3top3 {
-  top: auto;
-  bottom: 15px;
-}
-
-.order-time {
-  padding: 15px;
-  border-top: 1px solid #ddd;
-  .select-time {
-    background: #efefef;
-    border: 0px;
-    border-radius: 4px;
-    width: 100%;
-    height: 35px;
-    line-height: 35px;
-    padding: 0 7px 0 0;
-    color: #c1c1c1;
-    margin-top: 10px;
-    text-align: center;
-    .select-label {
-      display: inline-block;
-      width: 50px;
-      padding-top: 5px;
-    }
-
-  }
-}
-
-.clickdown {
-  color: #aaa;
-  border: 1px solid #aaa;
-}
-
-.selectCity1 {
-  height: 35px;
-  line-height: 35px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.selectCity2 {
-}
-
-.closeLogin {
-  position: absolute;
-  right: 20px;
-  top: 0;
-  font-size: 20px;
+.closeLogin{
+	position: absolute;
+	right: 20px;
+	top:0;
+	font-size: 20px;
 
 }

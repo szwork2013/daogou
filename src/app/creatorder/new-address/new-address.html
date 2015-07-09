@@ -3,7 +3,7 @@
     <ion-content class="createorder-content">
       <div class="statusWrap posRelative">
          <input class="input-address-info" placeholder="收货人姓名" ng-model="newAddressInput.name"/>
-         <div class="iconfont icon-guanbi2 close2"></div>
+         <div class="iconfont icon-guanbi2 close2" ng-click="clearName()"></div>
          <input class="input-address-info" placeholder="手机号码" ng-model="newAddressInput.mobile"/>
          <div class="input-address-info">
               <select id="loc_province"  ng-model="newAddressInput.provinceInfo" ng-options="province.name for province in provincesdata" ng-change="provinceSelect(newAddressInput.provinceInfo)" ng-keydown="provinceDefault(newAddressInput.provinceInfo)">
@@ -18,10 +18,12 @@
               <input type="hidden" name="location_id" />
          </div>
            
-         <div class="iconfont icon-guanbi2 close2 close2top2"></div>
+         <div class="iconfont icon-guanbi2 close2 close2top2" ng-click="clearMobile()"></div>
+         <div class="iconfont icon-guanbi2 close2 close4top4" ng-click="clearAddress()"></div>
          <input class="input-address-info" placeholder="详细地址" ng-model="newAddressInput.address"/>
-         <div class="iconfont icon-guanbi2 close2 close3top3"></div>
+         <div class="iconfont icon-guanbi2 close2 close3top3" ng-click="clearZip()"></div>
          <input class="input-address-info border-bt0" placeholder="邮编" ng-model="newAddressInput.zip"/>
+
       </div>
       <div class="commonBtn backred margin-tp40" ng-click="addAddressfunc(0)">提交</div>
     </ion-content>
