@@ -23,7 +23,7 @@
       </ion-refresher> -->
     <div class="statusWrap">
       <div class="shop">
-        <div class="shop-name countDel">{{brandData.brand_name}}</div>
+        <div class="shop-name countDel">{{BRANDINFO.brand_name}}</div>
         <div class="edit" ng-show="edithandle" ng-click="edit()">编辑</div>
         <div class="edit" ng-show="finishhandle" ng-click="finish()">完成</div>
         <div class="clearBoth"></div>
@@ -33,9 +33,9 @@
         <li class="item item-checkbox product-item" ng-repeat="item in cartProductListData">
           <i class="iconfont icon-gou bggou font24 selected-img"
              ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck(item)"></i>
-          <img ng-src="{{item.pics[0]}}" class="product-img" ng-click="goDetail(item.id)">
+          <img ng-src="{{item.pics[0]}}" class="product-img" ng-click="goDetail(item.num_iid)">
 
-          <div class="paramenters-select" ng-click="goDetail(item.id)">
+          <div class="paramenters-select" ng-click="goDetail(item.num_iid)">
             <div class="name" ng-bind="item.title"></div>
             <div class="paras">
                               <span>

@@ -1,149 +1,161 @@
-
 <ion-view view-title="订单详情">
-      <ion-content class="order-detail">
-          <div class="statusWrap border-tp0">
-              <div class="order-status">
-                   <div class="iconfont icon-dingdan order-img"></div>
+  <ion-content class="order-detail">
+    <div class="statusWrap border-tp0">
+      <div class="order-status">
+        <div class="iconfont icon-dingdan order-img"></div>
                    <span class="order-infos">
                          <span>{{orderDetailData.statusCN}}</span><br/>
                          <span>订单金额（含运费）: {{orderDetailData.total_fee|currency:"￥":2}}</span><br/>
                          <span>运费: {{orderDetailData.post_fee|currency:"￥":2}}</span>
                    </span>
-                   <div class="clearBoth"></div>
-              </div>
-              <div class="receiver-infos" ng-show="expressReceiver">
-                   <div class="iconfont icon-dingwei receiver-img font23"></div>
+
+        <div class="clearBoth"></div>
+      </div>
+      <div class="receiver-infos" ng-show="expressReceiver">
+        <div class="iconfont icon-dingwei receiver-img font23"></div>
                    <span class="receiver-info">
                          <div class="font15">
-                              <span class="floatL">收货人：{{orderDetailData.receiver_name}}</span>        
-                              <span class="floatR">{{orderDetailData.receiver_mobile}}</span> 
-                              <div class="clearBoth"></div>
+                           <span class="floatL">收货人：{{orderDetailData.receiver_name}}</span>
+                           <span class="floatR">{{orderDetailData.receiver_mobile}}</span>
+
+                           <div class="clearBoth"></div>
                          </div>
                          <span>收货地址：{{orderDetailData.receiver_state}}&nbsp;{{orderDetailData.receiver_city}}&nbsp;{{orderDetailData.receiver_district}}&nbsp;{{orderDetailData.receiver_address}}   </span>
                    </span>
-                   <div class="clearBoth"></div>
-              </div>
-              <div class="receiver-infos" ng-show="fetchReceiver">
-                   <div class="iconfont icon-dingwei receiver-img font23"></div>
+
+        <div class="clearBoth"></div>
+      </div>
+      <div class="receiver-infos" ng-show="fetchReceiver">
+        <div class="iconfont icon-dingwei receiver-img font23"></div>
                    <span class="receiver-info">
                          <div class="font15">
-                              <span class="floatL">取货人：{{orderDetailData.fetch_name}}</span>        
-                              <span class="floatR">{{orderDetailData.fetch_mobile}}</span> 
-                              <div class="clearBoth"></div>
+                           <span class="floatL">取货人：{{orderDetailData.fetch_name}}</span>
+                           <span class="floatR">{{orderDetailData.fetch_mobile}}</span>
+
+                           <div class="clearBoth"></div>
                          </div>
                          <span>取货门店：{{orderDetailData.fetch_store_name}} </span>
                          <div>
-                              <span class="floatL width78">取货地址：{{orderDetailData.fetch_state}}&nbsp;{{orderDetailData.fetch_city}}&nbsp;{{orderDetailData.fetch_district}}&nbsp;{{orderDetailData.fetch_address}}&nbsp;</span>        
-                              <span class="floatR colorBlue2">获取路线</span> 
-                              <div class="clearBoth"></div>
+                           <span class="floatL width78">取货地址：{{orderDetailData.fetch_state}}&nbsp;{{orderDetailData.fetch_city}}&nbsp;{{orderDetailData.fetch_district}}&nbsp;{{orderDetailData.fetch_address}}&nbsp;</span>
+                           <span class="floatR colorBlue2">获取路线</span>
+
+                           <div class="clearBoth"></div>
                          </div>
                          <div>
-                              <span class="floatL width85">联系电话：{{orderDetailData.fetch_store_tel}}</span>        
-                              <span class="floatR colorBlue2">拨号</span> 
-                              <div class="clearBoth"></div>
+                           <span class="floatL width85">联系电话：{{orderDetailData.fetch_store_tel}}</span>
+                           <span class="floatR colorBlue2">拨号</span>
+
+                           <div class="clearBoth"></div>
                          </div>
                          <span>预约时间：{{orderDetailData.fetch_subscribe_begin_time}}&nbsp;{{orderDetailData.fetch_subscribe_end_time}} </span>
                    </span>
-                   <div class="clearBoth"></div>
-              </div>
-              <div class="receiver-infos" ng-show="fetchshop">
-                   <div class="iconfont icon-dingwei receiver-img font23 novisible"></div>
+
+        <div class="clearBoth"></div>
+      </div>
+      <div class="receiver-infos" ng-show="fetchshop">
+        <div class="iconfont icon-dingwei receiver-img font23 novisible"></div>
                    <span class="receiver-info">
                          <div class="font15">
-                              <span>取货门店：{{orderDetailData.fetch_store_name}}</span>        
+                           <span>取货门店：{{orderDetailData.fetch_store_name}}</span>
                          </div>
                          <span>接待导购：{{guiderData.full_name}}&nbsp;{{guiderData.work_no}}</span><br/>
                          <span>取货时间：{{orderDetailData.fetch_time}} </span>
                    </span>
-                   <div class="clearBoth"></div>
-              </div>
 
-              <div class="receiver-infos" ng-show="fetchQRcode">
-                   <div class="erweima-wrap">
-                      <img class="erweima floatL margin-r15" ng-src="{{orderDetailData.fetch_qrcode_url}}"/>
-                      <div class="floatL">
-                          <span>请在取货时向店员出示此码</span><br/>
-                          <!-- <span class="font18">2323 2454 454123</span><br/> -->
-                          <span class="colorRed">切勿透露他人以防冒取</span>
-                      </div>
-                      <div class="clearBoth"></div>
-                   </div>
-              </div>
+        <div class="clearBoth"></div>
+      </div>
 
-              <div class="wuliu-infos" ng-show="logistics">
-                   <div class="wuliu-img"></div>
+      <div class="receiver-infos" ng-show="fetchQRcode">
+        <div class="erweima-wrap">
+          <img class="erweima floatL margin-r15" ng-src="{{orderDetailData.fetch_qrcode_url}}"/>
+
+          <div class="floatL">
+            <span>请在取货时向店员出示此码</span><br/>
+            <!-- <span class="font18">2323 2454 454123</span><br/> -->
+            <span class="colorRed">切勿透露他人以防冒取</span>
+          </div>
+          <div class="clearBoth"></div>
+        </div>
+      </div>
+
+      <div class="wuliu-infos" ng-show="logistics">
+        <div class="wuliu-img"></div>
                    <span class="wuliu-infos">
                          <span class="font15">物流信息</span><br/>
                          <span>运单号：{{orderDetailData.express_no}}</span>
                          <div ng-repeat="item in logisticsData">
-                            <span class="colorGreen">{{item.content}}</span><br/>
-                            <span class="colorGreen">{{item.created_at}}</span>
+                           <span class="colorGreen">{{item.content}}</span><br/>
+                           <span class="colorGreen">{{item.created_at}}</span>
                          </div>
-                        
+
                    </span>
-                   <div class="clearBoth"></div>
-              </div>
+
+        <div class="clearBoth"></div>
+      </div>
+    </div>
+    <div class="statusWrap">
+      <ul class="list marginbt0">
+        <li class="item item-checkbox product-item backfff" ng-repeat="item in orderDetailData.orders">
+          <img src="assets/images/pic1.png" class="product-img">
+
+          <div class="paramenters">
+            <div class="name">{{item.title}}</div>
+            <div class="paras">{{item.sku_properties_name}}</div>
           </div>
-          <div class="statusWrap">
-                <ul class="list marginbt0">
-                    <li class="item item-checkbox product-item backfff" ng-repeat="item in orderDetailData.orders">
-                      <img src="assets/images/pic1.png" class="product-img">
-                      <div class="paramenters">
-                          <div class="name">{{item.title}}</div>
-                          <div class="paras">{{item.sku_properties_name}}</div>
-                      </div>
-                      <span class="price">{{item.price|currency:"￥":2}}</span>
-                      <div class="countNum">X{{item.num}}</div>
-                      <div class="sale-return"  ng-show="refund" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
-                      <div class="on-sale-return" ng-show="refunding">退货中</div>
-                    </li>
-                </ul>
-                <div class="summary">
-                        品牌：Lily商务时装 <br/>
-                        订单号：{{orderDetailData.tid}} <br/>
-                        <span ng-show="payWay">付款方式：{{orderDetailData.pay_typeCN}}</span><br/>
-                        <span ng-show="payNo">交易号：{{orderDetailData.pay_no}}</span>
-                </div>
-          </div>
-      </ion-content>
-      <!-- 悬浮点击打开个人中心、购物车、导购 -->
-      <div float-center></div>
+          <span class="price">{{item.price|currency:"￥":2}}</span>
+
+          <div class="countNum">X{{item.num}}</div>
+          <div class="sale-return" ng-show="refund" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
+          <div class="on-sale-return" ng-show="refunding">退货中</div>
+        </li>
+      </ul>
+      <div class="summary">
+        品牌：{{BRANDINFO.brand_name}} <br/>
+        订单号：{{orderDetailData.tid}} <br/>
+        <span ng-show="payWay">付款方式：{{orderDetailData.pay_typeCN}}</span><br/>
+        <span ng-show="payNo">交易号：{{orderDetailData.pay_no}}</span>
+      </div>
+    </div>
+  </ion-content>
+  <!-- 悬浮点击打开个人中心、购物车、导购 -->
+  <div float-center></div>
 
 
-      <ion-footer-bar align-title="left" class="footer" ng-show="deleteOrder">
-        <ul class="list footerul">
-              <li class="item item-checkbox footerli">
-                 <button class="delcount">删除订单</button>
-              </li>
-          </ul>
-         
-      </ion-footer-bar>
+  <ion-footer-bar align-title="left" class="footer" ng-show="deleteOrder&&ISWX">
+    <ul class="list footerul">
+      <li class="item item-checkbox footerli">
+        <button class="delcount">删除订单</button>
+      </li>
+    </ul>
 
-      <ion-footer-bar align-title="left" class="footer" ng-show="cancelpayOrder">
-        <ul class="list footerul">
-              <li class="item item-checkbox footerli">
-                <div class="delcount backred colorfff" 
-                ng-click="payThisOrder()" >立即付款</div>
-                <!-- ui-sref="payWay" -->
-                <button class="delcount" ui-sref="orderList">取消订单</button>
-                
-              </li>
-            
-          </ul>
-         
-      </ion-footer-bar>
+  </ion-footer-bar>
 
-      <ion-footer-bar align-title="left" class="footer" ng-show="cancelOrder">
-        <ul class="list footerul">
-              <li class="item item-checkbox footerli">
-                
-                <button class="delcount" ui-sref="orderList">取消订单</button>
-                
-              </li>
-            
-          </ul>
-         
-      </ion-footer-bar>
+  <ion-footer-bar align-title="left" class="footer" ng-show="cancelpayOrder&&ISWX">
+    <ul class="list footerul">
+      <li class="item item-checkbox footerli">
+        <div class="delcount backred colorfff"
+             ng-click="payThisOrder()">立即付款
+        </div>
+        <!-- ui-sref="payWay" -->
+        <button class="delcount" ui-sref="orderList">取消订单</button>
+
+      </li>
+
+    </ul>
+
+  </ion-footer-bar>
+
+  <ion-footer-bar align-title="left" class="footer" ng-show="cancelOrder">
+    <ul class="list footerul">
+      <li class="item item-checkbox footerli">
+
+        <button class="delcount" ui-sref="orderList">取消订单</button>
+
+      </li>
+
+    </ul>
+
+  </ion-footer-bar>
 
 
   <!--   这个切换其实是2个页面 不是页面内切换的

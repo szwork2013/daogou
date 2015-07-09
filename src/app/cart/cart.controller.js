@@ -102,15 +102,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       }
     });
     /**
-     * 加载品牌信息
-     */
-    $http.get(URLPort + "/brands/" + $rootScope.BRANDID)
-      .success(function (data) {
-        $scope.brandData = data;
-      })
-      .error(function (data) {
-      });
-    /**
      * 左上角点击编辑显示删除
      */
     $scope.edit = function () {
@@ -179,7 +170,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      */
     $scope.goDetail = function (id) {
       if ($scope.edithandle) {
-        $state.go("productDetail",{detailId:id});
+        $state.go("productDetail", {detailId: id});
       }
     };
     /**
