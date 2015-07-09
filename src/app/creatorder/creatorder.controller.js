@@ -504,6 +504,10 @@ createOrder.controller('creatorderCtrl',
   .controller('changeReceiveInfoCtrl', ['$scope', '$log', '$http', 'URLPort', '$stateParams', 'daogouAPI', '$state', '$rootScope', function ($scope, $log, $http, URLPort, $stateParams, daogouAPI, $state, $rootScope) {
     $log.debug('changeReceiveInfoCtrl');
     var URLPort = URLPort();
+    var userInfo = window.sessionStorage.getItem("USERINFO");
+      $scope.USERINFO = JSON.parse(userInfo);
+      $scope.USERID = $scope.USERINFO.id;
+     
 
     $http.get(URLPort + '/users/' + $scope.USERID + '/shipping-addresses')
       .success(function (data) {
@@ -571,13 +575,16 @@ createOrder.controller('creatorderCtrl',
     }
 
     $scope.gonewAddress = function () {
-      $state.go('newAddress', {userid: $scope.USERID});
+      $state.go('newAddress', {userid: $scope.USERID, addressid: addressId});
     }
 
 
   }])
   .controller('newAddressCtrl', ['$rootScope', '$scope', '$log', '$http', 'daogouAPI', '$stateParams', '$state', function ($rootScope, $scope, $log, $http, daogouAPI, $stateParams, $state) {
     $log.debug('newAddressCtrl');
+    var userInfo = window.sessionStorage.getItem("USERINFO");
+    $scope.USERINFO = JSON.parse(userInfo);
+    $scope.USERID = $scope.USERINFO.id;
     //新增用户收货地址信息
     $scope.newAddressInput = {
       name: '',
@@ -596,6 +603,9 @@ createOrder.controller('creatorderCtrl',
     $scope.newAddressInput.districtInfo.name = "";
     $scope.newAddressInput.districtInfo.code = "";
     console.log(["$stateParams.addressid", $stateParams.addressid]);
+
+
+    
     if ($stateParams.addressid === "") {
       console.log("添加新地址");
     } else {

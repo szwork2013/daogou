@@ -39,9 +39,9 @@ angular.module('daogou')
 			if($stateParams.addressid === ""){
 				 	console.log("添加新地址");
 			}else if(typeof($stateParams.addressid)==="number"){
-        var userInfo = window.sessionStorage.getItem("USERINFO");
-        $scope.USERINFO = JSON.parse(userInfo);
-        daogouAPI.getAddress({
+			        var userInfo = window.sessionStorage.getItem("USERINFO");
+			        $scope.USERINFO = JSON.parse(userInfo);
+        			daogouAPI.getAddress({
 				 		user_id:$scope.USERINFO.id,
 				 		address_id:$stateParams.addressid
 				 	},function(data, status, headers, config){
@@ -84,6 +84,42 @@ angular.module('daogou')
 				 	},function(data, status, headers, config){
 				 		console.log(['获取要修改收货地址失败',data]);
 				 	});
+			}
+
+			if($rootScope.selectLocal===true){//选择过收货地址
+				$scope.editData = {};
+				$scope.editData.state_code = $rootScope.newAddressInput.provinceInfo.code;
+				$scope.editData.city_code = $rootScope.newAddressInput.cityInfo.code;
+				$scope.editData.district_code = $rootScope.newAddressInput.districtInfo.code;
+	 			 //根据选择的省查询市
+		    	daogouAPI.codegetarea({
+		    		areacode:$scope.editData.state_code
+		    	},function(data, status, headers, config){
+		    		console.log(['查询省下市成功',data]);
+		    		for(var i in data){//编辑地址的时候显示原来的地址
+		    			if(data[i].code === $scope.editData.city_code){
+		    				$scope.newAddressInput.cityInfo = data[i];
+		    			}
+		    		}
+		    		$scope.citiesdata = data;
+		    	},function(data, status, headers, config){
+		    		console.log(['查询省下市失败',data]);
+		    	});
+	 			 //根据选择的市查询地区
+			 	daogouAPI.codegetarea({
+			 		areacode:$scope.editData.city_code
+			 	},function(data, status, headers, config){
+			 		console.log(['查询市下地区成功',data]);
+			 		for(var i in data){//编辑地址的时候显示原来的地址
+			 			if(data[i].code === $scope.editData.district_code){
+			 				$scope.newAddressInput.districtInfo = data[i];
+			 			}
+			 		}
+			 		$scope.districtsdata = data;
+			 	},function(data, status, headers, config){
+			 		console.log(['查询市下地区失败',data]);
+			 	});
+
 			}
 
 
@@ -193,6 +229,16 @@ angular.module('daogou')
 				if(($scope.newAddressInput.provinceInfo.code!="")&&($scope.newAddressInput.cityInfo.code!="")&&($scope.newAddressInput.districtInfo.code!="")){
 					$scope.hasMoreOrder = true;
 					 getStores();
+					 $rootScope.selectLocal = true;
+					 $rootScope.newAddressInput = {
+					 	provinceInfo:{},
+					 	cityInfo:{},
+					 	districtInfo:{}
+					 };
+
+					 $rootScope.newAddressInput.provinceInfo.code = $scope.newAddressInput.provinceInfo.code;
+					 $rootScope.newAddressInput.cityInfo.code = $scope.newAddressInput.cityInfo.code;
+					 $rootScope.newAddressInput.districtInfo.code = $scope.newAddressInput.districtInfo.code;
 				}
 
 			}
