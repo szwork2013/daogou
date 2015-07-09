@@ -575,7 +575,7 @@ createOrder.controller('creatorderCtrl',
     }
 
     $scope.gonewAddress = function () {
-      $state.go('newAddress', {userid: $scope.USERID, addressid: addressId});
+      $state.go('newAddress', {userid: $scope.USERID});
     }
 
 
