@@ -37,7 +37,7 @@
 
         <div class="clearBoth"></div>
       </div>
-      <textarea class="remark" placeholder="订单备注" ng-model="buyerMessage.buyer_memo"></textarea>
+      <textarea class="remark" placeholder="订单备注（最多200个字）" ng-model="buyerMessage.buyer_memo" ng-change="limitText()"></textarea>
     </div>
 
     <!-- 登录模块 -->

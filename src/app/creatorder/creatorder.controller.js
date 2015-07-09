@@ -367,6 +367,12 @@ createOrder.controller('creatorderCtrl',
       console.log(['userid', $scope.USERID]);
       $state.go('changeReceiveInfo', {'userid': $scope.USERID});
     }
+    //限制备注最长200个字符
+    $scope.limitText = function(){
+      if($scope.buyerMessage.buyer_memo.length>200){
+        $scope.buyerMessage.buyer_memo = $scope.buyerMessage.buyer_memo.substring(0,200);
+      }
+    }
 
 
     function userIsLoginSetUI() {
