@@ -21,7 +21,7 @@
         <span class="graya3">运费：</span><span ng-if="productDetailData.freight_terms!='seller'">{{productDetailData.freight|currency:"￥":2}}</span>
         <span ng-if="productDetailData.freight_terms=='seller'">卖家包邮</span>
       </div>
-      <div>
+      <div ng-if="SERVICES.is_fetch==1">
         <span class="graya3">服务：</span><span>支持专卖店取货 </span>
       </div>
     </div>

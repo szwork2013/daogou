@@ -122,7 +122,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
       $urlRouterProvider.otherwise('guide');
     }
     // $urlRouterProvider.otherwise('productDetail/100039');
-   // http://localhost:3000/?guider_id=145&share=true&brand_id=1#/productDetail/100039
+    // http://localhost:3000/?guider_id=145&share=true&brand_id=1#/productDetail/100039
     // $urlRouterProvider.otherwise('/login');
 
     //http://codepen.io/ahsx/pen/mDcEd
@@ -154,15 +154,28 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
     $rootScope.GUIDID = parseInt(getRequest('guider_id'));
 //brand_id
     $rootScope.BRANDID = parseInt(getRequest('brand_id'));
+
+    /**
+     * 门店信息
+     */
+    daogouAPI.getBrandInfo(function (data) {
+      $rootScope.BRANDINFO = data;
+    })
+    /**
+     * 是否支持门店取货和退货
+     */
+    daogouAPI.checkServices(function (data) {
+      $rootScope.SERVICES = data;
+    })
 //是app访问还是微信访问   true是微信  false是app
     $rootScope.ISWX = (getRequest('share') === 'true' ? true : false);
 //为true时进入订单详情后直接调用支付
     $rootScope.PAYNOW = getRequest('code') ? true : false;
 
-    $rootScope.GUIDINFO={};
-	daogouAPI.getGuidInfo(function(data){
-		$rootScope.GUIDINFO=data;
-	})
+    $rootScope.GUIDINFO = {};
+    daogouAPI.getGuidInfo(function (data) {
+      $rootScope.GUIDINFO = data;
+    })
 
 
     daogouAPI.isLogin()
