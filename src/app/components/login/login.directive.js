@@ -155,7 +155,13 @@ angular.module('daogou')
   })
   .filter('to_trusted', ['$sce', function ($sce) {
     return function (text) {
-      return $sce.trustAsHtml(text);
+      if (text != undefined) {
+        text = text.replace("undefined", "");
+        return $sce.trustAsHtml(text);
+      }
+      else {
+        return "";
+      }
     };
   }]);
 

@@ -33,9 +33,9 @@
         <li class="item item-checkbox product-item" ng-repeat="item in cartProductListData">
           <i class="iconfont icon-gou bggou font24 selected-img"
              ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck(item)"></i>
-          <img ng-src="{{item.pics[0]}}" class="product-img">
+          <img ng-src="{{item.pics[0]}}" class="product-img" ng-click="goDetail(item.id)">
 
-          <div class="paramenters-select">
+          <div class="paramenters-select" ng-click="goDetail(item.id)">
             <div class="name" ng-bind="item.title"></div>
             <div class="paras">
                               <span>
