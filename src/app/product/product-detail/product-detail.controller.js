@@ -217,6 +217,8 @@ product.controller('productDetailCtrl',
       })
         .success(function (data) {
           $scope.login = false;//是否显示登录页面
+          $(".mengban").hide();
+
           $scope.propertyClose();
           $state.go("cart", {"userid": $scope.USERID, "brandid": $rootScope.BRANDID});
         })
@@ -227,6 +229,8 @@ product.controller('productDetailCtrl',
 
     $scope.loginsuccess = function (data) {
       $scope.login = false; //是否显示登录页面
+      $(".mengban").hide();
+
     };
     $scope.loginerror = function (data) {
       console.log(['登录失败回调', data])
