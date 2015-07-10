@@ -61,13 +61,15 @@ angular.module('daogou')
         }
       }
       console.log(["$stateParams.refunds", $stateParams.refunds]);
-      if ($stateParams.refunds === "1") {
-        console.log(["$rootScope.refundsTid", $rootScope.refundsTid])
-        console.log(["$rootScope.refundsOid", $rootScope.refundsOid])
-        $state.go('returnApply', {'tid': $rootScope.refundsTid, 'oid': $rootScope.refundsOid});
-      } else {
-        $state.go('creatorder');
-      }
+      
+      history.go(-1);      
+      // if ($stateParams.refunds === "1") {
+      //   console.log(["$rootScope.refundsTid", $rootScope.refundsTid])
+      //   console.log(["$rootScope.refundsOid", $rootScope.refundsOid])
+      //   $state.go('returnApply', {'tid': $rootScope.refundsTid, 'oid': $rootScope.refundsOid});
+      // } else {
+      //   $state.go('creatorder');
+      // }
 
     }
 
