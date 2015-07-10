@@ -85,7 +85,7 @@ WXJSSDKPay(callback);
 			signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
 			paySign: paySign, // 支付签名
 			success: function(res) {
-				alert(JSON.stringify(res))
+				// alert(JSON.stringify(res))
 				callback(res);
 			}
 		});
