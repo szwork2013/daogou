@@ -23,6 +23,11 @@ $scope.cancelOrder = false;//取消订单
 $scope.refund = false;//商品列表上的退款按钮
 $scope.refunding = false;//商品列表上的退款中按钮
 
+//显示取货二维码
+$scope.showQRcode=function(){
+	// console.log(['$rootScope.ISWX',$rootScope.ISWX])
+	return $rootScope.ISWX&&$scope.fetchQRcode;
+}
 
 $http.get(URLPort+"/trades/"+$stateParams.tid+"?show_orders=true")
 .success(function(data){
