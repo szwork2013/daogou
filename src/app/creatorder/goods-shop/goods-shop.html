@@ -10,8 +10,8 @@
              <span>营业时间： {{item.business_begin_time}}-{{item.business_end_time}}</span>
              <div>{{item.state}} {{item.city}} {{item.district}} {{item.address}}</div>
          </div>
-         <div class="default-shop"> 
-         <i class="iconfont icon-gou slgou font16" ng-click="defaultstorefunc(item.id,$index)" ng-class="{'graygou':!item.is_default,'greengou':item.is_default}"></i>  默认取货门店</div>
+         <div class="default-shop" ng-click="defaultstorefunc(item.id,$index)"> 
+         <i class="iconfont icon-gou slgou font16"  ng-class="{'graygou':!item.is_default,'greengou':item.is_default}"></i>  默认取货门店</div>
       </div>
 
       <div class="selectCity1 border-bt font13">根据地区选择其他门店</div>
@@ -30,8 +30,8 @@
              <span>营业时间： {{item.business_begin_time}}-{{item.business_end_time}}</span>
              <div>{{item.state}} {{item.city}} {{item.district}} {{item.address}}</div>
          </div>
-         <div class="default-shop"> 
-         <i class="iconfont icon-gou slgou font16" ng-click="defaultstorefunc(item.id,$index)" ng-class="{'graygou':!item.is_default,'greengou':item.is_default}"></i>  默认取货门店</div>
+         <div class="default-shop"  ng-click="defaultstorefunc(item.id,$index)"> 
+         <i class="iconfont icon-gou slgou font16" ng-class="{'graygou':!item.is_default,'greengou':item.is_default}"></i>  默认取货门店</div>
       </div>
 
     <ion-infinite-scroll
