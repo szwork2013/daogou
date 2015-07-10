@@ -129,14 +129,24 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         }
 
       } else {
-        var mypopup = $ionicPopup.show({
-          title: "提示",
-          template: "受不了了，宝贝不能再少了哦",
-          buttons: [{
-            text: "确定",
-            type: "button-energized"
-          }]
-        });
+        var alertPopup = $ionicPopup.alert({
+            title: '友情提示',
+            template: '受不了了，宝贝不能再少了哦',
+            cssClass: 'alerttextcenter',// String, The custom CSS class name
+            okText: '确定', // String (default: 'OK'). The text of the OK button.
+            okType: 'button-energized', // String (default: 'button-positive'). The type of the OK button.
+          });
+         alertPopup.then(function(res) {
+           console.log('Thank you for not eating my delicious ice cream cone');
+         });
+        // var mypopup = $ionicPopup.show({
+        //   title: "提示",
+        //   template: "受不了了，宝贝不能再少了哦",
+        //   buttons: [{
+        //     text: "确定",
+        //     type: "button-energized"
+        //   }]
+        // });
       }
     };
     /**
@@ -144,23 +154,35 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      * @param index
      */
     $scope.addNum = function (item) {
-      if (true) {
-        item.num++;
-        if (item.seleted) {
+        console.log(['itemitemitemitemitem',item.freight]);
+        console.log(['itemitemitemitemitem',item.num]);
+        if (item.num<item.freight) {
+          item.num++;
           if ($.inArray(item.id, $scope.ids) < 0) {
             $scope.ids.push(item.id);
           }
           $scope.totalFee += parseFloat(item.price);
         }
-      } else {
-        var mypopup = $ionicPopup.show({
-          title: "提示",
-          template: "不能再多了",
-          buttons: [{
-            text: "确定",
-            type: "button-energized"
-          }]
-        });
+       else {
+          var alertPopup = $ionicPopup.alert({
+            title: '友情提示',
+            template: '数量超出范围~亲',
+            cssClass: 'alerttextcenter',// String, The custom CSS class name
+            okText: '确定', // String (default: 'OK'). The text of the OK button.
+            okType: 'button-energized', // String (default: 'button-positive'). The type of the OK button.
+          });
+         alertPopup.then(function(res) {
+           console.log('Thank you for not eating my delicious ice cream cone');
+         });
+         // item.num=item.freight;
+        // var mypopup = $ionicPopup.show({
+        //   title: "提示",
+        //   template: "不能再多了",
+        //   buttons: [{
+        //     text: "确定",
+        //     type: "button-energized"
+        //   }]
+        // });
       }
     };
     /**
