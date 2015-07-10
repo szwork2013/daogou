@@ -70,7 +70,7 @@ product.controller('productDetailCtrl',
      */
     $scope.propertyClose = function () {
       $(".mengban,.chooseProductInfoWarp ").hide();
-      $scope.login=false;
+      $scope.login = false;
     };
     /**
      * 选择产品规格，显示是否有剩余
@@ -117,17 +117,17 @@ product.controller('productDetailCtrl',
     $scope.delNum = function () {
       if ($scope.productOrder.num > 1) {
         $scope.productOrder.num--;
-      }else{
-          var alertPopup = $ionicPopup.alert({
-            title: '友情提示',
-            template: '受不了了，宝贝不能再少了哦',
-            cssClass: 'alerttextcenter', // String, The custom CSS class name
-            okText: '确定', // String (default: 'OK'). The text of the OK button.
-            okType: 'button-energized', // String (default: 'button-positive'). The type of the OK button.
-          });
-          alertPopup.then(function(res) {
-            console.log('Thank you for not eating my delicious ice cream cone');
-          });
+      } else {
+        var alertPopup = $ionicPopup.alert({
+          title: '友情提示',
+          template: '受不了了，宝贝不能再少了哦',
+          cssClass: 'alerttextcenter',
+          okText: '确定',
+          okType: 'button-energized'
+        });
+        alertPopup.then(function (res) {
+          console.log('Thank you for not eating my delicious ice cream cone');
+        });
       }
     };
     /**
@@ -137,24 +137,17 @@ product.controller('productDetailCtrl',
       if ($scope.productOrder.num < $scope.productOrder.real_quantity) {
         $scope.productOrder.num++;
       } else {
-            var alertPopup = $ionicPopup.alert({
-              title: '友情提示',
-              template: '数量超出范围~亲',
-              cssClass: 'alerttextcenter', // String, The custom CSS class name
-              okText: '确定', // String (default: 'OK'). The text of the OK button.
-              okType: 'button-energized', // String (default: 'button-positive'). The type of the OK button.
-            });
-            alertPopup.then(function(res) {
-              console.log('Thank you for not eating my delicious ice cream cone');
-            });
-        // var mypopup = $ionicPopup.show({
-        //   title: "提示",
-        //   template: "您所填写的商品数量超过库存",
-        //   buttons: [{
-        //     text: "确定",
-        //     type: "button-energized"
-        //   }]
-        // });
+        var alertPopup = $ionicPopup.alert({
+          title: '友情提示',
+          template: '数量超出范围~亲',
+          cssClass: 'alerttextcenter',
+          okText: '确定',
+          okType: 'button-energized'
+        });
+        alertPopup.then(function (res) {
+          console.log('Thank you for not eating my delicious ice cream cone');
+        });
+
       }
     };
     /**
@@ -185,21 +178,16 @@ product.controller('productDetailCtrl',
      * 当点击购物车时让设置goCart 和 goOrder 的参数使参数面板的下一步 跳转到购物车还是生成订单
      */
     $scope.propertyShowCart = function () {
-
-
       var userInfo = window.sessionStorage.getItem("USERINFO");
       if (userInfo == null) {
         $scope.login = true;
         $(".mengban").show();
-
       }
       else {
         $scope.USERINFO = JSON.parse(userInfo);
         $scope.USERID = $scope.USERINFO.id;
         propertyMenu();
-
       }
-
       $scope.goCart = false;
       $scope.goOrder = true;
     }
@@ -216,13 +204,12 @@ product.controller('productDetailCtrl',
      * 去我的订单
      */
     $scope.goToOrder = function () {
-      $scope.productOrder.num = $scope.productOrder.num;
+      console.log($scope.productOrder);
       $scope.productOrder.title = $scope.productDetailData.title;
       $scope.productOrder.freight = $scope.productDetailData.freight;
       $scope.productOrder.picUrlArr = $scope.productDetailData.picUrlArr;
       $scope.productOrder.brand_id = $rootScope.BRANDID;
-      window.sessionStorage.setItem("productOrders",  JSON.stringify([$scope.productOrder]));
-
+      window.sessionStorage.setItem("productOrders", JSON.stringify([$scope.productOrder]));
       $state.go("creatorder");
     };
 
@@ -239,7 +226,6 @@ product.controller('productDetailCtrl',
         .success(function (data) {
           $scope.login = false;//是否显示登录页面
           $(".mengban").hide();
-
           $scope.propertyClose();
           $state.go("cart", {"userid": $scope.USERID, "brandid": $rootScope.BRANDID});
         })

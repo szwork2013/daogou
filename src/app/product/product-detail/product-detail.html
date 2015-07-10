@@ -34,15 +34,20 @@
     <div class="button button-light" ng-click="propertyShowCart()">加入购物车</div>
     <div class="button button-assertive" ng-click="propertyShowOrder()">立即购买</div>
   </div>
-  <div class="mengban" ng-click="propertyClose()"></div>
+  <div class="mengban" ></div>
 
   <div class="chooseProductInfoWarp">
     <form name="form" novalidate class="form">
       <div class="list">
         <div class="item item-avatar">
           <img class="productImg" ng-src="{{productDetailData.picUrlArr[0]}}">
+
           <h2>{{productDetailData.title}}</h2>
-          <p>￥{{productDetailData.price}}</p>
+
+          <p ng-if="allSelected">￥{{productOrder.price}}</p>
+
+          <p ng-if="!allSelected">￥{{productDetailData.price}}</p>
+
         </div>
       </div>
 
@@ -85,7 +90,8 @@
     </form>
   </div>
   <!-- 登录模块 -->
-  <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;" class="ng-hide" ng-show="login"
+  <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;" class="ng-hide"
+       ng-show="login"
        loginsuccess="loginsuccess" loginerror="loginerror"></div>
 
 </ion-view>
