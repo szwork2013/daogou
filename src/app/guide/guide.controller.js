@@ -61,6 +61,7 @@ angular.module('guide', ['ionic'])
      */
     $scope.goOrderList = function () {
       if (userInfo == null) {
+        $state.go("orderList", {});
       } else {
         $state.go("orderList", {"userid": $scope.USERINFO.id});
       }

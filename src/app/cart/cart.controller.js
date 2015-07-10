@@ -78,6 +78,10 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
     $scope.loginsuccess = function (data) {
       $scope.login = false;
       $(".redPoint").show();
+      //回调再获取用户信息
+      var userInfo = window.sessionStorage.getItem("USERINFO");
+      $scope.USERINFO = JSON.parse(userInfo);
+      $scope.USERID = $scope.USERINFO.id;
       //获取订单信息
       cartProductListFunc();
     }
