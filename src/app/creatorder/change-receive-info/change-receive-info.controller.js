@@ -38,7 +38,12 @@ angular.module('daogou')
           })
 
       }
-      $state.go('creatorder');
+      //用histroy.go(-1)  可防止选择完地址点返回键  又回到选择地址页
+      if(history.length>1){
+        history.go(-1);
+      }else{
+        $state.go('creatorder');
+      }
     }
     $scope.setDefaultAddress = function (addressId, index) {
       console.log(['addressId', addressId]);

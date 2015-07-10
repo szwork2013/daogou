@@ -100,6 +100,10 @@ angular.module('daogou')
        ecallback 失败的回调函数 {function} [必填]
        */
       deleteCartProduct: deleteCartProduct,
+      /**
+       * 更新购物车商品
+       */
+      updateCartProduct: updateCartProduct,
 
       /*
        account注册用户
@@ -511,6 +515,17 @@ angular.module('daogou')
       };
 
       daogouAPI.deletef(daogouAPI.apiurl(action, data), scallback, ecallback);
+    }
+
+    function updateCartProduct(dataobj, scallback, ecallback) {
+      var action = '/users/' + dataobj.userid + '/shopping-carts/' + dataobj.cartId;
+      var data = {
+        "id": dataobj.cartId,
+        "num": dataobj.num,
+        "user_id": dataobj.userid
+      };
+      daogouAPI.put(action, data, scallback, ecallback);
+
     }
 
     function defaultstore(dataobj, scallback, ecallback) {

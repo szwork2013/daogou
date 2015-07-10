@@ -14,18 +14,17 @@ createOrder.controller('creatorderCtrl',
     var URLPort = URLPort();
     $scope.totalprice = 0;
     $scope.buyfreight = 0;
-    console.log(["$scope.productOrders",$scope.productOrders]);
+    console.log(["$scope.productOrders", $scope.productOrders]);
     daogouAPI.formatSkuP($scope.productOrders);
     // daogouAPI.formatSku($scope.productOrders);
     angular.forEach($scope.productOrders, function (item, index) {
-       item.bring_guider_id = $rootScope.GUIDID;
+      item.bring_guider_id = $rootScope.GUIDID;
       $scope.totalprice += item.price * item.num;
       $scope.buyfreight += item.freight
     });
     $scope.totalcost = $scope.totalprice + parseFloat($scope.buyfreight);
-
-
     $scope.login = false;//处理登录框的一点样式问题，背景为白色
+    $(".mengban").hide();
     $scope.weixinpay = true;
     $scope.loginhandle = true;//初始让登录模块隐藏
     $scope.alladdress = true;//初始让地址模块隐藏
@@ -33,8 +32,6 @@ createOrder.controller('creatorderCtrl',
     $scope.firstBuyerAddress = true;
     // true为快递上门   false为门店取货
     $scope.express = true;
-
-
     var userInfo = window.sessionStorage.getItem("USERINFO");
     if (userInfo == null) {
       //如果未登录,显示登录框，进行登录
@@ -136,7 +133,7 @@ createOrder.controller('creatorderCtrl',
         }
         $rootScope.ListTwoStores[1] = $scope.shopaddressData[minIndex];
       }
-        console.log(["$rootScope.ListTwoStores",$rootScope.ListTwoStores]);
+      console.log(["$rootScope.ListTwoStores", $rootScope.ListTwoStores]);
     }
 
     //获取门店取货时间
@@ -371,9 +368,9 @@ createOrder.controller('creatorderCtrl',
       $state.go('changeReceiveInfo', {'userid': $scope.USERID});
     }
     //限制备注最长200个字符
-    $scope.limitText = function(){
-      if($scope.buyerMessage.buyer_memo.length>200){
-        $scope.buyerMessage.buyer_memo = $scope.buyerMessage.buyer_memo.substring(0,200);
+    $scope.limitText = function () {
+      if ($scope.buyerMessage.buyer_memo.length > 200) {
+        $scope.buyerMessage.buyer_memo = $scope.buyerMessage.buyer_memo.substring(0, 200);
       }
     }
 
