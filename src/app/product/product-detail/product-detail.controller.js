@@ -178,21 +178,16 @@ product.controller('productDetailCtrl',
      * 当点击购物车时让设置goCart 和 goOrder 的参数使参数面板的下一步 跳转到购物车还是生成订单
      */
     $scope.propertyShowCart = function () {
-
-
       var userInfo = window.sessionStorage.getItem("USERINFO");
       if (userInfo == null) {
         $scope.login = true;
         $(".mengban").show();
-
       }
       else {
         $scope.USERINFO = JSON.parse(userInfo);
         $scope.USERID = $scope.USERINFO.id;
         propertyMenu();
-
       }
-
       $scope.goCart = false;
       $scope.goOrder = true;
     }
@@ -210,7 +205,6 @@ product.controller('productDetailCtrl',
      */
     $scope.goToOrder = function () {
       console.log($scope.productOrder);
-      $scope.productOrder.price = $scope.productDetailData.price;
       $scope.productOrder.title = $scope.productDetailData.title;
       $scope.productOrder.freight = $scope.productDetailData.freight;
       $scope.productOrder.picUrlArr = $scope.productDetailData.picUrlArr;

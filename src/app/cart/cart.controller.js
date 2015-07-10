@@ -126,31 +126,38 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      */
     $scope.delNum = function (item) {
       if (item.num > 1) {
-        item.num--;
-        if (item.seleted) {
-          $scope.ids.splice($.inArray(item.id, $scope.ids), 1);
-          $scope.totalFee -= parseFloat(item.price);
-        }
+        var num = item.num - 1;
+        $scope.updateCartProduct(item.id, num,
+          function (data, status, headers, config) {
+            item.num = data.num;
+            if (item.seleted) {
+              $scope.ids.splice($.inArray(item.id, $scope.ids), 1);
+              $scope.totalFee -= parseFloat(item.price);
+            }
+          },
+          function (data, status, headers, config) {
+            var alertPopup = $ionicPopup.alert({
+              title: '友情提示',
+              template: '受不了了，宝贝不能再少了哦',
+              cssClass: 'alerttextcenter',
+              okText: '确定',
+              okType: 'button-energized'
+            });
+            alertPopup.then(function (res) {
+            });
 
+          });
       } else {
         var alertPopup = $ionicPopup.alert({
-            title: '友情提示',
-            template: '受不了了，宝贝不能再少了哦',
-            cssClass: 'alerttextcenter',// String, The custom CSS class name
-            okText: '确定', // String (default: 'OK'). The text of the OK button.
-            okType: 'button-energized', // String (default: 'button-positive'). The type of the OK button.
-          });
-         alertPopup.then(function(res) {
-           console.log('Thank you for not eating my delicious ice cream cone');
-         });
-        // var mypopup = $ionicPopup.show({
-        //   title: "提示",
-        //   template: "受不了了，宝贝不能再少了哦",
-        //   buttons: [{
-        //     text: "确定",
-        //     type: "button-energized"
-        //   }]
-        // });
+          title: '友情提示',
+          template: '受不了了，宝贝不能再少了哦',
+          cssClass: 'alerttextcenter',
+          okText: '确定',
+          okType: 'button-energized'
+        });
+        alertPopup.then(function (res) {
+        });
+
       }
     };
     /**
@@ -158,36 +165,25 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      * @param index
      */
     $scope.addNum = function (item) {
-        console.log(['itemitemitemitemitem',item.freight]);
-        console.log(['itemitemitemitemitem',item.num]);
-        if (item.num<item.freight) {
-          item.num++;
+      var num = item.num + 1;
+      $scope.updateCartProduct(item.id, num,
+        function (data, status, headers, config) {
+          item.num = data.num;
           if ($.inArray(item.id, $scope.ids) < 0) {
             $scope.ids.push(item.id);
           }
           $scope.totalFee += parseFloat(item.price);
-        }
-       else {
+        }, function (data, status, headers, config) {
           var alertPopup = $ionicPopup.alert({
             title: '友情提示',
             template: '数量超出范围~亲',
-            cssClass: 'alerttextcenter',// String, The custom CSS class name
-            okText: '确定', // String (default: 'OK'). The text of the OK button.
-            okType: 'button-energized', // String (default: 'button-positive'). The type of the OK button.
+            cssClass: 'alerttextcenter',
+            okText: '确定',
+            okType: 'button-energized'
           });
-         alertPopup.then(function(res) {
-           console.log('Thank you for not eating my delicious ice cream cone');
-         });
-         // item.num=item.freight;
-        // var mypopup = $ionicPopup.show({
-        //   title: "提示",
-        //   template: "不能再多了",
-        //   buttons: [{
-        //     text: "确定",
-        //     type: "button-energized"
-        //   }]
-        // });
-      }
+          alertPopup.then(function (res) {
+          });
+        });
     };
     /**
      * 商品详情
@@ -210,7 +206,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         }
       });
       $scope.Allseleted = isAll;
-
       if (item.seleted) {
         $scope.totalFee += parseFloat(item.price) * item.num;
         $scope.totalNum++;
@@ -223,8 +218,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         $scope.totalNum--;
         $scope.ids.splice($.inArray(item.id, $scope.ids), 1);
       }
-
-
     };
     /**
      *   全选全不选
@@ -264,6 +257,25 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
           cartProductListFunc();
         },
         function (data, status, headers, config) {
+        });
+    };
+    /**
+     * 更新商品
+     * @param cartId
+     */
+    $scope.updateCartProduct = function (cartId, num, successFun, errorFun) {
+      daogouAPI.updateCartProduct({
+          userid: $scope.USERINFO.id,
+          cartId: cartId,
+          id: cartId,
+          num: num,
+          user_id: $scope.USERINFO.id
+        },
+        function (data, status, headers, config) {
+          successFun(data, status, headers, config);
+        },
+        function (data, status, headers, config) {
+          errorFun(data, status, headers, config);
         });
     };
     /**
