@@ -62,7 +62,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
             item.specification[tz].key = cartendArr[cartendArr.length - 2];//规格名
           }
         });
-        console.log(["获取购物车商品列表成功", data]);
         daogouAPI.formatSku(data);
         $scope.cartProductListData = $scope.cartProductListData.concat(data);
         if (data.length >= pagesize) {

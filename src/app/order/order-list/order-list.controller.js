@@ -85,31 +85,24 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
           itemOrder.pics = itemOrder.pic_path.indexOf(",") > 0 ? itemOrder.pic_path.split(",") : [itemOrder.pic_path];
         });
       });
-      console.log(["获取订单列表成功",data]);
       for(var i in data){
         daogouAPI.formatSku(data[i].orders);
       }
       $scope.productListData = $scope.productListData.concat(data);
-      console.log(["data.length", data.length])
       if (data.length >= pagesize) {
         pageindex++;
-        console.log(["pageindex+++++++", pageindex])
       } else {
         $scope.hasMoreOrder = false;
-        console.log(["hasMoreOrder", $scope.hasMoreOrder])
       }
       $scope.$broadcast('scroll.infiniteScrollComplete');
 
     }, function (data, status, headers, config) {
-      console.log(["查询消费者的订单列表失败", data]);
     });
   }
 
   $scope.loginsuccess = function (data) {
-    console.log(["order的回调", data]);
     $scope.login = false;
     $(".redPoint").show();
-    //获取订单信息
     getOrderListFunc();
   }
   $scope.loginerror = function (data) {
