@@ -28,6 +28,9 @@ angular.module('daogou')
 			 	zip:'',
 			 	defaultAddress:''
 			};
+			//默认隐藏  当前地区无门店的提示
+		 	$scope.thereisnoshop=false;
+
 			$scope.newAddressInput.provinceInfo.name = "";
 			$scope.newAddressInput.provinceInfo.code = "";
 			$scope.newAddressInput.cityInfo.name = "";
@@ -142,6 +145,9 @@ angular.module('daogou')
 
 			 //根据选择的省查询市
 			 $scope.provinceSelect = function(dataobj){
+			 	//一旦开始选择地址  隐藏无门店提示
+		 		$scope.thereisnoshop=false;
+
 			 	console.log("yyyyyyyyyyyyyyyyyyyyy");
 			    console.log(['selectcode',dataobj.code]);
 			    if(typeof($scope.editData) === "undefined"){//添加地址
@@ -200,6 +206,9 @@ angular.module('daogou')
 		 	$scope.hasMoreOrder = false;
 		 	//加载门店
 		 	function getStores(){
+			 	//一旦开始选加载地址  隐藏无门店提示
+		 		$scope.thereisnoshop=false;
+
 		 		daogouAPI.storeAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
 		 			user_id:$stateParams.userid,
 		 			state_code:$scope.newAddressInput.provinceInfo.code,
@@ -220,6 +229,7 @@ angular.module('daogou')
 		 			$scope.$broadcast('scroll.infiniteScrollComplete');
 		 		},function(data, status, headers, config){
 		 			 $scope.hasMoreOrder = false;
+		 			 $scope.thereisnoshop=true;
 		 			console.log(['查询门店列表失败',data]);
 		 		});
 		 	}

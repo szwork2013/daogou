@@ -10,8 +10,8 @@
              <div class="address"><span ng-show="{{item.is_default}}">[默认]&nbsp;&nbsp;&nbsp;</span>{{item.state}}{{item.city}}{{item.district}}{{item.address}}</div>
          </div>
          <div class="default-shop">
-            <div class="default">
-            <i class="iconfont icon-gou slgou font16" ng-class="{greengou:item.is_default,graygou:!item.is_default}" ng-click="setDefaultAddress(item.id,$index)"></i>
+            <div class="default" ng-click="setDefaultAddress(item.id,$index)">
+            <i class="iconfont icon-gou slgou font16" ng-class="{greengou:item.is_default,graygou:!item.is_default}" ></i>
             &nbsp;默认地址</div>
             <div class="edit" ng-click="editAddressFunc(item.id)">编辑</div>
             <div class="delete" ng-click="deleteAddressFunc(item.id,$index)">删除</div>
