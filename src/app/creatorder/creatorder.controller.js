@@ -50,6 +50,9 @@ createOrder.controller('creatorderCtrl',
     }
 
     $scope.loginsuccess = function (data) {
+      var userInfo = window.sessionStorage.getItem("USERINFO");
+      $scope.USERINFO = JSON.parse(userInfo);
+      $scope.USERID = $scope.USERINFO.id;
       //登录后的UI样式设置
       userIsLoginSetUI()
     };
