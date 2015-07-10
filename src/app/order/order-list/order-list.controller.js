@@ -10,9 +10,9 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
       $scope.USERINFO = data;
       window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
       getOrderListFunc();
-
     }, function (data) {
       $scope.login = true;
+      $(".mengban").show();
     });
   }
   else {
@@ -85,7 +85,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
           itemOrder.pics = itemOrder.pic_path.indexOf(",") > 0 ? itemOrder.pic_path.split(",") : [itemOrder.pic_path];
         });
       });
-      for(var i in data){
+      for (var i in data) {
         daogouAPI.formatSku(data[i].orders);
       }
       $scope.productListData = $scope.productListData.concat(data);
@@ -101,7 +101,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
   }
 
   $scope.loginsuccess = function (data) {
-    $scope.login = false;
+    $scope.propertyClose();
     $(".redPoint").show();
     //回调再获取用户信息
     var userInfo = window.sessionStorage.getItem("USERINFO");
@@ -239,5 +239,11 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
   $scope.goCart = function () {
     $state.go("cart", {"userid": $scope.USERINFO.id, "brandid": $rootScope.BRANDID});
   };
-
+  /**
+   * 关闭蒙版
+   */
+  $scope.propertyClose = function () {
+    $(".mengban").hide();
+    $scope.login = false;
+  }
 }]);

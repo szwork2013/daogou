@@ -10,7 +10,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
         cartProductListFunc();
       }, function (data) {
-        $scope.login = true;
+        $scope.showLogin();
       });
     }
     else {
@@ -76,7 +76,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
 
     // 登录成功回调
     $scope.loginsuccess = function (data) {
-      $scope.login = false;
+      $scope.hideLogin();
       $(".redPoint").show();
       //回调再获取用户信息
       var userInfo = window.sessionStorage.getItem("USERINFO");
@@ -305,6 +305,26 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      *   购物车 订单列表切换
      */
     $scope.goOrderList = function () {
-      $state.go("orderList", {"userid": $scope.USERINFO.id});
+      if ($scope.USERINFO == null) {
+        $scope.showLogin();
+      } else {
+        $state.go("orderList", {"userid": $scope.USERINFO.id});
+      }
     }
+
+    /**
+     * 关闭登录和蒙版
+     */
+    $scope.hideLogin = function () {
+      $(".mengban").hide();
+      $scope.login = false;
+    }
+    /**
+     * 打开登录和蒙版
+     */
+    $scope.showLogin = function () {
+      $(".mengban").show();
+      $scope.login = true;
+    }
+
   }]);
