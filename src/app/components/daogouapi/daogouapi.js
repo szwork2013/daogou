@@ -769,13 +769,11 @@ angular.module('daogou')
     function formatSku(dataArr) {
       for (var i in dataArr) {
         var skuString = "";
-        console.log(["dataArr[i].sku_properties_name", dataArr[i].sku_properties_name]);
         var skuArr = [];
         skuArr = dataArr[i].sku_properties_name.split(";");
         for (var j in skuArr) {
           var proArr = [];
           proArr = skuArr[j].split(":");
-          console.log(["proArr", proArr]);
           skuString += proArr[proArr.length - 2] + ":" + proArr[proArr.length - 1] + ";";
         }
         dataArr[i].sku_properties_name = skuString.substring(0, skuString.length - 1);
@@ -792,7 +790,6 @@ angular.module('daogou')
         for (var j in skuArr) {
           var proArr = [];
           proArr = skuArr[j].split(":");
-          console.log(["proArr", proArr]);
           skuString += proArr[proArr.length - 2] + ":" + proArr[proArr.length - 1] + ";";
         }
         dataArr[i].properties = skuString.substring(0, skuString.length - 1);
