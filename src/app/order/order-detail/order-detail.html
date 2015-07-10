@@ -5,7 +5,7 @@
         <div class="iconfont icon-dingdan order-img"></div>
                    <span class="order-infos">
                          <span>{{orderDetailData.statusCN}}</span><br/>
-                         <span>订单金额（含运费）: {{orderDetailData.total_fee|currency:"￥":2}}</span><br/>
+                         <span>订单金额（含运费）: {{orderDetailData.payment|currency:"￥":2}}</span><br/>
                          <span>运费: {{orderDetailData.post_fee|currency:"￥":2}}</span>
                    </span>
 
@@ -47,7 +47,7 @@
 
                            <div class="clearBoth"></div>
                          </div>
-                         <span>预约时间：{{orderDetailData.fetch_subscribe_begin_time | date:"yyyy-MM-dd HH:mm:ss"}}&nbsp;{{orderDetailData.fetch_subscribe_end_time| date:"yyyy-MM-dd HH:mm:ss"}} </span>
+                         <span>预约时间：{{orderDetailData.fetch_subscribe_begin_time | date:"yyyy-MM-dd HH:mm:ss"}}</span>
                    </span>
 
         <div class="clearBoth"></div>
@@ -71,7 +71,6 @@
 
           <div class="floatL">
             <span>请在取货时向店员出示此码</span><br/>
-            <!-- <span class="font18">2323 2454 454123</span><br/> -->
             <span class="colorRed">切勿透露他人以防冒取</span>
           </div>
           <div class="clearBoth"></div>
@@ -96,7 +95,7 @@
     <div class="statusWrap">
       <ul class="list marginbt0">
         <li class="item item-checkbox product-item backfff" ng-repeat="item in orderDetailData.orders">
-          <img src="assets/images/pic1.png" class="product-img">
+          <img ng-src="{{item.pics[0]}}" class="product-img">
 
           <div class="paramenters">
             <div class="name">{{item.title}}</div>
@@ -119,8 +118,6 @@
   </ion-content>
   <!-- 悬浮点击打开个人中心、购物车、导购 -->
   <div float-center></div>
-
-
   <ion-footer-bar align-title="left" class="footer" ng-show="deleteOrder&&ISWX">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
@@ -129,7 +126,6 @@
     </ul>
 
   </ion-footer-bar>
-
   <ion-footer-bar align-title="left" class="footer" ng-show="cancelpayOrder&&ISWX">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
@@ -138,27 +134,15 @@
         </div>
         <!-- ui-sref="payWay" -->
         <button class="delcount" ui-sref="orderList">取消订单</button>
-
       </li>
-
     </ul>
-
   </ion-footer-bar>
-
   <ion-footer-bar align-title="left" class="footer" ng-show="cancelOrder">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
-
         <button class="delcount" ui-sref="orderList">取消订单</button>
-
       </li>
-
     </ul>
-
   </ion-footer-bar>
-
-
-  <!--   这个切换其实是2个页面 不是页面内切换的
-    一个是购物车页cart   应该是订单列表 order → order-list -->
 
 </ion-view>
