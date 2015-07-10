@@ -1,37 +1,38 @@
+<ion-view view-title="导购橱窗">
+  <ion-content>
+    <div class="guidebg">
+      <img ng-src="{{GUIDINFO.avatar}}" class="guidelogo">
+      <span class="guidename">{{GUIDINFO.full_name}}</span>
+      <span class="chatname">微信号:{{GUIDINFO.weixin_no}}</span>
+      <span class="myorders" ng-click="goOrderList()">我的订单</span>
+      <span class="shopname">{{BRANDINFO.brand_name}} | {{GUIDINFO.store_address}}</span>
+    </div>
+    <div class="statusWrap">
+      <ul class="list marginbt0">
+        <li class="item item-checkbox product-item" ng-repeat="item in daogouProductListData"
+            ng-click="productDetail(item.num_iid)">
+          <label class="checkbox disnone">
+            <input type="checkbox" ng-model="choose">
+          </label>
+          <img ng-src="{{item.pic}}" class="product-img">
 
-<ion-view view-title="小蕙格子铺">
-    <ion-content>
-      <div class="guidebg">
-        <img ng-src="{{GUIDINFO.avatar}}" class="guidelogo">
-        <span class="guidename">{{GUIDINFO.full_name}}</span>
-        <span class="chatname">微信号:{{GUIDINFO.weixin_no}}</span>
-        <span class="myorders">我的订单</span>
-        <span class="shopname">{{brandData.brand_name}} | {{GUIDINFO.store_address}}</span>
-      </div>
-        <div class="statusWrap">
-            <ul class="list marginbt0">
-                <li class="item item-checkbox product-item" ng-repeat="item in daogouProductListData" ng-click="productDetail(item.num_iid)">
-                   <label class="checkbox disnone">
-                     <input type="checkbox" ng-model="choose">
-                   </label>
-                  <img ng-src="{{item.pic}}" class="product-img">
-                  <div class="paramenters-daogou">
-                      <div class="name">{{item.title}}</div>
-                      <div class="paras">{{item.price | currency:"￥":2}}<s class="paras2">{{item.quote_price | currency:"￥":2}}</s></div>
-                  </div>
-                  
-                 <i class="iconfont icon-jiantouleft daogou-arrow rotate180"></i>
-                </li>
-            </ul>
-        </div>
+          <div class="paramenters-daogou">
+            <div class="name">{{item.title}}</div>
+            <div class="paras">{{item.price | currency:"￥":2}}<s class="paras2">{{item.quote_price |
+              currency:"￥":2}}</s></div>
+          </div>
+          <i class="iconfont icon-jiantouleft daogou-arrow rotate180"></i>
+        </li>
+      </ul>
+    </div>
 
-        <ion-infinite-scroll
-          ng-if="hasMoreOrder"
-          immediate-check="false"
-          on-infinite="loadMoreData()"
-          distance="10%"
-          >
-        </ion-infinite-scroll>
+    <ion-infinite-scroll
+      ng-if="hasMoreOrder"
+      immediate-check="false"
+      on-infinite="loadMoreData()"
+      distance="10%"
+      >
+    </ion-infinite-scroll>
 
-    </ion-content>
+  </ion-content>
 </ion-view>

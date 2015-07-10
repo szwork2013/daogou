@@ -117,6 +117,17 @@ product.controller('productDetailCtrl',
     $scope.delNum = function () {
       if ($scope.productOrder.num > 1) {
         $scope.productOrder.num--;
+      }else{
+          var alertPopup = $ionicPopup.alert({
+            title: '友情提示',
+            template: '受不了了，宝贝不能再少了哦',
+            cssClass: 'alerttextcenter', // String, The custom CSS class name
+            okText: '确定', // String (default: 'OK'). The text of the OK button.
+            okType: 'button-energized', // String (default: 'button-positive'). The type of the OK button.
+          });
+          alertPopup.then(function(res) {
+            console.log('Thank you for not eating my delicious ice cream cone');
+          });
       }
     };
     /**
@@ -126,14 +137,24 @@ product.controller('productDetailCtrl',
       if ($scope.productOrder.num < $scope.productOrder.real_quantity) {
         $scope.productOrder.num++;
       } else {
-        var mypopup = $ionicPopup.show({
-          title: "提示",
-          template: "您所填写的商品数量超过库存",
-          buttons: [{
-            text: "确定",
-            type: "button-energized"
-          }]
-        });
+            var alertPopup = $ionicPopup.alert({
+              title: '友情提示',
+              template: '数量超出范围~亲',
+              cssClass: 'alerttextcenter', // String, The custom CSS class name
+              okText: '确定', // String (default: 'OK'). The text of the OK button.
+              okType: 'button-energized', // String (default: 'button-positive'). The type of the OK button.
+            });
+            alertPopup.then(function(res) {
+              console.log('Thank you for not eating my delicious ice cream cone');
+            });
+        // var mypopup = $ionicPopup.show({
+        //   title: "提示",
+        //   template: "您所填写的商品数量超过库存",
+        //   buttons: [{
+        //     text: "确定",
+        //     type: "button-energized"
+        //   }]
+        // });
       }
     };
     /**
