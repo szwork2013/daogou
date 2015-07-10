@@ -169,98 +169,6 @@ createOrder.controller('creatorderCtrl',
     }
 
 
-    $scope.getAddresses = function () {
-
-    }
-    //新增用户第一个收货地址信息
-    $scope.firstAddressInput = {
-      name: '',
-      mobile: '',
-      provinceInfo: '',
-      cityInfo: '',
-      districtInfo: '',
-      address: '',
-      zip: ''
-    };
-
-    $scope.addAddress = function (defaultAddress) {
-
-      $http.post(URLPort + '/users/' + $scope.USERID + '/shipping-addresses', {
-        'user_id': $scope.USERID,
-        'name': $scope.firstAddressInput.name,
-        'state': $scope.firstAddressInput.provinceInfo.name,
-        'state_code': $scope.firstAddressInput.provinceInfo.code,
-        'city': $scope.firstAddressInput.cityInfo.name,
-        'city_code': $scope.firstAddressInput.cityInfo.code,
-        'district': $scope.firstAddressInput.districtInfo.name,
-        'district_code': $scope.firstAddressInput.districtInfo.code,
-        'address': $scope.firstAddressInput.address,
-        'zip': $scope.firstAddressInput.zip,
-        'mobile': $scope.firstAddressInput.mobile,
-        'is_default': defaultAddress
-      })
-        .success(function (data) {
-          $rootScope.defaultAddressdata = data;
-          $scope.loginhandle = true;
-          $scope.alladdress = false;
-          $scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
-          $scope.buyeraddress = false;
-          $scope.weixinpay = false;
-        })
-        .error(function (data) {
-        })
-    }
-    //根据选择的省查询市
-    $scope.provinceSelect = function (dataobj) {
-      $http.get(URLPort + '/provinces/' + dataobj.pinyin + '/cities')
-        .success(function (data) {
-          $scope.citiesdata = data;
-        })
-        .error(function (data) {
-        })
-    }
-
-    //根据选择的市查询地区
-    $scope.citySelect = function (dataobj1, dataobj2) {
-
-      $http.get(URLPort + '/provinces/' + dataobj1.pinyin + '/cities/' + dataobj2.pinyin + '/districts')
-        .success(function (data) {
-          $scope.districtsdata = data;
-        })
-        .error(function (data) {
-        })
-    }
-
-
-    $scope.deleteAddress = function () {
-      $http.delete(URLPort + '/users/' + $scope.USERID + '/shipping-addresses/18')
-        .success(function () {
-          console.log('删除地址成功');
-          $scope.firstBuyerAddress = true;//隐藏填写第一个地址模块，显示选择地址模块
-          $scope.buyeraddress = false;
-        })
-        .error(function () {
-          console.log('删除新地址失败');
-
-          $scope.express = true;
-
-          $scope.firstBuyerAddress = false;//隐藏选择地址模块，显示填写第一个地址模块
-          console.log(['$scope.firstBuyerAddress!!!!!!', $scope.firstBuyerAddress])
-          $scope.buyeraddress = true;
-
-        })
-    }
-    //查询省
-    $scope.searchProvinces = function () {
-      $http.get(URLPort + '/provinces')
-        .success(function (data) {
-          $scope.provincesdata = data;
-        })
-        .error(function (data) {
-        })
-    };
-
-
     $scope.buyerMessage = {
       'buyer_memo': ''
     };
@@ -418,23 +326,26 @@ createOrder.controller('creatorderCtrl',
 
           } else {
             console.log(['当前用户没有收货地址，请填写第一个收货地址', data]);
+            $rootScope.firstAddressFlag = 1;//第一次填写收货地址 也就是默认收货地址，用完要清空0
+            console.log(["第一次填写收货地址$rootScope.firstAddressFlag",$rootScope.firstAddressFlag])
             $scope.express = true;
             $scope.firstBuyerAddress = false; //隐藏选择地址模块，显示填写第一个地址模块
             $scope.buyeraddress = true;
-            $scope.searchProvinces();
+            // $scope.searchProvinces();
 
           }
 
         })
         .error(function (data) {
           console.log(['当前用户没有收货地址，请填写第一个收货地址', data]);
-
+          $rootScope.firstAddressFlag = 1;//第一次填写收货地址 也就是默认收货地址，用完要清空
+          console.log(["第一次填写收货地址$rootScope.firstAddressFlag",$rootScope.firstAddressFlag])
           $scope.express = true;
 
           $scope.firstBuyerAddress = false; //隐藏选择地址模块，显示填写第一个地址模块
           $scope.buyeraddress = true;
 
-          $scope.searchProvinces();
+          // $scope.searchProvinces();
 
         })
     }

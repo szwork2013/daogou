@@ -59,27 +59,7 @@
       <div ng-hide="!express">
         <!-- 第一次写收货地址 -->
         <div ng-hide="firstBuyerAddress">
-          <input class="input-address-info" placeholder="收货人姓名" ng-model="firstAddressInput.name"/>
-          <input class="input-address-info" placeholder="手机号码" ng-model="firstAddressInput.mobile"/>
-
-          <div class="input-address-info">
-            <select id="loc_province" ng-model="firstAddressInput.provinceInfo"
-                    ng-options="province.name for province in provincesdata"
-                    ng-change="provinceSelect(firstAddressInput.provinceInfo)">
-              <option id="editProvince" value="">-- 请选择省份 --</option>
-            </select>
-            <select id="loc_city" ng-model="firstAddressInput.cityInfo" ng-options="city.name for city in citiesdata"
-                    ng-change="citySelect(firstAddressInput.provinceInfo,firstAddressInput.cityInfo)">
-              <option id="editCity" value="">-- 请选择市 --</option>
-            </select>
-            <select id="loc_town" ng-model="firstAddressInput.districtInfo"
-                    ng-options="district.name for district in districtsdata">
-              <option id="editDistrict" value="">-- 请选择区、县 --</option>
-            </select>
-            <input type="hidden" name="location_id"/>
-          </div>
-          <input class="input-address-info" placeholder="详细地址" ng-model="firstAddressInput.address"/>
-          <input class="input-address-info border-bt0" placeholder="邮编" ng-model="firstAddressInput.zip"/>
+           <div add-receiver-address></div>
         </div>
         <!-- 第一次写收货地址 -->
 
@@ -133,19 +113,6 @@
 
 
     <div class="commonBtn" ng-hide="weixinpay" ng-click="submitOrder()">微信支付</div>
-    <div class="commonBtn backred" ng-hide="firstBuyerAddress" ng-click="addAddress(1)">保存地址</div>
-
-
-
-
-
-
-    <!-- <div class="commonBtn backred" ng-click="submit2()">确认登录成功后获取user信息2</div> -->
-    <!-- <div class="commonBtn backred" ng-click="logout()">确认退出</div> -->
-
-    <!-- <div class="commonBtn backred"  ng-click="addAddress()">保存地址模拟</div> -->
-    <!-- <div class="commonBtn backred"  ng-click="deleteAddress()">删除地址模拟</div> -->
-
-    <!-- <div class="commonBtn backred"  ng-click="searchProvinces()">查询省份模拟</div> -->
+   
   </ion-content>
 </ion-view>

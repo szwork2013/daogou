@@ -1,0 +1,63 @@
+<div class="add-receiver-address">
+    <div class="warning-msg tp15">
+      <div ng-if="usernameerror.error">
+        {{usernameerror.msg}}
+      </div>
+      <div ng-if="usermobileerror.error">
+        {{usermobileerror.msg}}
+      </div>
+      <div ng-if="useraddresserror.error">
+        {{useraddresserror.msg}}
+      </div>
+      <div ng-if="userziperror.error">
+        {{userziperror.msg}}
+      </div>
+      <div ng-if="userprovinceerror.error">
+        {{userprovinceerror.msg}}
+      </div>
+      <div ng-if="usercityerror.error">
+        {{usercityerror.msg}}
+      </div>
+      <div ng-if="userdistricterror.error">
+        {{userdistricterror.msg}}
+      </div>
+    </div>
+
+    <form name="myForm" novalidate ng-submit="addAddressfunc();" class="form">
+        <div class="statusWrap posRelative">
+           <input class="input-address-info" placeholder="收货人姓名" ng-model="newAddressInput.name" name="name" required ng-maxlength="20" ng-blur="usernameerror={error:myForm.name.$dirty && myForm.name.$invalid,msg:'请输入20位以内的用户名'}" ng-focus="usernameerror={error:false,msg:null}"/>
+           <div class="iconfont icon-guanbi2 close2" ng-click="clearName()"></div>
+           <div class="warning-icon2"  ng-if="usernameerror.error"></div>
+        
+           <input class="input-address-info border-bt" placeholder="手机号码" ng-model="newAddressInput.mobile" name="mobile" type="tel" ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" required ng-blur="usermobileerror={error:myForm.mobile.$dirty && myForm.mobile.$invalid,msg:'请填写正确的11位手机号'}" ng-focus="usermobileerror={error:false,msg:null}"/>
+           <div class="warning-icon2 warning2top2"  ng-if="usermobileerror.error"></div>
+           <div class="iconfont icon-guanbi2 close2 close2top2" ng-click="clearMobile()"></div>
+
+           <div class="input-address-info">
+                <select id="loc_province" name="province" ng-model="newAddressInput.provinceInfo" required ng-options="province.name for province in provincesdata" ng-change="provinceSelect(newAddressInput.provinceInfo)" ng-keydown="provinceDefault(newAddressInput.provinceInfo)"  ng-focus="userprovinceerror={error:false,msg:null}">
+                 <option id="editProvince" value="">-- 请选择省份 --</option>
+                </select>
+                <select id="loc_city" name="city" ng-model="newAddressInput.cityInfo" required ng-options="city.name for city in citiesdata" ng-change="citySelect(newAddressInput.cityInfo)" ng-focus="usercityerror={error:false,msg:null}">
+                  <option id="editCity" value="">-- 请选择市 --</option>
+                </select>
+                <select id="loc_town" ng-model="newAddressInput.districtInfo" required ng-options="district.name for district in districtsdata" ng-focus="userdistricterror={error:false,msg:null}">
+                   <option id="editDistrict" value="">-- 请选择区、县 --</option>
+                </select>
+                <input type="hidden" name="location_id" />
+           </div>
+             
+           
+           <div class="iconfont icon-guanbi2 close2 close4top4" ng-click="clearAddress()"></div>
+           <input class="input-address-info" placeholder="详细地址" name="address" ng-model="newAddressInput.address" required ng-maxlength="100" ng-blur="useraddresserror={error:myForm.address.$dirty && myForm.address.$invalid,msg:'请输入100位以内的地址'}" ng-focus="useraddresserror={error:false,msg:null}"/>
+           <div class="warning-icon2 warning3top3"  ng-if="useraddresserror.error"></div>
+
+           <div class="iconfont icon-guanbi2 close2 close3top3" ng-click="clearZip()"></div>
+           <input class="input-address-info border-bt0" placeholder="邮编" ng-model="newAddressInput.zip" name="zip" ng-maxlength="16" ng-blur="userziperror={error:myForm.zip.$dirty && myForm.zip.$invalid,msg:'请输入16位以内的邮编'}" ng-focus="userziperror={error:false,msg:null}"/>
+           <div class="warning-icon2 warning4top4"  ng-if="userziperror.error"></div>
+
+        </div>
+        <!-- <div class="commonBtn backred margin-tp40" ng-class="{'disabled':myForm.$invalid}" ng-click="addAddressfunc(0)">提交</div> -->
+        <label for="submitaddressbtn"  class="commonBtn backred margin-tp40">添加地址</label>
+        <input type="submit"  class="hidesubmitbtn2" id="submitaddressbtn">
+    </form>
+</div>
