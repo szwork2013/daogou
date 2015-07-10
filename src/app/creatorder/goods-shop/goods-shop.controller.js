@@ -5,6 +5,11 @@ angular.module('daogou')
     $log.debug('goodsShopCtrl');
     $scope.shopaddressData = [];
     $scope.shopaddressData = $rootScope.ListTwoStores;
+    
+    var userInfo = window.sessionStorage.getItem("USERINFO");
+    $scope.USERINFO = JSON.parse(userInfo);
+    $scope.USERID = $scope.USERINFO.id;
+
     $scope.defaultstorefunc = function (store_id, index) {
       console.log(['store_id', store_id]);
       daogouAPI.defaultstore({
