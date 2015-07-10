@@ -8,6 +8,15 @@ angular.module('guide', ['ionic'])
     var pagesize = 8;
     var guiderId = $rootScope.GUIDID;
     var brandId = $rootScope.BRANDID;
+
+    var userInfo = window.sessionStorage.getItem("USERINFO");
+    if (userInfo == null) {
+    }
+    else {
+      $scope.USERINFO = JSON.parse(userInfo);
+    }
+
+
     $scope.hasMoreOrder = true;
     /**
      * 加载导购橱窗商品列表
@@ -51,7 +60,10 @@ angular.module('guide', ['ionic'])
      * 我的订单列表
      */
     $scope.goOrderList = function () {
-      $state.go("orderList", {"userid": $scope.USERINFO.id});
+      if (userInfo == null) {
+      } else {
+        $state.go("orderList", {"userid": $scope.USERINFO.id});
+      }
     }
     /**
      * 商品详情
