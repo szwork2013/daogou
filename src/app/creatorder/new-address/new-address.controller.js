@@ -162,6 +162,48 @@ angular.module('daogou')
 
     $scope.addAddressfunc = function (defaultAddress) {
       console.log(['$scope.newAddressInput', $scope.newAddressInput]);
+      if($scope.newAddressInput.name === ""){
+        $scope.usernameerror = {
+          "error" : true,
+          "msg":"用户名不能为空"
+        }
+        return;
+      }
+      if($scope.newAddressInput.mobile === ""){
+        $scope.usermobileerror = {
+          "error" : true,
+          "msg":"电话不能为空"
+        }
+        return;
+      }
+      if($scope.newAddressInput.address === ""){
+        $scope.useraddresserror = {
+          "error" : true,
+          "msg":"详细地址不能为空"
+        }
+        return;
+      }
+      if($scope.newAddressInput.provinceInfo.code === ""){
+        $scope.userprovinceerror = {
+          "error" : true,
+          "msg":"请选择省"
+        }
+        return;
+      }
+      if($scope.newAddressInput.cityInfo.code === ""){
+        $scope.usercityerror = {
+          "error" : true,
+          "msg":"请选择市"
+        }
+        return
+      }
+      if($scope.newAddressInput.districtInfo.code === ""){
+        $scope.userdistricterror = {
+          "error" : true,
+          "msg":"请选择区、县"
+        }
+        return
+      }
       if ($stateParams.addressid === "") {
         daogouAPI.addAddress({
           user_id: $scope.USERID,

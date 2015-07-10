@@ -1,40 +1,38 @@
 <!-- 登录模块 -->
-<div class="warning-msg">
-  <div ng-if="usernameerror.error">
-    {{usernameerror.msg}}
+<div class="logindirective">
+  <div class="warning-msg">
+    <div ng-if="usernameerror.error">{{usernameerror.msg}}</div>
+    <div ng-if="codeerror.error">{{codeerror.msg}}</div>
   </div>
-  <div ng-if="codeerror.error">
-    {{codeerror.msg}}
-  </div>
-</div>
-<div class="pay-way" ng-class="{'backfff':login}">
-  <div class="total-cost backfff border-tp">请验证您的手机
-    <div ng-show="login" class="iconfont icon-guanbi closeLogin" ng-click="loginClose()"></div>
-  </div>
-  <form name="myForm" novalidate ng-submit="submit();" class="form">
-    <div class="statusWrap">
-      <div class="way-item" ng-class="{warning:usernameerror.error}">
+  <div class="pay-way" ng-class="{'backfff':login}">
+    <div class="total-cost backfff border-tp">
+      请验证您的手机
+      <div ng-show="login" class="iconfont icon-guanbi closeLogin" ng-click="loginClose()"></div>
+    </div>
+    <form name="myForm" novalidate ng-submit="submit();" class="form">
+      <div class="statusWrap">
+        <div class="way-item" ng-class="{warning:usernameerror.error}">
 
-        <input class="inputclass" placeholder="请输入手机号" ng-model="logindate.username" name="username"
+          <input class="inputclass" placeholder="请输入手机号" ng-model="logindate.username" name="username"
                type="tel"
                ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" required
                ng-blur="usernameerror={error:myForm.username.$dirty && myForm.username.$invalid,msg:'*请填写正确的11位手机号'}"
                ng-focus="usernameerror={error:false,msg:null}"/>
 
-        <div class="warning-icon"></div>
-      </div>
-      <div class="way-item posRelative" ng-class="{warning:codeerror.error}">
-        <input class="inputclass" placeholder="验证码" ng-model="logindate.password" name="code" required
+          <div class="warning-icon"></div>
+        </div>
+        <div class="way-item posRelative" ng-class="{warning:codeerror.error}">
+          <input class="inputclass" placeholder="验证码" ng-model="logindate.password" name="code" required
                ng-pattern="/^[0-9]{6}$/"
                ng-blur="codeerror = {error: myForm.code.$dirty && myForm.code.$invalid, msg:'*请输入正确的六位数字验证码'}"
                ng-focus="codeerror = {error: false, msg:null }"/>
 
-        <div class="warning-icon with-code-block"></div>
-        <button class="yanzhengma yanzhengmared" ng-click="verify()"  ng-disabled="myForm.username.$invalid" ng-class="{'disabledGray':myForm.username.$invalid}" >获取验证码</button>
+          <div class="warning-icon with-code-block"></div>
+          <button class="yanzhengma yanzhengmared" ng-click="verify()"  ng-disabled="myForm.username.$invalid" ng-class="{'disabledGray':myForm.username.$invalid}" >获取验证码</button>
+        </div>
       </div>
-    </div>
-    <label for="submitbtn" ng-class="{'disabled':myForm.$invalid}" class="commonBtn backred">确认登录</label>
-    <input type="submit" class="hidesubmitbtn" id="submitbtn" ng-disabled="myForm.$invalid">
-  </form>
+      <label for="submitbtn" ng-class="{'disabled':myForm.$invalid}" class="commonBtn backred">确认登录</label>
+      <input type="submit" class="hidesubmitbtn" id="submitbtn" ng-disabled="myForm.$invalid"></form>
+  </div>
 </div>
 <!-- 登录模块 -->

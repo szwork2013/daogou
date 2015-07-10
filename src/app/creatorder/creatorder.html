@@ -41,12 +41,12 @@
     </div>
 
     <!-- 登录模块 -->
-    <div login ng-class="{disnone:loginhandle}" loginsuccess="loginsuccess" loginerror="loginerror"></div>
+    <div login ng-hide="loginhandle" loginsuccess="loginsuccess" loginerror="loginerror"></div>
 
 
     <!-- 各种地址模块 -->
-    <!-- <div class="statusWrap" ng-class="{disnone:0}"> -->
-    <div class="statusWrap" ng-class="{disnone:alladdress}">
+    <!-- <div class="statusWrap" ng-hide="0"> -->
+    <div class="statusWrap" ng-hide="alladdress">
       <span class="pickupway">取货方式</span>
 
       <div>
@@ -56,9 +56,9 @@
       </div>
 
       <!--收货人地址-->
-      <div ng-class="{disnone:!express}">
+      <div ng-hide="!express">
         <!-- 第一次写收货地址 -->
-        <div ng-class="{disnone:firstBuyerAddress}">
+        <div ng-hide="firstBuyerAddress">
           <input class="input-address-info" placeholder="收货人姓名" ng-model="firstAddressInput.name"/>
           <input class="input-address-info" placeholder="手机号码" ng-model="firstAddressInput.mobile"/>
 
@@ -84,7 +84,7 @@
         <!-- 第一次写收货地址 -->
 
         <!-- 已经有收货地址 -->
-        <div class="addressInfo remarkpadding" ng-class="{disnone:buyeraddress}">
+        <div class="addressInfo remarkpadding" ng-hide="buyeraddress">
           <div>
             <span class="floatL">{{defaultAddressdata.name}}，{{defaultAddressdata.mobile}} </span>
             <span class="colorBlue floatR font13" ng-click="changeReceiveInfoFunc()">修改</span>
@@ -99,7 +99,7 @@
 
 
       <!-- 实体店地址 -->
-      <div class="addressInfo remarkpadding" ng-class="{disnone:express}">
+      <div class="addressInfo remarkpadding" ng-hide="express">
         <div>
           <span class="floatL width85">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}}  </span>
           <span class="colorBlue floatR font13" ng-click="goGoodsShop()">修改</span>
@@ -113,7 +113,7 @@
           <div class="clearBoth"></div>
         </div>
       </div>
-      <div class="order-time" ng-class="{disnone:express}">
+      <div class="order-time" ng-hide="express">
         预约取货时间（营业时间 {{minDistance.business_begin_time}}-{{minDistance.business_end_time}}）
         <div class="select-time">
           <select id="fetch_day" ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData"
@@ -132,8 +132,8 @@
     <!-- 各种地址模块 -->
 
 
-    <div class="commonBtn" ng-class="{disnone:weixinpay}" ng-click="submitOrder()">微信支付</div>
-    <div class="commonBtn backred" ng-class="{disnone:firstBuyerAddress}" ng-click="addAddress(1)">保存地址</div>
+    <div class="commonBtn" ng-hide="weixinpay" ng-click="submitOrder()">微信支付</div>
+    <div class="commonBtn backred" ng-hide="firstBuyerAddress" ng-click="addAddress(1)">保存地址</div>
 
 
 

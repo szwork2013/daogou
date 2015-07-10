@@ -24,6 +24,7 @@ angular.module('daogou')
 
         //关闭登录框
         $scope.loginClose = function () {
+          //商品详情 需要关闭登陆框  这个跟显示关闭按钮及关闭登陆框有关
           $scope.login = false;
           $(".mengban").hide();
 
