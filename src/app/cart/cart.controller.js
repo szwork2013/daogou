@@ -169,10 +169,12 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       $scope.updateCartProduct(item.id, num,
         function (data, status, headers, config) {
           item.num = data.num;
-          if ($.inArray(item.id, $scope.ids) < 0) {
-            $scope.ids.push(item.id);
+          if (item.seleted) {
+            if ($.inArray(item.id, $scope.ids) < 0) {
+              $scope.ids.push(item.id);
+            }
+            $scope.totalFee += parseFloat(item.price);
           }
-          $scope.totalFee += parseFloat(item.price);
         }, function (data, status, headers, config) {
           var alertPopup = $ionicPopup.alert({
             title: '友情提示',
