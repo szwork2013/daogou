@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-  .directive('login', function ($rootScope, $parse, daogouAPI, $http) {
+  .directive('login', function ($rootScope, $parse, daogouAPI, $http, $ionicPopup) {
     return {
       templateUrl: 'app/components/login/login.html',
       link: function ($scope, iElm, iAttrs, controller) {
@@ -10,42 +10,47 @@ angular.module('daogou')
           password: ''
         };
         /*//关闭登录框
-        $scope.loginClose = function () {
-          //商品详情 需要关闭登陆框  这个跟显示关闭按钮及关闭登陆框有关
-          $scope.login = false;
-          $(".mengban").hide();
-          if (typeof($scope.timer) === "number") {
-            clearInterval($scope.timer);
-          }
-        };*/
+         $scope.loginClose = function () {
+         //商品详情 需要关闭登陆框  这个跟显示关闭按钮及关闭登陆框有关
+         $scope.login = false;
+         $(".mengban").hide();
+         if (typeof($scope.timer) === "number") {
+         clearInterval($scope.timer);
+         }
+         };*/
 
 
         function getverificationcode(telenum) {
-          var templatetext = encodeURIComponent("lily商务女装：验证码：%s,请勿将验证码透露给任何人");
+          var templatetext = encodeURIComponent($rootScope.BRANDINFO.brand_name + "：验证码：%s,请勿将验证码透露给任何人");
           daogouAPI.verificationcode({
             codeTypes: "MOBILE",
             account: telenum,
             template: templatetext
           }, function (data, status, headers, config) {
-            console.log(["获取验证码成功", data]);
           }, function (data, status, headers, config) {
-            console.log(["获取验证码失败", data]);
+            var alertPopup = $ionicPopup.alert({
+              title: '友情提示',
+              template: '获取验证码太过频繁，请10分钟后再试',
+              cssClass: 'alerttextcenter',
+              okText: '确定',
+              okType: 'button-energized'
+            });
+            alertPopup.then(function (res) {
+              console.log('Thank you for not eating my delicious ice cream cone');
+            });
           });
-
         }
 
         //获取验证码
         $scope.verify = function () {
-
-          $(".yanzhengma").addClass("clickdown").attr({"disabled": "disabled"}).text("重新获取验证码(60s)");
+          $(".yanzhengma").addClass("clickdown").removeClass("yanzhengmared").attr({"disabled": "disabled"}).text("重新获取验证码(60s)");
           var remainTime = 60;
           $scope.timer = setInterval(function () {
             remainTime--;
-            console.log(["$scope.timer", $scope.timer]);
-            $(".yanzhengma").addClass("clickdown").attr({"disabled": "disabled"}).text("重新获取验证码(" + remainTime + "s)");
+            $(".yanzhengma").text("重新获取验证码(" + remainTime + "s)");
             if (remainTime <= 0) {
               clearInterval($scope.timer);
-              $(".yanzhengma").removeClass("clickdown").text("获取验证码").removeAttr("disabled");
+              $(".yanzhengma").removeClass("clickdown").addClass("yanzhengmared").text("获取验证码").removeAttr("disabled");
             }
           }, 1000);
           //判断是否注册用户  非注册用户需帮用户注册
@@ -106,6 +111,7 @@ angular.module('daogou')
           var getter = $parse(iAttrs.loginerror)
           var loginerror = getter($scope);
           loginerror(data);
+
         }
       }
     };
