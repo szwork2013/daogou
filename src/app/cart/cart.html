@@ -21,7 +21,7 @@
       pulling-text="下拉更新..."
       on-refresh="pageFunc.refreshproductList()">
       </ion-refresher> -->
-    <div class="statusWrap">
+    <div class="statusWrap" ng-show="cartProductListData.length>0">
       <div class="shop">
         <div class="shop-name countDel">{{BRANDINFO.brand_name}}</div>
         <div class="edit" ng-show="edithandle" ng-click="edit()">编辑</div>
@@ -54,7 +54,11 @@
         </li>
       </ul>
     </div>
+    <div class="emptyCart" ng-show="cartProductListData.length==0">
+      <h1>购物车快饿瘪了T.T</h1>
+      主人快给我挑点宝贝吧
 
+    </div>
     <ion-infinite-scroll
       ng-if="hasMoreOrder"
       immediate-check="false"
@@ -65,7 +69,7 @@
   </ion-content>
   <!-- 悬浮点击打开个人中心、购物车、导购 -->
   <div float-center></div>
-  <ion-footer-bar align-title="left" class="footer" ng-show="edithandle">
+  <ion-footer-bar align-title="left" class="footer" ng-show="edithandle&&cartProductListData.length>0">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
         <i class="iconfont icon-gou bggou font24 selected-img All"
@@ -76,11 +80,11 @@
       </li>
     </ul>
   </ion-footer-bar>
-  <div class="mengban" ></div>
+  <div class="mengban"></div>
 
   <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;" ng-show="login"
        loginsuccess="loginsuccess" loginerror="loginerror"></div>
-  <ion-footer-bar align-title="left" class="footer" ng-show="finishhandle">
+  <ion-footer-bar align-title="left" class="footer" ng-show="finishhandle&&cartProductListData.length>0">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
         <i class="iconfont icon-gou bggou font24 selected-img All"
