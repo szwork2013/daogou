@@ -69,8 +69,10 @@ product.controller('productDetailCtrl',
      *关闭选取商品SKU
      */
     $scope.propertyClose = function () {
-      $(".mengban,.chooseProductInfoWarp ").hide();
-      $scope.login = false;
+      if ($scope.USERINFO != null) {
+        $(".mengban,.chooseProductInfoWarp ").hide();
+        $scope.login = false;
+      }
     };
     /**
      * 选择产品规格，显示是否有剩余
@@ -145,7 +147,6 @@ product.controller('productDetailCtrl',
           okType: 'button-energized'
         });
         alertPopup.then(function (res) {
-          console.log('Thank you for not eating my delicious ice cream cone');
         });
 
       }
@@ -195,7 +196,16 @@ product.controller('productDetailCtrl',
      *
      */
     $scope.propertyShowOrder = function () {
-      propertyMenu();
+      var userInfo = window.sessionStorage.getItem("USERINFO");
+      if (userInfo == null) {
+        $scope.login = true;
+        $(".mengban").show();
+      }
+      else {
+        $scope.USERINFO = JSON.parse(userInfo);
+        $scope.USERID = $scope.USERINFO.id;
+        propertyMenu();
+      }
       $scope.goCart = true;
       $scope.goOrder = false;
     }
@@ -204,7 +214,6 @@ product.controller('productDetailCtrl',
      * 去我的订单
      */
     $scope.goToOrder = function () {
-      console.log($scope.productOrder);
       $scope.productOrder.title = $scope.productDetailData.title;
       $scope.productOrder.freight = $scope.productDetailData.freight;
       $scope.productOrder.picUrlArr = $scope.productDetailData.picUrlArr;
@@ -224,9 +233,6 @@ product.controller('productDetailCtrl',
         "bring_guider_id": $rootScope.GUIDID
       })
         .success(function (data) {
-          $scope.login = false;//是否显示登录页面
-          $(".mengban").hide();
-          $scope.propertyClose();
           $state.go("cart", {"userid": $scope.USERID, "brandid": $rootScope.BRANDID});
         })
         .error(function (data) {
@@ -235,13 +241,10 @@ product.controller('productDetailCtrl',
 
 
     $scope.loginsuccess = function (data) {
-      $scope.login = false; //是否显示登录页面
-      $(".mengban").hide();
-
+     $scope.propertyClose();
     };
     $scope.loginerror = function (data) {
       console.log(['登录失败回调', data])
     };
   }
 )
-;
