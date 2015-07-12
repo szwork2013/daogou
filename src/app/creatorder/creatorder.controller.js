@@ -72,7 +72,7 @@ createOrder.controller('creatorderCtrl',
       } else {
         $rootScope.ListTwoStores = [];
         getLocation(function (lng, lat) {
-          daogouAPI.shopAddressAll('/brands/' + $scope.productOrders[0].brand_id + '/stores/store-fetch', {
+          daogouAPI.shopAddressAll('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
             user_id: $scope.USERID,
             longitude: lng,
             latitude: lat
@@ -82,7 +82,7 @@ createOrder.controller('creatorderCtrl',
           }, function (data, status, headers, config) {
           });
         }, function () {
-          daogouAPI.shopAddressId('/brands/' + $scope.productOrders[0].brand_id + '/stores/store-fetch', {
+          daogouAPI.shopAddressId('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
             user_id: $scope.USERID
           }, function (data, status, headers, config) {
             getTwoStore(data);
@@ -142,7 +142,7 @@ createOrder.controller('creatorderCtrl',
     $scope.fetchTime.fetchhour = "";
     function getFetchTime() {
       daogouAPI.fetchTime({
-        brand_id: $scope.productOrders[0].brand_id,
+        brand_id: $rootScope.BRANDID,
         user_id: $scope.USERID,
         store_id: $rootScope.minDistance.id
       }, function (data, status, headers, config) {
@@ -180,7 +180,7 @@ createOrder.controller('creatorderCtrl',
           {
             'buyer_user_id': $scope.USERID,
             'bring_guider_id': $rootScope.GUIDID,
-            'brand_id': parseInt($scope.productOrders[0].brand_id),
+            'brand_id': parseInt($rootScope.BRANDID),
             'buyer_memo': $scope.buyerMessage.buyer_memo,
             'pay_type': 'WEIXIN',
             'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
@@ -201,7 +201,7 @@ createOrder.controller('creatorderCtrl',
             //创建订单成功调用微信支付
             WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
               // alert('支付成功');
-              alert(JSON.stringify(data));
+              // alert(JSON.stringify(data));
               $state.go('orderDetail', {tid: orderdata.tid})
             });
           })
@@ -217,7 +217,7 @@ createOrder.controller('creatorderCtrl',
           {
             'buyer_user_id': $scope.USERID,
             'bring_guider_id': $rootScope.GUIDID,
-            'brand_id': parseInt($scope.productOrders[0].brand_id),
+            'brand_id': parseInt($rootScope.BRANDID),
             'buyer_memo': $scope.buyerMessage.buyer_memo,
             'pay_type': 'WEIXIN',
             'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
@@ -267,7 +267,7 @@ createOrder.controller('creatorderCtrl',
       console.log(["$rootScope.ListTwoStores", $rootScope.ListTwoStores]);
       $state.go('goodsShop', {
         'userid': $scope.USERID,
-        'brandid': $scope.productOrders[0].brand_id,
+        'brandid': $rootScope.BRANDID,
         'refunds': 0
       });
     }

@@ -33,7 +33,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
       per_page: pagesize,
       show_orders: true
     }, function (data, status, headers, config) {
-      $rootScope.BRANDID = data[0].brand_id;
+      // $rootScope.BRANDID = data[0].brand_id;
       angular.forEach(data, function (item, index) {
         switch (item.status) {
           case "WAIT_BUYER_PAY":

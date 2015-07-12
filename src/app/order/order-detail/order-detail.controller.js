@@ -32,6 +32,7 @@ order.controller('orderDetailCtrl',
 
     $http.get(URLPort + "/trades/" + $stateParams.tid + "?show_orders=true")
       .success(function (data) {
+        console.log(['orderdetail',data])
         switch (data.pay_type) {
           case "WEIXIN":
             data.pay_typeCN = "微信支付";
