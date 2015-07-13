@@ -29,18 +29,14 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
     });
   }])
   .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
-
     // wxconfig();
 
-    // $ionicConfigProvider.backButton.text("返回");
     $ionicConfigProvider.views.maxCache(0);
     $ionicConfigProvider.views.forwardCache(false);
-    // $ionicConfigProvider.templates.maxPrefetch(0);
 
     $stateProvider
       .state('productDetail', {
         url: '/productDetail/:detailId',
-        // url: '/productDetail',
         templateUrl: 'app/product/product-detail/product-detail.html',
         controller: 'productDetailCtrl'
       })
@@ -50,12 +46,12 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
         controller: 'productListCtrl'
       })
       .state('cart', {
-        url: '/cart/:userid/:brandid',
+        url: '/cart',
         templateUrl: 'app/cart/cart.html',
         controller: 'cartCtrl'
       })
       .state('orderList', {
-        url: '/orderList/:userid',
+        url: '/orderList',
         templateUrl: 'app/order/order-list/order-list.html',
         controller: 'orderListCtrl'
       })
@@ -79,7 +75,6 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
         templateUrl: 'app/return-goods/logisticsInfo.html'
       })
       .state('creatorder', {
-        // url: '/creatorder/:title/:price/:skudetail/:skuid/:num/:freight/:brandid',
         url: '/creatorder',
         templateUrl: 'app/creatorder/creatorder.html',
         controller: 'creatorderCtrl'

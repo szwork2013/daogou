@@ -101,6 +101,7 @@ angular.module('daogou')
           var getter = $parse(iAttrs.loginsuccess);
           var loginsuccess = getter($scope);
           loginsuccess(data);
+          window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
         }
 
         /**

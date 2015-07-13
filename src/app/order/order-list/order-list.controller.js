@@ -237,7 +237,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
    * 购物车订单列表切换
    */
   $scope.goCart = function () {
-    $state.go("cart", {"userid": $scope.USERINFO.id, "brandid": $rootScope.BRANDID});
+    $state.go("cart",{});
   };
   /**
    * 关闭蒙版

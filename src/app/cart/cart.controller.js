@@ -310,7 +310,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       if ($scope.USERINFO == null) {
         $scope.showLogin();
       } else {
-        $state.go("orderList", {"userid": $scope.USERINFO.id});
+        $state.go("orderList");
       }
     }
 

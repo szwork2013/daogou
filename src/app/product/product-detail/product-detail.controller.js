@@ -233,7 +233,7 @@ product.controller('productDetailCtrl',
         "bring_guider_id": $rootScope.GUIDID
       })
         .success(function (data) {
-          $state.go("cart", {"userid": $scope.USERID, "brandid": $rootScope.BRANDID});
+          $state.go("cart", { });
         })
         .error(function (data) {
         })
