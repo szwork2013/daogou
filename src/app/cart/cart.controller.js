@@ -67,7 +67,15 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         if (data.length >= pagesize) {
           pageindex++;
         } else {
+          //不满足一页，数量5的时候，及不加载数据了
           $scope.hasMoreOrder = false;
+          //再判断购物车中是否有产品，如果没有产品，则将小红点影藏
+          //此判断与login中的小红点判断不冲突，因为这个是删除购物车
+          //两者搭配方能实时显示小红点的显示与否
+          if(data.length=0){
+            $(".redPoint").hide();
+            $(".redPointCart").hide();
+          }
         }
         $scope.$broadcast('scroll.infiniteScrollComplete');
       }, function (data, status, headers, config) {
@@ -77,7 +85,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
     // 登录成功回调
     $scope.loginsuccess = function (data) {
       $scope.hideLogin();
-      $(".redPoint").show();
       //回调再获取用户信息
       var userInfo = window.sessionStorage.getItem("USERINFO");
       $scope.USERINFO = JSON.parse(userInfo);
