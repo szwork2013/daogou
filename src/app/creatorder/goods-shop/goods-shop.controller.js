@@ -5,13 +5,12 @@ angular.module('daogou')
     $log.debug('goodsShopCtrl');
     $scope.shopaddressData = [];
     $scope.shopaddressData = $rootScope.ListTwoStores;
-    
+
     var userInfo = window.sessionStorage.getItem("USERINFO");
     $scope.USERINFO = JSON.parse(userInfo);
     $scope.USERID = $scope.USERINFO.id;
 
     $scope.defaultstorefunc = function (store_id, index) {
-      console.log(['store_id', store_id]);
       daogouAPI.defaultstore({
         brand_id: $stateParams.brandid,
         user_id: $scope.USERID,
@@ -61,8 +60,8 @@ angular.module('daogou')
         }
       }
       console.log(["$stateParams.refunds", $stateParams.refunds]);
-      
-      history.go(-1);      
+
+      history.go(-1);
       // if ($stateParams.refunds === "1") {
       //   console.log(["$rootScope.refundsTid", $rootScope.refundsTid])
       //   console.log(["$rootScope.refundsOid", $rootScope.refundsOid])

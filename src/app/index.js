@@ -80,12 +80,12 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
         controller: 'creatorderCtrl'
       })
       .state('goodsShop', {
-        url: '/goodsShop/:userid/:brandid/:refunds',
+        url: '/goodsShop/:refunds',
         templateUrl: 'app/creatorder/goods-shop/goods-shop.html',
         controller: 'goodsShopCtrl'
       })
       .state('changeReceiveInfo', {
-        url: '/changeReceiveInfo/:userid',
+        url: '/changeReceiveInfo',
         templateUrl: 'app/creatorder/change-receive-info/change-receive-info.html',
         controller: 'changeReceiveInfoCtrl'
       })
@@ -100,7 +100,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
         controller: 'successPayCtrl'
       })
       .state('newAddress', {
-        url: '/newAddress/:userid/:addressid',
+        url: '/newAddress/:addressid',
         templateUrl: 'app/creatorder/new-address/new-address.html',
         controller: 'newAddressCtrl'
       })
@@ -145,11 +145,8 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
      state=123#wechat_redirect
      */
 
-//导购id
     $rootScope.GUIDID = parseInt(getRequest('guider_id'));
-//brand_id
     $rootScope.BRANDID = parseInt(getRequest('brand_id'));
-
     /**
      * 门店信息
      */
@@ -162,9 +159,13 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
     daogouAPI.checkServices(function (data) {
       $rootScope.SERVICES = data;
     })
-//是app访问还是微信访问   true是微信  false是app
+    /**
+     * 是app访问还是微信访问   true是微信  false是app
+     */
     $rootScope.ISWX = (getRequest('share') === 'true' ? true : false);
-//为true时进入订单详情后直接调用支付
+    /**
+     * ISWX为true时进入订单详情后直接调用支付
+     */
     $rootScope.PAYNOW = getRequest('code') ? true : false;
 
     $rootScope.GUIDINFO = {};
@@ -177,13 +178,9 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
     /*===========此注释不要删除=============
      调用daogouAPI.isLogin()后
      会生成以下全局变量
-     $rootScope.USERINFO.id          userid
-     $rootScope.USERINFO.mobile          usermobile
+     $rootScope.USERINFO.id        userid
+     $rootScope.USERINFO.mobile     usermobile
      */
-
-
-    console.log(window.location)
-
     //微信注册
     WXconfig($rootScope.BRANDID, function (configdata) {
       console.log(['微信config', configdata]);
@@ -231,11 +228,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
           'openCard'
         ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
       });
-
-
     });
-
   })
-
 
 ;

@@ -2,12 +2,11 @@
 
 angular.module('daogou')
 .controller('changeReceiveInfoCtrl', ['$ionicPopup','$scope', '$log', '$http', 'URLPort', '$stateParams', 'daogouAPI', '$state', '$rootScope', function ($ionicPopup,$scope, $log, $http, URLPort, $stateParams, daogouAPI, $state, $rootScope) {
-    $log.debug('changeReceiveInfoCtrl');
     var URLPort = URLPort();
     var userInfo = window.sessionStorage.getItem("USERINFO");
       $scope.USERINFO = JSON.parse(userInfo);
       $scope.USERID = $scope.USERINFO.id;
-     
+
 
     $http.get(URLPort + '/users/' + $scope.USERID + '/shipping-addresses')
       .success(function (data) {
@@ -91,11 +90,11 @@ angular.module('daogou')
     }
 
     $scope.editAddressFunc = function (addressId) {
-      $state.go('newAddress', {userid: $scope.USERID, addressid: addressId});
+      $state.go('newAddress', {addressid: addressId});
     }
 
     $scope.gonewAddress = function () {
-      $state.go('newAddress', {userid: $scope.USERID});
+      $state.go('newAddress');
     }
 
 

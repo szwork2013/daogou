@@ -267,13 +267,12 @@ createOrder.controller('creatorderCtrl',
       console.log(["$rootScope.ListTwoStores", $rootScope.ListTwoStores]);
       $state.go('goodsShop', {
         'userid': $scope.USERID,
-        'brandid': $rootScope.BRANDID,
         'refunds': 0
       });
     }
     $scope.changeReceiveInfoFunc = function () {//收货人地址列表页面
       console.log(['userid', $scope.USERID]);
-      $state.go('changeReceiveInfo', {'userid': $scope.USERID});
+      $state.go('changeReceiveInfo', {});
     }
     //限制备注最长200个字符
     $scope.limitText = function () {

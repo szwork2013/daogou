@@ -147,7 +147,7 @@ angular.module('goodsReturn', ['ionic'])
     }
 
     $scope.goGoodsShop = function () {//门店地址列表页面
-      $state.go('goodsShop', {'userid': $scope.USERID, 'brandid': $scope.refundData.brand_id, 'refunds': 1});
+      $state.go('goodsShop', {'userid': $scope.USERID, 'refunds': 1});
     }
     //通过点击选中圆圈选中
     $scope.changeCheck = function (index) {
