@@ -166,9 +166,14 @@ createOrder.controller('creatorderCtrl',
     }
 
 
-    $scope.buyerMessage = {
-      'buyer_memo': ''
-    };
+    if($rootScope.buyerMessage){
+
+    }else{
+        $rootScope.buyerMessage = {
+          'buyer_memo': ''
+        };
+    }
+     
 
 
     $scope.submitOrder = function () {
@@ -181,7 +186,7 @@ createOrder.controller('creatorderCtrl',
             'buyer_user_id': $scope.USERID,
             'bring_guider_id': $rootScope.GUIDID,
             'brand_id': parseInt($rootScope.BRANDID),
-            'buyer_memo': $scope.buyerMessage.buyer_memo,
+            'buyer_memo': $rootScope.buyerMessage.buyer_memo,
             'pay_type': 'WEIXIN',
             'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
             'receiver_state': $rootScope.defaultAddressdata.state,
@@ -218,7 +223,7 @@ createOrder.controller('creatorderCtrl',
             'buyer_user_id': $scope.USERID,
             'bring_guider_id': $rootScope.GUIDID,
             'brand_id': parseInt($rootScope.BRANDID),
-            'buyer_memo': $scope.buyerMessage.buyer_memo,
+            'buyer_memo': $rootScope.buyerMessage.buyer_memo,
             'pay_type': 'WEIXIN',
             'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
             'fetch_name': "",
@@ -276,8 +281,8 @@ createOrder.controller('creatorderCtrl',
     }
     //限制备注最长200个字符
     $scope.limitText = function () {
-      if ($scope.buyerMessage.buyer_memo.length > 200) {
-        $scope.buyerMessage.buyer_memo = $scope.buyerMessage.buyer_memo.substring(0, 200);
+      if ($rootScope.buyerMessage.buyer_memo.length > 200) {
+        $rootScope.buyerMessage.buyer_memo = $rootScope.buyerMessage.buyer_memo.substring(0, 200);
       }
     }
 

@@ -74,7 +74,9 @@
 
       <div class="iconfont icon-guanbi2 close2 close3top3" ng-click="clearZip()"></div>
       <input class="input-address-info border-bt0" placeholder="邮编" ng-model="newAddressInput.zip" name="zip"
-             ng-maxlength="6" ng-blur="userziperror={error:myForm.zip.$dirty && myForm.zip.$invalid,msg:'请输入16位以内的邮编'}"
+             ng-maxlength="6" 
+             ng-pattern="/^[1-9]\d{5}$/"
+             ng-blur="userziperror={error:myForm.zip.$dirty && myForm.zip.$invalid,msg:'请输入6位以内的邮编'}"
              ng-focus="userziperror={error:false,msg:null}"/>
 
       <div class="warning-icon2 warning4top4" ng-if="userziperror.error"></div>

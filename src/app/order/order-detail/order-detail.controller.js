@@ -68,7 +68,7 @@ order.controller('orderDetailCtrl',
             data.statusCN = "已发货（快递发货）";
             $scope.expressReceiver = true;
             $scope.logistics = true;
-            $scope.cancelOrder = true;
+            // $scope.cancelOrder = true;
             $scope.refund = true;
             $scope.payWay = true;
             $scope.payNo = true;
