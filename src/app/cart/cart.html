@@ -47,7 +47,8 @@
 
           <div class="countNumCount" ng-show="finishhandle">
             <img src="assets/images/del.png" class="countImg" ng-click="delNum(item)">
-            <input class="num" ng-model="item.num"/>
+            <div class="num">{{item.num}}</div>
+            <!-- <input class="num" ng-model="item.num"/> -->
             <img src="assets/images/add.png" class="countImg" ng-click="addNum(item)">
           </div>
           <div class="countNum" ng-show="edithandle">X{{item.num}}</div>
