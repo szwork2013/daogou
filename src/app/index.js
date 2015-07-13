@@ -1,39 +1,20 @@
 'use strict';
 
-// angular.module('daogou', ['ionic','ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ui.router'])
-//   .config(function ($stateProvider, $urlRouterProvider) {
-//     $stateProvider
-//       .state('home', {
-//         url: '/',
-//         templateUrl: 'app/main/main.html',
-//         controller: 'MainCtrl'
-//       });
-
-//     $urlRouterProvider.otherwise('/');
-//     console.log(0)
-//   })
-// ;
-
 angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'createOrder', 'goodsReturn', 'payWay', 'guide'])
   .run(['$ionicPlatform', function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
-      // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-      // for form inputs)
       if (window.cordova && window.cordova.plugins.Keyboard) {
         cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
       }
       if (window.StatusBar) {
-        // org.apache.cordova.statusbar required
         StatusBar.styleDefault();
       }
     });
   }])
   .config(function ($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     // wxconfig();
-
     $ionicConfigProvider.views.maxCache(0);
     $ionicConfigProvider.views.forwardCache(false);
-
     $stateProvider
       .state('productDetail', {
         url: '/productDetail/:detailId',
@@ -121,7 +102,6 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
     // $urlRouterProvider.otherwise('/login');
 
     //http://codepen.io/ahsx/pen/mDcEd
-
     function getRequest(name) {
       var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
       var r = window.location.search.substr(1).match(reg);
@@ -152,13 +132,13 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
      */
     daogouAPI.getBrandInfo(function (data) {
       $rootScope.BRANDINFO = data;
-    })
+    });
     /**
      * 是否支持门店取货和退货
      */
     daogouAPI.checkServices(function (data) {
       $rootScope.SERVICES = data;
-    })
+    });
     /**
      * 是app访问还是微信访问   true是微信  false是app
      */
@@ -171,8 +151,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
     $rootScope.GUIDINFO = {};
     daogouAPI.getGuidInfo(function (data) {
       $rootScope.GUIDINFO = data;
-    })
-
+    });
 
     daogouAPI.isLogin();
     /*===========此注释不要删除=============
