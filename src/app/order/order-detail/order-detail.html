@@ -95,9 +95,9 @@
     <div class="statusWrap">
       <ul class="list marginbt0">
         <li class="item item-checkbox product-item backfff" ng-repeat="item in orderDetailData.orders">
-          <img ng-src="{{item.pics[0]}}" class="product-img">
+          <img ng-src="{{item.pics[0]}}" class="product-img"  ng-click="goDetail(item.num_iid)">
 
-          <div class="paramenters">
+          <div class="paramenters"  ng-click="goDetail(item.num_iid)">
             <div class="name">{{item.title}}</div>
             <div class="paras">{{item.sku_properties_name}}</div>
           </div>

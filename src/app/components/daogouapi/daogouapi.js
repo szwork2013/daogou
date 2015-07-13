@@ -486,7 +486,7 @@ angular.module('daogou')
       }
       var action = '/accounts/exists';
       var data = {
-        username: username,
+        username: username
       };
       daogouAPI.get(daogouAPI.apiurl(action, data), scallback, ecallback);
     }
@@ -496,6 +496,7 @@ angular.module('daogou')
       var action = '/accounts/current';
       var data = '';
       daogouAPI.get(daogouAPI.apiurl(action, data), function (data) {
+        data.username=data.mobile;
         daogouAPI.getUserInfo(data, scallback, ecallback)
       }, ecallback);
     }
