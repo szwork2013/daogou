@@ -102,7 +102,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
 
   $scope.loginsuccess = function (data) {
     $scope.propertyClose();
-    $(".redPoint").show();
+    // $(".redPoint").show();
     //回调再获取用户信息
     var userInfo = window.sessionStorage.getItem("USERINFO");
     $scope.USERINFO = JSON.parse(userInfo);
