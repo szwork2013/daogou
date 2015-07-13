@@ -7,7 +7,7 @@
                  <span class="call">{{item.mobile}} </span>
                  <div class="clearBoth"></div>
              </div>
-             <div class="address"><span ng-show="{{item.is_default}}">[默认]&nbsp;&nbsp;&nbsp;</span>{{item.state}}{{item.city}}{{item.district}}{{item.address}}</div>
+             <div class="address"><span ng-show="item.is_default">[默认]&nbsp;&nbsp;&nbsp;</span>{{item.state}}{{item.city}}{{item.district}}{{item.address}}</div>
          </div>
          <div class="default-shop">
             <div class="default" ng-click="setDefaultAddress(item.id,$index)">
@@ -19,6 +19,6 @@
       </div>
 
       <div class="commonBtn backred" ng-click="gonewAddress()">添加新地址</div>
-     
+
     </ion-content>
 </ion-view>
