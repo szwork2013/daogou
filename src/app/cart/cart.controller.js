@@ -207,7 +207,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      *   通过点击选中圆圈选中
      */
     $scope.changeCheck = function (item) {
-      console.log(['1231',item])
       item.seleted = !item.seleted;
       var isAll = true;
       $scope.cartProductListData.filter(function (item) {
