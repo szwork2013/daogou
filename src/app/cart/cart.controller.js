@@ -143,15 +143,15 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
             }
           },
           function (data, status, headers, config) {
-            var alertPopup = $ionicPopup.alert({
-              title: '友情提示',
-              template: '受不了了，宝贝不能再少了哦',
-              cssClass: 'alerttextcenter',
-              okText: '确定',
-              okType: 'button-energized'
-            });
-            alertPopup.then(function (res) {
-            });
+            // var alertPopup = $ionicPopup.alert({
+            //   title: '友情提示',
+            //   template: '受不了了，宝贝不能再少了哦',
+            //   cssClass: 'alerttextcenter',
+            //   okText: '确定',
+            //   okType: 'button-energized'
+            // });
+            // alertPopup.then(function (res) {
+            // });
 
           });
       } else {
@@ -207,6 +207,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      *   通过点击选中圆圈选中
      */
     $scope.changeCheck = function (item) {
+      console.log(['1231',item])
       item.seleted = !item.seleted;
       var isAll = true;
       $scope.cartProductListData.filter(function (item) {
@@ -217,14 +218,16 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       $scope.Allseleted = isAll;
       if (item.seleted) {
         $scope.totalFee += parseFloat(item.price) * item.num;
-        $scope.totalNum++;
+        //选择的时候加上当前的数量
+        $scope.totalNum+=item.num;
         if ($.inArray(item.id, $scope.ids) < 0) {
           $scope.ids.push(item.id);
         }
       }
       else {
         $scope.totalFee -= parseFloat(item.price) * item.num;
-        $scope.totalNum--;
+        //取消选择时候减去当前的数量
+        $scope.totalNum-=item.num;
         $scope.ids.splice($.inArray(item.id, $scope.ids), 1);
       }
     };
