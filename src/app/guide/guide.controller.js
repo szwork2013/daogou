@@ -8,7 +8,7 @@ angular.module('guide', ['ionic'])
     var pagesize = 8;
     var guiderId = $rootScope.GUIDID;
     var brandId = $rootScope.BRANDID;
-
+    $scope.type ="list";
     var userInfo = window.sessionStorage.getItem("USERINFO");
     if (userInfo == null) {
     }
@@ -72,6 +72,13 @@ angular.module('guide', ['ionic'])
      */
     $scope.productDetail = function (id) {
       $state.go("productDetail", {detailId: id});
+    }
+    /**
+     * 宫格和列表切换
+     */
+    $scope.changeStyle = function (type) {
+      $scope.type = type;
+      $("#listData").toggleClass("img")
     }
   })
 ;

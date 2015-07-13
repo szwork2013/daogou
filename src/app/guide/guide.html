@@ -6,9 +6,12 @@
       <span class="chatname">微信号:{{GUIDINFO.weixin_no}}</span>
       <span class="myorders" ng-click="goOrderList()">我的订单</span>
       <span class="shopname">{{BRANDINFO.brand_name}} | {{GUIDINFO.store_address}}</span>
+      <a class="view-style"  ng-show="type=='list'" ng-click="changeStyle('form')"></a>
+      <a class="view-style list" ng-show="type=='form'" ng-click="changeStyle('list')"></a>
+
     </div>
     <div class="statusWrap">
-      <ul class="list marginbt0">
+      <ul id="listData" class="list marginbt0">
         <li class="item item-checkbox product-item" ng-repeat="item in daogouProductListData"
             ng-click="productDetail(item.num_iid)">
           <label class="checkbox disnone">

@@ -178,7 +178,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
     })
 
 
-    daogouAPI.isLogin()
+    daogouAPI.isLogin();
     /*===========此注释不要删除=============
      调用daogouAPI.isLogin()后
      会生成以下全局变量
