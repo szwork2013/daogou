@@ -308,7 +308,22 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         }
       });
       window.sessionStorage.setItem("productOrders", JSON.stringify(productOrders));
-      $state.go("creatorder");
+      // 如果选择的数量为0，不允许进入购物车
+      // console.log(['CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',productOrders.length]);
+      if(productOrders.length>0){
+        $state.go("creatorder");
+      }else{
+        var alertPopup = $ionicPopup.alert({
+            title: '友情提示',
+            template: '请选择您要购买的宝贝~亲',
+            cssClass: 'alerttextcenter',
+            okText: '确定',
+            okType: 'button-energized'
+          });
+          alertPopup.then(function (res) {
+          });
+
+      }
     };
     /**
      *   购物车 订单列表切换

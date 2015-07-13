@@ -156,19 +156,33 @@ product.controller('productDetailCtrl',
      */
     $scope.checknum = function () {
       if ($scope.productOrder.num > $scope.productOrder.real_quantity) {
-        var mypopup = $ionicPopup.show({
-          title: "提示",
-          template: "您所填写的商品数量超过库存",
-          buttons: [{
-            text: "确定",
-            type: "button-energized"
-          }]
+        //如果购物车的数量大于最大数量，自动输出最大数量
+        $scope.productOrder.num = $scope.productOrder.real_quantity;
+        var alertPopup = $ionicPopup.alert({
+          title: '友情提示',
+          template: '您所填写的商品数量超过库存',
+          cssClass: 'alerttextcenter',
+          okText: '确定',
+          okType: 'button-energized'
+        });
+        alertPopup.then(function (res) {
+          console.log('Thank you for not eating my delicious ice cream cone');
         });
       }
       if ($scope.productOrder.num < 1) {
         if ($scope.productOrder.num === "") {
         } else {
           $scope.productOrder.num = 1;
+          var alertPopup = $ionicPopup.alert({
+          title: '友情提示',
+          template: '至少得选择一个哦~亲',
+          cssClass: 'alerttextcenter',
+          okText: '确定',
+          okType: 'button-energized'
+          });
+          alertPopup.then(function (res) {
+            console.log('Thank you for not eating my delicious ice cream cone');
+          });
         }
 
       }
