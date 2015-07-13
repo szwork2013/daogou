@@ -33,7 +33,7 @@
       <div class="iconfont icon-guanbi2 close2" ng-click="clearName()"></div>
       <div class="warning-icon2" ng-if="usernameerror.error"></div>
 
-      <input class="input-address-info border-bt"
+      <input class="input-address-info border-bt padding-left15"
              placeholder="手机号码" ng-model="newAddressInput.mobile" name="mobile" type="tel"
              ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" required
              ng-blur="usermobileerror={error:myForm.mobile.$dirty && myForm.mobile.$invalid,msg:'请填写正确的11位手机号'}"
@@ -82,7 +82,7 @@
 
     </div>
     <label for="submitaddressbtn" class="commonBtn backred margin-tp40" ng-class="{'disabled':myForm.$invalid}">
-      添加地址</label>
+      保存</label>
     <input type="submit" class="hidesubmitbtn2" id="submitaddressbtn" ng-disabled="myForm.$invalid">
   </form>
 </div>
