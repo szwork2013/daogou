@@ -32,7 +32,7 @@ order.controller('orderDetailCtrl',
 
     $http.get(URLPort + "/trades/" + $stateParams.tid + "?show_orders=true")
       .success(function (data) {
-        console.log(['orderdetail',data])
+        console.log(['orderdetail', data])
         switch (data.pay_type) {
           case "WEIXIN":
             data.pay_typeCN = "微信支付";
@@ -175,4 +175,11 @@ order.controller('orderDetailCtrl',
       WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
       });
     }
+    /**
+     * 商品详情
+     * @param id
+     */
+    $scope.goDetail = function (id) {
+      $state.go("productDetail", {detailId: id});
+    };
   });
