@@ -29,6 +29,7 @@ product.controller('productDetailCtrl',
             sliderpointcolor: "#fa9d00"
           });
         }, 200);
+        console.log(["产品详情data",data]);
         $scope.productDetailData = data;
         $scope.productDetailData.realquantity = 0;//剩余库存数量
         $scope.productDetailData.picUrlArr = $scope.productDetailData.pic_url.split(',');

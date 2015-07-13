@@ -127,19 +127,11 @@ angular.module('daogou')
 			//根据选择的省查询市
 			$scope.provinceSelect = function (dataobj) {
 			  console.log(['selectcode', dataobj.code]);
-			  if (typeof($scope.editData) === "undefined") {//添加地址
-			    ;
-			  } else {
-			    if (dataobj.code === $scope.editData.state_code) {
-			      ;
-			    } else {
-			      $("#editCity").text("-- 请选择市 --");
-			      $scope.newAddressInput.cityInfo = {};
-			      $("#editDistrict").text("-- 请选择区、县 --");
-			      $scope.newAddressInput.districtInfo = {};
-			    }
-			  }
-
+		      $("#editCity").text("-- 请选择市 --");
+		      $scope.newAddressInput.cityInfo = {};
+		      $("#editDistrict").text("-- 请选择区、县 --");
+		      $scope.newAddressInput.districtInfo = {};
+			    
 			  daogouAPI.codegetarea({
 			    areacode: dataobj.code
 			  }, function (data, status, headers, config) {
@@ -152,15 +144,10 @@ angular.module('daogou')
 
 			//根据选择的市查询地区
 			$scope.citySelect = function (dataobj) {
-			  if (typeof($scope.editData) === "undefined") {//添加地址
-			  } else {
-			    if (dataobj.code === $scope.editData.city_code) {
-			      ;
-			    } else {
-			      $("#editDistrict").text("-- 请选择区、县 --");
-			      $scope.newAddressInput.districtInfo = {};
-			    }
-			  }
+			 
+		      $("#editDistrict").text("-- 请选择区、县 --");
+		      $scope.newAddressInput.districtInfo = {};
+		    
 			  daogouAPI.codegetarea({
 			    areacode: dataobj.code
 			  }, function (data, status, headers, config) {

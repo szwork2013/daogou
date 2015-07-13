@@ -46,7 +46,6 @@
         <select id="loc_province" name="province" ng-model="newAddressInput.provinceInfo" required
                 ng-options="province.name for province in provincesdata"
                 ng-change="provinceSelect(newAddressInput.provinceInfo)"
-                ng-keydown="provinceDefault(newAddressInput.provinceInfo)"
                 ng-focus="userprovinceerror={error:false,msg:null}">
           <option id="editProvince" value="">-- 请选择省份 --</option>
         </select>
