@@ -4,14 +4,19 @@
        loginerror="loginerror2">
 
   <div class="daogouImgWarp">
-    <div class="iconfont icon-wo daogouImg2" ui-sref="orderList()"></div>
-    <span class="daogouImgTxt" ui-sref="orderList()">个人中心</span>
+    <div ui-sref="orderList()">
+      <div class="iconfont icon-wo daogouImg2" ></div>
+      <span class="daogouImgTxt">个人中心</span>
+    </div>
+    <div ui-sref="guide()">
+      <div class="iconfont icon-dianpu  daogouImg2"></div>
+      <span class="daogouImgTxt">导购橱窗</span>
+    </div>
+    <div ui-sref="cart()">
+      <div class="iconfont icon-gouwuche daogouImg2"></div>
+      <span class="daogouImgTxt">购物车</span>
+    </div>
 
-    <div class="iconfont icon-dianpu  daogouImg2" ui-sref="guide()"></div>
-    <span class="daogouImgTxt" ui-sref="guide()">导购橱窗</span>
-
-    <div class="iconfont icon-gouwuche daogouImg2" ui-sref="cart()"></div>
-    <span class="daogouImgTxt" ui-sref="cart()">购物车</span>
 
     <div class="redPointCart"></div>
   </div>
