@@ -133,7 +133,18 @@ angular.module('daogou')
           var getter = $parse(iAttrs.loginerror)
           var loginerror = getter($scope);
           loginerror(data);
-
+          console.log(data);
+          //如果登录失败则显示失败
+          var alertPopup = $ionicPopup.alert({
+            title: '友情提示',
+            template: '请核对您输入的验证码是否有误，或重新获取验证码',
+            cssClass: 'alerttextcenter',
+            okText: '确定',
+            okType: 'button-energized'
+          });
+          alertPopup.then(function(res) {
+            console.log('Thank you for not eating my delicious ice cream cone');
+          });
         }
       }
     };

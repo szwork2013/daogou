@@ -80,6 +80,7 @@ createOrder.controller('creatorderCtrl',
             longitude: lng,
             latitude: lat
           }, function (data, status, headers, config) {
+            console.log(["有经纬度data",data]);
             if(data.length===0){//如果没有默认门店 返回的门店列表数组为空
                 $scope.noshop = true;
             }else{
@@ -92,10 +93,16 @@ createOrder.controller('creatorderCtrl',
           daogouAPI.shopAddressId('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
             user_id: $scope.USERID
           }, function (data, status, headers, config) {
+            console.log(["无经纬度data",data]);
             if(data.length===0){//如果没有默认门店 返回的门店列表数组为空
                 $scope.noshop = true;
             }else{
-               getTwoStore(data);
+               $rootScope.minDistance = data[0];
+               $rootScope.ListTwoStores[0] =  $rootScope.minDistance;
+               if(data.length>1){
+                $rootScope.ListTwoStores[1] = data[1];
+               }
+
                getFetchTime();//获得门店取货时间
             }
           }, function (data, status, headers, config) {
@@ -158,6 +165,7 @@ createOrder.controller('creatorderCtrl',
         user_id: $scope.USERID,
         store_id: $rootScope.minDistance.id
       }, function (data, status, headers, config) {
+        console.log(["获取门店取货时间成功",data]);
         $scope.fetchTimeData = data;
         $scope.fetchdayData = [];
         $scope.fetchhourData = [];
@@ -260,7 +268,7 @@ createOrder.controller('creatorderCtrl',
             //创建订单成功调用微信支付
             WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
               // alert('支付成功');
-              alert(JSON.stringify(data));
+              // alert(JSON.stringify(data));
               $state.go('orderDetail', {tid: orderdata.tid})
             });
           })

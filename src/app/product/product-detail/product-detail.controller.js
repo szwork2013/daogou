@@ -250,6 +250,17 @@ product.controller('productDetailCtrl',
           $state.go("cart", { });
         })
         .error(function (data) {
+          //如果当前要添加的产品数量再加上产品在购物车中已经加入的产品数量大于产品的总量，则显示弹窗
+          var alertPopup = $ionicPopup.alert({
+            title: '友情提示',
+            template: '您添加到购物车的此宝贝数量加上购物车中此宝贝已有的数量已经超过库存咯~亲',
+            cssClass: 'alerttextcenter',
+            okText: '确定',
+            okType: 'button-energized'
+          });
+          alertPopup.then(function(res) {
+            console.log('Thank you for not eating my delicious ice cream cone');
+          });
         })
     };
 

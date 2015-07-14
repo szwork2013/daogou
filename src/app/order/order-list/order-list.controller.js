@@ -132,7 +132,8 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
     var strHour = hour;
     var strMinute = minute < 10 ? '0' + minute : minute;
     var strSecond = second < 10 ? '0' + second : second;
-    return "剩余" + strHour + "小时" + strMinute + "分钟" + strSecond + "秒";
+    var resultTime = "剩余" + strHour + "小时" + strMinute + "分钟" + strSecond + "秒"
+    return resultTime;
   };
   /**
    * 时间-添加

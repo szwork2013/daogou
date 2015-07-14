@@ -101,7 +101,7 @@
             <div class="name">{{item.title}}</div>
             <div class="paras">{{item.sku_properties_name}}</div>
           </div>
-          <span class="price">{{item.price|currency:"￥":2}}</span>
+          <span class="price-abs">{{item.price|currency:"￥":2}}</span>
 
           <div class="countNum">X{{item.num}}</div>
           <div class="sale-return" ng-show="refund" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
