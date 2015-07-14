@@ -65,6 +65,7 @@ createOrder.controller('creatorderCtrl',
     /**
      * 门店自取
      */
+     $scope.noshop = false;//没有门店的情况
     $scope.shopway = function () {
       $scope.express = false;
       if ($rootScope.selectedStoreId) {//如果是选择门店地址
@@ -77,16 +78,24 @@ createOrder.controller('creatorderCtrl',
             longitude: lng,
             latitude: lat
           }, function (data, status, headers, config) {
-            getTwoStore(data);
-            getFetchTime();//获得门店取货时间
+            if(data.length===0){//如果没有默认门店 返回的门店列表数组为空
+                $scope.noshop = true;
+            }else{
+              getTwoStore(data);
+              getFetchTime();//获得门店取货时间
+            }
           }, function (data, status, headers, config) {
           });
         }, function () {
           daogouAPI.shopAddressId('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
             user_id: $scope.USERID
           }, function (data, status, headers, config) {
-            getTwoStore(data);
-            getFetchTime();//获得门店取货时间
+            if(data.length===0){//如果没有默认门店 返回的门店列表数组为空
+                $scope.noshop = true;
+            }else{
+               getTwoStore(data);
+               getFetchTime();//获得门店取货时间
+            }
           }, function (data, status, headers, config) {
           });
         });
@@ -95,6 +104,7 @@ createOrder.controller('creatorderCtrl',
 
 
     function getTwoStore(data) {
+      console.log(["$scope.shopaddressData",$scope.shopaddressData]);
       $scope.shopaddressData = data;
       var flag = false;
       var defaultIndex = 0;
