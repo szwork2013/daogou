@@ -3,12 +3,19 @@
     <ion-content class="createorder-content">
       <div class="statusWrap" ng-repeat="item in shopaddressData">
          <div class="shop-address" ng-click="selectStore(item.id)">
-             <div>
-                 <span>{{item.name}}</span>
-                 <span>{{minDistance.phone}} </span>
-             </div>
-             <span>营业时间： {{item.business_begin_time}}-{{item.business_end_time}}</span>
-             <div>{{item.state}} {{item.city}} {{item.district}} {{item.address}}</div>
+
+              <div>
+                <span class="floatL">{{item.name}}</span>
+                <span class="floatR font13">{{item.phone}}</span>
+                <div class="clearBoth"></div>
+              </div>
+              <span>营业时间： {{item.business_begin_time}}-{{item.business_end_time}}</span>
+              <div>
+                <span class="font13 floatL width85">{{item.state}} {{item.city}} {{item.district}} {{item.address}}</span>
+                <span class="font13 colorRed floatR" ng-show="item.distance">{{item.distance}}km</span>
+                <div class="clearBoth"></div>
+              </div>
+           
          </div>
          <div class="default-shop" ng-click="defaultstorefunc(item.id,$index)"> 
          <i class="iconfont icon-gou slgou font16"  ng-class="{'graygou':!item.is_default,'greengou':item.is_default}"></i>  默认取货门店</div>
@@ -23,12 +30,20 @@
        
       <div class="statusWrap" ng-repeat="item in storeAddressData">
          <div class="shop-address" ng-click="selectStore(item.id)">
-             <div>
-                 <span>{{item.name}}</span>
-                 <span>{{minDistance.phone}} </span>
-             </div>
-             <span>营业时间： {{item.business_begin_time}}-{{item.business_end_time}}</span>
-             <div>{{item.state}} {{item.city}} {{item.district}} {{item.address}}</div>
+
+
+            <div>
+              <span class="floatL">{{item.name}}</span>
+              <span class="floatR font13">{{item.phone}}</span>
+              <div class="clearBoth"></div>
+            </div>
+            <span>营业时间： {{item.business_begin_time}}-{{item.business_end_time}}</span>
+            <div>
+              <span class="font13 floatL width85">{{item.state}} {{item.city}} {{item.district}} {{item.address}}</span>
+              <span ng-show="item.distance" class="font13 colorRed floatR">{{item.distance}}km</span>
+              <div class="clearBoth"></div>
+            </div>
+            
          </div>
          <div class="default-shop"  ng-click="defaultstorefunc(item.id,$index)"> 
          <i class="iconfont icon-gou slgou font16" ng-class="{'graygou':!item.is_default,'greengou':item.is_default}"></i>  默认取货门店</div>
