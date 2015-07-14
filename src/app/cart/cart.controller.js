@@ -18,7 +18,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       cartProductListFunc();
     }
     var URLPort = URLPort();
-    $scope.hasMoreOrder = false;
+    $scope.hasMoreOrder = true;
     var pageindex = 1;
     var pagesize = 5;
     //选中商品id集合
@@ -45,6 +45,9 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         page: pageindex,
         per_page: pagesize
       }, function (data, status, headers, config) {
+        if(data.length===0){
+          $scope.loadMoreData=false;
+        }
         //如果是已经勾选，执行加载更多，原来的数量要传进来，如果没勾选，则设置原来数量为0；
         if($scope.totalNum===undefined){
           $scope.totalNum = 0;
