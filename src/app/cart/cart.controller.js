@@ -45,7 +45,12 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         page: pageindex,
         per_page: pagesize
       }, function (data, status, headers, config) {
-        $scope.totalNum = 0;
+        //如果是已经勾选，执行加载更多，原来的数量要传进来，如果没勾选，则设置原来数量为0；
+        if($scope.totalNum===undefined){
+          $scope.totalNum = 0;
+        }else{
+          $scope.totalNum = $scope.totalNum;
+        }
         $scope.totalFee = 0;
         $scope.Allseleted = false;
         angular.forEach(data, function (item, index) {
@@ -143,15 +148,15 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
             }
           },
           function (data, status, headers, config) {
-            var alertPopup = $ionicPopup.alert({
-              title: '友情提示',
-              template: '受不了了，宝贝不能再少了哦',
-              cssClass: 'alerttextcenter',
-              okText: '确定',
-              okType: 'button-energized'
-            });
-            alertPopup.then(function (res) {
-            });
+            // var alertPopup = $ionicPopup.alert({
+            //   title: '友情提示',
+            //   template: '受不了了，宝贝不能再少了哦',
+            //   cssClass: 'alerttextcenter',
+            //   okText: '确定',
+            //   okType: 'button-energized'
+            // });
+            // alertPopup.then(function (res) {
+            // });
 
           });
       } else {
@@ -240,9 +245,17 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
           item.seleted = $scope.Allseleted;
           if ($scope.Allseleted) {
             if (item.seleted) {
-              $scope.totalFee += parseFloat(item.total_fee);
-              $scope.totalNum++;
+              console.log(['33333333333333333',item]);
+              //调整数量后，全选的价格要重新计算，而不是原本的没调整之前的价格
+              $scope.totalFee += parseFloat(item.price) * item.num;
+              // $scope.totalFee += parseFloat(item.total_fee);
+              //选择全部的时候，总的数量及所有产品的数量
+              $scope.totalNum=$scope.ids.length+1;
               $scope.ids.push(item.id);
+              console.log(['$scope.totalFee',$scope.totalFee]);
+              console.log(['$scope.totalNum',$scope.totalNum]);
+              console.log(['$scope.ids',$scope.ids]);
+              console.log(['item.num',item.num]);
             }
           }
         }
@@ -308,7 +321,22 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         }
       });
       window.sessionStorage.setItem("productOrders", JSON.stringify(productOrders));
-      $state.go("creatorder");
+      // 如果选择的数量为0，不允许进入购物车
+      // console.log(['CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC',productOrders.length]);
+      if(productOrders.length>0){
+        $state.go("creatorder");
+      }else{
+        var alertPopup = $ionicPopup.alert({
+            title: '友情提示',
+            template: '请选择您要购买的宝贝~亲',
+            cssClass: 'alerttextcenter',
+            okText: '确定',
+            okType: 'button-energized'
+          });
+          alertPopup.then(function (res) {
+          });
+
+      }
     };
     /**
      *   购物车 订单列表切换
