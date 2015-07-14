@@ -18,7 +18,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       cartProductListFunc();
     }
     var URLPort = URLPort();
-    $scope.hasMoreOrder = true;
+    $scope.hasMoreOrder = false;
     var pageindex = 1;
     var pagesize = 5;
     //选中商品id集合
