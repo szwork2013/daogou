@@ -151,7 +151,7 @@ order.controller('orderDetailCtrl',
          */
         if ($rootScope.PAYNOW) {
           WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
-            alert(JSON.stringify(data));
+            // alert(JSON.stringify(data));
           });
         }
 

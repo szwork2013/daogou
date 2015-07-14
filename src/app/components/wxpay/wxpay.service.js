@@ -29,24 +29,41 @@ angular.module('daogou')
 .factory('WXpay', function($rootScope,daogouAPI,WXJSSDKPay,WXgetOpenid) {
 	return function WXpay(brandId,tid,callback) {
 
-		weixinpay();
+		// weixinpay();
+		// function weixinpay(){
+		// 	daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
+		// 		console.log(['tradesPay成功', data])
+		// 		WXJSSDKPay(data.pre_pay_no,callback)//微信支付新接口
+		// 	},function(data){
+		// 		//下单失败说明用户没有openid 用此方法让用户获得openid
+		// 		WXgetOpenid(tid,function(data){
+		// 			// alert('wxpay.service.js:158 获取openid成功'+JSON.stringify(data))
+		// 			//取到openid后再进行支付
+		// 			weixinpay()
+		// 		},function(data){
+		// 			// alert('wxpay.service.js:162 获取openid失败，支付失败'+JSON.stringify(data))
+		// 		})
+		// 	});
 
-		function weixinpay(){
-			daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
-				console.log(['tradesPay成功', data])
-				WXJSSDKPay(data.pre_pay_no,callback)//微信支付新接口
-			},function(data){
-				//下单失败说明用户没有openid 用此方法让用户获得openid
-				WXgetOpenid(tid,function(data){
-					// alert('wxpay.service.js:158 获取openid成功'+JSON.stringify(data))
-					//取到openid后再进行支付
-					weixinpay()
+		// }
+
+		// function weixinpay(){
+			//用此方法让用户获得openid
+
+			WXgetOpenid(tid,function(data){
+				// alert("取到openid")
+				// 获取用户ID后发起微信支付
+				daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
+					console.log(['tradesPay成功', data])
+					WXJSSDKPay(data.pre_pay_no,callback)//微信支付新接口
 				},function(data){
-					// alert('wxpay.service.js:162 获取openid失败，支付失败'+JSON.stringify(data))
-				})
-			});
 
-		}
+				});
+			},function(data){
+				// alert(JSON.stringify(data));
+			})
+
+		// }
 
 	};
 })
@@ -146,12 +163,15 @@ WXJSSDKPay(callback);
 					code:code,
 					brand_id:$rootScope.BRANDID
 				},function(openiddata){
-          var userInfo = window.sessionStorage.getItem("USERINFO");
-          $scope.USERINFO = JSON.parse(userInfo);
+
+					var userInfo = window.sessionStorage.getItem("USERINFO");
+
+					var USERINFO = JSON.parse(userInfo);
+
 					//绑定openis
 					daogouAPI.bindOpenid({
 						brand_id:$rootScope.BRANDID,
-						user_id:$scope.USERINFO.id,
+						user_id:USERINFO.id,
 						wx_open_id:openiddata.openid
 					},function(data){
 						// alert('wxpay.service.js:303  获取成功'+JSON.stringify(data));
@@ -161,6 +181,7 @@ WXJSSDKPay(callback);
 						ecallback(data);
 					})
 				},function(data){
+
 					ecallback(data)
 				});
 			}
