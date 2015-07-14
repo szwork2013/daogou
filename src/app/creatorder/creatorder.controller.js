@@ -41,6 +41,8 @@ createOrder.controller('creatorderCtrl',
     else {
       $scope.USERINFO = JSON.parse(userInfo);
       $scope.USERID = $scope.USERINFO.id;
+      $scope.USERNAME = $scope.USERINFO.name;
+      $scope.USERMOBILE = $scope.USERINFO.mobile;
       //如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
       //登录后的UI样式设置
       userIsLoginSetUI();
@@ -65,6 +67,7 @@ createOrder.controller('creatorderCtrl',
     /**
      * 门店自取
      */
+     $scope.noshop = false;//没有门店的情况
     $scope.shopway = function () {
       $scope.express = false;
       if ($rootScope.selectedStoreId) {//如果是选择门店地址
@@ -77,16 +80,24 @@ createOrder.controller('creatorderCtrl',
             longitude: lng,
             latitude: lat
           }, function (data, status, headers, config) {
-            getTwoStore(data);
-            getFetchTime();//获得门店取货时间
+            if(data.length===0){//如果没有默认门店 返回的门店列表数组为空
+                $scope.noshop = true;
+            }else{
+              getTwoStore(data);
+              getFetchTime();//获得门店取货时间
+            }
           }, function (data, status, headers, config) {
           });
         }, function () {
           daogouAPI.shopAddressId('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
             user_id: $scope.USERID
           }, function (data, status, headers, config) {
-            getTwoStore(data);
-            getFetchTime();//获得门店取货时间
+            if(data.length===0){//如果没有默认门店 返回的门店列表数组为空
+                $scope.noshop = true;
+            }else{
+               getTwoStore(data);
+               getFetchTime();//获得门店取货时间
+            }
           }, function (data, status, headers, config) {
           });
         });
@@ -95,6 +106,7 @@ createOrder.controller('creatorderCtrl',
 
 
     function getTwoStore(data) {
+      console.log(["$scope.shopaddressData",$scope.shopaddressData]);
       $scope.shopaddressData = data;
       var flag = false;
       var defaultIndex = 0;
@@ -226,9 +238,11 @@ createOrder.controller('creatorderCtrl',
             'buyer_memo': $rootScope.buyerMessage.buyer_memo,
             'pay_type': 'WEIXIN',
             'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
-            'fetch_name': "",
+            'fetch_name': $scope.USERNAME,
+            'fetch_mobile':$scope.USERMOBILE,
             'fetch_store_id': $rootScope.minDistance.id,
             'fetch_store_name': $rootScope.minDistance.name,
+            'fetch_store_tel': $rootScope.minDistance.phone,
             'fetch_state': $rootScope.minDistance.state,
             'fetch_state_code': $rootScope.minDistance.state_code,
             'fetch_city': $rootScope.minDistance.city,

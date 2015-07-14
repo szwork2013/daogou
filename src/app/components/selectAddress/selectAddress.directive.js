@@ -31,6 +31,9 @@ angular.module('daogou')
 			//默认隐藏  当前地区无门店的提示
 		 	$scope.thereisnoshop=false;
 
+
+		 	var userInfo = window.sessionStorage.getItem("USERINFO");
+		 	$scope.USERINFO = JSON.parse(userInfo);
 			$scope.newAddressInput.provinceInfo.name = "";
 			$scope.newAddressInput.provinceInfo.code = "";
 			$scope.newAddressInput.cityInfo.name = "";
@@ -209,8 +212,8 @@ angular.module('daogou')
 			 	//一旦开始选加载地址  隐藏无门店提示
 		 		$scope.thereisnoshop=false;
 
-		 		daogouAPI.storeAddress('/brands/'+$stateParams.brandid+'/stores/store-fetch',{
-		 			user_id:$stateParams.userid,
+		 		daogouAPI.storeAddress('/brands/'+$rootScope.BRANDID+'/stores/store-fetch',{
+		 			user_id:$scope.USERINFO.id,
 		 			state_code:$scope.newAddressInput.provinceInfo.code,
 		 			city_code:$scope.newAddressInput.cityInfo.code,
 		 			district_code:$scope.newAddressInput.districtInfo.code,
