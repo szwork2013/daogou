@@ -239,7 +239,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
     $scope.changeAll = function () {
       $scope.Allseleted = !$scope.Allseleted;
       $scope.totalFee = 0;
-      $scope.totalNum = 0+$scope.totalNum;
+      $scope.totalNum = 0;
       $scope.ids = [];
       angular.forEach($scope.cartProductListData, function (item, index) {
           item.seleted = $scope.Allseleted;
