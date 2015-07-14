@@ -41,6 +41,8 @@ createOrder.controller('creatorderCtrl',
     else {
       $scope.USERINFO = JSON.parse(userInfo);
       $scope.USERID = $scope.USERINFO.id;
+      $scope.USERNAME = $scope.USERINFO.name;
+      $scope.USERMOBILE = $scope.USERINFO.mobile;
       //如果已经登录，查询用户是否有收货地址，若果有显示默认收货地址，如果没有显示添加收货地址
       //登录后的UI样式设置
       userIsLoginSetUI();
@@ -236,9 +238,11 @@ createOrder.controller('creatorderCtrl',
             'buyer_memo': $rootScope.buyerMessage.buyer_memo,
             'pay_type': 'WEIXIN',
             'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
-            'fetch_name': "",
+            'fetch_name': $scope.USERNAME,
+            'fetch_mobile':$scope.USERMOBILE,
             'fetch_store_id': $rootScope.minDistance.id,
             'fetch_store_name': $rootScope.minDistance.name,
+            'fetch_store_tel': $rootScope.minDistance.phone,
             'fetch_state': $rootScope.minDistance.state,
             'fetch_state_code': $rootScope.minDistance.state_code,
             'fetch_city': $rootScope.minDistance.city,
