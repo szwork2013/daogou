@@ -94,16 +94,35 @@ createOrder.controller('creatorderCtrl',
             user_id: $scope.USERID
           }, function (data, status, headers, config) {
             console.log(["无经纬度data",data]);
-            if(data.length===0){//如果没有默认门店 返回的门店列表数组为空
+            $scope.shopaddressData = data;
+            if($scope.shopaddressData.length===0){//如果没有默认门店 返回的门店列表数组为空
                 $scope.noshop = true;
             }else{
-               $rootScope.minDistance = data[0];
-               $rootScope.ListTwoStores[0] =  $rootScope.minDistance;
-               if(data.length>1){
-                $rootScope.ListTwoStores[1] = data[1];
-               }
+                var flag = false;
+                var defaultIndex = 0;
+                for (var i in $scope.shopaddressData) {
+                  if ($scope.shopaddressData[i].is_default === 1) {
+                    flag = true;//如果有默认地址 flag为true
+                    defaultIndex = i;
+                  }
+                }
 
-               getFetchTime();//获得门店取货时间
+               if(flag === true) {//有默认地址
+                    $rootScope.minDistance = $scope.shopaddressData[defaultIndex];
+                    $rootScope.ListTwoStores[0] = $rootScope.minDistance;
+                    $scope.shopaddressData.splice(defaultIndex, 1);
+                    if($scope.shopaddressData.length>0){
+                     $rootScope.ListTwoStores[1]=$scope.shopaddressData[0];
+                    }
+
+                }else{
+                     $rootScope.minDistance = $scope.shopaddressData[0];
+                     $rootScope.ListTwoStores[0] =  $rootScope.minDistance;
+                     if($scope.shopaddressData.length>1){
+                      $rootScope.ListTwoStores[1] = $scope.shopaddressData[1];
+                     }
+                }
+                getFetchTime();//获得门店取货时间
             }
           }, function (data, status, headers, config) {
           });
@@ -201,8 +220,8 @@ createOrder.controller('creatorderCtrl',
       //支付按钮先创建订单再支付
       if ($scope.express === true) {
         //快递方式取货
-        $http.post(URLPort + '/trades',
-          {
+         $http.post(URLPort + '/trades',
+           {
             'buyer_user_id': $scope.USERID,
             'bring_guider_id': $rootScope.GUIDID,
             'brand_id': parseInt($rootScope.BRANDID),
@@ -220,8 +239,7 @@ createOrder.controller('creatorderCtrl',
             'receiver_zip': $rootScope.defaultAddressdata.zip,
             'receiver_mobile': $rootScope.defaultAddressdata.mobile,
             'orders': $scope.productOrders
-          }
-        )
+          })
           .success(function (orderdata) {
             //创建订单成功调用微信支付
             WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
@@ -235,46 +253,58 @@ createOrder.controller('creatorderCtrl',
           })
 
       } else {
-        //门店取货
-        $scope.fetchdayhour = $scope.fetchTime.fetchday.day + "T" + $scope.fetchTime.fetchhour + ":00+0800";
-        console.log(["$scope.fetchdayhour", $scope.fetchdayhour]);
-        $http.post(URLPort + '/trades',
-          {
-            'buyer_user_id': $scope.USERID,
-            'bring_guider_id': $rootScope.GUIDID,
-            'brand_id': parseInt($rootScope.BRANDID),
-            'buyer_memo': $rootScope.buyerMessage.buyer_memo,
-            'pay_type': 'WEIXIN',
-            'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
-            'fetch_name': $scope.USERNAME,
-            'fetch_mobile':$scope.USERMOBILE,
-            'fetch_store_id': $rootScope.minDistance.id,
-            'fetch_store_name': $rootScope.minDistance.name,
-            'fetch_store_tel': $rootScope.minDistance.phone,
-            'fetch_state': $rootScope.minDistance.state,
-            'fetch_state_code': $rootScope.minDistance.state_code,
-            'fetch_city': $rootScope.minDistance.city,
-            'fetch_city_code': $rootScope.minDistance.city_code,
-            'fetch_district': $rootScope.minDistance.district,
-            'fetch_district_code': $rootScope.minDistance.district_code,
-            'fetch_address': $rootScope.minDistance.address,
-            'fetch_subscribe_begin_time': $scope.fetchdayhour,
-            'fetch_subscribe_end_time': $scope.fetchdayhour,
-            'orders': $scope.productOrders
-          }
-        )
-          .success(function (orderdata) {
-            console.log(['提交订单成功', orderdata]);
-            //创建订单成功调用微信支付
-            WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
-              // alert('支付成功');
-              // alert(JSON.stringify(data));
-              $state.go('orderDetail', {tid: orderdata.tid})
-            });
-          })
-          .error(function (data) {
-            console.log(['提交订单失败', data]);
-          })
+          //门店取货
+          console.log(["$scope.fetchTime.fetchday.day",$scope.fetchTime.fetchday.day]);
+          console.log(["$scope.fetchTime.fetchhour",$scope.fetchTime.fetchhour])
+            if($scope.fetchTime.fetchday.day&&$scope.fetchTime.fetchhour){
+                  $scope.fetchdayhour = $scope.fetchTime.fetchday.day + "T" + $scope.fetchTime.fetchhour + ":00+0800";
+                  console.log(["$scope.fetchdayhour", $scope.fetchdayhour]);
+                  $http.post(URLPort + '/trades',
+                    {
+                     'buyer_user_id': $scope.USERID,
+                     'bring_guider_id': $rootScope.GUIDID,
+                     'brand_id': parseInt($rootScope.BRANDID),
+                     'buyer_memo': $rootScope.buyerMessage.buyer_memo,
+                     'pay_type': 'WEIXIN',
+                     'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
+                     'fetch_name': $scope.USERNAME,
+                     'fetch_mobile':$scope.USERMOBILE,
+                     'fetch_store_id': $rootScope.minDistance.id,
+                     'fetch_store_name': $rootScope.minDistance.name,
+                     'fetch_store_tel': $rootScope.minDistance.phone,
+                     'fetch_state': $rootScope.minDistance.state,
+                     'fetch_state_code': $rootScope.minDistance.state_code,
+                     'fetch_city': $rootScope.minDistance.city,
+                     'fetch_city_code': $rootScope.minDistance.city_code,
+                     'fetch_district': $rootScope.minDistance.district,
+                     'fetch_district_code': $rootScope.minDistance.district_code,
+                     'fetch_address': $rootScope.minDistance.address,
+                     'fetch_subscribe_begin_time': $scope.fetchdayhour,
+                     'fetch_subscribe_end_time': $scope.fetchdayhour,
+                     'orders': $scope.productOrders
+                   })
+                   .success(function (orderdata) {
+                     console.log(['提交订单成功', orderdata]);
+                     //创建订单成功调用微信支付
+                     WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
+                       // alert('支付成功');
+                       // alert(JSON.stringify(data));
+                       $state.go('orderDetail', {tid: orderdata.tid})
+                     });
+                   })
+                   .error(function (data) {
+                     console.log(['提交订单失败', data]);
+                   })
+            }else{
+
+                    $scope.userdataerror = {
+                            error : true,
+                            msg:"请选择取货时间"
+                    }
+                    console.log($scope.userdataerror.error)
+                    return;
+            }
+           
       }
 
     }

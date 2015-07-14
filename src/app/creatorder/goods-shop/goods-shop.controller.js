@@ -12,7 +12,7 @@ angular.module('daogou')
 
     $scope.defaultstorefunc = function (store_id, index) {
       daogouAPI.defaultstore({
-        brand_id: $stateParams.brandid,
+        brand_id: $rootScope.BRANDID,
         user_id: $scope.USERID,
         store_id: store_id
       }, function (data, status, headers, config) {

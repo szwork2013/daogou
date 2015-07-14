@@ -99,13 +99,20 @@
           <div class="order-time" ng-hide="express">
             预约取货时间（营业时间 {{minDistance.business_begin_time}}-{{minDistance.business_end_time}}）
             <br/>
-            <span class="font13 colorRed">请先选日期再选时间</span>
+            <div class="font13 colorRed posRelative">请先选日期再选时间<br/>
+                  <div class="warning-msg">
+                    <div ng-if="userdataerror.error">
+                      {{userdataerror.msg}}
+                    </div>
+                  </div>
+            </div>
+            
                 <div class="select-time">
-                  <select id="fetch_day" ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData"
+                  <select id="fetch_day" ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData" ng-focus="userdataerror={error:false,msg:null}"
                           ng-change="dayselecthour(fetchTime.fetchday)">
                     <option value="">-- 请选择日期 --</option>
                   </select>
-                  <select id="fetch_hour" ng-model="fetchTime.fetchhour" ng-options="fetchhour for fetchhour in fetchhourData">
+                  <select id="fetch_hour" ng-model="fetchTime.fetchhour" ng-options="fetchhour for fetchhour in fetchhourData" ng-focus="userdataerror={error:false,msg:null}">
                     <option value="">-- 请选择时间 --</option>
                   </select>
                 </div>

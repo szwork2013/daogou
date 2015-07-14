@@ -221,6 +221,9 @@ angular.module('daogou')
 		 			per_page: pagesize
 		 		},function(data, status, headers, config){
 		 			console.log(['查询门店列表成功',data]);
+		 			if(data.length===0){
+		 				$scope.thereisnoshop=true;
+		 			}
 		 			$rootScope.storeAddressData = $rootScope.storeAddressData.concat(data);
 		 			if (data.length >= pagesize) {
 		 			  pageindex++;
