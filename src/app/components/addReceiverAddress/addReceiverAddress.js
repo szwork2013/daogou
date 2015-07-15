@@ -221,7 +221,7 @@ angular.module('daogou')
 				    	}, function (data, status, headers, config) {
 				    	  console.log(['修改地址成功', data]);//新增地址成功，跳转到地址模块，刚才加的地址为默认地址
 				    	  $scope.defaultAddressdata = data;
-				    	  $state.go('changeReceiveInfo', {});
+				    	  history.go(-1);
 				    	}, function (data, status, headers, config) {
 				    	  console.log(['修改地址失败', data]);//弹出失败提示 停在原页
 				    	});
@@ -253,7 +253,7 @@ angular.module('daogou')
 			  		          $scope.weixinpay = false;
 			  		          $rootScope.firstAddressFlag = 0;
 						  }else{
-						  	$state.go('changeReceiveInfo', {});
+						  	history.go(-1);
 						  }
 
 						}, function (data, status, headers, config) {
