@@ -2,7 +2,7 @@
 
 var order = angular.module('order', ['ionic']);
 order.controller('orderDetailCtrl',
-  function ($rootScope, $scope, $log, $http, $state, $stateParams,$ionicLoading, URLPort, daogouAPI, WXpay) {
+  function ($rootScope, $scope, $log, $http, $state, $stateParams,$ionicLoading, URLPort, daogouAPI, WXpay,$ionicPopup) {
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
     //这个切换其实是2个页面 不是页面内切换的
@@ -80,7 +80,7 @@ order.controller('orderDetailCtrl',
             $scope.fetchQRcode = true;
             $scope.payWay = true;
             $scope.payNo = true;
-            $scope.cancelOrder = true;
+            // $scope.cancelOrder = true;
             // $scope.refund = true;
             break;
           case "TRADE_FINISHED":
@@ -92,7 +92,7 @@ order.controller('orderDetailCtrl',
               $scope.fetchReceiver = true;
               $scope.fetchshop = true;
             }
-            $scope.deleteOrder = true;
+            // $scope.deleteOrder = true;
             $scope.refund = true;
             $scope.payWay = true;
             $scope.payNo = true;
@@ -113,7 +113,7 @@ order.controller('orderDetailCtrl',
                 $scope.fetchshop = false;
               }
             }
-            $scope.deleteOrder = true;
+            // $scope.deleteOrder = true;
             $scope.payWay = true;
             break;
         }
@@ -150,6 +150,11 @@ order.controller('orderDetailCtrl',
          */
         daogouAPI.formatSku(data.orders);
         $scope.orderDetailData = data;
+        //格式化取货时间
+        if($scope.orderDetailData.fetch_time){
+          var fetchTimeArr = $scope.orderDetailData.fetch_time.split("T");
+          $scope.orderDetailData.fetch_time = fetchTimeArr[0];
+        }
 
         /**
          * 立即调用微信支付
@@ -219,13 +224,28 @@ order.controller('orderDetailCtrl',
     *@param tid
     */
     $scope.cancelOrderFunc = function(tid){
-      daogouAPI.cancelOrder({
-        tid:tid
-      }, function (data, status, headers, config) {
-        console.log(['取消订单成功',data]);
-      }, function (data, status, headers, config) {
-        console.log(['取消订单失败',data]);
-      });
+     var confirmPopup = $ionicPopup.confirm({
+            title: '订单取消后不可恢复，是否确认?',
+            cancelText: '取消',
+            cancelType: 'button-default', 
+            okText: '确认',
+            okType: 'button-assertive', 
+         });
+         confirmPopup.then(function(res) {
+           if(res) {
+                daogouAPI.cancelOrder({
+                  tid:tid
+                }, function (data, status, headers, config) {
+                  console.log(['取消订单成功',data]);
+                }, function (data, status, headers, config) {
+                  console.log(['取消订单失败',data]);
+                });
+           } else {
+              console.log('取消取消订单');
+           }
+         });
+           
+      
 
     };
 
