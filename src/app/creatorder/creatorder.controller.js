@@ -67,6 +67,7 @@ createOrder.controller('creatorderCtrl',
         .success(function (data) {
             if (data.length > 0) {
               console.log(['当前用户有收货地址，选择收获地址', data]);
+              $scope.weixinpay = false;
             } else {
               console.log(['当前用户没有收货地址，请填写第一个收货地址', data]);
               $scope.weixinpay = true;
@@ -94,6 +95,7 @@ createOrder.controller('creatorderCtrl',
             console.log(["有经纬度data",data]);
             if(data.length===0){//如果没有默认门店 返回的门店列表数组为空
                 $scope.noshop = true;
+                $scope.weixinpay = true;
             }else{
               $scope.weixinpay = false;
               getTwoStore(data);
@@ -109,6 +111,7 @@ createOrder.controller('creatorderCtrl',
             $scope.shopaddressData = data;
             if($scope.shopaddressData.length===0){//如果没有默认门店 返回的门店列表数组为空
                 $scope.noshop = true;
+                $scope.weixinpay = true;
             }else{
                 $scope.weixinpay = false;
                 var flag = false;
