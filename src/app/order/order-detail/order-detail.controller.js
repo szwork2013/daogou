@@ -81,7 +81,7 @@ order.controller('orderDetailCtrl',
             $scope.payWay = true;
             $scope.payNo = true;
             $scope.cancelOrder = true;
-            $scope.refund = true;
+            // $scope.refund = true;
             break;
           case "TRADE_FINISHED":
             data.statusCN = "已完成";

@@ -257,14 +257,14 @@ angular.module('daogou')
        */
       checkServices: checkServices,
       /**
-      *取消订单
-      */
-      cancelOrder:cancelOrder,
+       *取消订单
+       */
+      cancelOrder: cancelOrder,
 
       /*
-        取门店信息
-      */
-      getStoreInfo:getStoreInfo,
+       取门店信息
+       */
+      getStoreInfo: getStoreInfo,
 
     };
 
@@ -506,7 +506,7 @@ angular.module('daogou')
       var action = '/accounts/current';
       var data = '';
       daogouAPI.get(daogouAPI.apiurl(action, data), function (data) {
-        data.username=data.mobile;
+        data.username = data.mobile;
         daogouAPI.getUserInfo(data, scallback, ecallback)
       }, ecallback);
     }
@@ -825,15 +825,15 @@ angular.module('daogou')
 
     function cancelOrder(dataobj, scallback, ecallback) {
 
-      var action = '/trades/'+dataobj.tid+'/cancel-by-buyer';
+      var action = '/trades/' + dataobj.tid + '/cancel-by-buyer';
       var data = '';
 
       daogouAPI.patch(action, data, scallback, ecallback);
     }
 
 
-    function getStoreInfo(storeid,scallback,ecallback){
-      var action = '/brands/'+$rootScope.BRANDID+'/store-details/'+storeid;
+    function getStoreInfo(storeid, scallback, ecallback) {
+      var action = '/brands/' + $rootScope.BRANDID + '/store-details/' + storeid;
       var data = '';
       daogouAPI.get(daogouAPI.apiurl(action, data), scallback, ecallback);
     }
