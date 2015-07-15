@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('daogou')
-  .directive('login', function ($rootScope, $parse, daogouAPI, $http, $ionicPopup) {
+  .directive('login', function ($rootScope, $parse, daogouAPI, $http, $ionicPopup, $ionicLoading) {
     return {
       templateUrl: 'app/components/login/login.html',
       link: function ($scope, iElm, iAttrs, controller) {
@@ -73,22 +73,18 @@ angular.module('daogou')
         /**
          * 登录
          */
-        //防止重复加载，先声明点击数为1
-        var clicknum = 1;
+        //hide和show调用的是$ionicLoading（ionic的）
+        function show() {
+            $ionicLoading.show({
+              template: '登录中，请稍等...'
+            });
+          };
+        function hide(){
+            $ionicLoading.hide();
+          };
+          //登录的提交按钮
         $scope.submit = function () {
-          clicknum++;
-          //第一次点击后，clicknum=2，执行else后面的数据加载，第二次点击登录clicknum=3，弹窗提示
-          if (clicknum > 2) {
-            var alertPopup = $ionicPopup.alert({
-              title: '友情提示',
-              template: '您的网速太慢了，数据正在加载中，请不要重复点击登录',
-              cssClass: 'alerttextcenter',
-              okText: '确定',
-              okType: 'button-energized'
-            });
-            alertPopup.then(function (res) {
-            });
-          } else {
+          show();
             daogouAPI.login($scope.logindate, function (data) {
               daogouAPI.isAccountLogin(function (accountdata) {
                 // 获取用户信息
@@ -108,7 +104,6 @@ angular.module('daogou')
             }, function (data) {
               errorcallback(data)
             })
-          }
         };
         /**
          * 成功调用函数
@@ -122,6 +117,7 @@ angular.module('daogou')
           //关闭登录及蒙板
           $scope.login = false;
           $(".mengban").hide();
+          hide();
           //登录成功回调之后，检测用户是否登录，如果登录了购物车中有物品，显示小红点，没有物品不显示小红点
           daogouAPI.isLogin(function () {
             //获取用户信息
@@ -154,6 +150,7 @@ angular.module('daogou')
           loginerror(data);
           console.log(data);
           //如果登录失败则显示失败
+          hide();
           var alertPopup = $ionicPopup.alert({
             title: '友情提示',
             template: '请核对您输入的验证码是否有误，或重新获取验证码',
@@ -163,7 +160,6 @@ angular.module('daogou')
           });
           alertPopup.then(function (res) {
           });
-          clicknum = 1;
         }
       }
     };
