@@ -28,7 +28,7 @@ angular.module('daogou')
         //点击导购头像出现个人中心，导购橱窗，购物车，以及关闭
         $scope.showmenu = function () {
           if (parseInt($(".daogou").css("height")) < 100) {
-            $(".daogou").animate({"height": "170"}, 100);
+            $(".daogou").animate({"height": "174"}, 100);
             daogouAPI.isLogin(function() {
               //获取用户信息
               var userInfo = window.sessionStorage.getItem("USERINFO");

@@ -73,12 +73,12 @@ angular.module('daogou')
         /**
          * 登录
          */
-         //防止重复加载，先声明点击数为1
-        var clicknum=1;
+        //防止重复加载，先声明点击数为1
+        var clicknum = 1;
         $scope.submit = function () {
           clicknum++;
           //第一次点击后，clicknum=2，执行else后面的数据加载，第二次点击登录clicknum=3，弹窗提示
-          if(clicknum>2){
+          if (clicknum > 2) {
             var alertPopup = $ionicPopup.alert({
               title: '友情提示',
               template: '您的网速太慢了，数据正在加载中，请不要重复点击登录',
@@ -86,28 +86,29 @@ angular.module('daogou')
               okText: '确定',
               okType: 'button-energized'
             });
-            alertPopup.then(function(res) {
-              console.log('Thank you for not eating my delicious ice cream cone');
+            alertPopup.then(function (res) {
             });
-          }else{
-          daogouAPI.login($scope.logindate, function (data) {
-            daogouAPI.isAccountLogin(function (accountdata) {
-              // 获取用户信息
-              daogouAPI.getUserInfo({username: $scope.logindate.username}, function (userinfo) {
-                successcallback(userinfo)
+          } else {
+            daogouAPI.login($scope.logindate, function (data) {
+              daogouAPI.isAccountLogin(function (accountdata) {
+                // 获取用户信息
+                daogouAPI.getUserInfo({username: $scope.logindate.username},
+                  function (userinfo) {
+                    successcallback(userinfo)
+                  }, function (data) {
+                    daogouAPI.setUserInfo(accountdata, function (userinfo) {
+                      successcallback(userinfo)
+                    }, function (data) {
+                      errorcallback(data)
+                    })
+                  })
               }, function (data) {
-                daogouAPI.setUserInfo(accountdata, function (userinfo) {
-                  successcallback(userinfo)
-                }, function (data) {
-                  errorcallback(data)
-                })
+                errorcallback(data)
               })
             }, function (data) {
               errorcallback(data)
             })
-          }, function (data) {
-            errorcallback(data)
-          })}
+          }
         };
         /**
          * 成功调用函数
@@ -121,6 +122,10 @@ angular.module('daogou')
           //关闭登录及蒙板
           $scope.login = false;
           $(".mengban").hide();
+
+
+
+
           //登录成功回调之后，检测用户是否登录，如果登录了购物车中有物品，显示小红点，没有物品不显示小红点
           daogouAPI.isLogin(function () {
             //获取用户信息
@@ -133,12 +138,14 @@ angular.module('daogou')
               brand_id: $rootScope.BRANDID,
               page: 1,
               per_page: 5
-            }, function(data, status, headers, config) {
-              if(data.length>0){
+            }, function (data, status, headers, config) {
+              if (data.length > 0) {
                 $('.redPoint').show()
               }
-            }, function(data, status, headers, config) {});
-          }, function () {});
+            }, function (data, status, headers, config) {
+            });
+          }, function () {
+          });
         }
 
         /**
@@ -158,7 +165,7 @@ angular.module('daogou')
             okText: '确定',
             okType: 'button-energized'
           });
-          alertPopup.then(function(res) {
+          alertPopup.then(function (res) {
             console.log('Thank you for not eating my delicious ice cream cone');
           });
         }
