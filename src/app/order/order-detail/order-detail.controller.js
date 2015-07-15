@@ -96,7 +96,10 @@ order.controller('orderDetailCtrl',
             $scope.payWay = true;
             $scope.payNo = true;
             break;
-          case "TRADE_CLOSED_BY_SYSTEM", "TRADE_CLOSED_BY_SELLER", "TRADE_CLOSED_BY_BUYER", "TRADE_CLOSED_BY_SPLIT":
+          case "TRADE_CLOSED_BY_SYSTEM":
+          case "TRADE_CLOSED_BY_SELLER":
+          case "TRADE_CLOSED_BY_BUYER":
+          case "TRADE_CLOSED_BY_SPLIT":
             data.statusCN = "已关闭";
             if (data.shipping_type === "EXPRESS") {
               $scope.expressReceiver = true;
