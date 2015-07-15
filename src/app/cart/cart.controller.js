@@ -77,8 +77,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         });
         daogouAPI.formatSku(data);
         $scope.cartProductListData = $scope.cartProductListData.concat(data);
-        console.log(['11111111111111111111111111',$scope.cartProductListData])
-        console.log(['222222222222222222222222',$scope.cartProductListData.length])
         //登录后加载数据是显示的，如果购物车中有数据，那么加载数据和加入购物车都不显示
         if($scope.cartProductListData.length>0){
           $scope.showlogindata=false;
