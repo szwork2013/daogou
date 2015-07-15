@@ -259,7 +259,13 @@ angular.module('daogou')
       /**
       *取消订单
       */
-      cancelOrder:cancelOrder
+      cancelOrder:cancelOrder,
+
+      /*
+        取门店信息
+      */
+      getStoreInfo:getStoreInfo,
+
     };
 
     return daogouAPI;
@@ -825,6 +831,12 @@ angular.module('daogou')
       daogouAPI.patch(action, data, scallback, ecallback);
     }
 
+
+    function getStoreInfo(storeid,scallback,ecallback){
+      var action = '/brands/'+$rootScope.BRANDID+'/store-details/'+storeid;
+      var data = '';
+      daogouAPI.get(daogouAPI.apiurl(action, data), scallback, ecallback);
+    }
 
   });
 

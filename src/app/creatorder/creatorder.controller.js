@@ -63,6 +63,18 @@ createOrder.controller('creatorderCtrl',
      */
     $scope.postway = function () {
       $scope.express = true;
+      $http.get(URLPort + '/users/' + $scope.USERID + '/shipping-addresses')
+        .success(function (data) {
+            if (data.length > 0) {
+              console.log(['当前用户有收货地址，选择收获地址', data]);
+              $scope.weixinpay = false;
+            } else {
+              console.log(['当前用户没有收货地址，请填写第一个收货地址', data]);
+              $scope.weixinpay = true;
+            }
+        })
+        .error(function (data) {
+        })
     }
     /**
      * 门店自取
@@ -83,7 +95,9 @@ createOrder.controller('creatorderCtrl',
             console.log(["有经纬度data",data]);
             if(data.length===0){//如果没有默认门店 返回的门店列表数组为空
                 $scope.noshop = true;
+                $scope.weixinpay = true;
             }else{
+              $scope.weixinpay = false;
               getTwoStore(data);
               getFetchTime();//获得门店取货时间
             }
@@ -97,7 +111,9 @@ createOrder.controller('creatorderCtrl',
             $scope.shopaddressData = data;
             if($scope.shopaddressData.length===0){//如果没有默认门店 返回的门店列表数组为空
                 $scope.noshop = true;
+                $scope.weixinpay = true;
             }else{
+                $scope.weixinpay = false;
                 var flag = false;
                 var defaultIndex = 0;
                 for (var i in $scope.shopaddressData) {
@@ -412,6 +428,7 @@ createOrder.controller('creatorderCtrl',
         $scope.express = false;
         console.log("选择取货门店")
         getFetchTime();//获得门店取货时间
+        $scope.weixinpay = false;
       }
       $scope.USERID = $scope.USERID;
       //查询用户的收获地址信息
@@ -449,6 +466,7 @@ createOrder.controller('creatorderCtrl',
             $scope.express = true;
             $scope.firstBuyerAddress = false; //隐藏选择地址模块，显示填写第一个地址模块
             $scope.buyeraddress = true;
+            $scope.weixinpay = true;
             // $scope.searchProvinces();
 
           }
