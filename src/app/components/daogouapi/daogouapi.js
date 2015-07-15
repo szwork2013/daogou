@@ -255,7 +255,11 @@ angular.module('daogou')
       /**
        * 是否支持门店取货和门店退货
        */
-      checkServices: checkServices
+      checkServices: checkServices,
+      /**
+      *取消订单
+      */
+      cancelOrder:cancelOrder
     };
 
     return daogouAPI;
@@ -811,6 +815,14 @@ angular.module('daogou')
         dataArr[i].properties = skuString.substring(0, skuString.length - 1);
 
       }
+    }
+
+    function cancelOrder(dataobj, scallback, ecallback) {
+
+      var action = '/trades/'+dataobj.tid+'/cancel-by-buyer';
+      var data = '';
+
+      daogouAPI.patch(action, data, scallback, ecallback);
     }
 
 
