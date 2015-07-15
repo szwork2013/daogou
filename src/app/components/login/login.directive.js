@@ -76,6 +76,7 @@ angular.module('daogou')
          //防止重复加载，先声明点击数为1
         var clicknum=1;
         $scope.submit = function () {
+          debugger;
           clicknum++;
           //第一次点击后，clicknum=2，执行else后面的数据加载，第二次点击登录clicknum=3，弹窗提示
           if(clicknum>2){
@@ -94,6 +95,7 @@ angular.module('daogou')
             daogouAPI.isAccountLogin(function (accountdata) {
               // 获取用户信息
               daogouAPI.getUserInfo({username: $scope.logindate.username}, function (userinfo) {
+                window.sessionStorage.setItem("USERINFO", JSON.stringify(userinfo));
                 successcallback(userinfo)
               }, function (data) {
                 daogouAPI.setUserInfo(accountdata, function (userinfo) {
@@ -117,7 +119,6 @@ angular.module('daogou')
           var getter = $parse(iAttrs.loginsuccess);
           var loginsuccess = getter($scope);
           loginsuccess(data);
-          window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
           //关闭登录及蒙板
           $scope.login = false;
           $(".mengban").hide();
