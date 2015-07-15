@@ -38,15 +38,15 @@ angular.module('goodsReturn', ['ionic'])
     })
 
     //快递方式退货和门店退货 模块色显示与隐藏
-    $scope.expressway = true;
-    $scope.fetchway = false;
+    $scope.expressway = false;
+    $scope.fetchway = true;
 
     $scope.shippingData = [
       {shipping_typeCN: "门店退货", shippingtype: "STORE"},
       {shipping_typeCN: "快递", shippingtype: "EXPRESS"},
       {shipping_typeCN: "直接退款", shippingtype: "IMMEDIATE"}
     ]
-    $scope.defaultShipping = {shipping_typeCN: "快递", shippingtype: "EXPRESS"};
+    $scope.defaultShipping = {shipping_typeCN: "门店退货", shippingtype: "STORE"};
     $scope.refundInputInfo = {
       shipping_type: $scope.defaultShipping,
       buyer_memo: "",
@@ -56,7 +56,7 @@ angular.module('goodsReturn', ['ionic'])
       $scope.expressway = false;
       $scope.fetchway = true;
     }
-
+    $scope.refundInputInfo.shipping_type.shippingtype = "STORE";
     $scope.selectRefundway = function () {
       console.log(["$scope.refundInputInfo.shipping_type", $scope.refundInputInfo.shipping_type]);
       if ($scope.refundInputInfo.shipping_type.shippingtype === "STORE") {
@@ -68,7 +68,7 @@ angular.module('goodsReturn', ['ionic'])
           $rootScope.ListTwoStores = [];
           // var x=document.getElementById("demo");
           getLocation(function (lng, lat) {
-            daogouAPI.shopAddressAll('/brands/' + $scope.refundData.brand_id + '/stores/store-fetch', {
+            daogouAPI.shopAddressAll('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
               user_id: $scope.USERID,
               longitude: lng,
               latitude: lat
@@ -79,7 +79,7 @@ angular.module('goodsReturn', ['ionic'])
               console.log(['查询门店列表失败', data]);
             });
           }, function () {
-            daogouAPI.shopAddressId('/brands/' + $scope.refundData.brand_id + '/stores/store-fetch', {
+            daogouAPI.shopAddressId('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
               user_id: $scope.USERID
             }, function (data, status, headers, config) {
               console.log(['查询门店列表成功', data]);
@@ -99,7 +99,7 @@ angular.module('goodsReturn', ['ionic'])
       }
     }
 
-
+    $scope.selectRefundway();
     function getTwoStore(data) {
       $scope.shopaddressData = data;
       var flag = false;
@@ -187,7 +187,7 @@ angular.module('goodsReturn', ['ionic'])
         "tid": $rootScope.refundsTid,
         "shipping_type": $scope.refundInputInfo.shipping_type.shippingtype,
         "buyer_user_id": 4,
-        "brand_id": $scope.refundData.brand_id,
+        "brand_id": $rootScope.BRANDID,
         "buyer_memo": $scope.refundInputInfo.buyer_memo,
         "details": detailsData,
         "prove_images": "assets/images/addImg.png,assets/images/pic1.png"

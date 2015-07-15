@@ -1,36 +1,38 @@
 
 <ion-view view-title="退货申请">
-      <ion-content class="apply-content">
+      <ion-content class="apply-content padding-top0">
           <div class="statusWrap border-bt0 backfff padding-bt20">
-                <div class="prompt-text">
-                    <select id="shipping_type"  ng-model="refundInputInfo.shipping_type" ng-options="shippingType.shipping_typeCN for shippingType in shippingData" ng-change="selectRefundway()">
-                     <option value="">-- 请选择退货渠道 --</option>
+                <!-- <div class="selectbg">
+                    <select class="selectbox" id="shipping_type"  ng-model="refundInputInfo.shipping_type" ng-options="shippingType.shipping_typeCN for shippingType in shippingData" ng-change="selectRefundway()">
+                     <option value=""> 请选择退货渠道 </option>
                     </select>
 
-                </div>
+                </div> -->
 
                 <div class="shop">
                     <div class="shop-name countDel">退货商品</div>
                     <div class="clearBoth"></div>
                 </div>
-                
-                <ul class="list marginbt0">
-                    <li class="item item-checkbox product-item backfff" ng-repeat="item in refundData.details">
-                       <label class="checkbox disnone">
-                         <input type="checkbox" ng-model="choose">
-                       </label>
-                      <i class="iconfont icon-gou bggou font24 selected-img" ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck($index)"></i>
-                      <img ng-src="{{item.pic}}" class="product-img">
-                      <div class="paramenters-select">
-                          <div class="name width85">{{item.title}}</div>
-                          <div class="paras">{{item.sku_properties_name}}</div>
-                      </div>
-                      <span class="price-abs">{{item.price|currency:"￥":2}}</span>
-                      <div class="countNum">X{{item.item_num}}
-                      </div>
-                    </li>
-                </ul>
-               
+                <div class="statusWrap border-tp0 backfff padding-bt10">
+                    <ul class="list">
+                        <li class="item item-checkbox product-item backfff" ng-repeat="item in refundData.details">
+                           <label class="checkbox disnone">
+                             <input type="checkbox" ng-model="choose">
+                           </label>
+                          <!-- <i class="iconfont icon-gou bggou font24 selected-img" ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck($index)"></i> -->
+                          <img ng-src="{{item.pic}}" class="product-img">
+                          <div class="paramenters-select">
+                              <div class="name width85">{{item.title}}</div>
+                              <div class="paras">{{item.sku_properties_name}}</div>
+                          </div>
+                          <span class="price-abs">{{item.price|currency:"￥":2}}</span>
+                          <div class="countNum">X{{item.item_num}}
+                          </div>
+                        </li>
+                    </ul>
+                </div>
+
+
                 <div class="prompt-text" ng-show="expressway">
                     <div class="prompt">图片</div>
                     <img src="assets/images/addImg.png" id="img1" class="img" ng-click="uploadImg('img1')"/>
@@ -44,26 +46,28 @@
                 </div>
 
 
-                <div class="return-item" ng-show="fetchway">
+                <div class="return-item padding-top0" ng-show="fetchway">
                      <div class="addressInfo">
                          <div class="prompt">请前往以下门店退货</div>
                          <div>
-                             <span class="floatL width85">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}}  </span>
-                             <span class="colorBlue floatR font13" ng-click="goGoodsShop()">其他门店</span>
+                             <div class="floatL">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}}  </div>
+                             <div class="colorBlue floatR font13" ng-click="goGoodsShop()">其他门店</div>
                              <div class="clearBoth"></div>
                          </div>
                          <div>
-                             <span class="font13 floatL width85">{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</span>
-                             <span class="font13 colorRed floatR">{{minDistance.distance}}km</span>
+                             <div class="font13 floatL width78"><span ng-show="minDistance.is_default">[默认]&nbsp;</span>{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</div>
+                             <div class="colorBlue floatR font13">获取路线&nbsp;</div>
+                             <div class="font13 colorRed floatR">{{minDistance.distance}}km</div>
                              <div class="clearBoth"></div>
                          </div>
+                         <div class="clearBoth"></div>
                     </div>
                 </div>
 
-                <div class="return-item" ng-show="fetchway">
+                <div class="return-item border-bt0" ng-show="fetchway">
                     <div class="erweima-wrap">
                        <img class="erweima floatL margin-r15" ng-src="{{refundData.refund_qrcode_url}}"/>
-                       <div class="floatL">
+                       <div class="floatL margin-tp20">
                            <span>请在取货时向店员出示此码</span><br/>
                            <span class="colorRed">切勿透露他人以防冒取</span>
                        </div>
