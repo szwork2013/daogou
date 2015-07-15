@@ -80,6 +80,7 @@ order.controller('orderDetailCtrl',
             $scope.payWay = true;
             $scope.payNo = true;
             $scope.cancelOrder = true;
+            $scope.refund = true;
             break;
           case "TRADE_FINISHED":
             data.statusCN = "已完成";
@@ -95,7 +96,10 @@ order.controller('orderDetailCtrl',
             $scope.payWay = true;
             $scope.payNo = true;
             break;
-          case "TRADE_CLOSED_BY_SYSTEM", "TRADE_CLOSED_BY_SELLER", "TRADE_CLOSED_BY_BUYER", "TRADE_CLOSED_BY_SPLIT":
+          case "TRADE_CLOSED_BY_SYSTEM":
+          case "TRADE_CLOSED_BY_SELLER":
+          case "TRADE_CLOSED_BY_BUYER":
+          case "TRADE_CLOSED_BY_SPLIT":
             data.statusCN = "已关闭";
             if (data.shipping_type === "EXPRESS") {
               $scope.expressReceiver = true;
@@ -182,4 +186,22 @@ order.controller('orderDetailCtrl',
     $scope.goDetail = function (id) {
       $state.go("productDetail", {detailId: id});
     };
+
+    /**
+    *取消订单
+    *@param tid
+    */
+    $scope.cancelOrderFunc = function(tid){
+      daogouAPI.cancelOrder({
+        tid:tid
+      }, function (data, status, headers, config) {
+        console.log(['取消订单成功',data]);
+      }, function (data, status, headers, config) {
+        console.log(['取消订单失败',data]);
+      });
+
+    };
+
+
+
   });

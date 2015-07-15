@@ -98,12 +98,12 @@
           <img ng-src="{{item.pics[0]}}" class="product-img"  ng-click="goDetail(item.num_iid)">
 
           <div class="paramenters"  ng-click="goDetail(item.num_iid)">
-            <div class="name">{{item.title}}</div>
+            <div class="name width85">{{item.title}}</div>
             <div class="paras">{{item.sku_properties_name}}</div>
           </div>
           <span class="price-abs">{{item.price|currency:"￥":2}}</span>
 
-          <div class="countNum">X{{item.num}}</div>
+          <div class="countNum_abs">X{{item.num}}</div>
           <div class="sale-return" ng-show="refund" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
           <div class="on-sale-return" ng-show="refunding">退货中</div>
         </li>
@@ -133,14 +133,14 @@
              ng-click="payThisOrder()">立即付款
         </div>
         <!-- ui-sref="payWay" -->
-        <button class="delcount" ui-sref="orderList">取消订单</button>
+        <button class="delcount" ng-click="cancelOrderFunc(orderDetailData.tid)">取消订单</button>
       </li>
     </ul>
   </ion-footer-bar>
   <ion-footer-bar align-title="left" class="footer" ng-show="cancelOrder">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
-        <button class="delcount" ui-sref="orderList">取消订单</button>
+        <button class="delcount" ng-click="cancelOrderFunc(orderDetailData.tid)">取消订单</button>
       </li>
     </ul>
   </ion-footer-bar>

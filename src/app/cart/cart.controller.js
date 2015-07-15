@@ -45,6 +45,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         page: pageindex,
         per_page: pagesize
       }, function (data, status, headers, config) {
+        console.log(["购物车商品列表成功",data]);
         if(data.length===0){
           $scope.loadMoreData=false;
         }
