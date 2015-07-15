@@ -2,7 +2,7 @@
 
 var order = angular.module('order', ['ionic']);
 order.controller('orderDetailCtrl',
-  function ($rootScope, $scope, $log, $http, $state, $stateParams, URLPort, daogouAPI, WXpay) {
+  function ($rootScope, $scope, $log, $http, $state, $stateParams,$ionicLoading, URLPort, daogouAPI, WXpay) {
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
     //这个切换其实是2个页面 不是页面内切换的
@@ -74,6 +74,7 @@ order.controller('orderDetailCtrl',
             $scope.payNo = true;
             break;
           case "WAIT_BUYER_FETCH_GOODS":
+
             data.statusCN = "待取货";
             $scope.fetchReceiver = true;
             $scope.fetchQRcode = true;
@@ -163,6 +164,32 @@ order.controller('orderDetailCtrl',
       .error(function (data) {
         console.log(["获取订单详情失败", data]);
       });
+
+
+    /**
+     * 调用微信内置地图
+     */
+    $scope.openLocation=function(){
+      $ionicLoading.show({
+        template: '加载中...'
+      })
+      //获取门店信息  ”获取路线“功能需要门店经纬度
+      daogouAPI.getStoreInfo($scope.orderDetailData.fetch_store_id,function(storedata){
+        $ionicLoading.hide()
+        //调用微信地理位置
+        wx.openLocation({
+          latitude: storedata.latitude, // 纬度，浮点数，范围为90 ~ -90
+          longitude: storedata.longitude, // 经度，浮点数，范围为180 ~ -180。
+          name: storedata.name, // 位置名
+          address: storedata.address, // 地址详情说明
+          scale: 28, // 地图缩放级别,整形值,范围从1~28。默认为最大
+          infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+        });
+      },function(errordata){
+        $ionicLoading.hide()
+      })
+
+    }
 
     /**
      * 退货
