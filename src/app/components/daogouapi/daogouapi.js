@@ -562,7 +562,7 @@ angular.module('daogou')
       var action = '/users/mobiles/' + dataobj.username;
       var data = '';
       daogouAPI.get(daogouAPI.apiurl(action, data), function (data) {
-        window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
+       // window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
         if (scallback) {
           scallback(data);
         }
