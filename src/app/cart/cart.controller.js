@@ -35,6 +35,10 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
     $scope.totalNum = 0;
     //总价格
     $scope.totalFee = 0;
+    //购物车中没有数据的实现显示用的
+    $scope.carthasnodata=false;
+    //购物车登录后加载数据的时候显示用的
+    $scope.showlogindata=false;
     /**
      * 获取购物车列表
      */
@@ -73,6 +77,18 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         });
         daogouAPI.formatSku(data);
         $scope.cartProductListData = $scope.cartProductListData.concat(data);
+        console.log(['11111111111111111111111111',$scope.cartProductListData])
+        console.log(['222222222222222222222222',$scope.cartProductListData.length])
+        //登录后加载数据是显示的，如果购物车中有数据，那么加载数据和加入购物车都不显示
+        if($scope.cartProductListData.length>0){
+          $scope.showlogindata=false;
+          $scope.carthasnodata=false;
+        }
+        //购物车中无数据的时候，只显示加入购物车，加载数据不显示
+        else if($scope.cartProductListData.length===0){
+          $scope.carthasnodata=true;
+          $scope.showlogindata=false;
+        }
         if (data.length >= pagesize) {
           pageindex++;
         } else {
@@ -98,6 +114,8 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       var userInfo = window.sessionStorage.getItem("USERINFO");
       $scope.USERINFO = JSON.parse(userInfo);
       $scope.USERID = $scope.USERINFO.id;
+      //登录成功后就显示正在加载数据，在判断购物车中是否有数据
+      $scope.showlogindata=true;
       //获取订单信息
       cartProductListFunc();
     }

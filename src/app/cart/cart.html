@@ -55,9 +55,14 @@
         </li>
       </ul>
     </div>
-    <div class="emptyCart" ng-show="cartProductListData.length==0">
-      <h1>购物车快饿瘪了T.T</h1>
+    <div class="emptyCart">
+      <div ng-show="carthasnodata" class="emptyCart">
+        <h1>购物车快饿瘪了T.T</h1>
       主人快给我挑点宝贝吧
+      </div>
+      <div class="emptyCart" ng-show="showlogindata">
+          <h4>亲~您的网速过慢，数据正在加载，请稍等~若长时间无法显示宝贝，请刷新页面</h4>
+      </div>
 
     </div>
     <ion-infinite-scroll
