@@ -148,7 +148,6 @@ angular.module('daogou')
           var getter = $parse(iAttrs.loginerror)
           var loginerror = getter($scope);
           loginerror(data);
-          console.log(data);
           //如果登录失败则显示失败
           hide();
           var alertPopup = $ionicPopup.alert({

@@ -2,7 +2,7 @@
 
 var createOrder = angular.module('createOrder', ['ionic']);
 createOrder.controller('creatorderCtrl',
-  function ($rootScope, $scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, WXpay, getLocation) {
+  function ($rootScope, $scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, WXpay, getLocation, $ionicPopup, $ionicLoading) {
     var productOrders = window.sessionStorage.getItem("productOrders");
 
     if (productOrders == null) {
@@ -230,9 +230,16 @@ createOrder.controller('creatorderCtrl',
     }
      
 
-
+    function show() {
+            $ionicLoading.show({
+              template: '生成订单中，请稍等...'
+            });
+          };
+    function hide(){
+        $ionicLoading.hide();
+      };
     $scope.submitOrder = function () {
-
+      show();
       //支付按钮先创建订单再支付
       if ($scope.express === true) {
         //快递方式取货
@@ -257,6 +264,7 @@ createOrder.controller('creatorderCtrl',
             'orders': $scope.productOrders
           })
           .success(function (orderdata) {
+            hide();
             //创建订单成功调用微信支付
             WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
               // alert('支付成功');
@@ -265,6 +273,17 @@ createOrder.controller('creatorderCtrl',
             });
           })
           .error(function (data) {
+            hide();
+            var alertPopup = $ionicPopup.alert({
+              title: '友情提示',
+              template: '提交订单失败,请重新提交订单',
+              cssClass: 'alerttextcenter',
+              okText: '确定',
+              okType: 'button-energized'
+            });
+            alertPopup.then(function (res) {
+              console.log('Thank you for not eating my delicious ice cream cone');
+            });
             console.log(['提交订单失败', data]);
           })
 
@@ -300,6 +319,7 @@ createOrder.controller('creatorderCtrl',
                      'orders': $scope.productOrders
                    })
                    .success(function (orderdata) {
+                    hide();
                      console.log(['提交订单成功', orderdata]);
                      //创建订单成功调用微信支付
                      WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
@@ -309,10 +329,21 @@ createOrder.controller('creatorderCtrl',
                      });
                    })
                    .error(function (data) {
+                      hide();
+                      var alertPopup = $ionicPopup.alert({
+                        title: '友情提示',
+                        template: '提交订单失败,请重新提交订单',
+                        cssClass: 'alerttextcenter',
+                        okText: '确定',
+                        okType: 'button-energized'
+                      });
+                      alertPopup.then(function (res) {
+                        console.log('Thank you for not eating my delicious ice cream cone');
+                      });
                      console.log(['提交订单失败', data]);
                    })
-            }else{
-
+            }else{  
+                    hide();
                     $scope.userdataerror = {
                             error : true,
                             msg:"请选择取货时间"
