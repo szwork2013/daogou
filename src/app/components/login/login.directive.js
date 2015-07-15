@@ -73,7 +73,23 @@ angular.module('daogou')
         /**
          * 登录
          */
+         //防止重复加载，先声明点击数为1
+        var clicknum=1;
         $scope.submit = function () {
+          clicknum++;
+          //第一次点击后，clicknum=2，执行else后面的数据加载，第二次点击登录clicknum=3，弹窗提示
+          if(clicknum>2){
+            var alertPopup = $ionicPopup.alert({
+              title: '友情提示',
+              template: '您的网速太慢了，数据正在加载中，请不要重复点击登录',
+              cssClass: 'alerttextcenter',
+              okText: '确定',
+              okType: 'button-energized'
+            });
+            alertPopup.then(function(res) {
+              console.log('Thank you for not eating my delicious ice cream cone');
+            });
+          }else{
           daogouAPI.login($scope.logindate, function (data) {
             daogouAPI.isAccountLogin(function (accountdata) {
               // 获取用户信息
@@ -91,7 +107,7 @@ angular.module('daogou')
             })
           }, function (data) {
             errorcallback(data)
-          })
+          })}
         };
         /**
          * 成功调用函数
