@@ -30,7 +30,8 @@ order.controller('orderDetailCtrl',
       return $rootScope.ISWX && $scope.fetchQRcode;
     };
 
-    $http.get(URLPort + "/trades/" + $stateParams.tid + "?show_orders=true")
+    function payorderNow(){
+      $http.get(URLPort + "/trades/" + $stateParams.tid + "?show_orders=true")
       .success(function (data) {
         console.log(['orderdetail', data])
         switch (data.pay_type) {
@@ -160,12 +161,16 @@ order.controller('orderDetailCtrl',
          * 立即调用微信支付
          */
         if ($rootScope.PAYNOW) {
+          $rootScope.PAYNOW=false;
           $ionicLoading.show({
             template: '调用支付接口中...',
             duration:1500,
           })
           WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
             // alert(JSON.stringify(data));
+            if(data.errMsg==="chooseWXPay:ok"){
+              payorderNow()
+            }
           });
         }
 
@@ -173,6 +178,8 @@ order.controller('orderDetailCtrl',
       .error(function (data) {
         console.log(["获取订单详情失败", data]);
       });
+    };
+    payorderNow();
 
 
     /**
