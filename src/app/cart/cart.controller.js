@@ -324,6 +324,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
      * 结算商品
      */
     $scope.checkCartProduct = function () {
+      $rootScope.ids=$scope.ids;
       var productOrders = [];
       window.sessionStorage.removeItem("productOrders");
       angular.forEach($scope.cartProductListData, function (item, index) {
