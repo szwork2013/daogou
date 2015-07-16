@@ -193,16 +193,25 @@ product.controller('productDetailCtrl',
      * 当点击购物车时让设置goCart 和 goOrder 的参数使参数面板的下一步 跳转到购物车还是生成订单
      */
     $scope.propertyShowCart = function () {
-      var userInfo = window.sessionStorage.getItem("USERINFO");
-      if (userInfo == null) {
-        $scope.login = true;
-        $(".mengban").show();
-      }
-      else {
+      daogouAPI.isLogin(function (data) {
+        var userInfo = window.sessionStorage.getItem("USERINFO");
         $scope.USERINFO = JSON.parse(userInfo);
         $scope.USERID = $scope.USERINFO.id;
         propertyMenu();
-      }
+      }, function (data) {
+        $scope.login = true;
+        $(".mengban").show();
+      });
+      // var userInfo = window.sessionStorage.getItem("USERINFO");
+      // if (userInfo == null) {
+      //   $scope.login = true;
+      //   $(".mengban").show();
+      // }
+      // else {
+      //   $scope.USERINFO = JSON.parse(userInfo);
+      //   $scope.USERID = $scope.USERINFO.id;
+      //   propertyMenu();
+      // }
       $scope.goCart = false;
       $scope.goOrder = true;
     }
@@ -210,16 +219,25 @@ product.controller('productDetailCtrl',
      *
      */
     $scope.propertyShowOrder = function () {
-      var userInfo = window.sessionStorage.getItem("USERINFO");
-      if (userInfo == null) {
-        $scope.login = true;
-        $(".mengban").show();
-      }
-      else {
+      daogouAPI.isLogin(function (data) {
+        var userInfo = window.sessionStorage.getItem("USERINFO");
         $scope.USERINFO = JSON.parse(userInfo);
         $scope.USERID = $scope.USERINFO.id;
         propertyMenu();
-      }
+      }, function (data) {
+        $scope.login = true;
+        $(".mengban").show();
+      });
+      // var userInfo = window.sessionStorage.getItem("USERINFO");
+      // if (userInfo == null) {
+      //   $scope.login = true;
+      //   $(".mengban").show();
+      // }
+      // else {
+      //   $scope.USERINFO = JSON.parse(userInfo);
+      //   $scope.USERID = $scope.USERINFO.id;
+      //   propertyMenu();
+      // }
       $scope.goCart = true;
       $scope.goOrder = false;
     }
