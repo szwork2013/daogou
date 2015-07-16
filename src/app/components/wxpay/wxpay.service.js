@@ -29,6 +29,7 @@ angular.module('daogou')
 .factory('WXpay', function($rootScope,daogouAPI,WXJSSDKPay,WXgetOpenid) {
 	return function WXpay(brandId,tid,callback) {
 
+		/*以下注释代码请不要删除*/
 		// weixinpay();
 		// function weixinpay(){
 		// 	daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
@@ -44,26 +45,48 @@ angular.module('daogou')
 		// 			// alert('wxpay.service.js:162 获取openid失败，支付失败'+JSON.stringify(data))
 		// 		})
 		// 	});
-
 		// }
 
-		// function weixinpay(){
-			//用此方法让用户获得openid
+		/*以下注释代码请不要删除*/
+		//默认先更新openid再支付  若已更新则直接进行支付
+		//解决BUG：第一次支付取消后  再点支付因code已消费 而无法再次取得openid  导致回调失败而无法支付
+		// if(!$rootScope.HASGETOPENID){
+		// 	//用此方法让用户获得openid
+		// 	WXgetOpenid(tid,function(data){
+		// 		$rootScope.HASGETOPENID=true;
+		// 		// 获取订单ID后发起微信支付
+		// 		weixinpay()
+		// 	},function(data){
+		// 		// alert(JSON.stringify(data));
+		// 	})
+		// }else{
+		// 	weixinpay()
+		// }
 
-			WXgetOpenid(tid,function(data){
-				// alert("取到openid")
-				// 获取用户ID后发起微信支付
-				daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
-					console.log(['tradesPay成功', data])
-					WXJSSDKPay(data.pre_pay_no,callback)//微信支付新接口
-				},function(data){
 
-				});
+
+
+		//用此方法让用户获得openid
+		WXgetOpenid(tid,function(data){
+			$rootScope.HASGETOPENID=true;
+			// 获取订单ID后发起微信支付
+			weixinpay()
+		},function(data){
+			//为啥取openid失败还要调用支付嘞？
+			//解决BUG：第一次支付取消后  再点支付因code已消费 而无法再次取得openid  导致回调失败而无法支付
+			weixinpay()
+		})
+
+		// 获取订单ID后发起微信支付
+		function weixinpay(){
+			daogouAPI.tradesPay({tid:tid,pay_type : 'WEIXIN'},function(data){
+				console.log(['tradesPay成功', data])
+				WXJSSDKPay(data.pre_pay_no,callback)//微信支付新接口
 			},function(data){
-				// alert(JSON.stringify(data));
-			})
 
-		// }
+			});
+		}
+
 
 	};
 })
@@ -181,8 +204,7 @@ WXJSSDKPay(callback);
 						ecallback(data);
 					})
 				},function(data){
-
-					ecallback(data)
+					ecallback(data);
 				});
 			}
 
