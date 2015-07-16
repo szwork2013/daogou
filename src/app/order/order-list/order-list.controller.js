@@ -41,8 +41,10 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
           case "WAIT_BUYER_PAY":
             var created_at = new Date(item.created_at);
             var newDate = new Date(created_at.setDate(created_at.getDate() + 3));
+            $scope.newDateTime = newDate.getTime();
+            $scope.newNewDateTime = new Date().getTime();
             function checkNaN(){
-              item.leftTime = $scope.MillisecondToDate(newDate.getTime() - new Date().getTime());
+              item.leftTime = $scope.MillisecondToDate($scope.newDateTime - $scope.newNewDateTime);
               if(item.leftTime.indexOf("NaN")>0){
                   checkNaN();
               }else{
@@ -66,8 +68,10 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
             item.statusCN = '待确认收货';
             break;
           case 'WAIT_BUYER_FETCH_GOODS':
+            $scope.newDateTimeF = new Date(item.fetch_subscribe_begin_time).getTime();
+            $scope.newNewDateTimeF = new Date().getTime();
             function checkNaNt(){
-              item.leftTime = $scope.MillisecondToDate(new Date(item.fetch_subscribe_begin_time).getTime() - new Date().getTime());
+              item.leftTime = $scope.MillisecondToDate($scope.newDateTimeF - $scope.newNewDateTimeF);
               if(item.leftTime.indexOf("NaN")>0){
                   checkNaNt();
               }else{
