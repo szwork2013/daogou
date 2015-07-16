@@ -4,21 +4,23 @@ var order = angular.module('orderList', ['ionic']);
 order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state', '$stateParams', '$rootScope', function ($scope, $log, $http, URLPort, daogouAPI, $state, $stateParams, $rootScope) {
 
 
-  var userInfo = window.sessionStorage.getItem("USERINFO");
-  if (userInfo == null) {
+  // var userInfo = window.sessionStorage.getItem("USERINFO");
+  // if (userInfo == null) {
     daogouAPI.isLogin(function (data) {
-      $scope.USERINFO = data;
-      window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
+        var userInfo = window.sessionStorage.getItem("USERINFO");
+        $scope.USERINFO = JSON.parse(userInfo);
+      // $scope.USERINFO = data;
+      // window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
       getOrderListFunc();
     }, function (data) {
       $scope.login = true;
       $(".mengban").show();
     });
-  }
-  else {
-    $scope.USERINFO = JSON.parse(userInfo);
-    getOrderListFunc();
-  }
+  // }
+  // else {
+  //   $scope.USERINFO = JSON.parse(userInfo);
+  //   getOrderListFunc();
+  // }
 
 
   var URLPort = URLPort();

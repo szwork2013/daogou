@@ -3,20 +3,20 @@
 var cart = angular.module('cart', ['ionic']);
 cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$stateParams', 'daogouAPI', '$rootScope', "$ionicPopup",
   function ($scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, $rootScope, $ionicPopup) {
-    var userInfo = window.sessionStorage.getItem("USERINFO");
-    if (userInfo == null) {
+    // var userInfo = window.sessionStorage.getItem("USERINFO");
+    // if (userInfo == null) {
       daogouAPI.isLogin(function (data) {
-        $scope.USERINFO = data;
-        window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
+        var userInfo = window.sessionStorage.getItem("USERINFO");
+        $scope.USERINFO = JSON.parse(userInfo);
         cartProductListFunc();
       }, function (data) {
         $scope.showLogin();
       });
-    }
-    else {
-      $scope.USERINFO = JSON.parse(userInfo);
-      cartProductListFunc();
-    }
+    // }
+    // else {
+    //   $scope.USERINFO = JSON.parse(userInfo);
+    //   cartProductListFunc();
+    // }
     var URLPort = URLPort();
     $scope.hasMoreOrder = true;
     var pageindex = 1;
