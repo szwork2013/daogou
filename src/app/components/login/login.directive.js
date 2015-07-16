@@ -82,9 +82,13 @@ angular.module('daogou')
         function hide(){
             $ionicLoading.hide();
           };
+        var submitnum=1;
           //登录的提交按钮
         $scope.submit = function () {
           show();
+          submitnum++;
+          console.log(submitnum);
+          if(submitnum=2){
             daogouAPI.login($scope.logindate, function (data) {
               daogouAPI.isAccountLogin(function (accountdata) {
                 // 获取用户信息
@@ -104,6 +108,7 @@ angular.module('daogou')
             }, function (data) {
               errorcallback(data)
             })
+          }
         };
         /**
          * 成功调用函数
@@ -118,6 +123,7 @@ angular.module('daogou')
           $scope.login = false;
           $(".mengban").hide();
           hide();
+          var submitnum=1;
           //登录成功回调之后，检测用户是否登录，如果登录了购物车中有物品，显示小红点，没有物品不显示小红点
           daogouAPI.isLogin(function () {
             //获取用户信息
@@ -150,6 +156,7 @@ angular.module('daogou')
           loginerror(data);
           //如果登录失败则显示失败
           hide();
+          var submitnum=1;
           var alertPopup = $ionicPopup.alert({
             title: '友情提示',
             template: '请核对您输入的验证码是否有误，或重新获取验证码',
