@@ -25,7 +25,7 @@
       <div class="shop">
         <div class="shop-name countDel">{{BRANDINFO.brand_name}}</div>
         <div class="edit" ng-show="edithandle" ng-click="edit()">编辑</div>
-        <div class="edit" ng-show="finishhandle" ng-click="finish()">完成</div>
+        <div class="edit" ng-if="finishhandle" ng-click="finish()">完成</div>
         <div class="clearBoth"></div>
       </div>
 
@@ -56,11 +56,11 @@
       </ul>
     </div>
     <div class="emptyCart">
-      <div ng-show="carthasnodata" class="emptyCart">
+      <div ng-if="carthasnodata" class="emptyCart">
         <h1>购物车快饿瘪了T.T</h1>
       主人快给我挑点宝贝吧
       </div>
-      <div class="emptyCart" ng-show="showlogindata">
+      <div class="emptyCart" ng-if="showlogindata">
           <h4>亲~您的网速过慢，数据正在加载，请稍等~若长时间无法显示宝贝，请刷新页面</h4>
       </div>
 
@@ -88,7 +88,7 @@
   </ion-footer-bar>
   <div class="mengban"></div>
 
-  <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;" ng-show="login"
+  <div login style="position:absolute;z-index:999 ;left:0;bottom:0;width:100%;background:#fff;" ng-if="login"
        loginsuccess="loginsuccess" loginerror="loginerror"></div>
   <ion-footer-bar align-title="left" class="footer" ng-show="finishhandle&&cartProductListData.length>0">
     <ul class="list footerul">
