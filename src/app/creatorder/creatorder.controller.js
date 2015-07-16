@@ -238,6 +238,19 @@ createOrder.controller('creatorderCtrl',
     function hide(){
         $ionicLoading.hide();
       };
+
+    function delcartproduct(ids){
+        daogouAPI.deleteCartProduct({
+            userid: $scope.USERINFO.id,
+            ids: ids.join(",")
+          }, function (data, status, headers, config) {
+            console.log("删除订单成功",data);
+          },
+          function (data, status, headers, config) {
+            console.log("删除订单失败",data);
+          });
+    }
+
     $scope.submitOrder = function () {
       show();
       //支付按钮先创建订单再支付
@@ -264,6 +277,10 @@ createOrder.controller('creatorderCtrl',
             'orders': $scope.productOrders
           })
           .success(function (orderdata) {
+            //从购物车中删除订单
+            if($rootScope.ids){
+              delcartproduct($rootScope.ids);
+            }
             hide();
             //创建订单成功调用微信支付
             WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
@@ -320,6 +337,9 @@ createOrder.controller('creatorderCtrl',
                    })
                    .success(function (orderdata) {
                     hide();
+                    if($rootScope.ids){
+                      delcartproduct($rootScope.ids);
+                    }
                      console.log(['提交订单成功', orderdata]);
                      //创建订单成功调用微信支付
                      WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
