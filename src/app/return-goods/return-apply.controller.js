@@ -42,16 +42,18 @@ angular.module('goodsReturn', ['ionic'])
     $scope.fetchway = true;
 
     $scope.shippingData = [
-      {shipping_typeCN: "门店退货", shippingtype: "STORE"},
-      {shipping_typeCN: "快递", shippingtype: "EXPRESS"},
-      {shipping_typeCN: "直接退款", shippingtype: "IMMEDIATE"}
+      {shipping_typeCN: "请选择退货门店", shippingtype: ""},
+      {shipping_typeCN: "门店退货", shippingtype: "STORE"}
+      // {shipping_typeCN: "快递", shippingtype: "EXPRESS"},
+      // {shipping_typeCN: "直接退款", shippingtype: "IMMEDIATE"}
     ]
-    $scope.defaultShipping = {shipping_typeCN: "门店退货", shippingtype: "STORE"};
-    $scope.refundInputInfo = {
-      shipping_type: $scope.defaultShipping,
-      buyer_memo: "",
-      prove_images: "http://brand-guide.b0.upaiyun.com/refund-qr-code/1434009839066_495203.jpg"
-    }
+    $scope.refundInputInfo = {};
+    $scope.refundInputInfo.shipping_type =  $scope.shippingData[0];
+    // $scope.refundInputInfo = {
+    //   shipping_type: $scope.defaultShipping
+    //   // buyer_memo: "",
+    //   // prove_images: "http://brand-guide.b0.upaiyun.com/refund-qr-code/1434009839066_495203.jpg"
+    // }
     if ($rootScope.selectedStoreId) {//如果是选择门店
       $scope.expressway = false;
       $scope.fetchway = true;
