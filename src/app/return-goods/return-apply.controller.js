@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('goodsReturn', ['ionic'])
-  .controller('returnApplyCtrl', ['$rootScope', '$scope', '$log', '$http', 'checklocalimg', '$stateParams', 'URLPort', '$state', 'daogouAPI', 'getLocation', function ($rootScope, $scope, $log, $http, checklocalimg, $stateParams, URLPort, $state, daogouAPI, getLocation) {
+  .controller('returnApplyCtrl', ['$rootScope', '$scope', '$log', '$http', 'checklocalimg', '$stateParams', 'URLPort', '$state', 'daogouAPI', 'getLocation','$ionicLoading', function ($rootScope, $scope, $log, $http, checklocalimg, $stateParams, URLPort, $state, daogouAPI, getLocation,$ionicLoading) {
 
     if ($stateParams.oid) {
       $rootScope.refundsOid = $stateParams.oid;
@@ -227,6 +227,32 @@ angular.module('goodsReturn', ['ionic'])
 
     }
 
+    /**
+     * 调用微信内置地图
+     */
+    $scope.openLocation=function(){
+      console.log("获取路线");
+      $ionicLoading.show({
+        template: '加载中...'
+      })
+      //获取门店信息  ”获取路线“功能需要门店经纬度
+      daogouAPI.getStoreInfo( $rootScope.minDistance.id,function(storedata){
+        $ionicLoading.hide()
+        //调用微信地理位置
+        wx.openLocation({
+          latitude: storedata.latitude, // 纬度，浮点数，范围为90 ~ -90
+          longitude: storedata.longitude, // 经度，浮点数，范围为180 ~ -180。
+          name: storedata.name, // 位置名
+          address: storedata.address, // 地址详情说明
+          scale: 28, // 地图缩放级别,整形值,范围从1~28。默认为最大
+          infoUrl: '' // 在查看位置界面底部显示的超链接,可点击跳转
+        });
+      },function(errordata){
+        $ionicLoading.hide()
+      })
+
+    }
+
   }])
 
 
@@ -327,6 +353,7 @@ angular.module('goodsReturn', ['ionic'])
     // 	})
     // }
 
+   
 
   }])
 
