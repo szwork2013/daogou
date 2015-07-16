@@ -160,6 +160,10 @@ order.controller('orderDetailCtrl',
          * 立即调用微信支付
          */
         if ($rootScope.PAYNOW) {
+          $ionicLoading.show({
+            template: '调用支付接口中...',
+            duration:1500,
+          })
           WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
             // alert(JSON.stringify(data));
           });
