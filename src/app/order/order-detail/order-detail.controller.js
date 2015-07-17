@@ -114,6 +114,8 @@ order.controller('orderDetailCtrl',
                     $scope.fetchshop = false;
                   }
                 }
+                $scope.cancelOrder = false;
+                $scope.cancelpayOrder = false;
                 // $scope.deleteOrder = true;
                 $scope.payWay = true;
                 break;
@@ -152,10 +154,10 @@ order.controller('orderDetailCtrl',
             daogouAPI.formatSku(data.orders);
             $scope.orderDetailData = data;
             //格式化取货时间
-            if($scope.orderDetailData.fetch_time){
-              var fetchTimeArr = $scope.orderDetailData.fetch_time.split("T");
-              $scope.orderDetailData.fetch_time = fetchTimeArr[0];
-            }
+            // if($scope.orderDetailData.fetch_time){
+            //   var fetchTimeArr = $scope.orderDetailData.fetch_time.split("T");
+            //   $scope.orderDetailData.fetch_time = fetchTimeArr[0];
+            // }
 
             /**
              * 立即调用微信支付
