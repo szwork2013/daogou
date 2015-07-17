@@ -151,6 +151,7 @@ angular.module('daogou')
          * @param data
          */
         function errorcallback(data) {
+          console.log(data);
           var getter = $parse(iAttrs.loginerror)
           var loginerror = getter($scope);
           loginerror(data);
@@ -159,7 +160,7 @@ angular.module('daogou')
           var submitnum=1;
           var alertPopup = $ionicPopup.alert({
             title: '友情提示',
-            template: '请核对您输入的验证码是否有误，或重新获取验证码',
+            template: JSON.stringify(data),
             cssClass: 'alerttextcenter',
             okText: '确定',
             okType: 'button-energized'
