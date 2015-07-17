@@ -2,17 +2,12 @@
 <ion-view view-title="退货申请">
       <ion-content class="apply-content padding-top0">
           <div class="statusWrap border-bt0 backfff padding-bt20">
-                <!-- <div class="selectbg">
+                <div class="selectbg">
                     <select class="selectbox" id="shipping_type"  ng-model="refundInputInfo.shipping_type" ng-options="shippingType.shipping_typeCN for shippingType in shippingData" ng-change="selectRefundway()">
-                     <option value=""> 请选择退货渠道 </option>
                     </select>
 
-                </div> -->
-
-                <div class="shop">
-                    <div class="shop-name countDel">退货商品</div>
-                    <div class="clearBoth"></div>
                 </div>
+               
                 <div class="statusWrap border-tp0 backfff padding-bt10">
                     <ul class="list">
                         <li class="item item-checkbox product-item backfff" ng-repeat="item in refundData.details">
@@ -56,7 +51,7 @@
                          </div>
                          <div>
                              <div class="font13 floatL width78"><span ng-show="minDistance.is_default">[默认]&nbsp;</span>{{minDistance.state}} {{minDistance.city}} {{minDistance.district}} {{minDistance.address}}</div>
-                             <div class="colorBlue floatR font13">获取路线&nbsp;</div>
+                             <div class="colorBlue floatR font13" ng-click="openLocation()">获取路线&nbsp;</div>
                              <div class="font13 colorRed floatR">{{minDistance.distance}}km</div>
                              <div class="clearBoth"></div>
                          </div>

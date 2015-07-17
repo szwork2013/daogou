@@ -5,12 +5,14 @@ product.controller('productDetailCtrl',
   function ($rootScope, $scope, $log, $http, $state, $stateParams, URLPort, daogouAPI, $ionicPopup) {
     var URLPort = URLPort();
     $scope.login = false;//是否显示登录页面
+
     //创建订单页的 订单数据
     $scope.productOrder = {
       bring_guider_id: $rootScope.GUIDID
     };
     window.sessionStorage.removeItem("productOrders");
-    //sku是否选择全
+
+    //skus是否都选择
     $scope.allSelected = false;
     /**
      * 获取单个商品信息
@@ -62,6 +64,7 @@ product.controller('productDetailCtrl',
       $scope.allSelected = false;
       $(".mengban,.chooseProductInfoWarp").show();
     };
+
     /**
      *关闭选取商品SKU
      */
@@ -99,16 +102,17 @@ product.controller('productDetailCtrl',
      * 监测选择的sku
      */
     $scope.$watch("productDetailData.properties", function (newValue, oldValue) {
-      if ($scope.allSelected) {
-        var list = $scope.productDetailData.skus.filter(function (sku) {
-          return sku.properties == $scope.productDetailData.properties;
-        });
-        if (list.length > 0) {
-          $scope.productOrder = list[0];
-          $scope.productOrder.num = 1;
+        if ($scope.allSelected) {
+          var list = $scope.productDetailData.skus.filter(function (sku) {
+            return sku.properties == $scope.productDetailData.properties;
+          });
+          if (list.length > 0) {
+            $scope.productOrder = list[0];
+            $scope.productOrder.num = 1;
+          }
         }
       }
-    });
+    );
     /**
      * 点击- 减商品数
      */
@@ -170,11 +174,11 @@ product.controller('productDetailCtrl',
         } else {
           $scope.productOrder.num = 1;
           var alertPopup = $ionicPopup.alert({
-            title: '友情提示',
-            template: '至少得选择一个哦~亲',
-            cssClass: 'alerttextcenter',
-            okText: '确定',
-            okType: 'button-energized'
+          title: '友情提示',
+          template: '至少得选择一个哦~亲',
+          cssClass: 'alerttextcenter',
+          okText: '确定',
+          okType: 'button-energized'
           });
           alertPopup.then(function (res) {
             console.log('Thank you for not eating my delicious ice cream cone');
@@ -183,54 +187,73 @@ product.controller('productDetailCtrl',
 
       }
     };
+
+
     /**
-     * 加入购物车
+     * 当点击购物车时让设置goCart 和 goOrder 的参数使参数面板的下一步 跳转到购物车还是生成订单
      */
     $scope.propertyShowCart = function () {
-      var userInfo = window.sessionStorage.getItem("USERINFO");
-      if (userInfo == null) {
-        $scope.login = true;
-        $(".mengban").show();
-      }
-      else {
+      daogouAPI.isLogin(function (data) {
+        var userInfo = window.sessionStorage.getItem("USERINFO");
         $scope.USERINFO = JSON.parse(userInfo);
         $scope.USERID = $scope.USERINFO.id;
         propertyMenu();
-      }
+      }, function (data) {
+        $scope.login = true;
+        $(".mengban").show();
+      });
+      // var userInfo = window.sessionStorage.getItem("USERINFO");
+      // if (userInfo == null) {
+      //   $scope.login = true;
+      //   $(".mengban").show();
+      // }
+      // else {
+      //   $scope.USERINFO = JSON.parse(userInfo);
+      //   $scope.USERID = $scope.USERINFO.id;
+      //   propertyMenu();
+      // }
       $scope.goCart = false;
       $scope.goOrder = true;
-    };
+    }
     /**
-     *立即购买
+     *
      */
     $scope.propertyShowOrder = function () {
+      daogouAPI.isLogin(function (data) {
+        var userInfo = window.sessionStorage.getItem("USERINFO");
+        $scope.USERINFO = JSON.parse(userInfo);
+        $scope.USERID = $scope.USERINFO.id;
+        propertyMenu();
+      }, function (data) {
+        $scope.login = true;
+        $(".mengban").show();
+      });
+      // var userInfo = window.sessionStorage.getItem("USERINFO");
+      // if (userInfo == null) {
+      //   $scope.login = true;
+      //   $(".mengban").show();
+      // }
+      // else {
+      //   $scope.USERINFO = JSON.parse(userInfo);
+      //   $scope.USERID = $scope.USERINFO.id;
+      //   propertyMenu();
+      // }
       $scope.goCart = true;
       $scope.goOrder = false;
-      propertyMenu();
+    }
 
-    };
     /**
      * 去我的订单
      */
     $scope.goToOrder = function () {
-      var userInfo = window.sessionStorage.getItem("USERINFO");
-      if (userInfo == null) {
-        $scope.login = true;
-        $(".mengban").show();
-        //如果是立即购买，在登录时候隐藏sku面板
-        $(".chooseProductInfoWarp").hide();
-      }
-      else {
-        $scope.USERINFO = JSON.parse(userInfo);
-        $scope.USERID = $scope.USERINFO.id;
-        $scope.productOrder.title = $scope.productDetailData.title;
-        $scope.productOrder.freight = $scope.productDetailData.freight;
-        $scope.productOrder.picUrlArr = $scope.productDetailData.picUrlArr;
-        $scope.productOrder.brand_id = $rootScope.BRANDID;
-        window.sessionStorage.setItem("productOrders", JSON.stringify([$scope.productOrder]));
-        $state.go("creatorder");
-      }
+      $scope.productOrder.title = $scope.productDetailData.title;
+      $scope.productOrder.freight = $scope.productDetailData.freight;
+      $scope.productOrder.picUrlArr = $scope.productDetailData.picUrlArr;
+      $scope.productOrder.brand_id = $rootScope.BRANDID;
+      window.sessionStorage.setItem("productOrders", JSON.stringify([$scope.productOrder]));
+      $state.go("creatorder");
     };
+
     /**
      * 去我的购物车
      */
@@ -242,7 +265,7 @@ product.controller('productDetailCtrl',
         "bring_guider_id": $rootScope.GUIDID
       })
         .success(function (data) {
-          $state.go("cart", {});
+          $state.go("cart", { });
         })
         .error(function (data) {
           //如果当前要添加的产品数量再加上产品在购物车中已经加入的产品数量大于产品的总量，则显示弹窗
@@ -253,47 +276,37 @@ product.controller('productDetailCtrl',
             okText: '确定',
             okType: 'button-energized'
           });
-          alertPopup.then(function (res) {
+          alertPopup.then(function(res) {
             console.log('Thank you for not eating my delicious ice cream cone');
           });
         })
     };
-    /**
-     * 登录成功回调
-     * @param data
-     */
+
+    //登录成功回调
     $scope.loginsuccess = function (data) {
-      $scope.propertyClose();
-      //如果是立即购买，在登录成功后再显示sku选中的信息，可进入下一步
-      if ($scope.goCart) {
-        $(".chooseProductInfoWarp").show();
-      }
-      //登录成功回调之后，检测用户是否登录，如果登录了购物车中有物品，显示小红点，没有物品不显示小红点
-      daogouAPI.isLogin(function () {
-        //获取用户信息
-        var userInfo = window.sessionStorage.getItem("USERINFO");
-        $scope.USERINFO = JSON.parse(userInfo);
-        $scope.USERID = $scope.USERINFO.id;
-        //购物车的用户信息
-        daogouAPI.shopcart({
-          userid: $scope.USERINFO.id,
-          brand_id: $rootScope.BRANDID,
-          page: 1,
-          per_page: 5
-        }, function (data, status, headers, config) {
-          if (data.length > 0) {
-            $('.redPoint').show()
-          }
-        }, function (data, status, headers, config) {
-        });
-      }, function () {
-      });
+     $scope.propertyClose();
+     //登录成功回调之后，检测用户是否登录，如果登录了购物车中有物品，显示小红点，没有物品不显示小红点
+        daogouAPI.isLogin(function () {
+          //获取用户信息
+          var userInfo = window.sessionStorage.getItem("USERINFO");
+          $scope.USERINFO = JSON.parse(userInfo);
+          $scope.USERID = $scope.USERINFO.id;
+          //购物车的用户信息
+          daogouAPI.shopcart({
+            userid: $scope.USERINFO.id,
+            brand_id: $rootScope.BRANDID,
+            page: 1,
+            per_page: 5
+          }, function(data, status, headers, config) {
+            if(data.length>0){
+              $('.redPoint').show()
+            }
+          }, function(data, status, headers, config) {});
+        }, function () {});
     };
-    /**
-     * 登录错误回调
-     */
+    //登录错误回调
     $scope.loginerror = function (data) {
       console.log(['登录失败回调', data])
     };
   }
-);
+)
