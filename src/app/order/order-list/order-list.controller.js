@@ -36,6 +36,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
       show_orders: true
     }, function (data, status, headers, config) {
       // $rootScope.BRANDID = data[0].brand_id;
+      console.log(["获取订单列表成功",data]);
       angular.forEach(data, function (item, index) {
 
             // ios 时间兼容问题
@@ -60,8 +61,13 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
               // }
             }
 
+
             function checkNaNt(){
-              item.leftTime = $scope.MillisecondToDate(new Date(item.fetch_subscribe_begin_time).getTime() - new Date().getTime());
+              // ios 时间兼容问题
+              var iosdate=item.fetch_subscribe_begin_time.replace(/-/g,'/');
+              iosdate=iosdate.replace('T',' ');
+              var created_at = new Date(iosdate);
+              item.leftTime = $scope.MillisecondToDate(created_at.getTime() - new Date().getTime());
               // if(item.leftTime.indexOf("NaN")>0){
               //     checkNaNt();
               // }else{
