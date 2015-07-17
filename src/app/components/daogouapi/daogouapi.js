@@ -236,9 +236,10 @@ angular.module('daogou')
       /*上传文件*/
       uploadfile: uploadfile,
 
-      /*根据地区获得门店*/
+      /*根据地区获得门店 无经纬度*/
       storeAddress: storeAddress,
-
+      /*根据地区获得门店 有经纬度*/
+      storeAddresspos: storeAddresspos,
       /*根据经纬度获得所有的门店*/
       shopAddressAll: shopAddressAll,
 
@@ -416,6 +417,21 @@ angular.module('daogou')
       daogouAPI.get(daogouAPI.apiurl(action, data), scallback, ecallback);
     }
 
+     function storeAddresspos(actionurl, dataobj, scallback, ecallback) {
+       var action = actionurl;
+       var data = {
+         user_id: dataobj.user_id,
+         state_code: dataobj.state_code,
+         city_code: dataobj.city_code,
+         district_code: dataobj.district_code,
+         page: typeof dataobj.page === 'number' ? dataobj.page : 1,
+         per_page: typeof dataobj.per_page === 'number' ? dataobj.per_page : 5,
+         longitude: dataobj.longitude,
+         latitude: dataobj.latitude
+       };
+
+       daogouAPI.get(daogouAPI.apiurl(action, data), scallback, ecallback);
+     }
 
     function submitRefundInfo(actionurl, dataobj, scallback, ecallback) {
       var action = actionurl;

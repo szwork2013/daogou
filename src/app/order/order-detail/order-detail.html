@@ -59,7 +59,7 @@
                            <span>取货门店：{{orderDetailData.fetch_store_name}}</span>
                          </div>
                          <span>接待导购：{{guiderData.full_name}}&nbsp;{{guiderData.work_no}}</span><br/>
-                         <span>取货时间：{{orderDetailData.fetch_time}} </span>
+                         <span>取货时间：{{orderDetailData.fetch_time | date:"yyyy-MM-dd HH:mm:ss"}} </span>
                    </span>
 
         <div class="clearBoth"></div>
@@ -104,8 +104,8 @@
           <span class="price-abs">{{item.price|currency:"￥":2}}</span>
 
           <div class="countNum_abs">X{{item.num}}</div>
-          <div class="sale-return" ng-show="refund" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
-          <div class="on-sale-return" ng-show="refunding">退货中</div>
+          <div class="sale-return ng-hide" ng-show="refund&&ISWX" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
+          <div class="on-sale-return ng-hide" ng-show="refunding&&ISWX">退货中</div>
         </li>
       </ul>
       <div class="summary">

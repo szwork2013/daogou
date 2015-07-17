@@ -27,7 +27,7 @@
     <div class="statusWrap posRelative">
       <input class="input-address-info" placeholder="收货人姓名" ng-model="newAddressInput.name" name="name" required
              ng-maxlength="20"
-             ng-blur="usernameerror={error:myForm.name.$dirty && myForm.name.$invalid,msg:'请输入20位以内的用户名'}"
+             ng-change="usernameerror={error:myForm.name.$dirty && myForm.name.$invalid,msg:'请输入1~20位字符以内的姓名'}" ng-pattern="/[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}/"
              ng-focus="usernameerror={error:false,msg:null}"/>
 
       <div class="iconfont icon-guanbi2 close2" ng-click="clearName()"></div>
@@ -67,7 +67,7 @@
       <div class="iconfont icon-guanbi2 close2 close4top4" ng-click="clearAddress()"></div>
       <input class="input-address-info" placeholder="详细地址" name="address" ng-model="newAddressInput.address" required
              ng-maxlength="100"
-             ng-blur="useraddresserror={error:myForm.address.$dirty && myForm.address.$invalid,msg:'请输入100位以内的地址'}"
+             ng-blur="useraddresserror={error:myForm.address.$dirty && myForm.address.$invalid,msg:'请输入100位字符以内的地址'}"
              ng-focus="useraddresserror={error:false,msg:null}"/>
 
       <div class="warning-icon2 warning3top3" ng-if="useraddresserror.error"></div>
@@ -76,7 +76,7 @@
       <input class="input-address-info border-bt0" placeholder="邮编" ng-model="newAddressInput.zip" name="zip"
              ng-maxlength="6" 
              ng-pattern="/^[1-9]\d{5}$/"
-             ng-blur="userziperror={error:myForm.zip.$dirty && myForm.zip.$invalid,msg:'请输入6位以内的邮编'}"
+             ng-blur="userziperror={error:myForm.zip.$dirty && myForm.zip.$invalid,msg:'请输入6位数字的邮编'}"
              ng-focus="userziperror={error:false,msg:null}"/>
 
       <div class="warning-icon2 warning4top4" ng-if="userziperror.error"></div>
