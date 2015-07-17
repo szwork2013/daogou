@@ -124,8 +124,7 @@ angular.module('daogou')
           $(".mengban").hide();
           hide();
           var submitnum=1;
-          //登录成功回调之后，检测用户是否登录，如果登录了购物车中有物品，显示小红点，没有物品不显示小红点
-          daogouAPI.isLogin(function () {
+          //购物车中有物品，显示小红点，没有物品不显示小红点
             //获取用户信息
             var userInfo = window.sessionStorage.getItem("USERINFO");
             $scope.USERINFO = JSON.parse(userInfo);
@@ -142,8 +141,6 @@ angular.module('daogou')
               }
             }, function (data, status, headers, config) {
             });
-          }, function () {
-          });
         }
 
         /**
