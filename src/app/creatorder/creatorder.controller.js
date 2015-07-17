@@ -5,6 +5,17 @@ createOrder.controller('creatorderCtrl',
   function ($rootScope, $scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, WXpay, getLocation, $ionicPopup, $ionicLoading) {
     var productOrders = window.sessionStorage.getItem("productOrders");
 
+    //支付按钮
+    var payBtn = angular.element(document.querySelector("#pay-btn"));
+
+    var payMode = "alipay"
+    //判断环境
+    if(/micromessenger/i.test(window.navigator.userAgent)){
+      payMode = "wechat";
+    } else {
+      payMode = "alipay";
+    }
+
     if (productOrders == null) {
       $state.go('orderList');
     } else {
@@ -232,7 +243,7 @@ createOrder.controller('creatorderCtrl',
           'buyer_memo': ''
         };
     }
-     
+
 
     function show() {
             $ionicLoading.show({
@@ -287,11 +298,31 @@ createOrder.controller('creatorderCtrl',
             }
             hide();
             //创建订单成功调用微信支付
-            WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
-              // alert('支付成功');
-              // alert(JSON.stringify(data));
-              $state.go('orderDetail', {tid: orderdata.tid})
-            });
+            if(payMode == "wechat"){
+              WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
+                $state.go('orderDetail', {tid: orderdata.tid})
+              });
+            } else {
+              //获取订单页面
+              var returnUrl = "http://127.0.0.1:8195/trades/buyer-pay-finish/alipay";
+              $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=" + returnUrl).success(function(data){
+                //阿里支付
+                window.open(data.url);
+              }).error(function(data){
+                hide();
+                var alertPopup = $ionicPopup.alert({
+                  title: '友情提示',
+                  template: '提交订单失败,请重新提交订单',
+                  cssClass: 'alerttextcenter',
+                  okText: '确定',
+                  okType: 'button-energized'
+                });
+                alertPopup.then(function (res) {
+                  console.log('Thank you for not eating my delicious ice cream cone');
+                });
+                console.log(['提交订单失败', data]);
+              })
+            }
           })
           .error(function (data) {
             hide();
@@ -366,7 +397,7 @@ createOrder.controller('creatorderCtrl',
                       });
                      console.log(['提交订单失败', data]);
                    })
-            }else{  
+            }else{
                     hide();
                     $scope.userdataerror = {
                             error : true,
@@ -375,7 +406,7 @@ createOrder.controller('creatorderCtrl',
                     console.log($scope.userdataerror.error)
                     return;
             }
-           
+
       }
 
     }
@@ -419,35 +450,35 @@ createOrder.controller('creatorderCtrl',
                        },
                        getStyle = elem.currentStyle ? function (name) {
                                var val = elem.currentStyle[name];
-        
+
                                if (name === 'height' && val.search(/px/i) !== 1) {
                                        var rect = elem.getBoundingClientRect();
                                        return rect.bottom - rect.top -
                                                parseFloat(getStyle('paddingTop')) -
-                                               parseFloat(getStyle('paddingBottom')) + 'px';        
+                                               parseFloat(getStyle('paddingBottom')) + 'px';
                                };
-        
+
                                return val;
                        } : function (name) {
                                        return getComputedStyle(elem, null)[name];
                        },
                        minHeight = parseFloat(getStyle('height'));
-        
+
                elem.style.resize = 'none';
-        
+
                var change = function () {
                        var scrollTop, height,
                                padding = 0,
                                style = elem.style;
-        
+
                        if (elem._length === elem.value.length) return;
                        elem._length = elem.value.length;
-        
+
                        if (!isFirefox && !isOpera) {
                                padding = parseInt(getStyle('paddingTop')) + parseInt(getStyle('paddingBottom'));
                        };
                        scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-        
+
                        elem.style.height = minHeight + 'px';
                        if (elem.scrollHeight > minHeight) {
                                if (maxHeight && elem.scrollHeight > maxHeight) {
@@ -464,7 +495,7 @@ createOrder.controller('creatorderCtrl',
                                elem.currHeight = parseInt(style.height);
                        };
                };
-        
+
                addEvent('propertychange', change);
                addEvent('input', change);
                addEvent('focus', change);

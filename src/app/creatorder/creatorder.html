@@ -81,8 +81,8 @@
       <!-- 实体店地址 -->
       <div class="addressInfo remarkpadding" ng-hide="express">
         <div>
-          <span class="floatL width85">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}} 
-            <span ng-show="noshop">没有取货门店</span> 
+          <span class="floatL width85">{{minDistance.name}}&nbsp;&nbsp;{{minDistance.phone}}
+            <span ng-show="noshop">没有取货门店</span>
           </span>
           <span class="colorBlue floatR font13" ng-click="goGoodsShop()"  ng-show="!noshop">修改</span>
 
@@ -106,7 +106,7 @@
                     </div>
                   </div>
             </div>
-            
+
                 <div class="select-time">
                   <select id="fetch_day" ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData" ng-focus="userdataerror={error:false,msg:null}"
                           ng-change="dayselecthour(fetchTime.fetchday)">
@@ -123,7 +123,7 @@
     <!-- 各种地址模块 -->
 
 
-    <div class="commonBtn" ng-hide="weixinpay" ng-click="submitOrder()">微信支付</div>
-   
+    <div class="commonBtn" id="pay-btn" ng-hide="weixinpay" ng-click="submitOrder()">微信支付</div>
+
   </ion-content>
 </ion-view>
