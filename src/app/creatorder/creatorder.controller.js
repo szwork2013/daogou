@@ -87,6 +87,8 @@ createOrder.controller('creatorderCtrl',
       } else {
         $rootScope.ListTwoStores = [];
         getLocation(function (lng, lat) {
+          $rootScope.lng = lng;
+          $rootScope.lat = lat;
           daogouAPI.shopAddressAll('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
             user_id: $scope.USERID,
             longitude: lng,
@@ -104,6 +106,8 @@ createOrder.controller('creatorderCtrl',
           }, function (data, status, headers, config) {
           });
         }, function () {
+          $rootScope.lng = undefined;
+          $rootScope.lat = undefined;
           daogouAPI.shopAddressId('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
             user_id: $scope.USERID
           }, function (data, status, headers, config) {
