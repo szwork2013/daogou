@@ -74,7 +74,7 @@
     </ion-infinite-scroll>
   </ion-content>
   <!-- 悬浮点击打开个人中心、购物车、导购 -->
-  <div float-center></div>
+  <div float-center ng-show="cartfloatcenter"></div>
   <ion-footer-bar align-title="left" class="footer" ng-show="edithandle&&cartProductListData.length>0">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">

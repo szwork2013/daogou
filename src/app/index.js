@@ -142,7 +142,13 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
     /**
      * 是app访问还是微信访问   true是微信  false是app
      */
-    $rootScope.ISWX = (getRequest('share') === 'true' ? true : false);
+    var userAgentInfo = navigator.userAgent;  
+    $rootScope.ISWX = false;
+    //正式上线要解除掉下面一行的注释
+    // if(getRequest('share') === 'true'&&userAgentInfo.match("MicroMessenger")){
+    if(getRequest('share') === 'true'){
+      $rootScope.ISWX = true;
+    }
     /**
      * ISWX为true时进入订单详情后直接调用支付
      */

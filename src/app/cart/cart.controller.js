@@ -39,6 +39,8 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
     $scope.carthasnodata=false;
     //购物车登录后加载数据的时候显示用的
     $scope.showlogindata=false;
+    //打开页面，头像是显示的
+    $scope.cartfloatcenter=true;
     /**
      * 获取购物车列表
      */
@@ -142,6 +144,8 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
     $scope.edit = function () {
       $scope.edithandle = false;
       $scope.finishhandle = true;
+      //点击编辑，影藏头像
+      $scope.cartfloatcenter=false;
     };
     /**
      * 左上角点击完成显示结算
@@ -149,6 +153,8 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
     $scope.finish = function () {
       $scope.edithandle = true;
       $scope.finishhandle = false;
+      //编辑完成之后头像显示出来
+      $scope.cartfloatcenter=true;
       //提交一下修改的数量
 
     };
