@@ -169,8 +169,8 @@ order.controller('orderDetailCtrl',
               })
               WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
                 // alert(JSON.stringify(data));
-                getOrderDetail();
                 $rootScope.PAYNOW=false;
+                getOrderDetail();
               });
             }
 

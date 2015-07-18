@@ -1,18 +1,45 @@
 'use strict';
 
 var order = angular.module('orderList', ['ionic']);
-order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state', '$stateParams', '$rootScope', function ($scope, $log, $http, URLPort, daogouAPI, $state, $stateParams, $rootScope) {
+order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogouAPI', '$state', '$stateParams', '$rootScope','$ionicLoading', function ($scope, $log, $http, URLPort, daogouAPI, $state, $stateParams, $rootScope,$ionicLoading) {
 
 
   // var userInfo = window.sessionStorage.getItem("USERINFO");
   // if (userInfo == null) {
     daogouAPI.isLogin(function (data) {
-        var userInfo = window.sessionStorage.getItem("USERINFO");
-        $scope.USERINFO = JSON.parse(userInfo);
+      var userInfo = window.sessionStorage.getItem("USERINFO");
+      $scope.USERINFO = JSON.parse(userInfo);
       // $scope.USERINFO = data;
       // window.sessionStorage.setItem("USERINFO", JSON.stringify(data));
       getOrderListFunc();
     }, function (data) {
+      //判断没登录的情况是是否是从其他终端登录了，如果是其它终端登录了，执行下面的弹窗，否则没有下面的提示，直接显示登录窗口
+      //有时间显示的
+      // if(userInfo!=null&&data.length>0){
+      //   $scope.hass=2;
+      //     $ionicLoading.show({
+      //       template: '您的帐号在另一台设备进行登录，请重新登录 '+$scope.hass+'s',
+      //     });
+      //     var clearint=setInterval(function(){
+      //       $scope.hass--;
+      //       $ionicLoading.show({
+      //         template: '您的帐号在另一台设备进行登录，请重新登录'+$scope.hass+'s',
+      //         duration:1000,
+      //       });
+      //       if($scope.hass==0){
+      //         clearInterval(clearint);
+      //         $ionicLoading.hide()
+      //       };
+      //     },1000);
+      //   };
+      //没有时间显示的
+      if(userInfo!=null&&data.length>0){
+        $ionicLoading.show({
+          template: '您的帐号在另一台设备进行登录，请重新登录',
+          duration:2000,
+        });
+      };
+      //显示登录界面  
       $scope.login = true;
       $(".mengban").show();
     });

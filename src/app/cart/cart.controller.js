@@ -1,15 +1,23 @@
 'use strict';
 
 var cart = angular.module('cart', ['ionic']);
-cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$stateParams', 'daogouAPI', '$rootScope', "$ionicPopup",
-  function ($scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, $rootScope, $ionicPopup) {
+cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$stateParams', 'daogouAPI', '$rootScope', "$ionicPopup","$ionicLoading",
+  function ($scope, $log, $http, $state, URLPort, $stateParams, daogouAPI, $rootScope, $ionicPopup,$ionicLoading) {
     // var userInfo = window.sessionStorage.getItem("USERINFO");
+    // console.log(userInfo!=null)
     // if (userInfo == null) {
       daogouAPI.isLogin(function (data) {
         var userInfo = window.sessionStorage.getItem("USERINFO");
         $scope.USERINFO = JSON.parse(userInfo);
         cartProductListFunc();
       }, function (data) {
+        var userInfo = window.sessionStorage.getItem("USERINFO");
+        if(userInfo!=null&&data.length>0){
+          $ionicLoading.show({
+            template: '您的帐号在另一台设备进行登录，请重新登录',
+            duration:2000,
+          });
+        };
         $scope.showLogin();
       });
     // }

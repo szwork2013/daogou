@@ -24,6 +24,9 @@
       <div ng-if="SERVICES.is_fetch==1">
         <span class="graya3">服务：</span><span>支持专卖店取货 </span>
       </div>
+      <div ng-if="SERVICES.is_fetch==0">
+        <span class="graya3">服务：</span><span>不支持专卖店取货 </span>
+      </div>
     </div>
     <div class="productPicWrap" ng-bind-html="productDetailData.content | to_trusted ">
     </div>
