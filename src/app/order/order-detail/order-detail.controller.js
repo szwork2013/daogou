@@ -97,7 +97,7 @@ order.controller('orderDetailCtrl',
                 $scope.fetchQRcode = true;
                 $scope.payWay = true;
                 $scope.payNo = true;
-                // $scope.cancelOrder = true;
+                $scope.cancelpayOrder = false;
                 // $scope.refund = true;
                 break;
               case "TRADE_FINISHED":
