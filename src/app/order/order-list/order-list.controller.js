@@ -33,6 +33,7 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
       //     },1000);
       //   };
       //没有时间显示的
+      var userInfo = window.sessionStorage.getItem("USERINFO");
       if(userInfo!=null&&data.length>0){
         $ionicLoading.show({
           template: '您的帐号在另一台设备进行登录，请重新登录',
