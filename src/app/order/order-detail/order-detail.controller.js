@@ -54,6 +54,22 @@ order.controller('orderDetailCtrl',
                   $scope.fetchReceiver = true;
                 }
                 $scope.cancelpayOrder = true;
+
+                /**
+                 * 立即调用微信支付
+                 */
+                if ($rootScope.PAYNOW) {
+                  $ionicLoading.show({
+                    template: '支付中...',
+                    duration:1500,
+                  })
+                  WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
+                    // alert(JSON.stringify(data));
+                    $rootScope.PAYNOW=false;
+                    getOrderDetail();
+                  });
+                }
+
                 break;
               case "SELLER_CONSIGNED_PART":
                 data.statusCN = "卖家部分发货";
@@ -159,20 +175,7 @@ order.controller('orderDetailCtrl',
             //   $scope.orderDetailData.fetch_time = fetchTimeArr[0];
             // }
 
-            /**
-             * 立即调用微信支付
-             */
-            if ($rootScope.PAYNOW) {
-              $ionicLoading.show({
-                template: '支付中...',
-                duration:1500,
-              })
-              WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
-                // alert(JSON.stringify(data));
-                $rootScope.PAYNOW=false;
-                getOrderDetail();
-              });
-            }
+
 
           })
           .error(function (data) {
