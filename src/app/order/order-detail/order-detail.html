@@ -104,8 +104,8 @@
           <span class="price-abs">{{item.price|currency:"￥":2}}</span>
 
           <div class="countNum_abs">X{{item.num}}</div>
-          <div class="sale-return ng-hide" ng-show="refund&&ISWX" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
-          <div class="on-sale-return ng-hide" ng-show="refunding&&ISWX">退货中</div>
+          <div class="sale-return ng-hide" ng-show="refund&&ISWX&&ishare" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
+          <div class="on-sale-return ng-hide" ng-show="refunding&&ISWX&&ishare">退货中</div>
         </li>
       </ul>
       <div class="summary">
@@ -126,7 +126,7 @@
     </ul>
 
   </ion-footer-bar>
-  <ion-footer-bar align-title="left" class="footer" ng-show="cancelpayOrder&&ISWX">
+  <ion-footer-bar align-title="left" class="footer" ng-show="cancelpayOrder&&ISWX&&ishare">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
         <div class="delcount backred colorfff"
