@@ -234,7 +234,9 @@ createOrder.controller('creatorderCtrl',
     }
 
     $scope.dayselecthour = function (day) {
-      $scope.fetchhourData = $scope.fetchTimeData[parseInt(day.index)].times;
+      if(day!=null){
+        $scope.fetchhourData = $scope.fetchTimeData[parseInt(day.index)].times;
+      }
     }
 
 
@@ -344,9 +346,8 @@ createOrder.controller('creatorderCtrl',
 
       } else {
           //门店取货
-          console.log(["$scope.fetchTime.fetchday.day",$scope.fetchTime.fetchday.day]);
-          console.log(["$scope.fetchTime.fetchhour",$scope.fetchTime.fetchhour])
-            if($scope.fetchTime.fetchday.day&&$scope.fetchTime.fetchhour){
+          console.log(["$scope.fetchTime",$scope.fetchTime]);
+            if($scope.fetchTime.fetchday!=null && $scope.fetchTime.fetchhour!=null&&$scope.fetchTime.fetchday!='' && $scope.fetchTime.fetchhour!=''){
                   show();
                   $scope.fetchdayhour = $scope.fetchTime.fetchday.day + "T" + $scope.fetchTime.fetchhour + ":00+0800";
                   console.log(["$scope.fetchdayhour", $scope.fetchdayhour]);
@@ -401,7 +402,9 @@ createOrder.controller('creatorderCtrl',
                       });
                      console.log(['提交订单失败', data]);
                    })
-            }else if($scope.fetchTime.fetchday.day=='' || $scope.fetchTime.fetchhour==''){
+            }else if($scope.fetchTime.fetchday==null || $scope.fetchTime.fetchhour==null || $scope.fetchTime.fetchday=='' || $scope.fetchTime.fetchhour==''){
+                    
+                    console.log('$scope.userdataerror.error')
                     $scope.userdataerror = {
                             error : true,
                             msg:"请选择取货时间"

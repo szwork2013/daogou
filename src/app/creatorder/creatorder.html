@@ -108,6 +108,15 @@
             </div>
 
                 <div class="select-time">
+                  <select id="fetch_day" ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData"
+                          ng-change="dayselecthour(fetchTime.fetchday)">
+                    <option value="">-- 请选择日期 --</option>
+                  </select>
+                  <select id="fetch_hour" ng-model="fetchTime.fetchhour" ng-options="fetchhour for fetchhour in fetchhourData">
+                    <option value="">-- 请选择时间 --</option>
+                  </select>
+                </div>
+                <!-- <div class="select-time">
                   <select id="fetch_day" ng-model="fetchTime.fetchday" ng-options="fetchday.day for fetchday in fetchdayData" ng-focus="userdataerror={error:false,msg:null}"
                           ng-change="dayselecthour(fetchTime.fetchday)">
                     <option value="">-- 请选择日期 --</option>
@@ -115,7 +124,7 @@
                   <select id="fetch_hour" ng-model="fetchTime.fetchhour" ng-options="fetchhour for fetchhour in fetchhourData" ng-focus="userdataerror={error:false,msg:null}">
                     <option value="">-- 请选择时间 --</option>
                   </select>
-                </div>
+                </div> -->
           </div>
       </div>
       <!-- 实体店地址 -->
