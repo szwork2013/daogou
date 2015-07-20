@@ -271,7 +271,6 @@ createOrder.controller('creatorderCtrl',
     }
 
     $scope.submitOrder = function () {
-
       //支付按钮先创建订单再支付
       if ($scope.express === true) {
         show();
@@ -346,7 +345,6 @@ createOrder.controller('creatorderCtrl',
 
       } else {
           //门店取货
-          console.log(["$scope.fetchTime",$scope.fetchTime]);
             if($scope.fetchTime.fetchday!=null && $scope.fetchTime.fetchhour!=null&&$scope.fetchTime.fetchday!='' && $scope.fetchTime.fetchhour!=''){
                   show();
                   $scope.fetchdayhour = $scope.fetchTime.fetchday.day + "T" + $scope.fetchTime.fetchhour + ":00+0800";
@@ -403,13 +401,10 @@ createOrder.controller('creatorderCtrl',
                      console.log(['提交订单失败', data]);
                    })
             }else if($scope.fetchTime.fetchday==null || $scope.fetchTime.fetchhour==null || $scope.fetchTime.fetchday=='' || $scope.fetchTime.fetchhour==''){
-                    
-                    console.log('$scope.userdataerror.error')
                     $scope.userdataerror = {
                             error : true,
                             msg:"请选择取货时间"
                     }
-                    console.log($scope.userdataerror.error)
                     return;
             }
 
