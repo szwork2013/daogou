@@ -37,7 +37,7 @@ angular.module('daogou', ['ionic', 'product', 'cart', 'order', 'orderList', 'cre
         controller: 'orderListCtrl'
       })
       .state('orderDetail', {
-        url: '/orderDetail/:tid#mp.weixin.qq.com',
+        url: '/orderDetail/:tid',
         templateUrl: 'app/order/order-detail/order-detail.html',
         controller: 'orderDetailCtrl'
       })
