@@ -8,12 +8,14 @@ createOrder.controller('creatorderCtrl',
     //支付按钮
     var payBtn = angular.element(document.querySelector("#pay-btn"));
 
-    var payMode = "alipay"
+    var payType = "ALIPAY"
     //判断环境
     if(/micromessenger/i.test(window.navigator.userAgent)){
-      payMode = "wechat";
+      payType = "WEIXIN";
+      payBtn.text("微信支付");
     } else {
-      payMode = "alipay";
+      payType = "ALIPAY";
+      payBtn.text("支付宝支付");
     }
 
     if (productOrders == null) {
@@ -278,7 +280,7 @@ createOrder.controller('creatorderCtrl',
             'bring_guider_id': $rootScope.GUIDID,
             'brand_id': parseInt($rootScope.BRANDID),
             'buyer_memo': $rootScope.buyerMessage.buyer_memo,
-            'pay_type': 'WEIXIN',
+            'pay_type': payType,
             'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
             'receiver_state': $rootScope.defaultAddressdata.state,
             'receiver_state_code': $rootScope.defaultAddressdata.state_code,
@@ -299,7 +301,7 @@ createOrder.controller('creatorderCtrl',
             }
             hide();
             //创建订单成功调用微信支付
-            if(payMode == "wechat"){
+            if(payType == "wechat"){
               WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
                 $state.go('orderDetail', {tid: orderdata.tid})
               });
@@ -308,7 +310,7 @@ createOrder.controller('creatorderCtrl',
               var returnUrl = "http://127.0.0.1:8195/trades/buyer-pay-finish/alipay";
               $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=" + returnUrl).success(function(data){
                 //阿里支付
-                window.open(data.url);
+                location.href = data.url;
               }).error(function(data){
                 hide();
                 var alertPopup = $ionicPopup.alert({
