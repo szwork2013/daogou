@@ -66,7 +66,8 @@ order.controller('orderDetailCtrl',
                   WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
                     // alert(JSON.stringify(data));
                     $rootScope.PAYNOW=false;
-                    getOrderDetail();
+                    // getOrderDetail();
+                    $state.go("successPay");
                   });
                 }
 
@@ -169,6 +170,8 @@ order.controller('orderDetailCtrl',
              */
             daogouAPI.formatSku(data.orders);
             $scope.orderDetailData = data;
+            //此参数是为了传递给付款成功后的订单金额和订单跳转的数据
+            $rootScope.payData=data;
             //格式化取货时间
             // if($scope.orderDetailData.fetch_time){
             //   var fetchTimeArr = $scope.orderDetailData.fetch_time.split("T");
@@ -183,7 +186,6 @@ order.controller('orderDetailCtrl',
           });
     }
     getOrderDetail();
-   
 
 
     /**

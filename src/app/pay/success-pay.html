@@ -2,8 +2,8 @@
       <ion-content class="pay-way">
      		<div class="pay-success">
      			<div class="font20 pay-margin">付款成功!</div>
-                <span>付款金额:</span><span class="font19 colorRed">￥1244.00</span>
+                <span>付款金额:</span><span class="font19 colorRed"> {{payData.payment|currency:"￥":2}}</span>
      		</div>
-            <div class="commonBtn backfff color3a borderddd" ui-sref="orderDetail">查看订单</div>
+            <div class="commonBtn backfff color3a borderddd" ui-sref="orderDetail({tid:payData.tid})">查看订单</div>
       </ion-content>
 </ion-view>
