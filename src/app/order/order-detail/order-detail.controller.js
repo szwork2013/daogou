@@ -2,7 +2,7 @@
 
 var order = angular.module('order', ['ionic']);
 order.controller('orderDetailCtrl',
-  function ($rootScope, $scope, $log, $http, $state, $stateParams,$ionicLoading, URLPort, daogouAPI, WXpay,$ionicPopup) {
+  function ($rootScope, $scope, $log, $http, $state, $stateParams,$ionicLoading, URLPort, daogouAPI, WXpay,$ionicPopup,getRequest) {
 
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
     //这个切换其实是2个页面 不是页面内切换的
@@ -22,6 +22,7 @@ order.controller('orderDetailCtrl',
     $scope.cancelOrder = false;//取消订单
     $scope.refund = false;//商品列表上的退款按钮
     $scope.refunding = false;//商品列表上的退款中按钮
+    $scope.ishare = true;//正常是消费者，false为导购
 
     /**
      * 显示取货二维码
@@ -33,6 +34,11 @@ order.controller('orderDetailCtrl',
     function getOrderDetail(){
         $http.get(URLPort + "/trades/" + $stateParams.tid + "?show_orders=true")
           .success(function (data) {
+            if(getRequest('share') === 'true'){
+              $scope.ishare = true;
+            }else{
+              $scope.ishare = false;
+            }
             console.log(['orderdetail', data])
             switch (data.pay_type) {
               case "WEIXIN":

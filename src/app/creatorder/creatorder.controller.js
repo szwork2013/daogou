@@ -267,9 +267,10 @@ createOrder.controller('creatorderCtrl',
     }
 
     $scope.submitOrder = function () {
-      show();
+
       //支付按钮先创建订单再支付
       if ($scope.express === true) {
+        show();
         //快递方式取货
          $http.post(URLPort + '/trades',
            {
@@ -344,6 +345,7 @@ createOrder.controller('creatorderCtrl',
           console.log(["$scope.fetchTime.fetchday.day",$scope.fetchTime.fetchday.day]);
           console.log(["$scope.fetchTime.fetchhour",$scope.fetchTime.fetchhour])
             if($scope.fetchTime.fetchday.day&&$scope.fetchTime.fetchhour){
+                  show();
                   $scope.fetchdayhour = $scope.fetchTime.fetchday.day + "T" + $scope.fetchTime.fetchhour + ":00+0800";
                   console.log(["$scope.fetchdayhour", $scope.fetchdayhour]);
                   $http.post(URLPort + '/trades',
@@ -397,8 +399,7 @@ createOrder.controller('creatorderCtrl',
                       });
                      console.log(['提交订单失败', data]);
                    })
-            }else{
-                    hide();
+            }else if($scope.fetchTime.fetchday.day=='' || $scope.fetchTime.fetchhour==''){
                     $scope.userdataerror = {
                             error : true,
                             msg:"请选择取货时间"
