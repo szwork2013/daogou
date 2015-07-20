@@ -43,7 +43,7 @@
                          </div>
                          <div>
                            <span class="floatL width85">联系电话：{{orderDetailData.fetch_store_tel}}</span>
-                           <span class="floatR colorBlue2">拨号</span>
+                           <span class="floatR"><a href="tel:{{orderDetailData.fetch_store_tel}}" class="colorBlue2">拨号</a></span>
 
                            <div class="clearBoth"></div>
                          </div>
@@ -67,9 +67,9 @@
 
       <div class="receiver-infos" ng-show="showQRcode()">
         <div class="erweima-wrap">
-          <img class="erweima floatL margin-r10" ng-src="{{orderDetailData.fetch_qrcode_url}}"/>
+          <img class="erweima" ng-src="{{orderDetailData.fetch_qrcode_url}}"/>
 
-          <div class="floatL margin-tp20">
+          <div class="warningtext">
             <span>请在取货时向店员出示此码</span><br/>
             <span class="colorRed">切勿透露他人以防冒取</span>
           </div>
