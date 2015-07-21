@@ -302,9 +302,9 @@ createOrder.controller('creatorderCtrl',
             }
             hide();
             //创建订单成功调用微信支付
-            if(payType == "wechat"){
+            if(payType == "WEIXIN"){
               WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
-                $state.go('orderDetail', {tid: orderdata.tid})
+                $state.go('successPay', {tid: orderdata.tid});
               });
             } else {
               //获取订单页面
