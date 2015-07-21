@@ -353,7 +353,7 @@ angular.module('goodsReturn', ['ionic'])
     // 	})
     // }
 
-   
+
 
   }])
 

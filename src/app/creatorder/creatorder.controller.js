@@ -309,8 +309,7 @@ createOrder.controller('creatorderCtrl',
             } else {
               //获取订单页面
               console.log(orderdata.tid)
-              var returnUrl = encodeURIComponent(window.location.href.split('#')[0]+'#/orderDetail/'+orderdata.tid);
-              // var returnUrl = "http://127.0.0.1:8195/trades/buyer-pay-finish/alipay";
+              var returnUrl = "/pay-transfer";
               $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=" + returnUrl).success(function(data){
                 //阿里支付
                 location.href = data.url;
@@ -386,7 +385,7 @@ createOrder.controller('creatorderCtrl',
                       });
                     } else {
                       //获取订单页面
-                      var returnUrl = "http://127.0.0.1:8195/trades/buyer-pay-finish/alipay";
+                      var returnUrl = "/pay-transfer";
                       $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=" + returnUrl).success(function(data){
                         //阿里支付
                         location.href = data.url;
