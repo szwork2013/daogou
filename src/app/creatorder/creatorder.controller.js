@@ -309,8 +309,7 @@ createOrder.controller('creatorderCtrl',
             } else {
               //获取订单页面
               console.log(orderdata.tid)
-              var returnUrl = "/pay-transfer";
-              $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=" + returnUrl).success(function(data){
+              $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid).success(function(data){
                 //阿里支付
                 location.href = data.url;
               }).error(function(data){
@@ -385,8 +384,7 @@ createOrder.controller('creatorderCtrl',
                       });
                     } else {
                       //获取订单页面
-                      var returnUrl = "/pay-transfer";
-                      $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=" + returnUrl).success(function(data){
+                      $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid).success(function(data){
                         //阿里支付
                         location.href = data.url;
                       }).error(function(data){
