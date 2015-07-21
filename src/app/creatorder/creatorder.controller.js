@@ -304,7 +304,7 @@ createOrder.controller('creatorderCtrl',
             //创建订单成功调用微信支付
             if(payType == "WEIXIN"){
               WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
-                $state.go('successPay', {tid: orderdata.tid});
+                $state.go('orderDetail', {tid: orderdata.tid});
               });
             } else {
               //获取订单页面
@@ -355,7 +355,7 @@ createOrder.controller('creatorderCtrl',
                      'bring_guider_id': $rootScope.GUIDID,
                      'brand_id': parseInt($rootScope.BRANDID),
                      'buyer_memo': $rootScope.buyerMessage.buyer_memo,
-                     'pay_type': 'WEIXIN',
+                     'pay_type': payType,
                      'shipping_type': $scope.express ? "EXPRESS" : "FETCH",
                      'fetch_name': $scope.USERNAME,
                      'fetch_mobile':$scope.USERMOBILE,
@@ -378,13 +378,31 @@ createOrder.controller('creatorderCtrl',
                     if($rootScope.ids){
                       delcartproduct($rootScope.ids);
                     }
-                     console.log(['提交订单成功', orderdata]);
-                     //创建订单成功调用微信支付
-                     WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
-                       // alert('支付成功');
-                       // alert(JSON.stringify(data));
-                       $state.go('orderDetail', {tid: orderdata.tid})
-                     });
+                    if(payType == "WEIXIN"){
+                      WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
+                        $state.go('orderDetail', {tid: orderdata.tid});
+                      });
+                    } else {
+                      //获取订单页面
+                      var returnUrl = "http://127.0.0.1:8195/trades/buyer-pay-finish/alipay";
+                      $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=" + returnUrl).success(function(data){
+                        //阿里支付
+                        location.href = data.url;
+                      }).error(function(data){
+                        hide();
+                        var alertPopup = $ionicPopup.alert({
+                          title: '友情提示',
+                          template: '提交订单失败,请重新提交订单',
+                          cssClass: 'alerttextcenter',
+                          okText: '确定',
+                          okType: 'button-energized'
+                        });
+                        alertPopup.then(function (res) {
+                          console.log('Thank you for not eating my delicious ice cream cone');
+                        });
+                        console.log(['提交订单失败', data]);
+                      })
+                    }
                    })
                    .error(function (data) {
                       hide();
