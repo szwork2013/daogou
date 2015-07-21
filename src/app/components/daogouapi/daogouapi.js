@@ -462,13 +462,38 @@ angular.module('daogou')
         ecallback('daogouAPI.login传入参数错误 username,password');
         return;
       }
-      var action = '/brand-login';
-      var data = {
-        username: dataobj.username,
-        password: dataobj.password,
-      };
-
-      daogouAPI.get(daogouAPI.apiurl(action, data), scallback, ecallback);
+      //判断是本地还是服务器上面的
+      if(!window.location.href.match(':3000')){
+        $http({
+            method: 'POST',
+            url:ROOT_URL+'/login',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            transformRequest: function(obj) {
+              var str = [];
+              for (var p in obj) str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+              return str.join("&");
+            },
+            data: {
+              username: dataobj.username,
+              password: dataobj.password
+            }
+          })
+          .success(function(data) {
+            scallback(data)
+          })
+          .error(function(data) {
+            ecallback(data)
+          })
+        }else{
+          var action = '/brand-login';
+          var data = {
+            username: dataobj.username,
+            password: dataobj.password,
+          };
+          daogouAPI.get(daogouAPI.apiurl(action, data), scallback, ecallback);
+        }
     }
 
 
