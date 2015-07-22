@@ -163,7 +163,11 @@ order.controller('orderDetailCtrl',
                 express_company: data.express_company,
                 express_no: data.express_no
               }, function (data, status, headers, config) {
-                $scope.logisticsData = data;
+                //时间转换
+                for(var i=0;i<data.length;i++){
+                  data[i].created_at=data[i].created_at.split('+')[0].replace('T',' ')
+                  $scope.logisticsData = data;
+                }
               }, function (data, status, headers, config) {
               });
             }
