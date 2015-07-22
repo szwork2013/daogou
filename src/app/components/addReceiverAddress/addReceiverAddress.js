@@ -17,6 +17,29 @@ angular.module('daogou')
 		// transclude: true,
 		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 		link: function($scope, iElm, iAttrs, controller) {
+			$scope.zipspace=function(){
+				console.log($scope.newAddressInput.zip);
+				if($scope.newAddressInput.zip!=undefined){
+					$scope.newAddressInput.zip=$scope.newAddressInput.zip.replace(/ /g,'')
+					$scope.newAddressInput.zip=$scope.newAddressInput.zip.replace(/\D/g,'')
+				}
+			}
+			$scope.zipblur=function(){
+				console.log($scope.newAddressInput.zip)
+				// $scope.newAddressInput.zip=$scope.newAddressInput.zip.replace(/ /g,'')
+				// console.log($scope.myForm.zip)
+				// console.log(['0',$scope.newAddressInput.zip])
+				// setTimeout(function(){
+				// console.log(['a',$scope.newAddressInput.zip])
+
+				// })
+ 				$scope.userziperror={
+					error:$scope.myForm.zip.$dirty && $scope.myForm.zip.$invalid,
+					msg:'请输入6位数字的邮编'
+ 				}
+			}
+
+
 			/*
 				很愚蠢的让地址的删除按钮显示很隐藏-->开始
 			*/
