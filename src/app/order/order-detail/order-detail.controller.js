@@ -165,7 +165,7 @@ order.controller('orderDetailCtrl',
               }, function (data, status, headers, config) {
                 //时间转换
                 for(var i=0;i<data.length;i++){
-                  data[i].created_at=data[i].created_at.split('+')[0].replace('T',' ')
+                  data[i].arrive_time=data[i].arrive_time.split('+')[0].replace('T',' ')
                   $scope.logisticsData = data;
                 }
               }, function (data, status, headers, config) {
