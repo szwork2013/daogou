@@ -234,9 +234,26 @@ order.controller('orderDetailCtrl',
     /**
      * 支付
      */
+     var payType = "ALIPAY"
+     //判断环境
+     if(/micromessenger/i.test(window.navigator.userAgent)){
+       payType = "WEIXIN";
+       payBtn.text("微信支付");
+     } else {
+       payType = "ALIPAY";
+       payBtn.text("支付宝支付");
+     }
     $scope.payThisOrder = function () {
-      WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
-      });
+      if(payType == "WEIXIN"){
+        WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
+          $state.go('orderDetail', {tid: orderdata.tid});
+        });
+      } else {
+        $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=/shopping/pay-transfer.html").success(function(data){
+          //阿里支付
+          location.href = data.url;
+        })
+      }
     }
     /**
      * 商品详情
@@ -254,9 +271,9 @@ order.controller('orderDetailCtrl',
      var confirmPopup = $ionicPopup.confirm({
             title: '订单取消后不可恢复，是否确认?',
             cancelText: '取消',
-            cancelType: 'button-default', 
+            cancelType: 'button-default',
             okText: '确认',
-            okType: 'button-assertive', 
+            okType: 'button-assertive',
          });
          confirmPopup.then(function(res) {
            if(res) {
@@ -272,8 +289,8 @@ order.controller('orderDetailCtrl',
               console.log('取消取消订单');
            }
          });
-           
-      
+
+
 
     };
 
