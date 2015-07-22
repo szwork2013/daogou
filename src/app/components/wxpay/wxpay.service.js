@@ -200,7 +200,7 @@ WXJSSDKPay(callback);
 						// alert('wxpay.service.js:303  获取成功'+JSON.stringify(data));
 						scallback(data);
 					},function(data){
-						// alert('wxpay.service.js:307 绑定openid失败'+JSON.stringify(data));
+						alert('wxpay.service.js:307 绑定openid失败'+JSON.stringify(data));
 						ecallback(data);
 					})
 				},function(data){

@@ -17,7 +17,60 @@ angular.module('daogou')
 		// transclude: true,
 		// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
 		link: function($scope, iElm, iAttrs, controller) {
-
+			/*
+				很愚蠢的让地址的删除按钮显示很隐藏-->开始
+			*/
+			function showname(){
+				var nameid = angular.element(document.getElementById("showname"));
+				if (nameid.context.id == 'showname') {
+					$scope.showname = true;
+					$scope.showmobile = false;
+					$scope.showadd = false;
+					$scope.showzip = false;
+				}
+			};
+			function showmobile(){
+				var mobileid = angular.element(document.getElementById("showmobile"));
+				if (mobileid.context.id == 'showmobile') {
+					$scope.showmobile = true;
+					$scope.showname = false;
+					$scope.showadd = false;
+					$scope.showzip = false;
+				}
+			};
+			function showadd(){
+				var addid = angular.element(document.getElementById("showadd"));
+				if (addid.context.id == 'showadd') {
+					$scope.showadd = true;
+					$scope.showname = false;
+					$scope.showmobile = false;
+					$scope.showzip = false;
+				}
+			};
+			function showzip(){
+				var zipid = angular.element(document.getElementById("showzip"));
+				if (zipid.context.id == 'showzip') {
+					$scope.showzip = true;
+					$scope.showname = false;
+					$scope.showmobile = false;
+					$scope.showadd = false;
+				}
+			};
+			$scope.showName=function(){
+				showname();
+			};
+			$scope.showMobile=function(){
+				showmobile();
+			};
+			$scope.showAdd=function(){
+				showadd();
+			};
+			$scope.showZip=function(){
+				showzip();
+			};
+			/*
+				很愚蠢的让地址的删除按钮显示很隐藏<--结束
+			*/
 			var userInfo = window.sessionStorage.getItem("USERINFO");
 			$scope.USERINFO = JSON.parse(userInfo);
 			$scope.USERID = $scope.USERINFO.id;

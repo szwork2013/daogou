@@ -153,7 +153,8 @@ angular.module('daogou')
           var submitnum=1;
           var alertPopup = $ionicPopup.alert({
             title: '友情提示',
-            template: JSON.stringify(data),
+            template: '验证码有误，请重新获取',
+            // template: JSON.stringify(data),
             cssClass: 'alerttextcenter',
             okText: '确定',
             okType: 'button-energized'
