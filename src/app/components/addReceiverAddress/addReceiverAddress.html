@@ -30,7 +30,7 @@
              ng-change="usernameerror={error:myForm.name.$dirty && myForm.name.$invalid,msg:'请输入1~20位字符以内的姓名'}" ng-pattern="/[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}/"
              ng-focus="usernameerror={error:false,msg:null}" ng-click="showName()" id="showname"/>
 
-      <div class="iconfont icon-guanbi2 close2" ng-click="clearName()" ng-show="showname"></div>
+      <div class="iconfont icon-guanbi2 close2" ng-click="clearName()" ng-if="showname"></div>
       <div class="warning-icon2" ng-if="usernameerror.error"></div>
 
       <input class="input-address-info border-bt padding-left15"
@@ -40,7 +40,7 @@
              ng-focus="usermobileerror={error:false,msg:null}" ng-click="showMobile()" id="showmobile"/>
 
       <div class="warning-icon2 warning2top2" ng-if="usermobileerror.error"></div>
-      <div class="iconfont icon-guanbi2 close2 close2top2" ng-click="clearMobile()" ng-show="showmobile"></div>
+      <div class="iconfont icon-guanbi2 close2 close2top2" ng-click="clearMobile()" ng-if="showmobile"></div>
 
       <div class="input-address-info">
         <select id="loc_province" name="province" ng-model="newAddressInput.provinceInfo" required
@@ -64,7 +64,7 @@
       </div>
 
 
-      <div class="iconfont icon-guanbi2 close2 close4top4" ng-click="clearAddress()" ng-show="showadd"></div>
+      <div class="iconfont icon-guanbi2 close2 close4top4" ng-click="clearAddress()" ng-if="showadd"></div>
       <input class="input-address-info" placeholder="详细地址" name="address" ng-model="newAddressInput.address" required
              ng-maxlength="100"
              ng-blur="useraddresserror={error:myForm.address.$dirty && myForm.address.$invalid,msg:'请输入100位字符以内的地址'}"
@@ -72,7 +72,7 @@
 
       <div class="warning-icon2 warning3top3" ng-if="useraddresserror.error"></div>
 
-      <div class="iconfont icon-guanbi2 close2 close3top3" ng-click="clearZip()" ng-show="showzip"></div>
+      <div class="iconfont icon-guanbi2 close2 close3top3" ng-click="clearZip()" ng-if="showzip"></div>
       <input class="input-address-info border-bt0" placeholder="邮编" ng-model="newAddressInput.zip" name="zip"
              ng-maxlength="6" 
              ng-pattern="/^[1-9]\d{5}$/"

@@ -20,6 +20,10 @@ angular.module('daogou')
 			/*
 				很愚蠢的让地址的删除按钮显示很隐藏-->开始
 			*/
+			$scope.showname = false;
+			$scope.showmobile = false;
+			$scope.showadd = false;
+			$scope.showzip = false;
 			function showname(){
 				var nameid = angular.element(document.getElementById("showname"));
 				if (nameid.context.id == 'showname') {
