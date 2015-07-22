@@ -1,0 +1,18 @@
+<!doctype HTML>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>支付中</title>
+    <script>
+      var search = window.location.search.substr(1).split("&");
+      for(var i = search.length,params = {};i--;){
+        var param = search[i].split("=");
+        params[param[0]] = param[1];
+      }
+      window.location.href = "/index.html#/orderDetail/" + params["out_trade_no"];
+    </script>
+  </head>
+  <body>
+    支付中，请等待页面跳转......
+  </body>
+</html>
