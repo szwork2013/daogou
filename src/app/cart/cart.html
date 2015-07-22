@@ -31,8 +31,10 @@
 
       <ul class="list">
         <li class="item item-checkbox product-item" ng-repeat="item in cartProductListData">
-          <i class="iconfont icon-gou bggou font24 selected-img"
-             ng-class="{'graygou':!item.seleted,'greengou':item.seleted}" ng-click="changeCheck(item)"></i>
+          <div class="cartcheck" ng-click="changeCheck(item)">
+            <i class="iconfont icon-gou bggou font24 selected-img"
+             ng-class="{'graygou':!item.seleted,'greengou':item.seleted}"></i>
+          </div>
           <img ng-src="{{item.pics[0]}}" class="product-img" ng-click="goDetail(item.num_iid)">
 
           <div class="paramenters-select" ng-click="goDetail(item.num_iid)">
@@ -78,8 +80,10 @@
   <ion-footer-bar align-title="left" class="footer" ng-show="edithandle&&cartProductListData.length>0">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
-        <i class="iconfont icon-gou bggou font24 selected-img All"
-           ng-class="{'graygou':!Allseleted,'greengou':Allseleted}" ng-click="changeAll()"></i>
+        <div class="cartcheckall" ng-click="changeAll()">
+          <i class="iconfont icon-gou bggou font24 selected-img All"
+           ng-class="{'graygou':!Allseleted,'greengou':Allseleted}" ></i>
+        </div>
         <button class="goAccount" ng-click="checkCartProduct()">结算({{totalNum}})</button>
         <span class="totalPrice">{{totalFee | currency:"￥":2}}</span>
         <span class="total">合计：</span>
