@@ -238,10 +238,8 @@ order.controller('orderDetailCtrl',
      //判断环境
      if(/micromessenger/i.test(window.navigator.userAgent)){
        payType = "WEIXIN";
-       payBtn.text("微信支付");
      } else {
        payType = "ALIPAY";
-       payBtn.text("支付宝支付");
      }
     $scope.payThisOrder = function () {
       if(payType == "WEIXIN"){
