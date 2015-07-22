@@ -243,10 +243,10 @@ order.controller('orderDetailCtrl',
      }
     $scope.payThisOrder = function () {
       if(payType == "WEIXIN"){
-        WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
+        WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
         });
       } else {
-        $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=/shopping/pay-transfer.html").success(function(data){
+        $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" + $stateParams.tid + "&return_url=/shopping/pay-transfer.html").success(function(data){
           //阿里支付
           location.href = data.url;
         })
