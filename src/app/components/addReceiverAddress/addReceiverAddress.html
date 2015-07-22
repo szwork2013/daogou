@@ -1,24 +1,24 @@
 <div class="add-receiver-address">
-  <div class="warning-msg tp15">
-    <div ng-if="usernameerror.error">
+  <div class="warning-msgadd tp15">
+    <div ng-show="usernameerror.error">
       {{usernameerror.msg}}
     </div>
-    <div ng-if="usermobileerror.error">
+    <div ng-show="usermobileerror.error">
       {{usermobileerror.msg}}
     </div>
-    <div ng-if="useraddresserror.error">
+    <div ng-show="useraddresserror.error">
       {{useraddresserror.msg}}
     </div>
-    <div ng-if="userziperror.error">
+    <div ng-show="userziperror.error">
       {{userziperror.msg}}
     </div>
-    <div ng-if="userprovinceerror.error">
+    <div ng-show="userprovinceerror.error">
       {{userprovinceerror.msg}}
     </div>
-    <div ng-if="usercityerror.error">
+    <div ng-show="usercityerror.error">
       {{usercityerror.msg}}
     </div>
-    <div ng-if="userdistricterror.error">
+    <div ng-show="userdistricterror.error">
       {{userdistricterror.msg}}
     </div>
   </div>
@@ -27,7 +27,7 @@
     <div class="statusWrap posRelative">
       <input class="input-address-info" placeholder="收货人姓名" ng-model="newAddressInput.name" name="name" required
              ng-maxlength="20"
-             ng-change="usernameerror={error:myForm.name.$dirty && myForm.name.$invalid,msg:'请输入1~20位字符以内的姓名'}" ng-pattern="/[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}/"
+             ng-blur="usernameerror={error:myForm.name.$dirty && myForm.name.$invalid,msg:'请输入1~20位字符以内的姓名'}" ng-pattern="/[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}/"
              ng-focus="usernameerror={error:false,msg:null}" ng-click="showName()" id="showname"/>
 
       <div class="iconfont icon-guanbi2 close2" ng-click="clearName()" ng-if="showname"></div>
@@ -74,7 +74,7 @@
 
       <div class="iconfont icon-guanbi2 close2 close3top3" ng-click="clearZip()" ng-if="showzip"></div>
       <input class="input-address-info border-bt0" placeholder="邮编" ng-model="newAddressInput.zip" name="zip"
-             ng-maxlength="6" 
+             ng-maxlength="6" required
              ng-pattern="/^[1-9]\d{5}$/"
              ng-blur="userziperror={error:myForm.zip.$dirty && myForm.zip.$invalid,msg:'请输入6位数字的邮编'}"
              ng-focus="userziperror={error:false,msg:null}" ng-click="showZip()" id="showzip"/>
