@@ -244,7 +244,6 @@ order.controller('orderDetailCtrl',
     $scope.payThisOrder = function () {
       if(payType == "WEIXIN"){
         WXpay($rootScope.BRANDID, orderdata.tid, function (data) {
-          $state.go('orderDetail', {tid: orderdata.tid});
         });
       } else {
         $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=/shopping/pay-transfer.html").success(function(data){
