@@ -42,7 +42,7 @@ angular.module('goodsReturn', ['ionic'])
     $scope.fetchway = true;
 
     $scope.shippingData = [
-      {shipping_typeCN: "请选择退货门店", shippingtype: ""},
+      // {shipping_typeCN: "请选择退货门店", shippingtype: ""},
       {shipping_typeCN: "门店退货", shippingtype: "STORE"}
       // {shipping_typeCN: "快递", shippingtype: "EXPRESS"},
       // {shipping_typeCN: "直接退款", shippingtype: "IMMEDIATE"}

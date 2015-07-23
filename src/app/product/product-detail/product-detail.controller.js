@@ -30,6 +30,9 @@ product.controller('productDetailCtrl',
         $scope.productDetailData = data;
         $scope.productDetailData.realquantity = 0;//剩余库存数量
         $scope.productDetailData.picUrlArr = $scope.productDetailData.pic_url.split(',');
+        for (var img in $scope.productDetailData.picUrlArr) {
+          $scope.productDetailData.picUrlArr[img]+="!640x640"
+        };
         angular.forEach($scope.productDetailData.components, function (item, index) {
           $scope.productDetailData.content += item.comp_content;
         });

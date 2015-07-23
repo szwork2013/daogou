@@ -104,8 +104,12 @@
           <span class="price-abs">{{item.price|currency:"￥":2}}</span>
 
           <div class="countNum_abs">X{{item.num}}</div>
-          <div class="sale-return ng-hide" ng-show="refund&&ISWX&&ishare" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
-          <div class="on-sale-return ng-hide" ng-show="refunding&&ISWX&&ishare">退货中</div>
+          <div ng-if="showrefunds">
+            <div class="sale-return ng-hide" ng-show="ISWX&&item.refunds" ng-click="refundfunc(orderDetailData.tid,item.oid)">退货</div>
+            <!-- <div class="on-sale-return ng-hide" ng-show="refunding&&ISWX&&ISWX">退货中</div> -->
+            <div class="sale-returned ng-hide" ng-show="ISWX&&!item.refunds">已退货</div>
+          </div>
+
         </li>
       </ul>
       <div class="summary">
@@ -126,7 +130,7 @@
     </ul>
 
   </ion-footer-bar>
-  <ion-footer-bar align-title="left" class="footer" ng-show="cancelpayOrder&&ISWX&&ishare">
+  <ion-footer-bar align-title="left" class="footer" ng-show="cancelpayOrder&&ISWX">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
         <div class="delcount backred colorfff"
@@ -137,7 +141,7 @@
       </li>
     </ul>
   </ion-footer-bar>
-  <ion-footer-bar align-title="left" class="footer" ng-show="cancelOrder&&ishare">
+  <ion-footer-bar align-title="left" class="footer" ng-show="cancelOrder&&ISWX">
     <ul class="list footerul">
       <li class="item item-checkbox footerli">
         <button class="delcount" ng-click="cancelOrderFunc(orderDetailData.tid)">取消订单</button>
