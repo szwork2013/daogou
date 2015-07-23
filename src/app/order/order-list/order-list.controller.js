@@ -129,16 +129,20 @@ order.controller('orderListCtrl', ['$scope', '$log', '$http', 'URLPort', 'daogou
             item.statusCN = '交易成功';
             break;
           case 'TRADE_CLOSED_BY_SYSTEM':
-            item.statusCN = '系统自动关闭交易';
+            item.statusCN = '已关闭';
+            // item.statusCN = '系统自动关闭交易';
             break;
           case 'TRADE_CLOSED_BY_SELLER':
-            item.statusCN = '卖家关闭交易';
+            item.statusCN = '已关闭';
+            // item.statusCN = '卖家关闭交易';
             break;
           case 'TRADE_CLOSED_BY_BUYER':
-            item.statusCN = '买家关闭交易';
+            item.statusCN = '已关闭';
+            // item.statusCN = '买家关闭交易';
             break;
           case 'TRADE_CLOSED_BY_SPLIT':
-            item.statusCN = '订单被拆分后关闭交易';
+            item.statusCN = '已关闭';
+            // item.statusCN = '订单被拆分后关闭交易';
             break;
           default:
             return '等待买家付款';

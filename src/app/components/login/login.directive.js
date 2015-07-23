@@ -144,6 +144,10 @@ angular.module('daogou')
          * @param data
          */
         function errorcallback(data) {
+          $scope.codeerror = {
+              error: true,
+              msg: '*请输入正确的六位数字验证码'
+            }
           console.log(data);
           var getter = $parse(iAttrs.loginerror)
           var loginerror = getter($scope);
