@@ -26,18 +26,22 @@
   <form name="myForm" novalidate ng-submit="addAddressfunc();" class="form">
     <div class="statusWrap posRelative">
       <input class="input-address-info" placeholder="收货人姓名" ng-model="newAddressInput.name" name="name" required
-             ng-maxlength="20"
-             ng-blur="usernameerror={error:myForm.name.$dirty && myForm.name.$invalid,msg:'请输入1~20位字符以内的姓名'}" ng-pattern="/[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}/"
-             ng-focus="usernameerror={error:false,msg:null}" ng-click="showName()" id="showname"/>
+      ng-trim="false"
+      ng-blur="nameblur()"
+             ng-focus="usernameerror={error:false,msg:null}" ng-click="showName()" id="showname" ng-change="namespace()"/>
+             <!-- ng-maxlength="20"
+             ng-blur="usernameerror={error:myForm.name.$dirty && myForm.name.$invalid,msg:'请输入1~20位字符以内的姓名'}" ng-pattern="/[\u4e00-\u9fa5_a-zA-Z0-9_]{1,20}/" -->
 
       <div class="iconfont icon-guanbi2 close2" ng-click="clearName()" ng-if="showname"></div>
       <div class="warning-icon2" ng-if="usernameerror.error"></div>
 
-      <input class="input-address-info border-bt padding-left15"
+      <input class="input-address-info border-bt padding-left15" required
              placeholder="手机号码" ng-model="newAddressInput.mobile" name="mobile" type="tel"
-             ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" required
-             ng-blur="usermobileerror={error:myForm.mobile.$dirty && myForm.mobile.$invalid,msg:'请填写正确的11位手机号'}"
-             ng-focus="usermobileerror={error:false,msg:null}" ng-click="showMobile()" id="showmobile"/>
+             ng-trim="false"
+            ng-blur="mobileblur()"
+             ng-focus="usermobileerror={error:false,msg:null}" ng-click="showMobile()" id="showmobile" ng-change="mobilespace()"/>
+             <!-- ng-pattern="/^0?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/" 
+             ng-blur="usermobileerror={error:myForm.mobile.$dirty && myForm.mobile.$invalid,msg:'请填写正确的11位手机号'}" -->
 
       <div class="warning-icon2 warning2top2" ng-if="usermobileerror.error"></div>
       <div class="iconfont icon-guanbi2 close2 close2top2" ng-click="clearMobile()" ng-if="showmobile"></div>
@@ -66,15 +70,16 @@
 
       <div class="iconfont icon-guanbi2 close2 close4top4" ng-click="clearAddress()" ng-if="showadd"></div>
       <input class="input-address-info" placeholder="详细地址" name="address" ng-model="newAddressInput.address" required
-             ng-maxlength="100"
-             ng-blur="useraddresserror={error:myForm.address.$dirty && myForm.address.$invalid,msg:'请输入100位字符以内的地址'}"
-             ng-focus="useraddresserror={error:false,msg:null}" ng-click="showAdd()" id="showadd"/>
+      ng-trim="false"
+      ng-blur="addblur()"
+      ng-focus="useraddresserror={error:false,msg:null}" ng-click="showAdd()" id="showadd" ng-change="addspace()"/>
+             <!-- ng-maxlength="100"
+             ng-blur="useraddresserror={error:myForm.address.$dirty && myForm.address.$invalid,msg:'请输入100位字符以内的地址'}" -->
 
       <div class="warning-icon2 warning3top3" ng-if="useraddresserror.error"></div>
 
       <div class="iconfont icon-guanbi2 close2 close3top3" ng-click="clearZip()" ng-if="showzip"></div>
       <input class="input-address-info border-bt0" placeholder="邮编" ng-model="newAddressInput.zip" name="zip"
-             ng-maxlength="6"
              required
              ng-trim="false"
              ng-blur="zipblur()"
@@ -85,8 +90,8 @@
       <div class="warning-icon2 warning4top4" ng-if="userziperror.error"></div>
 
     </div>
-    <label for="submitaddressbtn" class="commonBtn backred margin-tp40" ng-class="{'disabled':myForm.$invalid}">
+    <label for="submitaddressbtn" class="commonBtn backred margin-tp40" ng-class="{'disabled':nameisable || mobileisable || addisable || zipisable}">
       保存</label>
-    <input type="submit" class="hidesubmitbtn2" id="submitaddressbtn" ng-disabled="myForm.$invalid">
+    <input type="submit" class="hidesubmitbtn2" id="submitaddressbtn" ng-disabled="nameisable || mobileisable || addisable || zipisable">
   </form>
 </div>
