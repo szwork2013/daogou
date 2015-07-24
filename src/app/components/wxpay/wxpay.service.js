@@ -6,13 +6,18 @@ angular.module('daogou')
 获取公众号信息
 拼接好config信息传入回调函数
 */
-.factory('WXconfig', function(daogouAPI, WXcountConfigInfo) {
+.factory('WXconfig', function($rootScope,daogouAPI, WXcountConfigInfo) {
 	return function WXconfig(brandId, callback) {
 
 		daogouAPI.WXgetAppid(brandId, function(wxdata) {
 			console.log(['微信公众号信息 成功', wxdata]);
-			var configdata = WXcountConfigInfo(wxdata.appid, wxdata.js_api_ticket);
-			callback(configdata)
+			daogouAPI.WXgetTicket($rootScope.BRANDID,function(wxticketdata){
+				// console.log(['wxticketdata',wxticketdata])
+				var configdata = WXcountConfigInfo(wxdata.appid, wxticketdata.ticket);
+				callback(configdata)
+			},function(data){
+				console.log(['WXgetTicket 失败', data]);
+			})
 		}, function(data) {
 			console.log(['微信公众号信息 失败', data]);
 
