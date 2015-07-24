@@ -175,7 +175,7 @@ order.controller('orderDetailCtrl',
                 .error(function(data) {
                   console.log(["获取可退货商品失败", data])
                 })
-            
+
             //检测是否可以退货<--结束
             $scope.showrefunds=$scope.statuscode==4||$scope.statuscode==6;
 
@@ -304,7 +304,7 @@ order.controller('orderDetailCtrl',
         WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
         });
       } else {
-        $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" + $stateParams.tid + "&return_url=/shopping/pay-transfer.html").success(function(data){
+        $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" + $stateParams.tid + "&return_url=/shopping/pay-transfer.html&extra_common_param="+$rootScope.GUIDID+"-"+$rootScope.BRANDID).success(function(data){
           //阿里支付
           location.href = data.url;
         })
