@@ -9,12 +9,9 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       daogouAPI.isLogin(function (data) {
         var userInfo = window.sessionStorage.getItem("USERINFO");
         $scope.USERINFO = JSON.parse(userInfo);
-        $scope.checkloginshow=true;
         cartProductListFunc();
       }, function (data) {
         var userInfo = window.sessionStorage.getItem("USERINFO");
-        $scope.checkloginshow=false;
-        if(userInfo!=null&&data.length>0){
           $ionicLoading.show({
             template: '您的帐号在另一台设备进行登录，请重新登录',
             duration:2000,
@@ -48,7 +45,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
     //购物车中没有数据的实现显示用的
     $scope.carthasnodata=false;
     //购物车登录后加载数据的时候显示用的
-    $scope.showlogindata=true;
+    $scope.showlogindata=false;
     //打开页面，头像是显示的
     $scope.cartfloatcenter=true;
     /**
@@ -93,13 +90,11 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         if($scope.cartProductListData.length>0){
           $scope.showlogindata=false;
           $scope.carthasnodata=false;
-          $scope.checkloginshow=false;
         }
         //购物车中无数据的时候，只显示加入购物车，加载数据不显示
         else if($scope.cartProductListData.length===0){
           $scope.carthasnodata=true;
           $scope.showlogindata=false;
-          $scope.checkloginshow=false;
         }
         if (data.length >= pagesize) {
           pageindex++;
@@ -128,7 +123,6 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
       $scope.USERID = $scope.USERINFO.id;
       //登录成功后就显示正在加载数据，在判断购物车中是否有数据
       $scope.showlogindata=true;
-      $scope.checkloginshow=true;
       //获取订单信息
       cartProductListFunc();
     }
