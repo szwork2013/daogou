@@ -309,7 +309,7 @@ createOrder.controller('creatorderCtrl',
             } else {
               //获取订单页面
               console.log(orderdata.tid)
-              $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=/shopping/pay-transfer.html&extra_common_param="+$rootScope.GUIDID+","+$rootScope.BRANDID).success(function(data){
+              $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" +orderdata.tid + "&return_url=/shopping/pay-transfer.html&extra_common_param="+$rootScope.GUIDID+"-"+$rootScope.BRANDID).success(function(data){
                 //阿里支付
                 location.href = data.url;
               }).error(function(data){

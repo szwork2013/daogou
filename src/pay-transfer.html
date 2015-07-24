@@ -9,7 +9,7 @@
         var param = search[i].split("=");
         params[param[0]] = param[1];
       }
-      var p = params["extra_common_param"].split(",");
+      var p = params["extra_common_param"].split("-");
       window.location.href = "/shopping/index.html?guider_id="+params[0]+"&brand_id="+params[1]+"&share=true#/orderDetail/" + params["out_trade_no"];
     </script>
   </head>
