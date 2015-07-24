@@ -12,6 +12,7 @@ cart.controller('cartCtrl', ['$scope', '$log', '$http', '$state', 'URLPort', '$s
         cartProductListFunc();
       }, function (data) {
         var userInfo = window.sessionStorage.getItem("USERINFO");
+        if(userInfo!=null&&data.length>0){
           $ionicLoading.show({
             template: '您的帐号在另一台设备进行登录，请重新登录',
             duration:2000,
