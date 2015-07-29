@@ -17,6 +17,7 @@ product.controller('productDetailCtrl',
      */
     $http.get(URLPort + "/items/" + $stateParams.detailId)
       .success(function (data) {
+        console.log(['data',data])
         setTimeout(function () {
           $("#sliders").touchSlider({
             animatetime: 300,

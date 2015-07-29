@@ -10,7 +10,10 @@
     </div>
     <div class="productInfo">
       <div class="title">{{productDetailData.title}}</div>
-      <div class="price">{{productDetailData.price|currency:"￥":2}}</div>
+      <div class="price">{{productDetailData.price|currency:"￥":2}}
+        <p class="dropprice">{{productDetailData.quote_price |currency:"￥":2}}</p>
+      </div>
+
       <div ng-repeat="sku in productDetailData.usedSkus">
         <span class="graya3">{{sku.name}}：</span><span>{{sku.skuValues}}</span>
       </div>
