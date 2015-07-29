@@ -140,6 +140,10 @@ order.controller('orderDetailCtrl',
                 $scope.payNo = true;
                 $scope.cancelpayOrder = false;
                 // $scope.refund = true;
+                //只有在待取货时执行5s循环，实时改变订单状态
+                setTimeout(function(){
+                  getOrderDetail();
+                },5000);
                 break;
               case "TRADE_FINISHED":
                 $scope.statuscode=6;
