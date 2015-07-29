@@ -3,7 +3,34 @@
 var order = angular.module('order', ['ionic']);
 order.controller('orderDetailCtrl',
   function ($rootScope, $scope, $log, $http, $state, $stateParams,$ionicLoading, URLPort, daogouAPI, WXpay,$ionicPopup,getRequest) {
+    daogouAPI.isLogin(function(data) {
+      var userInfo = window.sessionStorage.getItem("USERINFO");
+      $scope.USERINFO = JSON.parse(userInfo);
+      getOrderDetail();
+    }, function(data) {
+      var userInfo = window.sessionStorage.getItem("USERINFO");
+      if (userInfo != null && data.length > 0) {
+        $ionicLoading.show({
+          template: '您的帐号在另一台设备进行登录，请重新登录',
+          duration: 2000,
+        });
+      };
+      $scope.login = true;
+      $(".mengban").show();
+    });
+    
+    $scope.loginsuccess = function(data) {
+      $(".mengban").hide();
+      $scope.login = false;
+      //回调再获取用户信息
+      var userInfo = window.sessionStorage.getItem("USERINFO");
+      $scope.USERINFO = JSON.parse(userInfo);
+      $scope.USERID = $scope.USERINFO.id;
+      getOrderDetail();
+    }
+    $scope.loginerror = function(data) {
 
+    }
 //==============================阅完可删除,若不删,留作纪念,我也不反对线====================================
     //这个切换其实是2个页面 不是页面内切换的
     //一个是购物车页cart   应该是订单列表  order → order-list
