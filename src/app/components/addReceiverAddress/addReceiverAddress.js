@@ -115,6 +115,9 @@ angular.module('daogou')
 				}
 			}
 			$scope.addblur = function() {
+				
+				$("#showadd").addClass("ellipsis");
+
 				if($scope.newAddressInput.address!=undefined){
 					if ($scope.newAddressInput.address.length > 100) {
 						$scope.useraddresserror = {
@@ -221,6 +224,7 @@ angular.module('daogou')
 				showmobile();
 			};
 			$scope.showAdd=function(){
+				$("#showadd").removeClass("ellipsis");
 				showadd();
 			};
 			$scope.showZip=function(){

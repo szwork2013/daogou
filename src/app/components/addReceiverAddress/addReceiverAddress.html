@@ -69,7 +69,7 @@
 
 
       <div class="iconfont icon-guanbi2 close2 close4top4" ng-click="clearAddress()" ng-if="showadd"></div>
-      <input class="input-address-info" placeholder="详细地址" name="address" ng-model="newAddressInput.address" required
+      <input class="input-address-info ellipsis" placeholder="详细地址" name="address" ng-model="newAddressInput.address" required
       ng-trim="false"
       ng-blur="addblur()"
       ng-focus="useraddresserror={error:false,msg:null}" ng-click="showAdd()" id="showadd" ng-change="addspace()"/>
