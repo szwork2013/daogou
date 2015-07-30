@@ -6,5 +6,6 @@ angular.module('payWay',['ionic'])
 }])
 .controller('successPayCtrl',['$scope','$log','$http',function($scope,$log,$http){
   $log.debug("successPayCtrl");
+  $rootScope.PAYNOW=false;
 }])
 ;
