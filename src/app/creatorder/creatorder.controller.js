@@ -258,7 +258,7 @@ createOrder.controller('creatorderCtrl',
         $scope.shopaddressData.splice(defaultIndex, 1);
         var minIndex = 0;
         for (var i = 0; i < $scope.shopaddressData.length - 1; i++) {
-          if (parseFloat($scope.shopaddressData[i + 1].distance) > parseFloat($scope.shopaddressData[i].distance)) {
+          if (parseFloat($scope.shopaddressData[i + 1].distance) < parseFloat($scope.shopaddressData[i].distance)) {
             minIndex = i + 1;
           }
         }
@@ -266,7 +266,7 @@ createOrder.controller('creatorderCtrl',
       } else {//没有默认地址
         var minIndex = 0;
         for (var i = 0; i < data.length - 1; i++) {
-          if (parseFloat(data[i + 1].distance) > parseFloat(data[i].distance)) {
+          if (parseFloat(data[i + 1].distance) < parseFloat(data[i].distance)) {
             minIndex = i + 1;
           }
         }
@@ -275,7 +275,7 @@ createOrder.controller('creatorderCtrl',
         $scope.shopaddressData.splice(minIndex, 1);
         var minIndex = 0;
         for (var i = 0; i < $scope.shopaddressData.length - 1; i++) {
-          if (parseFloat($scope.shopaddressData[i + 1].distance) > parseFloat($scope.shopaddressData[i].distance)) {
+          if (parseFloat($scope.shopaddressData[i + 1].distance) < parseFloat($scope.shopaddressData[i].distance)) {
             minIndex = i + 1;
           }
         }
