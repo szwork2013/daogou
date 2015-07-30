@@ -111,8 +111,17 @@ product.controller('productDetailCtrl',
           $scope.productOrder = list[0];
           $scope.productOrder.num = 1;
         }
+        if($scope.productOrder.real_quantity!=0){
+          $scope.checknumzero = true;
+        }
+        if($scope.checknumzero == true && $scope.allSelected == true){
+          $scope.isallSelected=true;
+        }else{
+          $scope.isallSelected=false;
+        }
       }
     });
+
     /**
      * 点击- 减商品数
      */
