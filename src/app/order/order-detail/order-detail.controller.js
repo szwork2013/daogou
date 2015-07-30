@@ -246,6 +246,18 @@ order.controller('orderDetailCtrl',
              */
             daogouAPI.formatSku(data.orders);
             $scope.orderDetailData = data;
+            //截取商品属性，m为多产品的数量，i为单一产品属性用；分割后的数量
+            for (var m = 0; m <$scope.orderDetailData.orders.length ; m++) {
+              //将属性保存在一个空的字符串中
+              $scope.valuesku='';
+              //从第一个产品开始分割属性
+              $scope.orderDetailData.orders[m].sku_properties_name = $scope.orderDetailData.orders[m].sku_properties_name.split(";")
+              for (var i = 0; i < $scope.orderDetailData.orders[m].sku_properties_name.length; i++) {
+                $scope.orderDetailData.orders[m].sku_properties_name[i] = $scope.orderDetailData.orders[m].sku_properties_name[i].split(":")[1] + ' ';
+                $scope.valuesku = $scope.valuesku.concat($scope.orderDetailData.orders[m].sku_properties_name[i]);
+              }
+              $scope.orderDetailData.orders[m].sku_properties_name=$scope.valuesku;
+            }
             //此参数是为了传递给付款成功后的订单金额和订单跳转的数据
             $rootScope.payData=data;
             //格式化取货时间
