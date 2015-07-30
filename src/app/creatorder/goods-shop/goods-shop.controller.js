@@ -3,9 +3,9 @@
 angular.module('daogou')
 .controller('goodsShopCtrl', ['$rootScope', '$scope', '$log', '$http', 'daogouAPI', '$stateParams', '$state', function ($rootScope, $scope, $log, $http, daogouAPI, $stateParams, $state) {
     $log.debug('goodsShopCtrl');
+    $rootScope.isexpress=false;
     $scope.shopaddressData = [];
     $scope.shopaddressData = $rootScope.ListTwoStores;
-
     var userInfo = window.sessionStorage.getItem("USERINFO");
     $scope.USERINFO = JSON.parse(userInfo);
     $scope.USERID = $scope.USERINFO.id;

@@ -6,7 +6,7 @@ angular.module('daogou')
     var userInfo = window.sessionStorage.getItem("USERINFO");
       $scope.USERINFO = JSON.parse(userInfo);
       $scope.USERID = $scope.USERINFO.id;
-
+    $rootScope.isexpress=true;
 
     $http.get(URLPort + '/users/' + $scope.USERID + '/shipping-addresses')
       .success(function (data) {

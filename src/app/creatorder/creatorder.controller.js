@@ -44,7 +44,84 @@ createOrder.controller('creatorderCtrl',
     $scope.buyeraddress = true;
     $scope.firstBuyerAddress = true;
     // true为快递上门   false为门店取货
+    // $scope.express = true;
+
+
+
+
+  if ($rootScope.isexpress == false) {
+    $scope.express = false;
+    //为了让选择默认门店后返回后及时显示出新选择的默认地址-->开始
+    $rootScope.ListTwoStores = [];
+    getLocation(function(lng, lat) {
+      $rootScope.lng = lng;
+      $rootScope.lat = lat;
+      daogouAPI.shopAddressAll('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
+        user_id: $scope.USERID,
+        longitude: lng,
+        latitude: lat
+      }, function(data, status, headers, config) {
+        console.log(["有经纬度data", data]);
+        if (data.length === 0) { //如果没有默认门店 返回的门店列表数组为空
+          $scope.noshop = true;
+          $scope.weixinpay = true;
+        } else {
+          $scope.weixinpay = false;
+          getTwoStore(data);
+          getFetchTime(); //获得门店取货时间
+        }
+      }, function(data, status, headers, config) {});
+    }, function() {
+      $rootScope.lng = undefined;
+      $rootScope.lat = undefined;
+      daogouAPI.shopAddressId('/brands/' + $rootScope.BRANDID + '/stores/store-fetch', {
+        user_id: $scope.USERID
+      }, function(data, status, headers, config) {
+        console.log(["无经纬度data", data]);
+        $scope.shopaddressData = data;
+        if ($scope.shopaddressData.length === 0) { //如果没有默认门店 返回的门店列表数组为空
+          $scope.noshop = true;
+          $scope.weixinpay = true;
+        } else {
+          $scope.weixinpay = false;
+          var flag = false;
+          var defaultIndex = 0;
+          for (var i in $scope.shopaddressData) {
+            if ($scope.shopaddressData[i].is_default === 1) {
+              flag = true; //如果有默认地址 flag为true
+              defaultIndex = i;
+            }
+          }
+
+          if (flag === true) { //有默认地址
+            $rootScope.minDistance = $scope.shopaddressData[defaultIndex];
+            $rootScope.ListTwoStores[0] = $rootScope.minDistance;
+            $scope.shopaddressData.splice(defaultIndex, 1);
+            if ($scope.shopaddressData.length > 0) {
+              $rootScope.ListTwoStores[1] = $scope.shopaddressData[0];
+            }
+
+          } else {
+            $rootScope.minDistance = $scope.shopaddressData[0];
+            $rootScope.ListTwoStores[0] = $rootScope.minDistance;
+            if ($scope.shopaddressData.length > 1) {
+              $rootScope.ListTwoStores[1] = $scope.shopaddressData[1];
+            }
+          }
+          getFetchTime(); //获得门店取货时间
+        }
+      }, function(data, status, headers, config) {});
+    });
+    //为了让选择默认门店后返回后及时显示出新选择的默认地址<--结束
+  } else if ($rootScope.isexpress == undefined) {
     $scope.express = true;
+  } else if ($rootScope.isexpress == true) {
+    $scope.express = true;
+  }
+
+
+
+
     var userInfo = window.sessionStorage.getItem("USERINFO");
     if (userInfo == null) {
       //如果未登录,显示登录框，进行登录
@@ -527,7 +604,7 @@ createOrder.controller('creatorderCtrl',
     function userIsLoginSetUI() {
       $scope.loginhandle = true; //已经登录让 登录模块隐藏
       $scope.alladdress = false; //让地址模不隐藏
-      $scope.express = true;
+      // $scope.express = true;
       if ($rootScope.selectedStoreId) {
         $scope.express = false;
         console.log("选择取货门店")
@@ -567,7 +644,7 @@ createOrder.controller('creatorderCtrl',
             console.log(['当前用户没有收货地址，请填写第一个收货地址', data]);
             $rootScope.firstAddressFlag = 1;//第一次填写收货地址 也就是默认收货地址，用完要清空0
             console.log(["第一次填写收货地址$rootScope.firstAddressFlag",$rootScope.firstAddressFlag])
-            $scope.express = true;
+            // $scope.express = true;
             $scope.firstBuyerAddress = false; //隐藏选择地址模块，显示填写第一个地址模块
             $scope.buyeraddress = true;
             $scope.weixinpay = true;
@@ -580,7 +657,7 @@ createOrder.controller('creatorderCtrl',
           console.log(['当前用户没有收货地址，请填写第一个收货地址', data]);
           $rootScope.firstAddressFlag = 1;//第一次填写收货地址 也就是默认收货地址，用完要清空
           console.log(["第一次填写收货地址$rootScope.firstAddressFlag",$rootScope.firstAddressFlag])
-          $scope.express = true;
+          // $scope.express = true;
 
           $scope.firstBuyerAddress = false; //隐藏选择地址模块，显示填写第一个地址模块
           $scope.buyeraddress = true;
@@ -589,7 +666,6 @@ createOrder.controller('creatorderCtrl',
 
         })
     }
-
 
   })
 
