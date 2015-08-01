@@ -2,7 +2,7 @@
 
 var product = angular.module('product', ['ionic']);
 product.controller('productDetailCtrl',
-  function ($ionicLoading,$rootScope, $scope, $log, $http, $state, $stateParams, URLPort, daogouAPI, $ionicPopup) {
+  function ($ionicLoading,$rootScope, $scope, $log, $http, $state, $stateParams, URLPort, daogouAPI, $ionicPopup,WXshare) {
     var URLPort = URLPort();
     $scope.login = false;//是否显示登录页面
     //创建订单页的 订单数据
