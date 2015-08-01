@@ -10,6 +10,7 @@ product.controller('productDetailCtrl',
       bring_guider_id: $rootScope.GUIDID
     };
     window.sessionStorage.removeItem("productOrders");
+
     //sku是否选择全
     $scope.allSelected = false;
     /**
@@ -18,6 +19,7 @@ product.controller('productDetailCtrl',
     $http.get(URLPort + "/items/" + $stateParams.detailId)
       .success(function (data) {
         console.log(['data',data])
+
         setTimeout(function () {
           $("#sliders").touchSlider({
             animatetime: 300,
@@ -28,6 +30,7 @@ product.controller('productDetailCtrl',
             sliderpointcolor: "#fa9d00"
           });
         }, 200);
+
         $scope.productDetailData = data;
         $scope.productDetailData.realquantity = 0;//剩余库存数量
         $scope.productDetailData.picUrlArr = $scope.productDetailData.pic_url.split(',');
@@ -40,6 +43,7 @@ product.controller('productDetailCtrl',
         angular.forEach($scope.productDetailData.skus, function (item, index) {
           $scope.productDetailData.realquantity += item.real_quantity;
         });
+
         $http.get(URLPort + "/items/" + $stateParams.detailId + "/standards-used").success(function (skus) {
           $scope.productDetailData.usedSkus = skus;
           angular.forEach($scope.productDetailData.usedSkus, function (item, index) {
@@ -52,6 +56,18 @@ product.controller('productDetailCtrl',
             item.skuValues = skuValues.join(" ");
           });
         });
+
+        //微信分享
+        var sharedata={
+          title:$scope.productDetailData.title , // 分享标题
+          //截取商品详情中的中文部分
+          desc:data.content.match(/([\u4E00-\u9FA5]|[\uFE30-\uFFA0])+/g).toString().replace(/\,/g,'').substr(0,20), // 分享描述
+          link:window.location.href , // 分享链接
+          imgUrl:$scope.productDetailData.picUrlArr[0] // 分享图标
+        }
+        console.log(['sharedata',sharedata])
+        WXshare(sharedata)
+
       })
       .error(function (data) {
         console.log(['获得商品详情失败', data]);
