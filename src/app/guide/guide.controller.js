@@ -1,7 +1,7 @@
 'use strict';
 angular.module('guide', ['ionic'])
   .controller('guideCtrl',
-  function ($rootScope, $scope, $log, $http, $state, $stateParams, daogouAPI, URLPort) {
+  function ($rootScope, $scope, $log, $http, $state, $stateParams, daogouAPI, URLPort,WXshare) {
     var URLPort = URLPort();
     $scope.daogouProductListData = [];
     var pageindex = 1;
@@ -39,6 +39,20 @@ angular.module('guide', ['ionic'])
         }
 
         $scope.$broadcast('scroll.infiniteScrollComplete');
+
+
+                //微信分享
+        var sharedata={
+          title: "导购橱窗", // 分享标题
+          //截取商品详情中的中文部分
+          desc:$rootScope.GUIDINFO.full_name+'的导购橱窗',// 分享描述
+          link:window.location.href , // 分享链接
+          imgUrl:$rootScope.GUIDINFO.avatar // 分享图标
+        }
+        console.log(sharedata.imgUrl);
+
+        WXshare(sharedata)
+
 
       }, function (data, status, headers, config) {
       });

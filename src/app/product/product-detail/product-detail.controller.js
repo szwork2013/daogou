@@ -57,16 +57,27 @@ product.controller('productDetailCtrl',
           });
         });
 
+        var desctext=data.content.match(/([\u4E00-\u9FA5]|[\uFE30-\uFFA0])+/g);
+        if(desctext){
+          desctext=desctext.toString().replace(/\,/g,'').substr(0,20);
+        }else{
+          desctext='';
+        }
         //微信分享
         var sharedata={
           title:$scope.productDetailData.title , // 分享标题
           //截取商品详情中的中文部分
-          desc:data.content.match(/([\u4E00-\u9FA5]|[\uFE30-\uFFA0])+/g).toString().replace(/\,/g,'').substr(0,20), // 分享描述
+          desc:desctext,// 分享描述
           link:window.location.href , // 分享链接
           imgUrl:$scope.productDetailData.picUrlArr[0] // 分享图标
         }
-        console.log(['sharedata',sharedata])
+        console.log(sharedata.imgUrl);
+        
+
+
         WXshare(sharedata)
+        
+
 
       })
       .error(function (data) {

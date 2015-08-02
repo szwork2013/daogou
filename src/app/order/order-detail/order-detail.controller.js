@@ -273,7 +273,7 @@ order.controller('orderDetailCtrl',
             console.log(["获取订单详情失败", data]);
           });
     }
-    getOrderDetail();
+    // getOrderDetail();
 
     // function checkoutaaaaaa() {
     //   $http.get(URLPort + "/trades/" + $stateParams.tid + "/refunds")
@@ -345,6 +345,7 @@ order.controller('orderDetailCtrl',
     $scope.payThisOrder = function () {
       if(payType == "WEIXIN"){
         WXpay($rootScope.BRANDID, $stateParams.tid, function (data) {
+          $state.go("successPay");
         });
       } else {
         $http.get("/trades/buyer-pay-init/alipay/request?type=pay&tid=" + $stateParams.tid + "&return_url=/shopping/pay-transfer.html&extra_common_param="+$rootScope.GUIDID+"-"+$rootScope.BRANDID).success(function(data){
