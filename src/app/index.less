@@ -369,6 +369,40 @@ hr {
 }
 
 
+.popup-container .popup {
+  border-radius: 5px;
+}
+.popup-head {
+  border: none;
+}
+.popup-buttons{
+  padding: 0;
+  min-height: 0;
+  border-top: 1px solid #eee;
+}
+.popup-buttons .button{
+  border-radius: 0;
+  background-color: rgba(0,0,0,0) !important;
+  border: none;
+  color: #3da5dc;
+}
+.popup-buttons .button+.button{
+  border-left: 1px solid #eee;
+}
+.button.button-energized:hover{
+  color:inherit;
+}
+.button.button-assertive:hover{
+  color: inherit;
+}
+.button.button-energized.activated {
+  box-shadow: none;
+}
+.button.activated {
+  box-shadow: none;
+}
+
+
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your less files automatically */
 // injector
