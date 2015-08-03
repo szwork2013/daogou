@@ -56,8 +56,7 @@ product.controller('productDetailCtrl',
             item.skuValues = skuValues.join(" ");
           });
         });
-
-        var desctext=data.content.match(/([\u4E00-\u9FA5]|[\uFE30-\uFFA0])+/g);
+        var desctext=data.content?data.content.match(/([\u4E00-\u9FA5]|[\uFE30-\uFFA0])+/g):undefined;
         if(desctext){
           desctext=desctext.toString().replace(/\,/g,'').substr(0,20);
         }else{
